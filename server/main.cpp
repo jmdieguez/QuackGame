@@ -1,5 +1,16 @@
-#include "common/foo.h"
+#include "server_server.h"
 
-int main() {
-    return foo(6);
+// Uso: ./server <puerto>
+
+#define ARG_PORT 1
+#define SERVER_N_ARGS 2
+
+int main(int argc, char* argv[]) {
+    if (argc != SERVER_N_ARGS) {
+        return ERROR;
+    } else {
+        const char* port = argv[ARG_PORT];
+        Server server(port);
+        return server.run();
+    }
 }
