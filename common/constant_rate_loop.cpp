@@ -7,14 +7,14 @@
 
 using namespace std::chrono;
 
-ConstantRateLoop::ConstantRateLoop(std::atomic<bool> &k_r, const double &r, const std::function<void(int)> &f) :
+ConstantRateLoop::ConstantRateLoop(std::atomic<bool> &k_r, const double &r, const std::function<void(unsigned int)> &f) :
     keep_running(k_r), rate(r), func(f) {}
 
 ConstantRateLoop::~ConstantRateLoop() {}
 
 void ConstantRateLoop::execute() {
     steady_clock::time_point t1 = steady_clock::now();  // Initial time point
-    int it = 0;
+    unsigned int it = 0;
 
     while (keep_running.load()) {
         func(it);

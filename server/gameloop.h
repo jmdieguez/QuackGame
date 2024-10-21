@@ -20,7 +20,7 @@ private:
 public:
     Gameloop(SessionsHandler& h, const std::shared_ptr<Queue<ClientCommand>>& recv_q);
     void run() override;
-    void step(int starting_step);
+    void step(unsigned int current_step);
 };
 
 #endif  // SERVER_GAMELOOP_H
