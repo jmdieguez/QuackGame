@@ -11,3 +11,6 @@ Makefile
 /CMakeFiles/
 cmake_install.cmake
 CMakeCache.txt
+
+libquack_game_common.a
+quack_game_*
