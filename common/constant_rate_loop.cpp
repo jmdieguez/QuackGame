@@ -2,13 +2,6 @@
 
 using namespace std::chrono;
 
-#define NANOSECONDS_PER_SECOND 1e9
-
-template<typename T>
-steady_clock::duration steady_duration(T seconds) {
-    return steady_clock::duration(static_cast<int64_t>(seconds * NANOSECONDS_PER_SECOND));
-}
-
 ConstantRateLoop::ConstantRateLoop(bool &k_r, const double &r, const std::function<void(int)> &f) :
     keep_running(k_r), rate(r), func(f) {}
 
@@ -29,13 +22,13 @@ void ConstantRateLoop::execute() {
             // Calculate how many frames are missed and reset t1 to the correct point
             double behind = -rest;  // This is always positive
             double lost = behind - std::fmod(behind, rate);
-            t1 += steady_duration(lost);
+            t1 += duration_cast<steady_clock::duration>(duration<double>(lost));
             it += static_cast<int>(lost / rate);  // Skip frames as needed
         } else {
             std::this_thread::sleep_for(duration<double>(rest));  // Wait to maintain rate
         }
 
-        t1 += steady_duration(rate);
+        t1 += duration_cast<steady_clock::duration>(duration<double>(rate));
         ++it;  // Increment iteration
     }
 }
