@@ -3,9 +3,9 @@
 
 #include <memory>
 
-#include "common_socket.h"
-#include "server_receiver.h"
-#include "server_sender.h"
+#include "socket.h"
+#include "receiver.h"
+#include "sender.h"
 
 class Session {
 private:

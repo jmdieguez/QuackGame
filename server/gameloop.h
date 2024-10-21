@@ -3,13 +3,15 @@
 
 #include <memory>
 
-#include "common_thread.h"
-#include "server_game.h"
-#include "server_sessions_handler.h"
+#include "queue.h"
+#include "thread.h"
+#include "sessions_handler.h"
+
+class ClientCommand;
 
 class Gameloop: public Thread {
 private:
-    Game game;
+    // Game game;
     SessionsHandler& handler;
     std::shared_ptr<Queue<ClientCommand>> recv_queue;
 

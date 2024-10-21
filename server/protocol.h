@@ -3,9 +3,11 @@
 
 #include <memory>
 
-#include "common_client_command.h"
-#include "common_server_message.h"
-#include "common_socket.h"
+#include "socket.h"
+
+class ClientCommand;
+class ServerMessage;
+class BoxID;
 
 class ServerProtocol {
 public:

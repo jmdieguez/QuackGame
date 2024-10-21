@@ -1,15 +1,16 @@
-#include "server_protocol.h"
+#include "protocol.h"
 
 #include <string>
 
 #include <arpa/inet.h>
 
-#include "common_box_id.h"
-#include "common_liberror.h"
+#include "liberror.h"
 
 ServerProtocol::ServerProtocol() {}
 
 ServerProtocol::~ServerProtocol() {}
+
+/*
 
 ClientCommand ServerProtocol::receive_message(Socket& skt, bool* closed) {
     uint8_t code, box_id;
@@ -48,3 +49,5 @@ void ServerProtocol::send_message(Socket& skt, ServerMessage& message, bool* clo
             throw LibError(errno, "error while sending the reward id");
     }
 }
+
+*/

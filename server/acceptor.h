@@ -1,6 +1,6 @@
-#include "common_socket.h"
-#include "common_thread.h"
-#include "server_sessions_handler.h"
+#include "socket.h"
+#include "thread.h"
+#include "sessions_handler.h"
 
 class Acceptor: public Thread {
 private:

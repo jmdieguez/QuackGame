@@ -3,11 +3,10 @@
 
 #include <memory>
 
-#include "common_client_command.h"
-#include "common_queue.h"
-#include "common_socket.h"
-#include "common_thread.h"
-#include "server_protocol.h"
+#include "queue.h"
+#include "socket.h"
+#include "thread.h"
+#include "protocol.h"
 
 class Receiver: public Thread {
 private:

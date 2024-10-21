@@ -1,9 +1,9 @@
-#include "server_gameloop.h"
+#include "gameloop.h"
 
 #include <sstream>
 #include <string>
 
-#include "common_defs.h"
+#include "defs.h"
 
 Gameloop::Gameloop(SessionsHandler& h, const std::shared_ptr<Queue<ClientCommand>>& recv_q):
         handler(h), recv_queue(recv_q) {}

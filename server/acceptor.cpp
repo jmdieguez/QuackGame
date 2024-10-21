@@ -1,9 +1,9 @@
-#include "server_acceptor.h"
+#include "acceptor.h"
 
 #include <memory>
 
-#include "common_liberror.h"
-#include "server_session.h"
+#include "liberror.h"
+#include "session.h"
 
 Acceptor::Acceptor(const char* port, SessionsHandler& h): socket(port), handler(h) {}
 
