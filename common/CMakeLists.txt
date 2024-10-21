@@ -18,4 +18,7 @@ target_sources(quack_game_common
     defs.h
     client_command_type.h
     client_command.h
+    game_dto.h
+    map_dto.h
+    server_message.h
     )

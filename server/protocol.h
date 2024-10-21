@@ -3,10 +3,9 @@
 
 #include <memory>
 
+#include "../common/server_message.h"
 #include "../common/client_command.h"
 #include "../common/socket.h"
-
-class ServerMessage;
 
 class ServerProtocol {
 public:

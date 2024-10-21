@@ -4,9 +4,8 @@
 #include "../common/queue.h"
 #include "../common/socket.h"
 #include "../common/thread.h"
+#include "../common/server_message.h"
 #include "protocol.h"
-
-class ServerMessage;
 
 class Sender: public Thread {
 private:

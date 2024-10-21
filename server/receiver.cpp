@@ -11,10 +11,10 @@ Receiver::~Receiver() {}
 void Receiver::run() {
     try {
         while (!closed && _keep_running) {
-            ClientCommand command = protocol.receive_message(client, &closed);
+            // ClientCommand command = protocol.receive_message(client, &closed);
             if (!closed) {
                 try {
-                    recv_queue->push(command);
+                    // recv_queue->push(command);
                 } catch (ClosedQueue& e) {
                     return;
                 }

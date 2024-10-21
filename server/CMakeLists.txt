@@ -2,6 +2,8 @@ target_sources(quack_game_server
     PRIVATE
     # .cpp files
     gameloop.cpp
+    game.cpp
+    map.cpp
     main.cpp
     server.cpp
     acceptor.cpp
