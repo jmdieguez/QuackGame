@@ -18,7 +18,7 @@ project(taller_tp
     VERSION 1.0
     HOMEPAGE_URL "https://github.com/URL-HERE"
     LANGUAGES CXX
-    )
+)
 
 option(TALLER_TESTS "Enable / disable tests." ON)
 option(TALLER_CLIENT "Enable / disable client program." ON)
@@ -29,147 +29,139 @@ option(TALLER_MAKE_WARNINGS_AS_ERRORS "Enable / disable warnings as errors." ON)
 message(CMAKE_CXX_COMPILER_ID="${CMAKE_CXX_COMPILER_ID}")
 
 # Define target: lib common between client, server and editor programs
-# HEY TODO XXX: change the name to something that you like
 add_library(quack_game_common STATIC)
 
-# add the source files that make the lib
-# HEY!! TODO XXX: add more subfolders here
+# Add the source files that make the lib
 add_subdirectory(common/)
 
-
-# set compiler warnings to the targets
+# Set compiler warnings to the targets
 include(cmake/CompilerWarnings.cmake)
 set_project_warnings(quack_game_common ${TALLER_MAKE_WARNINGS_AS_ERRORS} FALSE)
 
-# Say where the headers will be found required by library target
-# Make this PUBLIC so any dependant linking lib will inherit this
-# location (so our dependants will not have to explicitly request this)
+# Set the include directories for the library
 target_include_directories(quack_game_common PUBLIC .)
 
 # Install libSDL2pp (for client or editor)
-# HEY!! TODO XXX: add more dependendies (either for client, server or editor)
-#if(TALLER_CLIENT OR TALLER_EDITOR)
-#   include(FetchContent)
-#    FetchContent_Declare(
-#        libSDL2pp
-#        URL https://github.com/libSDL2pp/libSDL2pp/archive/cc198c9a5657048bee67ece82de620b2d5661084.zip
-#    )
-
-#    FetchContent_MakeAvailable(libSDL2pp)
-#endif()
-
-# Program section
-# ---------------
-if(TALLER_CLIENT)
-
+if(TALLER_CLIENT OR TALLER_EDITOR)
     set(SDL2PP_WITH_IMAGE YES)
     set(SDL2PP_WITH_TTF YES)
-    add_subdirectory(SDL2pp)
-    # HEY!! TODO XXX: Change the name of the executable to the one you like!
+    set(SDL2PP_WITH_MIXER YES)
+
+    include(FetchContent)
+    FetchContent_Declare(
+        libSDL2pp
+        URL https://github.com/libSDL2pp/libSDL2pp/archive/cc198c9a5657048bee67ece82de620b2d5661084.zip
+    )
+    FetchContent_MakeAvailable(libSDL2pp)
+
+    # Find SDL2 and required modules
+    find_package(SDL2 REQUIRED COMPONENTS SDL2)
+    find_package(SDL2_image REQUIRED)
+    find_package(SDL2_mixer REQUIRED)
+    find_package(SDL2_ttf REQUIRED)
+
+    if(NOT SDL2_IMAGE_FOUND)
+        list(APPEND SDL2_LIBRARIES "/usr/lib/x86_64-linux-gnu/libSDL2_image.so")
+    else()
+        list(APPEND SDL2_LIBRARIES SDL2::SDL2_image)
+    endif()
+
+    if(NOT SDL2_TTF_FOUND)
+        list(APPEND SDL2_LIBRARIES "/usr/lib/x86_64-linux-gnu/libSDL2_ttf.so")
+    else()
+        list(APPEND SDL2_LIBRARIES SDL2::SDL2_ttf)
+    endif()
+
+    if(NOT SDL2_MIXER_FOUND)
+        list(APPEND SDL2_LIBRARIES "/usr/lib/x86_64-linux-gnu/libSDL2_mixer.so")
+    else()
+        list(APPEND SDL2_LIBRARIES SDL2::SDL2_mixer)
+    endif()
+
+    if ((NOT SDL2_IMAGE_FOUND) OR (NOT SDL2_TTF_FOUND) OR (NOT SDL2_MIXER_FOUND))
+        list(APPEND SDL2_INCLUDE_DIRS "/usr/include/SDL2")
+    endif()
+
+    # Add SDL2 include directories to your targets
+    target_include_directories(quack_game_common PUBLIC ${SDL2_INCLUDE_DIRS})
+endif()
+
+# Program section
+if(TALLER_CLIENT)
     add_executable(quack_game_client)
 
-    # Make them depend on taller_common lib
+    # Make them depend on quack_game_common lib
     add_dependencies(quack_game_client quack_game_common SDL2pp::SDL2pp)
 
     # Add source files and enable warnings
-    # HEY!! TODO XXX: add more subfolders here
     add_subdirectory(client)
-
     set_project_warnings(quack_game_client ${TALLER_MAKE_WARNINGS_AS_ERRORS} FALSE)
 
-    # add libSDL2pp's headers
-    target_include_directories(quack_game_client PRIVATE ${libSDL2pp_SOURCE_DIR})
-
-    # Link the taller_common lib target
-    target_link_libraries(quack_game_client quack_game_common SDL2pp::SDL2pp)
+    # Link with SDL2 and its modules
+    target_link_libraries(quack_game_client
+        quack_game_common
+        SDL2pp::SDL2pp
+        ${SDL2_LIBRARIES}
+    )
 endif()
 
 if(TALLER_SERVER)
-    # HEY!! TODO XXX: Change the name of the executable to the one you like!
     add_executable(quack_game_server)
 
-    # Make them depend on taller_common lib
+    # Make them depend on quack_game_common lib
     add_dependencies(quack_game_server quack_game_common)
 
     # Add source files and enable warnings
-    # HEY!! TODO XXX: add more subfolders here
     add_subdirectory(server)
-
     set_project_warnings(quack_game_server ${TALLER_MAKE_WARNINGS_AS_ERRORS} FALSE)
 
-    # Link the taller_common lib target
+    # Link the quack_game_common lib target
     target_link_libraries(quack_game_server quack_game_common)
 endif()
 
 if(TALLER_EDITOR)
-    # HEY!! TODO XXX: Change the name of the executable to the one you like!
     add_executable(quack_game_editor)
 
-    # Make them depend on taller_common lib
+    # Make them depend on quack_game_common lib
     add_dependencies(quack_game_editor quack_game_common SDL2pp::SDL2pp)
 
     # Add source files and enable warnings
-    # HEY!! TODO XXX: add more subfolders here
     add_subdirectory(editor)
-
     set_project_warnings(quack_game_editor ${TALLER_MAKE_WARNINGS_AS_ERRORS} FALSE)
 
-    # add libSDL2pp's headers
-    target_include_directories(quack_game_editor PRIVATE ${libSDL2pp_SOURCE_DIR})
-
-    # Link the taller_common lib target
-    target_link_libraries(quack_game_editor quack_game_common SDL2pp::SDL2pp)
+    # Link with SDL2 and its modules
+    target_link_libraries(quack_game_editor
+        quack_game_common
+        SDL2pp::SDL2pp
+        ${SDL2_LIBRARIES}
+    )
 endif()
 
-
 # Testing section
-# ---------------
-
 if(TALLER_TESTS)
-    # Let's use google test
     include(FetchContent)
     FetchContent_Declare(
         googletest
         URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
     )
-
-    # For Windows: Prevent overriding the parent project's compiler/linker settings
-    # (borrowed from https://google.github.io/googletest/quickstart-cmake.html)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
     FetchContent_MakeAvailable(googletest)
     include(GoogleTest)
 
-    # target for testing
-    # HEY!! TODO XXX: Change the name of the executable to the one you like!
     add_executable(quack_game_tests)
-
-    # HEY!! TODO XXX: I'm assuming that the code under testing is in taller_common
-    # Change this if you have to.
     add_dependencies(quack_game_tests quack_game_common)
-
-    # Say where to find the xoz headers
-    # HEY!! TODO XXX: add more subfolders here
     target_include_directories(quack_game_tests PUBLIC .)
-
-    # Add the source files to the taller_tests target
-    # HEY!! TODO XXX: add more subfolders here
     add_subdirectory(tests/)
-
-    # Set the compiler warnings to the tests target (but be a little lesser strict)
     set_project_warnings(quack_game_tests ${TALLER_MAKE_WARNINGS_AS_ERRORS} TRUE)
 
-    # Say where googletest headers can be found
     target_include_directories(quack_game_tests
         PUBLIC
         ${gtest_SOURCE_DIR}/include
         ${gmock_SOURCE_DIR}/include
-        )
+    )
 
-    # HEY!! TODO XXX: I'm assuming that the code under testing is in taller_common
-    # Change this if you have to.
     target_link_libraries(quack_game_tests
         quack_game_common
         GTest::gtest_main
     )
 endif()
-
