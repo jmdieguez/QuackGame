@@ -1,4 +1,4 @@
-target_sources(taller_tests
+target_sources(quack_game_tests
     PRIVATE
     # .cpp files
     foo.cpp

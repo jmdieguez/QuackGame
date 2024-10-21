@@ -29,7 +29,7 @@ message(CMAKE_CXX_COMPILER_ID="${CMAKE_CXX_COMPILER_ID}")
 
 # Define target: lib common between client, server and editor programs
 # HEY TODO XXX: change the name to something that you like
-add_library(taller_common STATIC)
+add_library(quack_game_common STATIC)
 
 # add the source files that make the lib
 # HEY!! TODO XXX: add more subfolders here
@@ -38,12 +38,12 @@ add_subdirectory(common/)
 
 # set compiler warnings to the targets
 include(cmake/CompilerWarnings.cmake)
-set_project_warnings(taller_common ${TALLER_MAKE_WARNINGS_AS_ERRORS} FALSE)
+set_project_warnings(quack_game_common ${TALLER_MAKE_WARNINGS_AS_ERRORS} FALSE)
 
 # Say where the headers will be found required by library target
 # Make this PUBLIC so any dependant linking lib will inherit this
 # location (so our dependants will not have to explicitly request this)
-target_include_directories(taller_common PUBLIC .)
+target_include_directories(quack_game_common PUBLIC .)
 
 # Install libSDL2pp (for client or editor)
 # HEY!! TODO XXX: add more dependendies (either for client, server or editor)
@@ -61,59 +61,59 @@ endif()
 # ---------------
 if(TALLER_CLIENT)
     # HEY!! TODO XXX: Change the name of the executable to the one you like!
-    add_executable(taller_client)
+    add_executable(quack_game_client)
 
     # Make them depend on taller_common lib
-    add_dependencies(taller_client taller_common SDL2pp::SDL2pp)
+    add_dependencies(quack_game_client quack_game_common SDL2pp::SDL2pp)
 
     # Add source files and enable warnings
     # HEY!! TODO XXX: add more subfolders here
     add_subdirectory(client)
 
-    set_project_warnings(taller_client ${TALLER_MAKE_WARNINGS_AS_ERRORS} FALSE)
+    set_project_warnings(quack_game_client ${TALLER_MAKE_WARNINGS_AS_ERRORS} FALSE)
 
     # add libSDL2pp's headers
-    target_include_directories(taller_client PRIVATE ${libSDL2pp_SOURCE_DIR})
+    target_include_directories(quack_game_client PRIVATE ${libSDL2pp_SOURCE_DIR})
 
     # Link the taller_common lib target
-    target_link_libraries(taller_client taller_common SDL2pp::SDL2pp)
+    target_link_libraries(quack_game_client quack_game_common SDL2pp::SDL2pp)
 endif()
 
 if(TALLER_SERVER)
     # HEY!! TODO XXX: Change the name of the executable to the one you like!
-    add_executable(taller_server)
+    add_executable(quack_game_server)
 
     # Make them depend on taller_common lib
-    add_dependencies(taller_server taller_common)
+    add_dependencies(quack_game_server quack_game_common)
 
     # Add source files and enable warnings
     # HEY!! TODO XXX: add more subfolders here
     add_subdirectory(server)
 
-    set_project_warnings(taller_server ${TALLER_MAKE_WARNINGS_AS_ERRORS} FALSE)
+    set_project_warnings(quack_game_server ${TALLER_MAKE_WARNINGS_AS_ERRORS} FALSE)
 
     # Link the taller_common lib target
-    target_link_libraries(taller_server taller_common)
+    target_link_libraries(quack_game_server quack_game_common)
 endif()
 
 if(TALLER_EDITOR)
     # HEY!! TODO XXX: Change the name of the executable to the one you like!
-    add_executable(taller_editor)
+    add_executable(quack_game_editor)
 
     # Make them depend on taller_common lib
-    add_dependencies(taller_editor taller_common SDL2pp::SDL2pp)
+    add_dependencies(quack_game_editor quack_game_common SDL2pp::SDL2pp)
 
     # Add source files and enable warnings
     # HEY!! TODO XXX: add more subfolders here
     add_subdirectory(editor)
 
-    set_project_warnings(taller_editor ${TALLER_MAKE_WARNINGS_AS_ERRORS} FALSE)
+    set_project_warnings(quack_game_editor ${TALLER_MAKE_WARNINGS_AS_ERRORS} FALSE)
 
     # add libSDL2pp's headers
-    target_include_directories(taller_editor PRIVATE ${libSDL2pp_SOURCE_DIR})
+    target_include_directories(quack_game_editor PRIVATE ${libSDL2pp_SOURCE_DIR})
 
     # Link the taller_common lib target
-    target_link_libraries(taller_editor taller_common SDL2pp::SDL2pp)
+    target_link_libraries(quack_game_editor quack_game_common SDL2pp::SDL2pp)
 endif()
 
 
@@ -136,25 +136,25 @@ if(TALLER_TESTS)
 
     # target for testing
     # HEY!! TODO XXX: Change the name of the executable to the one you like!
-    add_executable(taller_tests)
+    add_executable(quack_game_tests)
 
     # HEY!! TODO XXX: I'm assuming that the code under testing is in taller_common
     # Change this if you have to.
-    add_dependencies(taller_tests taller_common)
+    add_dependencies(quack_game_tests quack_game_common)
 
     # Say where to find the xoz headers
     # HEY!! TODO XXX: add more subfolders here
-    target_include_directories(taller_tests PUBLIC .)
+    target_include_directories(quack_game_tests PUBLIC .)
 
     # Add the source files to the taller_tests target
     # HEY!! TODO XXX: add more subfolders here
     add_subdirectory(tests/)
 
     # Set the compiler warnings to the tests target (but be a little lesser strict)
-    set_project_warnings(taller_tests ${TALLER_MAKE_WARNINGS_AS_ERRORS} TRUE)
+    set_project_warnings(quack_game_tests ${TALLER_MAKE_WARNINGS_AS_ERRORS} TRUE)
 
     # Say where googletest headers can be found
-    target_include_directories(taller_tests
+    target_include_directories(quack_game_tests
         PUBLIC
         ${gtest_SOURCE_DIR}/include
         ${gmock_SOURCE_DIR}/include
@@ -162,8 +162,8 @@ if(TALLER_TESTS)
 
     # HEY!! TODO XXX: I'm assuming that the code under testing is in taller_common
     # Change this if you have to.
-    target_link_libraries(taller_tests
-        taller_common
+    target_link_libraries(quack_game_tests
+        quack_game_common
         GTest::gtest_main
     )
 endif()
