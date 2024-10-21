@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "common_reward_id.h"
+#include "reward_id.h"
 
 #define SERVER_MSG_CODE 6
 #define BOX_RESPAWNED 5
