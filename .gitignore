@@ -1,0 +1,12 @@
+/_deps/
+/.vscode/
+/bin/
+
+# Ignore CMake files
+
+Makefile
+/*/Makefile
+/*/CMakeFiles/
+/CMakeFiles/
+cmake_install.cmake
+CMakeCache.txt
