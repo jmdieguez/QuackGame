@@ -6,10 +6,11 @@
 
 class ClientCommand {
 public:
-    const ClientCommandType type;
-    const std::string opt_message;
+    ClientCommandType type;
+    std::string opt_message;
 
     ClientCommand(const ClientCommandType &t, const std::string &m) : type(t), opt_message(m) {}
+    ClientCommand() : type(ClientCommandType::UNDEFINED) {}
     ~ClientCommand() {}
 };
 

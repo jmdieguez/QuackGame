@@ -2,7 +2,8 @@
 #define CLIENT_COMMAND_TYPE_H
 
 enum class ClientCommandType {
-    CREATE_GAME = 0,
+    UNDEFINED = 0, // para inicializar un ClientCommand
+    CREATE_GAME,
     JOIN_GAME,
     SEND_MESSAGE,
     MOVE_RIGHT,
