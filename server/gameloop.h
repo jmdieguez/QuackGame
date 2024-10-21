@@ -13,13 +13,14 @@ class ClientCommand;
 class Gameloop: public Thread {
 private:
     // Game game;
+    ConstantRateLoop constant_rate_loop;
     SessionsHandler& handler;
     std::shared_ptr<Queue<ClientCommand>> recv_queue;
 
 public:
     Gameloop(SessionsHandler& h, const std::shared_ptr<Queue<ClientCommand>>& recv_q);
     void run() override;
-    void run_command(const ClientCommand& command);
+    void step(int starting_step);
 };
 
 #endif  // SERVER_GAMELOOP_H

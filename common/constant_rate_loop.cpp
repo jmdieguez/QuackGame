@@ -1,8 +1,13 @@
 #include "constant_rate_loop.h"
 
+#include <cmath>
+#include <iostream>
+#include <chrono>
+#include <thread>
+
 using namespace std::chrono;
 
-ConstantRateLoop::ConstantRateLoop(bool &k_r, const double &r, const std::function<void(int)> &f) :
+ConstantRateLoop::ConstantRateLoop(std::atomic<bool> &k_r, const double &r, const std::function<void(int)> &f) :
     keep_running(k_r), rate(r), func(f) {}
 
 ConstantRateLoop::~ConstantRateLoop() {}
@@ -11,7 +16,7 @@ void ConstantRateLoop::execute() {
     steady_clock::time_point t1 = steady_clock::now();  // Initial time point
     int it = 0;
 
-    while (keep_running) {
+    while (keep_running.load()) {
         func(it);
 
         steady_clock::time_point t2 = steady_clock::now();  // Current time point
