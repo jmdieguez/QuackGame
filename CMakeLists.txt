@@ -45,44 +45,7 @@ target_include_directories(quack_game_common PUBLIC .)
 if(TALLER_CLIENT OR TALLER_EDITOR)
     set(SDL2PP_WITH_IMAGE YES)
     set(SDL2PP_WITH_TTF YES)
-    set(SDL2PP_WITH_MIXER YES)
-
-    include(FetchContent)
-    FetchContent_Declare(
-        libSDL2pp
-        URL https://github.com/libSDL2pp/libSDL2pp/archive/cc198c9a5657048bee67ece82de620b2d5661084.zip
-    )
-    FetchContent_MakeAvailable(libSDL2pp)
-
-    # Find SDL2 and required modules
-    find_package(SDL2 REQUIRED COMPONENTS SDL2)
-    find_package(SDL2_image REQUIRED)
-    find_package(SDL2_mixer REQUIRED)
-    find_package(SDL2_ttf REQUIRED)
-
-    if(NOT SDL2_IMAGE_FOUND)
-        list(APPEND SDL2_LIBRARIES "/usr/lib/x86_64-linux-gnu/libSDL2_image.so")
-    else()
-        list(APPEND SDL2_LIBRARIES SDL2::SDL2_image)
-    endif()
-
-    if(NOT SDL2_TTF_FOUND)
-        list(APPEND SDL2_LIBRARIES "/usr/lib/x86_64-linux-gnu/libSDL2_ttf.so")
-    else()
-        list(APPEND SDL2_LIBRARIES SDL2::SDL2_ttf)
-    endif()
-
-    if(NOT SDL2_MIXER_FOUND)
-        list(APPEND SDL2_LIBRARIES "/usr/lib/x86_64-linux-gnu/libSDL2_mixer.so")
-    else()
-        list(APPEND SDL2_LIBRARIES SDL2::SDL2_mixer)
-    endif()
-
-    if ((NOT SDL2_IMAGE_FOUND) OR (NOT SDL2_TTF_FOUND) OR (NOT SDL2_MIXER_FOUND))
-        list(APPEND SDL2_INCLUDE_DIRS "/usr/include/SDL2")
-    endif()
-
-    # Add SDL2 include directories to your targets
+    add_subdirectory(SDL2pp)
     target_include_directories(quack_game_common PUBLIC ${SDL2_INCLUDE_DIRS})
 endif()
 
