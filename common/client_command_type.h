@@ -11,13 +11,15 @@ enum class ClientCommandType {
     JUMP,
     SHOOT,
     FLAP, // aletear
-    LAY, // tirarse al piso
+    LAY, // tirarse al piso,
+    LOOK_UP,
     STOP_MOVING_RIGHT,
     STOP_MOVING_LEFT,
     STOP_JUMPING,
     STOP_SHOOTING,
     STOP_FLAPPING,
-    STAND_UP
+    STAND_UP,
+    STOP_LOOKING_UP
 };
 
 #endif // CLIENT_COMMAND_H
