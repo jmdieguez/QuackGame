@@ -1,4 +1,4 @@
-target_sources(taller_common
+target_sources(quack_game_common
     PRIVATE
     # .cpp files
     PUBLIC
