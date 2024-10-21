@@ -6,10 +6,10 @@
 #include "../common/defs.h"
 #include "../common/client_command.h"
 
-#define FPS 30
+
 
 Gameloop::Gameloop(SessionsHandler& h, const std::shared_ptr<Queue<ClientCommand>>& recv_q):
-        constant_rate_loop(_keep_running, static_cast<double>(1/FPS), [this](int step) { this->step(step); }),
+        constant_rate_loop(_keep_running, FRAME_RATE, [this](int step) { this->step(step); }),
         handler(h),
         recv_queue(recv_q) {}
 
