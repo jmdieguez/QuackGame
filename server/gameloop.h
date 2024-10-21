@@ -3,13 +3,12 @@
 
 #include <memory>
 
+#include "../common/client_command.h"
 #include "../common/constant_rate_loop.h"
 #include "../common/queue.h"
 #include "../common/thread.h"
 #include "sessions_handler.h"
 #include "game.h"
-
-class ClientCommand;
 
 class Gameloop: public Thread {
 private:
