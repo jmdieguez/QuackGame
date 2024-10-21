@@ -7,12 +7,13 @@
 #include "../common/queue.h"
 #include "../common/thread.h"
 #include "sessions_handler.h"
+#include "game.h"
 
 class ClientCommand;
 
 class Gameloop: public Thread {
 private:
-    // Game game;
+    Game game;
     ConstantRateLoop constant_rate_loop;
     SessionsHandler& handler;
     std::shared_ptr<Queue<ClientCommand>> recv_queue;

@@ -19,13 +19,14 @@ void Gameloop::run() {
 
 void Gameloop::step(int starting_step) {
     try {
-        ClientCommand command;
+        /* ClientCommand command;
         while (recv_queue->try_pop(command)) {
             // interpretar comando
-        }
+        } */
         
         // simular juego
 
         // enviar info a clientes
+        GameDTO game_dto = game.get_status();
     } catch (ClosedQueue& e) {}
 }

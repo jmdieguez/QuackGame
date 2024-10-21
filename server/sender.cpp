@@ -12,8 +12,8 @@ void Sender::run() {
         ServerProtocol protocol;
         while (!closed && _keep_running) {
             try {
-                ServerMessage message = out_queue.pop(); // Reimplementar ServerMessage en common!
-                protocol.send_message(client, message, &closed);
+                // ServerMessage message = out_queue.pop(); // Reimplementar ServerMessage en common!
+                // protocol.send_message(client, message, &closed);
             } catch (ClosedQueue& e) {
                 return;
             }

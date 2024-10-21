@@ -5,11 +5,12 @@
 #include <mutex>
 #include <vector>
 
+#include "../common/client_command.h"
 #include "../common/queue.h"
 #include "../common/socket.h"
 #include "session.h"
 
-class ClientCommand; // Acá los defino para que compile porque actualmente no existen
+// Acá lo defino para que compile porque actualmente no existen
 class ServerMessage;
 
 class SessionsHandler {
