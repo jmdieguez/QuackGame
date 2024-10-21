@@ -5,8 +5,8 @@
 #include <mutex>
 #include <vector>
 
-#include "queue.h"
-#include "socket.h"
+#include "../common/queue.h"
+#include "../common/socket.h"
 #include "session.h"
 
 class ClientCommand; // Acá los defino para que compile porque actualmente no existen

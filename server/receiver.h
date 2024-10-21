@@ -3,9 +3,9 @@
 
 #include <memory>
 
-#include "queue.h"
-#include "socket.h"
-#include "thread.h"
+#include "../common/queue.h"
+#include "../common/socket.h"
+#include "../common/thread.h"
 #include "protocol.h"
 
 class Receiver: public Thread {

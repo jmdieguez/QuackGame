@@ -3,10 +3,10 @@
 
 #include <memory>
 
-#include "common_defs.h"
-#include "server_acceptor.h"
-#include "server_gameloop.h"
-#include "server_sessions_handler.h"
+#include "../common/defs.h"
+#include "acceptor.h"
+#include "gameloop.h"
+#include "sessions_handler.h"
 
 class Server {
 private:

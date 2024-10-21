@@ -3,8 +3,9 @@
 
 #include <memory>
 
-#include "queue.h"
-#include "thread.h"
+#include "../common/constant_rate_loop.h"
+#include "../common/queue.h"
+#include "../common/thread.h"
 #include "sessions_handler.h"
 
 class ClientCommand;

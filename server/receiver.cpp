@@ -1,7 +1,7 @@
-#include "server_receiver.h"
+#include "receiver.h"
 
-#include "common_liberror.h"
-#include "server_protocol.h"
+#include "../common/liberror.h"
+#include "protocol.h"
 
 Receiver::Receiver(Socket& skt, const std::shared_ptr<Queue<ClientCommand>>& recv_q):
         client(skt), recv_queue(recv_q), closed(false) {}

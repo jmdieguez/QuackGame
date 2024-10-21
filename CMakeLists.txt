@@ -12,6 +12,7 @@ endif()
 # -Wpedantic being enabled and -std=c++20 and -std=gnu++20 for example
 # when compiling with PCH enabled
 set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_POSIX_C_SOURCE=200112L")  # Habilita POSIX
 
 project(taller_tp
     VERSION 1.0

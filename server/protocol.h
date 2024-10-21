@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "socket.h"
+#include "../common/socket.h"
 
 class ClientCommand;
 class ServerMessage;

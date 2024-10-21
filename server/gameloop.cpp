@@ -3,11 +3,12 @@
 #include <sstream>
 #include <string>
 
-#include "defs.h"
+#include "../common/defs.h"
 
 Gameloop::Gameloop(SessionsHandler& h, const std::shared_ptr<Queue<ClientCommand>>& recv_q):
         handler(h), recv_queue(recv_q) {}
 
+/*
 void Gameloop::run() {
     try {
         while (_keep_running) {
@@ -39,3 +40,5 @@ void Gameloop::run_command(const ClientCommand& command) {
         }
     }
 }
+
+*/

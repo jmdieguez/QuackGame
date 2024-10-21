@@ -1,7 +1,7 @@
-#include "server_sender.h"
+#include "sender.h"
 
-#include "common_liberror.h"
-#include "server_protocol.h"
+#include "../common/liberror.h"
+#include "protocol.h"
 
 Sender::Sender(Socket& skt): client(skt) {}
 

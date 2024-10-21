@@ -4,7 +4,7 @@
 
 #include <arpa/inet.h>
 
-#include "liberror.h"
+#include "../common/liberror.h"
 
 ServerProtocol::ServerProtocol() {}
 

@@ -1,5 +1,5 @@
-#include "socket.h"
-#include "thread.h"
+#include "../common/socket.h"
+#include "../common/thread.h"
 #include "sessions_handler.h"
 
 class Acceptor: public Thread {
