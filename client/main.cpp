@@ -32,6 +32,7 @@ try
 
     bool right_direction = true;
     bool is_running = false;
+    bool is_bent_down = false;
     int run_phase = 1;
     float position = 0.0;
 
@@ -64,7 +65,7 @@ try
                     is_running = true;
                     break;
                 case SDLK_s:
-                    is_running = true;
+                    is_bent_down = true;
                     break;
                 }
             }
@@ -76,6 +77,8 @@ try
                 case SDLK_d:
                     is_running = false;
                     break;
+                case SDLK_s:
+                    is_bent_down = false;
                 }
             }
         }
@@ -102,6 +105,12 @@ try
         int src_x = 1, src_y = 8;
         if (is_running)
             src_x = IMAGE_WIDTH * run_phase;
+
+        if (is_bent_down)
+        {
+            src_x = IMAGE_HEIGHT * 5;
+            src_y = 8 + IMAGE_HEIGHT;
+        }
 
         SDL_Rect src_rect = {src_x, src_y, IMAGE_WIDTH, IMAGE_HEIGHT};
         SDL_Rect dst_rect = {(int)position, vcenter - 50, IMAGE_RECT_WIDTH, IMAGE_RECT_HEIGHT};
