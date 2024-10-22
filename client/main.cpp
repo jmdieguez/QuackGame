@@ -1,6 +1,5 @@
 #include <iostream>
 #include <exception>
-#include <algorithm>
 #include <string>
 
 #include <SDL2pp/SDL2pp.hh>
@@ -11,7 +10,8 @@
 #define IMAGE_HEIGHT 32
 #define IMAGE_RECT_WIDTH 64
 #define IMAGE_RECT_HEIGHT 64
-#define ASSETS_PATH "./assets"
+#define RED 255, 0, 0
+#define DUCK_PATH "./assets/duck.png"
 
 int main()
 try
@@ -27,9 +27,9 @@ try
 
     SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-    SDL2pp::Texture sprites(renderer, SDL2pp::Surface(ASSETS_PATH "/duck.png")
+    SDL2pp::Texture sprites(renderer, SDL2pp::Surface(DUCK_PATH)
                                           .SetColorKey(true, 0));
-
+    sprites.SetColorMod(RED);
     bool right_direction = true;
     bool is_running = false;
     bool is_bent_down = false;
@@ -108,8 +108,14 @@ try
 
         if (is_bent_down)
         {
-            src_x = IMAGE_HEIGHT * 5;
+            src_x = IMAGE_WIDTH * 5;
             src_y = 8 + IMAGE_HEIGHT;
+        }
+
+        if (is_running && is_bent_down)
+        {
+            src_x = IMAGE_WIDTH;
+            src_y = 8 + IMAGE_HEIGHT * 2;
         }
 
         SDL_Rect src_rect = {src_x, src_y, IMAGE_WIDTH, IMAGE_HEIGHT};
