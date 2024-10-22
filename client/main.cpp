@@ -30,6 +30,7 @@ try
     SDL2pp::Texture sprites(renderer, SDL2pp::Surface(ASSETS_PATH "/duck.png")
                                           .SetColorKey(true, 0));
 
+    bool right_direction = true;
     bool is_running = false;
     int run_phase = 1;
     float position = 0.0;
@@ -54,7 +55,15 @@ try
                 case SDLK_ESCAPE:
                 case SDLK_q:
                     return 0;
-                case SDLK_RIGHT:
+                case SDLK_a:
+                    right_direction = false;
+                    is_running = true;
+                    break;
+                case SDLK_d:
+                    right_direction = true;
+                    is_running = true;
+                    break;
+                case SDLK_s:
                     is_running = true;
                     break;
                 }
@@ -63,7 +72,8 @@ try
             {
                 switch (event.key.keysym.sym)
                 {
-                case SDLK_RIGHT:
+                case SDLK_a:
+                case SDLK_d:
                     is_running = false;
                     break;
                 }
@@ -72,7 +82,10 @@ try
 
         if (is_running)
         {
-            position += frame_delta * 0.2;
+            if (right_direction)
+                position += frame_delta * 0.2;
+            else
+                position -= frame_delta * 0.2;
             run_phase = (frame_ticks / 100) % 5 + 1;
         }
         else
@@ -80,6 +93,8 @@ try
 
         if (position > renderer.GetOutputWidth())
             position = -50;
+        else if (position < -50)
+            position = renderer.GetOutputWidth();
 
         int vcenter = renderer.GetOutputHeight() / 2;
         renderer.Clear();
@@ -88,10 +103,11 @@ try
         if (is_running)
             src_x = IMAGE_WIDTH * run_phase;
 
-        renderer.Copy(
-            sprites,
-            SDL2pp::Rect(src_x, src_y, IMAGE_WIDTH, IMAGE_HEIGHT),
-            SDL2pp::Rect((int)position, vcenter - 50, IMAGE_RECT_WIDTH, IMAGE_RECT_HEIGHT));
+        SDL_Rect src_rect = {src_x, src_y, IMAGE_WIDTH, IMAGE_HEIGHT};
+        SDL_Rect dst_rect = {(int)position, vcenter - 50, IMAGE_RECT_WIDTH, IMAGE_RECT_HEIGHT};
+
+        SDL_RendererFlip flip = right_direction ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
+        SDL_RenderCopyEx(renderer.Get(), sprites.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);
 
         renderer.Present();
 
