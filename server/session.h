@@ -3,6 +3,7 @@
 
 #include <memory>
 
+#include "client_command.h"
 #include "../common/socket.h"
 #include "receiver.h"
 #include "sender.h"
@@ -19,7 +20,7 @@ public:
     ~Session();
     void run();
     void stop();
-    void send(const ServerMessage& msg);
+    // void send(const ServerMessage& msg);
     bool has_finished() const;
 };
 

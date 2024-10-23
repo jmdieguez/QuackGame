@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "../common/client_command.h"
+#include "client_command.h"
 #include "../common/constant_rate_loop.h"
 #include "../common/queue.h"
 #include "../common/thread.h"

@@ -6,10 +6,10 @@
 #include <vector>
 
 #include "../common/server_message.h"
-#include "../common/client_command.h"
 #include "../common/queue.h"
 #include "../common/socket.h"
 #include "session.h"
+#include "client_command.h"
 
 class SessionsHandler {
 private:

@@ -11,6 +11,8 @@ SessionsHandler::~SessionsHandler() {}
 
 void SessionsHandler::add(Socket& client) {
     std::lock_guard<std::mutex> lock(mtx);
+    // Crear un generador de id's thread-safe
+    // Asignarle el id a la sesión, y que esta se guarde también en el receiver (para identificarlo)
     std::shared_ptr<Session> session = std::make_shared<Session>(std::move(client), recv_queue);
     session->run();
     sessions.emplace_back(session);
@@ -37,6 +39,6 @@ void SessionsHandler::broadcast(const ServerMessage& msg) {
     std::lock_guard<std::mutex> lock(mtx);
 
     for (auto& session: sessions) {
-        session->send(msg);
+        // session->send(msg);
     }
 }

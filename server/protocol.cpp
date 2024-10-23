@@ -6,21 +6,21 @@
 
 ServerProtocol::ServerProtocol(Socket& socket): skt(socket) {}
 
-void ServerProtocol::read_actions(ActionMessage& action_message, bool& was_closed) {
-    uint8_t id = 0;
+ActionMessage ServerProtocol::read_actions(bool& was_closed) {
+    /* uint8_t id = 0; Esto se debería guardar en el servidor, sino un cliente puede hacerse pasar por otro
     skt.recvall(&id, sizeof(id), &was_closed);
     if (was_closed)
     {
         return;
-    }
-    uint8_t action = 0;
+    } */
+    ClientActionType action;
     skt.recvall(&action, sizeof(action), &was_closed);
     if (was_closed)
     {
         return;
     }
-    action_message.id = id;
-    action_message.action = action;
+    
+    return ActionMessage(action, "");
 }
 
 void ServerProtocol::send_snapshot(const Snapshot& snapshot, bool& was_closed) {

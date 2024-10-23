@@ -1,10 +1,6 @@
 #include "gameloop.h"
-
-#include <sstream>
-#include <string>
-
 #include "../common/defs.h"
-#include "../common/client_command.h"
+#include "client_command.h"
 
 Gameloop::Gameloop(SessionsHandler& h, const std::shared_ptr<Queue<ClientCommand>>& recv_q):
         constant_rate_loop(_keep_running, FRAME_RATE, [this](unsigned int step) { this->step(step); }),
@@ -17,11 +13,10 @@ void Gameloop::run() {
 
 void Gameloop::step(unsigned int current_step) {
     try {
-        std::cout << "current_step: " << current_step << std::endl;
-        /* ClientCommand command;
+        ClientCommand command;
         while (recv_queue->try_pop(command)) {
-            // interpretar comando
-        } */
+            game.process(command);
+        }
         
         // simular juego
         game.step();

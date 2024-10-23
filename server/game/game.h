@@ -3,6 +3,7 @@
 
 #include <vector>
 
+#include "../client_command.h"
 #include "../../common/snapshots.h"
 #include "map.h"
 #include "duck.h"
@@ -15,6 +16,7 @@ public:
     Game();
     ~Game() {}
 
+    void process(ClientCommand &command);
     void step();
     Snapshot get_status();
 };

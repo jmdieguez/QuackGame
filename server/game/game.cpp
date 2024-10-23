@@ -5,6 +5,10 @@
 
 Game::Game() : map(DEFAULT_SIZE_X, DEFAULT_SIZE_Y) {}
 
+void Game::process(ClientCommand &command) {
+    // En base a qué cliente envío el comando, aplicar cambios en su pato
+}
+
 void Game::step() {
     for (Duck duck : ducks) {
         duck.step();
