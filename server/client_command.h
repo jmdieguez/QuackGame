@@ -7,10 +7,10 @@
 
 class ClientCommand {
 public:
-    uint8_t player_id;
+    uint16_t player_id;
     ActionMessage message;
 
-    ClientCommand(const uint8_t &id, const ActionMessage &msg) : player_id(id), message(msg) {}
+    ClientCommand(const uint16_t &id, const ActionMessage &msg) : player_id(id), message(msg) {}
     ClientCommand() : player_id(0) {}
 };
 

@@ -11,13 +11,14 @@
 
 class Receiver: public Thread {
 private:
+    uint16_t &session_id;
     Socket& client;                                    // Socket compartido con Sender
     std::shared_ptr<Queue<ClientCommand>> recv_queue;  // Queue compartida con Server
     ServerProtocol protocol;
     bool closed;
 
 public:
-    Receiver(Socket& skt, const std::shared_ptr<Queue<ClientCommand>>& recv_q);
+    Receiver(Socket& skt, const std::shared_ptr<Queue<ClientCommand>>& recv_q, uint16_t &id);
     ~Receiver();
     void run() override;
 };

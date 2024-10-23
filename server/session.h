@@ -10,13 +10,14 @@
 
 class Session {
 private:
+    uint16_t id;
     bool finished = false;
     Socket socket;
     Sender sender;
     Receiver receiver;
 
 public:
-    Session(Socket&& client, std::shared_ptr<Queue<ClientCommand>>& recv_q);
+    Session(Socket&& client, std::shared_ptr<Queue<ClientCommand>>& recv_q, uint16_t &s_id);
     ~Session();
     void run();
     void stop();

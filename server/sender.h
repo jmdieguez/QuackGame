@@ -9,12 +9,13 @@
 
 class Sender: public Thread {
 private:
+    uint16_t &session_id;
     ServerProtocol protocol;
     bool closed = false;
     Queue<Snapshot> out_queue;
 
 public:
-    explicit Sender(Socket& skt);
+    explicit Sender(Socket& skt, uint16_t &id);
     ~Sender();
     void run() override;
     void stop() override;

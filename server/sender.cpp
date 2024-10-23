@@ -3,7 +3,7 @@
 #include "../common/liberror.h"
 #include "protocol.h"
 
-Sender::Sender(Socket& skt): protocol(skt) {}
+Sender::Sender(Socket& skt, uint16_t &id): session_id(id), protocol(skt) {}
 
 void Sender::run() {
     try {

@@ -2,8 +2,8 @@
 
 #include <utility>
 
-Session::Session(Socket&& client, std::shared_ptr<Queue<ClientCommand>>& recv_q):
-        socket(std::move(client)), sender(socket), receiver(socket, recv_q) {}
+Session::Session(Socket&& client, std::shared_ptr<Queue<ClientCommand>>& recv_q, uint16_t &i):
+        id(i), socket(std::move(client)), sender(socket, i), receiver(socket, recv_q, i) {}
 
 Session::~Session() {}
 

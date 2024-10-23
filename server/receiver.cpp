@@ -3,8 +3,8 @@
 #include "../common/liberror.h"
 #include "client_command.h"
 
-Receiver::Receiver(Socket& skt, const std::shared_ptr<Queue<ClientCommand>>& recv_q):
-        client(skt), recv_queue(recv_q), protocol(skt), closed(false){}
+Receiver::Receiver(Socket& skt, const std::shared_ptr<Queue<ClientCommand>>& recv_q, uint16_t &id) :
+        session_id(id), client(skt), recv_queue(recv_q), protocol(skt), closed(false){}
 
 Receiver::~Receiver() {}
 
@@ -15,7 +15,7 @@ void Receiver::run() {
             if (!closed) {
                 try {
                     // Hace falta tener registro a qué cliente corresponde el msj
-                    // ClientCommand command(client_id, message);
+                    // ClientCommand command(session_id, message);
                     // recv_queue->push(command);
                 } catch (ClosedQueue& e) {
                     return;
