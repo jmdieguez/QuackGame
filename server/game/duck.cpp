@@ -10,11 +10,11 @@ void Duck::pickup_gun(std::shared_ptr<Gun> &gun_ptr) { gun = gun_ptr; }
 
 void Duck::drop_gun() { gun = nullptr; }
 
-void Duck::shoot() { shooting = true; }
+void Duck::shoot() { status.shooting = true; }
 
 void Duck::flap() { 
     action = DuckAction::FLAPPING;
-    shooting = false;
+    status.shooting = false;
 }
 
 void Duck::jump() { action = DuckAction::JUMPING; }
@@ -23,25 +23,25 @@ void Duck::lay() { action = DuckAction::LAYING; }
 
 void Duck::step() {
     if (action == DuckAction::MOVING) {
-        if (looking_right) {
+        if (status.looking_right) {
             position.move_x(X_VELOCITY);
         } else {
             position.move_x(-X_VELOCITY);
         }
     } 
     
-    if (action == DuckAction::SHOOTING && gun != nullptr) {
-        ShootEvent shoot_event = gun->shoot(looking_right, looking_up);
+    if (status.shooting && gun != nullptr) {
+        ShootEvent shoot_event = gun->shoot(status.looking_right, status.looking_up);
     }
 }
 
 // true if duck dies after receiving the shot
 bool Duck::receive_shot() { 
-    if (has_chestplate) {
-        has_chestplate = false;
+    if (status.has_chestplate) {
+        status.has_chestplate = false;
         return false;
-    } else if (has_helmet) {
-        has_helmet = false;
+    } else if (status.has_helmet) {
+        status.has_helmet = false;
         return false;
     } else {
         return true;
@@ -54,11 +54,6 @@ DuckSnapshot Duck::get_status() {
     return DuckSnapshot(id,
                         position_snapshot,
                         action,
-                        shooting,
-                        looking_right,
-                        looking_up,
-                        has_chestplate,
-                        has_helmet,
-                        is_alive,
+                        status,
                         gun_snapshot);
 }

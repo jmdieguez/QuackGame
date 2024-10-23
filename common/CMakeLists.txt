@@ -23,4 +23,5 @@ target_sources(quack_game_common
     client_command_type.h
     client_command.h
     server_message.h
+    duck.h
     )

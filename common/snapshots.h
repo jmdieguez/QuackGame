@@ -9,7 +9,7 @@
 #include <cstdint>
 #include <vector>
 
-#include "duck_actions.h"
+#include "duck.h"
 #include "gun_type.h"
 
 class PositionSnapshot {
@@ -34,33 +34,18 @@ public:
   const uint8_t id;
   const PositionSnapshot &position;
   const DuckAction &current_action;
-  const bool shooting;
-  const bool looking_right;
-  const bool looking_up;
-  const bool has_chestplate;
-  const bool has_helmet;
-  const bool is_alive;
+  const DuckStatus &status;
   const GunSnapshot &gun;
 
   DuckSnapshot(const uint8_t &i,
                const PositionSnapshot &p_snap,
                const DuckAction &a,
-               const bool &sh,
-               const bool &looking_r,
-               const bool &looking_u,
-               const bool &has_c,
-               const bool &has_h,
-               const bool &is_al,
+               const DuckStatus &s,
                const GunSnapshot &g_snap) :
           id(i),
           position(p_snap),
           current_action(a),
-          shooting(sh),
-          looking_right(looking_r),
-          looking_up(looking_u),
-          has_chestplate(has_c),
-          has_helmet(has_h),
-          is_alive(is_al),
+          status(s),
           gun(g_snap) {}
 };
 
@@ -89,4 +74,4 @@ public:
   Snapshot(std::vector<DuckSnapshot> &&d_s, MapSnapshot &&m) : ducks(d_s), map(m) {}
 };
 
-#endif //SNAPSHOTS_H
+#endif // SNAPSHOTS_H

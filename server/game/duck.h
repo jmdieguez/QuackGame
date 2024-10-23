@@ -5,7 +5,7 @@
 #include <memory>
 #include <utility>
 
-#include "../../common/duck_actions.h"
+#include "../../common/duck.h"
 #include "../../common/position.h"
 #include "../../common/snapshots.h"
 #include "gun.h"
@@ -14,13 +14,8 @@ class Duck {
 private:
     const uint8_t id;
     Position position;
+    DuckStatus status;
     DuckAction action = DuckAction::IDLE;
-    bool shooting = false;
-    bool looking_right = true;
-    bool looking_up = false;
-    bool has_chestplate = false;
-    bool has_helmet = false;
-    bool is_alive = true;
     std::shared_ptr<Gun> gun; // Para polimorfismo
 public:
     Duck(const uint8_t &i, const uint16_t &initial_x, const uint16_t &initial_y);
