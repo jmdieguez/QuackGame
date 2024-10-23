@@ -29,7 +29,10 @@ void Duck::stop_moving() { action = DuckAction::IDLE; }
 
 void Duck::pickup_gun(std::shared_ptr<Gun> &gun_ptr) { gun = gun_ptr; }
 
-void Duck::drop_gun() { gun = nullptr; }
+void Duck::drop_gun() { 
+    stop_shooting();
+    gun = nullptr; 
+}
 
 void Duck::shoot() { status.shooting = true; }
 
