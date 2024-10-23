@@ -11,9 +11,10 @@ SessionsHandler::~SessionsHandler() {}
 
 void SessionsHandler::add(Socket& client) {
     std::lock_guard<std::mutex> lock(mtx);
-    std::shared_ptr<Session> session = std::make_shared<Session>(std::move(client), recv_queue, current_id++);
+    std::shared_ptr<Session> session = std::make_shared<Session>(std::move(client), recv_queue, current_id);
     session->run();
     sessions.emplace_back(session);
+    current_id++;
 }
 
 void SessionsHandler::remove_closed_sessions() {
