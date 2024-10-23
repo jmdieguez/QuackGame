@@ -14,8 +14,8 @@
                               PRIVATE METHODS
 ****************************************************************************/
 
-void Game::step(unsigned int current_step)
-{
+void Game::step([[maybe_unused]]unsigned int current_step)
+{   
     (void)current_step;
     unsigned int frame_ticks = SDL_GetTicks();
     unsigned int frame_delta = frame_ticks - prev_ticks;
@@ -31,6 +31,7 @@ void Game::step(unsigned int current_step)
             switch (event.key.keysym.sym)
             {
             case SDLK_ESCAPE:
+                break;
             case SDLK_q:
                 keep_running = false;
                 break;
@@ -58,7 +59,7 @@ void Game::step(unsigned int current_step)
             case SDLK_s:
                 is_bent_down = false;
             }
-        }
+        } 
     }
 
     if (is_running)

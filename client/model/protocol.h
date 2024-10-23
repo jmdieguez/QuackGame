@@ -1,9 +1,8 @@
 #ifndef PROTOCOL_H
 #define PROTOCOL_H
 
-#include "../common/snapshots.h"
-// #include "../common/actions.h"
-#include "../common/socket.h"
+#include "../../common/snapshots.h"
+#include "../../common/socket.h"
 
 class ClientProtocol
 {

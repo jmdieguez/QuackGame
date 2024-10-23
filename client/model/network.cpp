@@ -18,7 +18,7 @@ void Network::sender_message()
 {
     try
     {
-        while (_keep_running && send_message())
+        while (_keep_running) // && send_message())
         {
         }
     }
@@ -69,7 +69,7 @@ void Network::run()
     std::thread sender_thread(&Network::sender_message, this);
     try
     {
-        while (_keep_running && receive_message())
+        while (_keep_running) // && receive_message())
         {
         }
     }

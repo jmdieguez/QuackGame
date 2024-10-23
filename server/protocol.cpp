@@ -7,12 +7,6 @@
 ServerProtocol::ServerProtocol(Socket& socket): skt(socket) {}
 
 ActionMessage ServerProtocol::read_actions(bool& was_closed) {
-    /* uint8_t id = 0; Esto se debería guardar en el servidor, sino un cliente puede hacerse pasar por otro
-    skt.recvall(&id, sizeof(id), &was_closed);
-    if (was_closed)
-    {
-        return;
-    } */
     ClientActionType action;
     skt.recvall(&action, sizeof(action), &was_closed);
     if (was_closed) {

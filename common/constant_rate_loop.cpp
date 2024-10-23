@@ -26,14 +26,15 @@ void ConstantRateLoop::execute() {
         if (rest < 0) {
             // Calculate how many frames are missed and reset t1 to the correct point
             double behind = -rest;  // This is always positive
-            double lost = behind - std::fmod(behind, rate);
-            t1 += duration_cast<steady_clock::duration>(duration<double>(lost));
-            it += static_cast<int>(lost / rate);  // Skip frames as needed
+            int skipped_frames = static_cast<int>(behind / rate);
+            double lost = skipped_frames * rate;
+            t1 += duration_cast<steady_clock::duration>(duration<double>(lost));  // Update t1 by lost time
+            it += skipped_frames;  // Skip frames as needed
         } else {
             std::this_thread::sleep_for(duration<double>(rest));  // Wait to maintain rate
         }
 
-        t1 += duration_cast<steady_clock::duration>(duration<double>(rate));
-        ++it;  // Increment iteration
+        t1 += duration_cast<steady_clock::duration>(duration<double>(rate));  // Update t1 for the next iteration
+        ++it;
     }
 }
