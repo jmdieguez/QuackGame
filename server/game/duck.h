@@ -5,7 +5,8 @@
 #include <memory>
 #include <utility>
 
-#include "../../common/duck_dto.h"
+#include "../../common/position.h"
+#include "../../common/snapshots.h"
 #include "gun.h"
 
 enum class DuckAction {
@@ -19,7 +20,8 @@ enum class DuckAction {
 
 class Duck {
 private:
-    std::pair<uint16_t, uint16_t> position;
+    const uint8_t id;
+    Position position;
     DuckAction action = DuckAction::IDLE;
     bool looking_right = true;
     bool looking_up = false;
@@ -28,7 +30,7 @@ private:
     bool is_alive = true;
     std::shared_ptr<Gun> gun; // Para polimorfismo
 public:
-    Duck(std::pair<uint16_t, uint16_t> &p) : position(p) {}
+    Duck(const uint8_t &i, const uint16_t &initial_x, const uint16_t &initial_y) : id(i), position(initial_x, initial_y) {}
     ~Duck() {}
 
     // Actions
@@ -40,8 +42,8 @@ public:
     void jump();
     bool receive_shot(); // true if duck dies after receiving the shot
 
-    // Duck Snapshot
-    DuckDTO get_status();
+    // Get current duck snapshot
+    DuckSnapshot get_status();
 
     // Simulate an iteration
     void step();

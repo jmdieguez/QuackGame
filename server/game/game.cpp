@@ -3,9 +3,7 @@
 #define DEFAULT_SIZE_X 1024 // 32x32 tiles
 #define DEFAULT_SIZE_Y 1024
 
-Game::Game() : map(DEFAULT_SIZE_X, DEFAULT_SIZE_Y) {
-
-}
+Game::Game() : map(DEFAULT_SIZE_X, DEFAULT_SIZE_Y) {}
 
 void Game::step() {
     for (Duck duck : ducks) {
@@ -13,13 +11,13 @@ void Game::step() {
     }
 }
 
-GameDTO Game::get_status() {
-    MapDTO map_dto = map.get_status();
+Snapshot Game::get_status() {
+    MapSnapshot map_snapshot = map.get_status();
     
-    std::vector<DuckDTO> duck_dtos;
+    std::vector<DuckSnapshot> duck_snapshots;
     for (Duck duck : ducks) {
-        duck_dtos.push_back(duck.get_status());
+        duck_snapshots.push_back(duck.get_status());
     }
 
-    return GameDTO(map_dto, duck_dtos);
+    return Snapshot(std::move(duck_snapshots), std::move(map_snapshot));
 }

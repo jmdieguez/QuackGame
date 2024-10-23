@@ -30,24 +30,24 @@ void ServerProtocol::send_snapshot(const Snapshot& snapshot, bool& was_closed) {
     if (was_closed) {
         return;
     }
-    for (Duck duck: snapshot.ducks) {
+    for (DuckSnapshot duck: snapshot.ducks) {
         // send duck information
         uint8_t id = htons(duck.id);
         skt.sendall(&id , sizeof(id), &was_closed);
         if (was_closed) {
             break;
         }
-        uint8_t action =  htons(duck.action);
+        uint8_t action = static_cast<uint8_t>(htons(duck.current_action));
         skt.sendall(&action, sizeof(action), &was_closed);
         if (was_closed) {
             break;
         }
-        uint8_t pos_x = htons(duck.pos_x);
+        uint8_t pos_x = static_cast<uint8_t>(htons(duck.position.pos_x));
         skt.sendall(&pos_x, sizeof(pos_x), &was_closed);
         if (was_closed) {
             break;
         }
-        uint8_t pos_y = htons(duck.pos_y);
+        uint8_t pos_y = static_cast<uint8_t>(htons(duck.position.pos_y));
         skt.sendall(&pos_y, sizeof(pos_y), &was_closed);
         if (was_closed) {
             break;

@@ -4,7 +4,7 @@
 #include <cstdint>
 
 #include "shoot_event.h"
-#include "../../common/gun_dto.h"
+#include "../../common/snapshots.h"
 
 class Gun {
 protected:
@@ -21,7 +21,7 @@ public:
 
     virtual ShootEvent shoot(bool &looking_right, bool &looking_up) = 0;
 
-    virtual GunDTO get_status() = 0;
+    virtual GunSnapshot get_status() = 0;
 };
 
 #endif // SERVER_GUN_H

@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "../../common/game_dto.h"
+#include "../../common/snapshots.h"
 #include "map.h"
 #include "duck.h"
 
@@ -16,7 +16,7 @@ public:
     ~Game() {}
 
     void step();
-    GameDTO get_status();
+    Snapshot get_status();
 };
 
 #endif // SERVER_GAME_H
