@@ -8,7 +8,7 @@
 bool Network::send_message()
 {
     std::vector<uint8_t> message;
-    queue_sender.try_pop(message);
+  //  queue_sender.try_pop(message);
     // message_serialized = protocol(message);
     // socket.send(message_serialized);
     return true;
@@ -33,10 +33,18 @@ void Network::sender_message()
 
 bool Network::receive_message()
 {
-    std::vector<uint8_t> message;
-    // message = socket.read();
-    // message_deseralized = protocol(message);
-    queue_receiver.try_push(message);
+    uint8_t amount;
+    if (protocol.read(amount)) {
+       return false;
+    }
+    Snapshot snap;
+    for (uint8_t i = 0; i <  amount; i++) {
+        // receive duck information
+        Duck newDuck;
+        protocol.readDuck(newDuck);
+        snap.ducks.push_back(newDuck);
+    }
+    queue_receiver.push(snap);
     return true;
 }
 
@@ -44,7 +52,8 @@ bool Network::receive_message()
                               PUBLIC METHODS
 ****************************************************************************/
 
-Network::Network(std::atomic<bool> &keep_running, Queue<std::vector<uint8_t>> &queue_receiver, Queue<std::vector<uint8_t>> &queue_sender) : keep_running(keep_running), queue_receiver(queue_receiver), queue_sender(queue_sender)
+Network::Network(std::atomic<bool> &keep_running, Queue<Snapshot> &queue_receiver, Queue<ActionMessage> &queue_sender)
+    : keep_running(keep_running), queue_receiver(queue_receiver), queue_sender(queue_sender)
 {
 }
 

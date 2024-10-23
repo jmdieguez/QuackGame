@@ -3,17 +3,14 @@
 #include "../common/liberror.h"
 #include "protocol.h"
 
-Sender::Sender(Socket& skt): client(skt) {}
-
-Sender::~Sender() {}
+Sender::Sender(Socket& skt): protocol(skt) {}
 
 void Sender::run() {
     try {
-        ServerProtocol protocol;
         while (!closed && _keep_running) {
             try {
-                // ServerMessage message = out_queue.pop(); // Reimplementar ServerMessage en common!
-                // protocol.send_message(client, message, &closed);
+                 Snapshot message = out_queue.pop();
+                 protocol.send_snapshot(message, &closed);
             } catch (ClosedQueue& e) {
                 return;
             }
@@ -23,4 +20,4 @@ void Sender::run() {
 
 void Sender::stop() { out_queue.close(); }
 
-void Sender::send(const ServerMessage& msg) { out_queue.push(msg); }
+Sender::~Sender() {}

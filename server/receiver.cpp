@@ -3,15 +3,15 @@
 #include "../common/liberror.h"
 #include "../common/client_command.h"
 
-Receiver::Receiver(Socket& skt, const std::shared_ptr<Queue<ClientCommand>>& recv_q):
-        client(skt), recv_queue(recv_q), closed(false) {}
+Receiver::Receiver(Socket& skt, const std::shared_ptr<Queue<ActionMessage>>& recv_q):
+        client(skt), recv_queue(recv_q), protocol(skt), closed(false){}
 
 Receiver::~Receiver() {}
 
 void Receiver::run() {
     try {
         while (!closed && _keep_running) {
-            // ClientCommand command = protocol.receive_message(client, &closed);
+            protocol.read_actions(client, &closed);
             if (!closed) {
                 try {
                     // recv_queue->push(command);

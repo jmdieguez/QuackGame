@@ -1,19 +1,17 @@
 #ifndef SERVER_PROTOCOL_H
 #define SERVER_PROTOCOL_H
 
-#include <memory>
-
-#include "../common/server_message.h"
-#include "../common/client_command.h"
+#include "../common/snapshots.h"
+#include "../common/actions.h"
 #include "../common/socket.h"
 
 class ServerProtocol {
+private:
+  Socket& skt;
 public:
-    ServerProtocol();
-    ~ServerProtocol();
-
-    ClientCommand receive_message(Socket& skt, bool* closed);
-    void send_message(Socket& skt, ServerMessage& message, bool* closed);
+    explicit ServerProtocol(Socket&);
+    void read_actions(ActionMessage& action, bool& closed);
+    void send_snapshot(const Snapshot& snapshot, bool& was_closed);
 };
 
 #endif  // SERVER_PROTOCOL_H

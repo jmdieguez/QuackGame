@@ -9,7 +9,8 @@
 
 Game::Game() : keep_running(true), constant_rate_loop(keep_running, FRAME_RATE, [this](unsigned int step)
                                                       { this->step(step); }),
-               queue_receiver(MAX_MESSAGES_QUEUE_RECEIVER), queue_sender(MAX_MESSAGES_QUEUE_SENDER), network(keep_running, queue_receiver, queue_sender) {}
+               queue_receiver(MAX_MESSAGES_QUEUE_RECEIVER), queue_sender(MAX_MESSAGES_QUEUE_SENDER),
+               network(keep_running, queue_receiver, queue_sender) {}
 
 void Game::run()
 {
