@@ -10,9 +10,12 @@ void Duck::pickup_gun(std::shared_ptr<Gun> &gun_ptr) { gun = gun_ptr; }
 
 void Duck::drop_gun() { gun = nullptr; }
 
-void Duck::shoot() { action = DuckAction::SHOOTING; }
+void Duck::shoot() { shooting = true; }
 
-void Duck::flap() { action = DuckAction::FLAPPING; }
+void Duck::flap() { 
+    action = DuckAction::FLAPPING;
+    shooting = false;
+}
 
 void Duck::jump() { action = DuckAction::JUMPING; }
 
@@ -25,7 +28,9 @@ void Duck::step() {
         } else {
             position.move_x(-X_VELOCITY);
         }
-    } else if (action == DuckAction::SHOOTING && gun != nullptr) {
+    } 
+    
+    if (action == DuckAction::SHOOTING && gun != nullptr) {
         ShootEvent shoot_event = gun->shoot(looking_right, looking_up);
     }
 }
@@ -49,6 +54,7 @@ DuckSnapshot Duck::get_status() {
     return DuckSnapshot(id,
                         position_snapshot,
                         action,
+                        shooting,
                         looking_right,
                         looking_up,
                         has_chestplate,

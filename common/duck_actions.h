@@ -4,7 +4,6 @@
 enum class DuckAction {
     IDLE = 0,
     MOVING,
-    SHOOTING,
     FLAPPING,
     LAYING,
     JUMPING

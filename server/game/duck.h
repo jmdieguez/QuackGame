@@ -15,6 +15,7 @@ private:
     const uint8_t id;
     Position position;
     DuckAction action = DuckAction::IDLE;
+    bool shooting = false;
     bool looking_right = true;
     bool looking_up = false;
     bool has_chestplate = false;

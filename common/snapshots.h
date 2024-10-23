@@ -34,6 +34,7 @@ public:
   const uint8_t id;
   const PositionSnapshot &position;
   const DuckAction &current_action;
+  const bool shooting;
   const bool looking_right;
   const bool looking_up;
   const bool has_chestplate;
@@ -44,6 +45,7 @@ public:
   DuckSnapshot(const uint8_t &i,
                const PositionSnapshot &p_snap,
                const DuckAction &a,
+               const bool &sh,
                const bool &looking_r,
                const bool &looking_u,
                const bool &has_c,
@@ -53,6 +55,7 @@ public:
           id(i),
           position(p_snap),
           current_action(a),
+          shooting(sh),
           looking_right(looking_r),
           looking_up(looking_u),
           has_chestplate(has_c),
