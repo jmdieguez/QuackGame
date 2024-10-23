@@ -19,7 +19,6 @@ target_sources(quack_game_common
     position.h
     snapshots.h
     gun_type.h
-    duck_actions.h
     client_command_type.h
     client_command.h
     server_message.h
