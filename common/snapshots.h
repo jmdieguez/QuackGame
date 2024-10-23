@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <vector>
 
+#include "duck_actions.h"
 #include "gun_type.h"
 
 class PositionSnapshot {

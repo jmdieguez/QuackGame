@@ -26,6 +26,6 @@ void Gameloop::step(unsigned int current_step) {
         // simular juego
         game.step();
         // enviar info a clientes
-        GameDTO game_dto = game.get_status();
+        Snapshot snapshot = game.get_status();
     } catch (ClosedQueue& e) {}
 }

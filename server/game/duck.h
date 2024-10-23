@@ -5,18 +5,10 @@
 #include <memory>
 #include <utility>
 
+#include "../../common/duck_actions.h"
 #include "../../common/position.h"
 #include "../../common/snapshots.h"
 #include "gun.h"
-
-enum class DuckAction {
-    IDLE = 0,
-    MOVING,
-    SHOOTING,
-    FLAPPING,
-    LAYING,
-    JUMPING
-};
 
 class Duck {
 private:
@@ -30,8 +22,8 @@ private:
     bool is_alive = true;
     std::shared_ptr<Gun> gun; // Para polimorfismo
 public:
-    Duck(const uint8_t &i, const uint16_t &initial_x, const uint16_t &initial_y) : id(i), position(initial_x, initial_y) {}
-    ~Duck() {}
+    Duck(const uint8_t &i, const uint16_t &initial_x, const uint16_t &initial_y);
+    ~Duck();
 
     // Actions
     void pickup_gun(std::shared_ptr<Gun> &gun_ptr);

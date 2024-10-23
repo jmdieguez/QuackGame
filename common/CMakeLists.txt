@@ -16,9 +16,11 @@ target_sources(quack_game_common
     socket.h
     thread.h
     defs.h
+    position.h
+    snapshots.h
+    gun_type.h
+    duck_actions.h
     client_command_type.h
     client_command.h
-    game_dto.h
-    map_dto.h
     server_message.h
     )
