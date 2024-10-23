@@ -1,4 +1,5 @@
 #include "protocol.h"
+#include <arpa/inet.h>
 
 ClientProtocol::ClientProtocol(Socket& socket): skt(socket) {}
 
@@ -35,10 +36,10 @@ bool ClientProtocol::readDuck(Duck &newDuck) {
         return was_closed;
     }
 
-    newDuck.id = id;
-    newDuck.action = action;
-    newDuck.pos_x = pos_x;
-    newDuck.pos_y = pos_y;
+    newDuck.id = ntohs(id);
+    newDuck.action = ntohs(action);
+    newDuck.pos_x = ntohs(pos_x);
+    newDuck.pos_y = ntohs(pos_y);
     return was_closed;
 }
 
