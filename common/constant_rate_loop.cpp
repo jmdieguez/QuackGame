@@ -1,40 +1,40 @@
 #include "constant_rate_loop.h"
 
-#include <cmath>
-#include <iostream>
 #include <chrono>
 #include <thread>
 
 using namespace std::chrono;
 
-ConstantRateLoop::ConstantRateLoop(std::atomic<bool> &k_r, const double &r, const std::function<void(unsigned int)> &f) :
-    keep_running(k_r), rate(r), func(f) {}
+#define FPS 30
+#define FRAME_INTERVAL static_cast<int>((1.0f / FPS) * 1000)
+#define FRAME_RATE std::chrono::milliseconds(FRAME_INTERVAL)
+
+ConstantRateLoop::ConstantRateLoop(std::atomic<bool> &k_r, const std::function<void(unsigned int)> &f) :
+    keep_running(k_r), func(f) {}
 
 ConstantRateLoop::~ConstantRateLoop() {}
 
 void ConstantRateLoop::execute() {
-    steady_clock::time_point t1 = steady_clock::now();  // Initial time point
-    unsigned int it = 0;
+    using clock = std::chrono::steady_clock;
+    auto t1 = clock::now();
+    int it = 0;
 
-    while (keep_running.load()) {
+    while (true) {
         func(it);
+        auto t2 = clock::now();
+        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
+        auto rest = FRAME_RATE - elapsed;
 
-        steady_clock::time_point t2 = steady_clock::now();  // Current time point
-        duration<double> elapsed = duration_cast<duration<double>>(t2 - t1);
-        double rest = rate - elapsed.count();
-
-        if (rest < 0) {
-            // Calculate how many frames are missed and reset t1 to the correct point
-            double behind = -rest;  // This is always positive
-            int skipped_frames = static_cast<int>(behind / rate);
-            double lost = skipped_frames * rate;
-            t1 += duration_cast<steady_clock::duration>(duration<double>(lost));  // Update t1 by lost time
-            it += skipped_frames;  // Skip frames as needed
-        } else {
-            std::this_thread::sleep_for(duration<double>(rest));  // Wait to maintain rate
+        if (rest < std::chrono::milliseconds(0)) {
+            // Calculate how much time is behind and correct for the lost time
+            auto behind = -rest;
+            rest = std::chrono::milliseconds(FRAME_INTERVAL - (behind.count() % FRAME_INTERVAL));
+            auto lost = behind + rest;
+            t1 += std::chrono::milliseconds(lost.count());
+            it += static_cast<int>(lost.count() / FRAME_INTERVAL);
         }
-
-        t1 += duration_cast<steady_clock::duration>(duration<double>(rate));  // Update t1 for the next iteration
-        ++it;
+        std::this_thread::sleep_for(rest);
+        t1 += FRAME_RATE;
+        it++;
     }
 }

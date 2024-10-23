@@ -3,7 +3,7 @@
 #include "client_command.h"
 
 Gameloop::Gameloop(SessionsHandler& h, const std::shared_ptr<Queue<ClientCommand>>& recv_q):
-        constant_rate_loop(_keep_running, FRAME_RATE, [this](unsigned int step) { this->step(step); }),
+        constant_rate_loop(_keep_running, [this](unsigned int step) { this->step(step); }),
         handler(h),
         recv_queue(recv_q) {}
 

@@ -118,15 +118,13 @@ Game::Game(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites)
       run_phase(1),
       position(0.0),
       prev_ticks(SDL_GetTicks()),
-      constant_rate_loop(keep_running, FRAME_RATE, [this](unsigned int step)
+      constant_rate_loop(keep_running, [this](unsigned int step)
                          { this->step(step); }),
       duck_renderer(renderer),
       duck_sprites(sprites),
       queue_receiver(MAX_MESSAGES_QUEUE_RECEIVER),
       queue_sender(MAX_MESSAGES_QUEUE_SENDER),
-      network(keep_running, queue_receiver, queue_sender)
-{
-}
+      network(keep_running, queue_receiver, queue_sender) {}
 
 void Game::run()
 {
