@@ -8,7 +8,7 @@
 #include "../common/queue.h"
 #include "../common/thread.h"
 #include "sessions_handler.h"
-#include "game.h"
+#include "./game/game.h"
 
 class Gameloop: public Thread {
 private:

@@ -2,8 +2,6 @@ target_sources(quack_game_server
     PRIVATE
     # .cpp files
     gameloop.cpp
-    game.cpp
-    map.cpp
     main.cpp
     server.cpp
     acceptor.cpp
@@ -26,3 +24,5 @@ target_sources(quack_game_server
     session.h
     sessions_handler.h
     )
+
+add_subdirectory(game/)

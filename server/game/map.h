@@ -1,7 +1,7 @@
 #ifndef SERVER_MAP_H
 #define SERVER_MAP_H
 
-#include "../common/map_dto.h"
+#include "../../common/map_dto.h"
 
 class Map {
 private:
