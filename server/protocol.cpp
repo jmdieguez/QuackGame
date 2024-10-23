@@ -1,6 +1,6 @@
 
 #include "protocol.h"
-
+#include "../common/liberror.h"
 #include <arpa/inet.h>
 
 
@@ -15,9 +15,8 @@ ActionMessage ServerProtocol::read_actions(bool& was_closed) {
     } */
     ClientActionType action;
     skt.recvall(&action, sizeof(action), &was_closed);
-    if (was_closed)
-    {
-        return;
+    if (was_closed) {
+        throw LibError(errno, "Error al recibir una acción del usuario");
     }
     
     return ActionMessage(action, "");

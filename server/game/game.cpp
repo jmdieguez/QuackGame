@@ -5,7 +5,7 @@
 
 Game::Game() : map(DEFAULT_SIZE_X, DEFAULT_SIZE_Y) {}
 
-void Game::process(ClientCommand &command) {
+void Game::process([[maybe_unused]] ClientCommand &command) {
     // En base a qué cliente envío el comando, aplicar cambios en su pato
 }
 

@@ -11,7 +11,7 @@ void Gameloop::run() {
     constant_rate_loop.execute();
 }
 
-void Gameloop::step(unsigned int current_step) {
+void Gameloop::step([[maybe_unused]] unsigned int current_step) {
     try {
         ClientCommand command;
         while (recv_queue->try_pop(command)) {
