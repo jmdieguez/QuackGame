@@ -1,21 +1,21 @@
-
 #ifndef PROTOCOL_H
 #define PROTOCOL_H
 
 #include "../common/snapshots.h"
-#include "../common/actions.h"
+// #include "../common/actions.h"
 #include "../common/socket.h"
 
-class ClientProtocol {
+class ClientProtocol
+{
 private:
-   Socket& skt;
+    // Socket &skt;
+
 public:
-  explicit ClientProtocol(Socket&);
-  bool read(uint8_t& info);
-  void send(const ActionMessage&, bool&);
-  bool readDuck(Duck&);
+    ClientProtocol();
+    // explicit ClientProtocol(Socket &);
+    bool read(uint8_t &info);
+    // void send(const ActionMessage &, bool &);
+    //  bool readDuck(Duck &);
 };
 
-
-
-#endif //PROTOCOL_H
+#endif // PROTOCOL_H
