@@ -6,11 +6,34 @@ Duck::Duck(const uint8_t &i, const uint16_t &initial_x, const uint16_t &initial_
     
 Duck::~Duck() {}
 
+void Duck::move(Direction &direction) {
+    action = DuckAction::MOVING;
+    switch (direction) {
+        case Direction::RIGHT:
+            status.looking_right = true;
+            break;
+        case Direction::LEFT:
+            status.looking_right = false;
+            break;
+        default:
+            action = DuckAction::IDLE;
+            break;
+    }
+}
+
+void Duck::look_up() { status.looking_up = true; }
+
+void Duck::stop_looking_up() { status.looking_up = false; }
+
+void Duck::stop_moving() { action = DuckAction::IDLE; }
+
 void Duck::pickup_gun(std::shared_ptr<Gun> &gun_ptr) { gun = gun_ptr; }
 
 void Duck::drop_gun() { gun = nullptr; }
 
 void Duck::shoot() { status.shooting = true; }
+
+void Duck::stop_shooting() { status.shooting = false; }
 
 void Duck::flap() { 
     action = DuckAction::FLAPPING;

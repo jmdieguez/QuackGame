@@ -7,6 +7,7 @@
 
 #include "../../common/duck.h"
 #include "../../common/position.h"
+#include "../../common/direction.h"
 #include "../../common/snapshots.h"
 #include "gun.h"
 
@@ -22,9 +23,14 @@ public:
     ~Duck();
 
     // Actions
+    void move(Direction &d);
+    void stop_moving();
+    void look_up();
+    void stop_looking_up();
     void pickup_gun(std::shared_ptr<Gun> &gun_ptr);
     void drop_gun();
     void shoot();
+    void stop_shooting();
     void flap();
     void lay();
     void jump();
