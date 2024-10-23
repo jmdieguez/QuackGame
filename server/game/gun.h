@@ -19,7 +19,7 @@ public:
 
     void stop_shooting() { shooting = false; }
 
-    virtual ShootEvent shoot() = 0;
+    virtual ShootEvent shoot(bool &looking_right, bool &looking_up) = 0;
 
     virtual GunDTO get_status() = 0;
 };

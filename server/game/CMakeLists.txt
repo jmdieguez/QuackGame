@@ -3,6 +3,7 @@ target_sources(quack_game_common
     # .cpp files
     game.cpp
     map.cpp
+    duck.cpp
     PUBLIC
     # .h files
     gun.h

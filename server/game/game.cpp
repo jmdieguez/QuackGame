@@ -8,7 +8,9 @@ Game::Game() : map(DEFAULT_SIZE_X, DEFAULT_SIZE_Y) {
 }
 
 void Game::step() {
-    
+    for (Duck duck : ducks) {
+        duck.step();
+    }
 }
 
 GameDTO Game::get_status() {
