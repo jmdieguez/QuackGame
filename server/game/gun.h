@@ -24,10 +24,4 @@ public:
     virtual GunDTO get_status() = 0;
 };
 
-class NoGun : Gun {
-    ShootEvent shoot() override {
-        return ShootEvent(); // Event without projectiles and 0 iterations left
-    }
-};
-
 #endif // SERVER_GUN_H

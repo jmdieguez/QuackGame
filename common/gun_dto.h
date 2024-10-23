@@ -18,9 +18,11 @@ enum class GunType {
 };
 
 class GunDTO {
-private:
-    GunType type;
-    uint8_t rounds;
+public:
+    const GunType type;
+    const uint8_t rounds;
+
+    GunDTO(GunType &t, uint8_t &r) : type(t), rounds(r) {}
 };
 
 #endif // COMMON_GUN_DTO_H
