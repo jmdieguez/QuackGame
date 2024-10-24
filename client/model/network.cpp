@@ -89,5 +89,4 @@ void Network::run()
 
 Network::~Network()
 {
-    join();
 }

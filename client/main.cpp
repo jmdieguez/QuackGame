@@ -2,12 +2,13 @@
 
 #define DEFAULT_WINDOW_WIDTH 480
 #define DEFAULT_WINDOW_HEIGHT 640
+#define WINDOW_TITTLE "Duck Game"
 #define DUCK_PATH "assets/duck.png"
 
 int main()
 {
     SDL2pp::SDL sdl(SDL_INIT_VIDEO);
-    SDL2pp::Window window("SDL2pp demo",
+    SDL2pp::Window window(WINDOW_TITTLE,
                           SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                           DEFAULT_WINDOW_HEIGHT, DEFAULT_WINDOW_WIDTH,
                           SDL_WINDOW_RESIZABLE);

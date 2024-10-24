@@ -25,45 +25,15 @@ void Game::step([[maybe_unused]] unsigned int current_step)
     {
         if (event.type == SDL_QUIT)
             keep_running = false;
-
         else if (event.type == SDL_KEYDOWN)
-        {
-            switch (event.key.keysym.sym)
-            {
-            case SDLK_ESCAPE:
-            case SDLK_q:
-                keep_running = false;
-                break;
-            case SDLK_a:
-                right_direction = false;
-                is_running = true;
-                break;
-            case SDLK_d:
-                right_direction = true;
-                is_running = true;
-                break;
-            case SDLK_s:
-                is_bent_down = true;
-                break;
-            }
-        }
+            input.execute_command(event, game_context);
         else if (event.type == SDL_KEYUP)
-        {
-            switch (event.key.keysym.sym)
-            {
-            case SDLK_a:
-            case SDLK_d:
-                is_running = false;
-                break;
-            case SDLK_s:
-                is_bent_down = false;
-            }
-        }
+            input.undo_command(event, game_context);
     }
 
-    if (is_running)
+    if (game_context.get_is_running())
     {
-        if (right_direction)
+        if (game_context.get_is_right_direction())
             position += frame_delta * 0.2;
         else
             position -= frame_delta * 0.2;
@@ -81,16 +51,16 @@ void Game::step([[maybe_unused]] unsigned int current_step)
     duck_renderer.Clear();
 
     int src_x = 1, src_y = 8;
-    if (is_running)
+    if (game_context.get_is_running())
         src_x = IMAGE_WIDTH * run_phase;
 
-    if (is_bent_down)
+    if (game_context.get_is_bent_down())
     {
         src_x = IMAGE_WIDTH * 5;
         src_y = 8 + IMAGE_HEIGHT;
     }
 
-    if (is_running && is_bent_down)
+    if (game_context.get_is_running() && game_context.get_is_bent_down())
     {
         src_x = IMAGE_WIDTH;
         src_y = 8 + IMAGE_HEIGHT * 2;
@@ -99,7 +69,7 @@ void Game::step([[maybe_unused]] unsigned int current_step)
     SDL_Rect src_rect = {src_x, src_y, IMAGE_WIDTH, IMAGE_HEIGHT};
     SDL_Rect dst_rect = {(int)position, vcenter - 50, IMAGE_RECT_WIDTH, IMAGE_RECT_HEIGHT};
 
-    SDL_RendererFlip flip = right_direction ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
+    SDL_RendererFlip flip = game_context.get_is_right_direction() ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
     SDL_RenderCopyEx(duck_renderer.Get(), duck_sprites.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);
 
     duck_renderer.Present();
@@ -111,9 +81,6 @@ void Game::step([[maybe_unused]] unsigned int current_step)
 
 Game::Game(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites)
     : keep_running(true),
-      right_direction(true),
-      is_running(false),
-      is_bent_down(false),
       run_phase(1),
       position(0.0),
       prev_ticks(SDL_GetTicks()),
