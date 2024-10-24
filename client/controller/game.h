@@ -32,6 +32,8 @@ private:
     InputHandler input;
     GameContext game_context;
 
+    void get_and_execute_events();
+    int update_run_phase(unsigned int frame_ticks, unsigned int frame_delta);
     void step(unsigned int current_step);
 
 public:

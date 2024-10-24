@@ -16,6 +16,8 @@ void MoveRightCommand::execute(GameContext &game_context)
 
 void MoveRightCommand::undo(GameContext &game_context)
 {
+    if (!game_context.get_is_right_direction())
+        return;
     game_context.set_is_running(false);
 }
 

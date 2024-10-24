@@ -9,17 +9,22 @@
 #define IMAGE_HEIGHT 32
 #define IMAGE_RECT_WIDTH 64
 #define IMAGE_RECT_HEIGHT 64
+#define FIRST_RUN_PHASE 1
 
 /***************************************************************************
                               PRIVATE METHODS
 ****************************************************************************/
 
-void Game::step([[maybe_unused]] unsigned int current_step)
+int Game::update_run_phase(unsigned int frame_ticks, unsigned int frame_delta)
 {
-    (void)current_step;
-    unsigned int frame_ticks = SDL_GetTicks();
-    unsigned int frame_delta = frame_ticks - prev_ticks;
-    prev_ticks = frame_ticks;
+    if (!game_context.get_is_running())
+        return FIRST_RUN_PHASE;
+    position += frame_delta * 0.2 * (game_context.get_is_right_direction() ? 1 : -1);
+    return (frame_ticks / 100) % 5 + 1;
+}
+
+void Game::get_and_execute_events()
+{
     SDL_Event event;
     while (SDL_PollEvent(&event))
     {
@@ -30,17 +35,16 @@ void Game::step([[maybe_unused]] unsigned int current_step)
         else if (event.type == SDL_KEYUP)
             input.undo_command(event, game_context);
     }
+}
 
-    if (game_context.get_is_running())
-    {
-        if (game_context.get_is_right_direction())
-            position += frame_delta * 0.2;
-        else
-            position -= frame_delta * 0.2;
-        run_phase = (frame_ticks / 100) % 5 + 1;
-    }
-    else
-        run_phase = 1;
+void Game::step([[maybe_unused]] unsigned int current_step)
+{
+    (void)current_step;
+    unsigned int frame_ticks = SDL_GetTicks();
+    unsigned int frame_delta = frame_ticks - prev_ticks;
+    prev_ticks = frame_ticks;
+    get_and_execute_events();
+    run_phase = update_run_phase(frame_ticks, frame_delta);
 
     if (position > duck_renderer.GetOutputWidth())
         position = -50;
