@@ -1,7 +1,8 @@
 #include "../../common/constant_rate_loop.h"
 #include "../../common/queue.h"
 #include "../../common/defs.h"
-#include "../model/network.h"
+#include "../../common/snapshots.h"
+// #include "../model/network.h"
 #include <utility>
 #include <vector>
 #include <cstdint>
@@ -26,7 +27,7 @@ private:
     SDL2pp::Texture &duck_sprites;
     Queue<std::vector<Snapshot>> queue_receiver;
     Queue<std::vector<uint8_t>> queue_sender;
-    Network network;
+    // Network network;
 
     void step(unsigned int current_step);
 
