@@ -10,31 +10,83 @@
 #define IMAGE_RECT_WIDTH 64
 #define IMAGE_RECT_HEIGHT 64
 #define FIRST_RUN_PHASE 1
+#define POS_INIT_X_IMAGE 1
+#define POS_INIT_Y_IMAGE 8
 
 /***************************************************************************
                               PRIVATE METHODS
 ****************************************************************************/
 
-int Game::update_run_phase(unsigned int frame_ticks, unsigned int frame_delta)
+void Game::update_run_phase_and_position(unsigned int frame_ticks, unsigned int frame_delta)
 {
     if (!game_context.get_is_running())
-        return FIRST_RUN_PHASE;
+    {
+        run_phase = FIRST_RUN_PHASE;
+        return;
+    }
     position += frame_delta * 0.2 * (game_context.get_is_right_direction() ? 1 : -1);
-    return (frame_ticks / 100) % 5 + 1;
+    run_phase = (frame_ticks / 100) % 5 + 1;
+}
+
+void Game::handle_event(SDL_Event &event)
+{
+    if (event.type == SDL_QUIT)
+        keep_running = false;
+    else if (event.type == SDL_KEYDOWN)
+        input.execute_command(event, game_context);
+    else if (event.type == SDL_KEYUP)
+        input.undo_command(event, game_context);
 }
 
 void Game::get_and_execute_events()
 {
     SDL_Event event;
     while (SDL_PollEvent(&event))
+        handle_event(event);
+}
+
+void Game::check_duck_in_window()
+{
+    if (position > duck_renderer.GetOutputWidth())
+        position = -IMAGE_WIDTH;
+    if (position < -IMAGE_WIDTH)
+        position = duck_renderer.GetOutputWidth();
+}
+
+void Game::set_xy(int &src_x, int &src_y)
+{
+    if (game_context.get_is_running())
+        src_x = IMAGE_WIDTH * run_phase;
+
+    if (game_context.get_is_bent_down())
     {
-        if (event.type == SDL_QUIT)
-            keep_running = false;
-        else if (event.type == SDL_KEYDOWN)
-            input.execute_command(event, game_context);
-        else if (event.type == SDL_KEYUP)
-            input.undo_command(event, game_context);
+        src_x = IMAGE_WIDTH * 5;
+        src_y = POS_INIT_Y_IMAGE + IMAGE_HEIGHT;
     }
+
+    if (game_context.get_is_running() && game_context.get_is_bent_down())
+    {
+        src_x = IMAGE_WIDTH;
+        src_y = POS_INIT_Y_IMAGE + IMAGE_HEIGHT * 2;
+    }
+}
+
+void Game::update_renderer()
+{
+    duck_renderer.Clear();
+    set_renderer();
+    duck_renderer.Present();
+}
+
+void Game::set_renderer()
+{
+    int vcenter = duck_renderer.GetOutputHeight() / 2;
+    int src_x = POS_INIT_X_IMAGE, src_y = POS_INIT_Y_IMAGE;
+    set_xy(src_x, src_y);
+    SDL_Rect src_rect = {src_x, src_y, IMAGE_WIDTH, IMAGE_HEIGHT};
+    SDL_Rect dst_rect = {(int)position, vcenter - IMAGE_HEIGHT, IMAGE_RECT_WIDTH, IMAGE_RECT_HEIGHT};
+    SDL_RendererFlip flip = game_context.get_is_right_direction() ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
+    SDL_RenderCopyEx(duck_renderer.Get(), duck_sprites.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);
 }
 
 void Game::step([[maybe_unused]] unsigned int current_step)
@@ -44,39 +96,9 @@ void Game::step([[maybe_unused]] unsigned int current_step)
     unsigned int frame_delta = frame_ticks - prev_ticks;
     prev_ticks = frame_ticks;
     get_and_execute_events();
-    run_phase = update_run_phase(frame_ticks, frame_delta);
-
-    if (position > duck_renderer.GetOutputWidth())
-        position = -50;
-    else if (position < -50)
-        position = duck_renderer.GetOutputWidth();
-
-    int vcenter = duck_renderer.GetOutputHeight() / 2;
-    duck_renderer.Clear();
-
-    int src_x = 1, src_y = 8;
-    if (game_context.get_is_running())
-        src_x = IMAGE_WIDTH * run_phase;
-
-    if (game_context.get_is_bent_down())
-    {
-        src_x = IMAGE_WIDTH * 5;
-        src_y = 8 + IMAGE_HEIGHT;
-    }
-
-    if (game_context.get_is_running() && game_context.get_is_bent_down())
-    {
-        src_x = IMAGE_WIDTH;
-        src_y = 8 + IMAGE_HEIGHT * 2;
-    }
-
-    SDL_Rect src_rect = {src_x, src_y, IMAGE_WIDTH, IMAGE_HEIGHT};
-    SDL_Rect dst_rect = {(int)position, vcenter - 50, IMAGE_RECT_WIDTH, IMAGE_RECT_HEIGHT};
-
-    SDL_RendererFlip flip = game_context.get_is_right_direction() ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
-    SDL_RenderCopyEx(duck_renderer.Get(), duck_sprites.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);
-
-    duck_renderer.Present();
+    update_run_phase_and_position(frame_ticks, frame_delta);
+    check_duck_in_window();
+    update_renderer();
 }
 
 /***************************************************************************
