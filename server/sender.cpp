@@ -10,7 +10,7 @@ void Sender::run() {
         while (!closed && _keep_running) {
             try {
                  Snapshot message = out_queue.pop();
-                 protocol.send_snapshot(message, closed);
+                 protocol.send_snapshot(message);
             } catch (ClosedQueue& e) {
                 return;
             }

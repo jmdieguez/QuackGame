@@ -11,7 +11,7 @@ Receiver::~Receiver() {}
 void Receiver::run() {
     try {
         while (!closed && _keep_running) {
-            // ActionMessage message = protocol.read_actions(client, &closed);
+            ActionMessage message = protocol.read_action();
             if (!closed) {
                 try {
                     // Hace falta tener registro a qué cliente corresponde el msj

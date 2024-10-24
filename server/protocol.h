@@ -7,11 +7,15 @@
 
 class ServerProtocol {
 private:
-  Socket& skt;
+    Socket& skt;
+    void send_data(const void*);
+    void send_duck_status(const DuckStatus& status);
+    void send_duck(const DuckSnapshot& duck);
+    void send_position(const PositionSnapshot& pos);
 public:
     explicit ServerProtocol(Socket&);
-    ActionMessage read_actions(bool& closed);
-    void send_snapshot(const Snapshot& snapshot, bool& was_closed);
+    ActionMessage read_action();
+    void send_snapshot(const Snapshot& snapshot);
 };
 
 #endif  // SERVER_PROTOCOL_H
