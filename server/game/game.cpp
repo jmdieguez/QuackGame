@@ -23,5 +23,5 @@ Snapshot Game::get_status() {
         duck_snapshots.push_back(duck.get_status());
     }
 
-    return Snapshot(std::move(duck_snapshots), std::move(map_snapshot));
+    return Snapshot(std::move(duck_snapshots));
 }
