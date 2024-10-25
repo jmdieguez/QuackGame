@@ -5,9 +5,9 @@
 
 class ServerMessage {
 public:
-    const uint8_t code; // crear un enum con los diferentes tipos de msj
+    const uint16_t code; // crear un enum con los diferentes tipos de msj
 
-    ServerMessage(uint8_t &c) : code(c) {}
+    ServerMessage(uint16_t &c) : code(c) {}
 
     ~ServerMessage() {}
 };

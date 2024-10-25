@@ -12,15 +12,16 @@
 #include "duck.h"
 #include "gun_type.h"
 
-class PositionSnapshot
-{
+class PositionSnapshot {
 public:
-  uint16_t pos_x;
-  uint16_t pos_y;
+    uint8_t pos_x;
+    uint8_t pos_y;
 
-  PositionSnapshot(uint16_t& x, uint16_t& y) : pos_x(x), pos_y(y) {}
-  ~PositionSnapshot() {}
+    // Cambiar a paso por valor
+    PositionSnapshot(uint8_t x, uint8_t y) : pos_x(x), pos_y(y) {}
+    ~PositionSnapshot() {}
 };
+
 
 class GunSnapshot
 {
@@ -36,25 +37,17 @@ public:
 
 class DuckSnapshot {
 public:
-  const uint8_t id;
-  const uint8_t health;
-  const PositionSnapshot& position;
+  const uint16_t id;
+  //const uint16_t health;
+  const PositionSnapshot position;
   const DuckAction& current_action;
-  const DuckStatus& status;
-  const GunSnapshot& gun;
+ // const DuckStatus& status;
+  //const GunSnapshot& gun;
 
-  DuckSnapshot(const uint8_t& i,
-               const uint8_t health,
-               const PositionSnapshot& p_snap,
-               const DuckAction& a,
-               const DuckStatus& s,
-               const GunSnapshot& g_snap) :
-    id(i),
-    health(health),
-    position(p_snap),
-    current_action(a),
-    status(s),
-    gun(g_snap) {}
+  explicit DuckSnapshot(const uint16_t& i, PositionSnapshot p_snap, const DuckAction& action) :
+   id(i),
+   position(std::move(p_snap)),
+   current_action(action) {}
 };
 
 class BoxSnapshot {
@@ -78,10 +71,13 @@ public:
 class Snapshot
 {
 public:
-  const std::vector<DuckSnapshot> ducks;
-  const MapSnapshot map;
-
-  Snapshot(std::vector<DuckSnapshot>&& d_s, MapSnapshot&& m) : ducks(d_s), map(m) {}
+  std::vector<DuckSnapshot> ducks;
+  void add_duck(uint16_t id, PositionSnapshot pos) {
+    DuckSnapshot duck(id, pos);
+    ducks.emplace_back(duck);
+  }
+   Snapshot() : ducks({}) {}
+  Snapshot(std::vector<DuckSnapshot>&& d_s) : ducks(d_s) {}
 };
 
 #endif // SNAPSHOTS_H

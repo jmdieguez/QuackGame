@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <string>
 
-enum class ClientActionType : uint8_t {
+enum class ClientActionType : uint16_t {
     UNDEFINED = 0,
     CREATE_GAME,   // Enums are assigned consecutive values by default
     JOIN_GAME,     // this number 3

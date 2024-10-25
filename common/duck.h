@@ -1,8 +1,9 @@
 #ifndef COMMON_DUCK_H
 #define COMMON_DUCK_H
 
+#include <iostream>
+
 struct DuckStatus {
-public:
     bool shooting = false;
     bool looking_right = true;
     bool looking_up = false;
@@ -11,7 +12,7 @@ public:
     bool is_alive = true;
 };
 
-enum class DuckAction : uint8_t {
+enum class DuckAction : uint16_t {
     IDLE = 0,
     MOVING,
     FLAPPING,
