@@ -3,11 +3,13 @@
 
 #include "../../common/constant_rate_loop.h"
 #include "../../common/queue.h"
+#include "../../common/socket.h"
 #include "../../common/defs.h"
 #include "../../common/snapshots.h"
+#include "../../common/client_actions.h"
 #include "./command/gamecontext.h"
 #include "./command/inputhandler.h"
-// #include "../model/network.h"
+#include "../model/protocol.h"
 #include <utility>
 #include <vector>
 #include <cstdint>
@@ -26,12 +28,12 @@ private:
     ConstantRateLoop constant_rate_loop;
     SDL2pp::Renderer &duck_renderer;
     SDL2pp::Texture &duck_sprites;
-    Queue<std::vector<Snapshot>> queue_receiver;
-    Queue<std::vector<uint8_t>> queue_sender;
+    Queue<Snapshot> queue_receiver;
+    Queue<ClientActionType> queue_sender;
     // Network network;
     InputHandler input;
     GameContext game_context;
-
+    Socket socket;
     void get_and_execute_events();
     void check_duck_in_window();
     void set_xy(int &src_x, int &src_y);
@@ -42,7 +44,7 @@ private:
     void step(unsigned int current_step);
 
 public:
-    explicit Game(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites);
+    Game(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites, const char* sv, const char* hostname);
     void run();
     ~Game();
 };

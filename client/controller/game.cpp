@@ -1,4 +1,6 @@
 #include "game.h"
+#include "../model/receiver.h"
+#include "../model/sender.h"
 
 #define MAX_MESSAGES_QUEUE_RECEIVER 100000
 #define MAX_MESSAGES_QUEUE_SENDER 100000
@@ -105,7 +107,7 @@ void Game::step([[maybe_unused]] unsigned int current_step)
                               PUBLIC METHODS
 ****************************************************************************/
 
-Game::Game(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites)
+Game::Game(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites, const char* sv, const char* hostname)
     : keep_running(true),
       run_phase(1),
       position(0.0),
@@ -115,13 +117,21 @@ Game::Game(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites)
       duck_renderer(renderer),
       duck_sprites(sprites),
       queue_receiver(MAX_MESSAGES_QUEUE_RECEIVER),
-      queue_sender(MAX_MESSAGES_QUEUE_SENDER) {}
+      queue_sender(MAX_MESSAGES_QUEUE_SENDER),
+      input(queue_sender),
+      socket(hostname, sv) {}
 
 void Game::run()
 {
-    // network.run();
+    //Receiver receiver(socket, queue_receiver);
+    //receiver.start();
+    //Sender sender(socket, queue_sender);
+    //sender.start();
+
     constant_rate_loop.execute();
-    // network.join();
+   //receiver.join();
+   //sender.join();
+
 }
 
 Game::~Game() {}
