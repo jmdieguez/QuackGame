@@ -33,11 +33,11 @@ void Network::sender_message()
 
 bool Network::receive_message()
 {
-    uint8_t amount;
-    if (protocol.read(amount))
-    {
-        return false;
-    }
+   // uint8_t amount;
+   // if (protocol.read(amount))
+   // {
+   //     return false;
+   // }
     // Snapshot snap;
     // for (uint8_t i = 0; i <  amount; i++) {
     //     // receive duck information
@@ -59,10 +59,10 @@ bool Network::receive_message()
 // {
 // }
 
-Network::Network(std::atomic<bool> &keep_running, Queue<std::vector<Snapshot>> &queue_receiver, Queue<std::vector<uint8_t>> &queue_sender)
-    : keep_running(keep_running), queue_receiver(queue_receiver), queue_sender(queue_sender)
-{
-}
+//Network::Network(std::atomic<bool> &keep_running, Queue<std::vector<Snapshot>> &queue_receiver, Queue<std::vector<uint8_t>> &queue_sender)
+//    : keep_running(keep_running), queue_receiver(queue_receiver), queue_sender(queue_sender)
+//{
+//}
 
 void Network::run()
 {
