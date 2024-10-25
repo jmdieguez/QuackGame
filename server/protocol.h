@@ -8,7 +8,7 @@
 class ServerProtocol {
 private:
     Socket& skt;
-    void send_data(const void*);
+    void send_data(const uint16_t& data);
     void send_duck_status(const DuckStatus& status);
     void send_duck(const DuckSnapshot& duck);
     void send_position(const PositionSnapshot& pos);

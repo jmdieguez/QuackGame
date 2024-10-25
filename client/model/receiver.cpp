@@ -11,7 +11,7 @@ void Receiver::run() {
     try {
         while (!closed && _keep_running) {
             Snapshot snapshot;
-            protocol.read_snapshot(snapshot, closed);
+            protocol.read_snapshot(snapshot);
             if (!closed) {
                 try {
                     recv_queue.push(snapshot);

@@ -15,8 +15,8 @@ void Receiver::run() {
             if (!closed) {
                 try {
                     // Hace falta tener registro a qué cliente corresponde el msj
-                    // ClientCommand command(session_id, message);
-                    // recv_queue->push(command);
+                    ClientCommand command(session_id, message);
+                    recv_queue->push(command);
                 } catch (ClosedQueue& e) {
                     return;
                 }
