@@ -21,7 +21,6 @@ ActionMessage ServerProtocol::read_action() {
 
 void ServerProtocol::send_data(const uint16_t& data) {
    bool was_closed = false;
-
     uint16_t info = htons(data);
     skt.sendall(&info, sizeof(uint16_t), &was_closed);
     if (was_closed) {
@@ -48,4 +47,13 @@ void ServerProtocol::send_duck_status(const DuckStatus& status) {
     send_data(status.is_alive);
 }
 
+
+void ServerProtocol::send_snapshot(const Snapshot& snapshot)
+{
+    const uint16_t cant_ducks = static_cast<uint16_t>(snapshot.ducks.size());
+    send_data(cant_ducks);
+    for (const DuckSnapshot& duck : snapshot.ducks) {
+        send_duck(duck);
+    }
+}
 
