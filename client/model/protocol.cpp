@@ -10,19 +10,18 @@ void ClientProtocol::read_snapshot(Snapshot& snapshot) {
     read_data(it);
     for (uint16_t i = 0; i < it; i++) {
         uint16_t id;
-        read_data(it);
+        read_data(id);
         uint16_t pos_x;
-        read_data(it);
+        read_data(pos_x);
         uint16_t pos_y;
-        read_data(it);
+        read_data(pos_y);
         uint16_t current_action;
-        read_data(it);
+        read_data(current_action);
 
         PositionSnapshot p_snap(pos_x, pos_y);
         DuckAction action_value = static_cast<DuckAction>(current_action);
         DuckSnapshot duck(id, p_snap, action_value);
         snapshot.ducks.emplace_back(duck);
-
     }
 
 }
