@@ -71,11 +71,7 @@ class Snapshot
 {
 public:
   std::vector<DuckSnapshot> ducks;
-  void add_duck(uint16_t id, PositionSnapshot pos) {
-    DuckSnapshot duck(id, pos);
-    ducks.emplace_back(duck);
-  }
-   Snapshot() : ducks({}) {}
+  Snapshot() : ducks({}) {}
   Snapshot(std::vector<DuckSnapshot>&& d_s) : ducks(d_s) {}
 };
 
