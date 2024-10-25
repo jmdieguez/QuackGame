@@ -9,6 +9,8 @@ target_sources(quack_game_client
     controller/command/moverightcommand.cpp
     model/network.cpp
     model/protocol.cpp
+    model/receiver.cpp
+    model/sender.cpp
     main.cpp
     PUBLIC
     # .h files
@@ -21,4 +23,6 @@ target_sources(quack_game_client
     controller/command/moverightcommand.h
     model/network.h
     model/protocol.h
+    model/receiver.h
+    model/sender.h
     )

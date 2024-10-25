@@ -3,17 +3,18 @@
 
 #include "../../common/snapshots.h"
 #include "../../common/socket.h"
+#include "../../common/client_actions.h"
 
 class ClientProtocol
 {
 private:
-    // Socket &skt;
+     Socket &skt;
 
 public:
-    ClientProtocol();
-    // explicit ClientProtocol(Socket &);
-    bool read(uint8_t &info);
-    // void send(const ActionMessage &, bool &);
+    //ClientProtocol();
+    explicit ClientProtocol(Socket&);
+    void read_snapshot(Snapshot&, bool&);
+    void send_action(const ClientActionType&, bool&);
     //  bool readDuck(Duck &);
 };
 
