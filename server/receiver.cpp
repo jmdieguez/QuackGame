@@ -13,14 +13,9 @@ void Receiver::run() {
         while (!closed && _keep_running) {
             ActionMessage message = protocol.read_action();
             if (!closed) {
-                try {
-                    // Hace falta tener registro a qué cliente corresponde el msj
-                    ClientCommand command(session_id, message);
-                    recv_queue->push(command);
-                } catch (ClosedQueue& e) {
-                    return;
-                }
+                ClientCommand command(session_id, message);
+                recv_queue->push(command);
             }
         }
-    } catch (LibError& e) {}
+    } catch (LibError& e) {} catch (ClosedQueue& e) {}
 }

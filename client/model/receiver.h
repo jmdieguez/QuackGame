@@ -13,12 +13,12 @@ class Receiver: public Thread {
 private:
     ClientProtocol protocol;
     Queue<Snapshot>& recv_queue;
-    bool closed;
 
 public:
     explicit Receiver(Socket& skt, Queue<Snapshot>& recv_q);
     ~Receiver();
     void run() override;
+    void stop() override;
 };
 
 #endif  // SERVER_RECEIVER_H

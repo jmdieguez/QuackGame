@@ -23,7 +23,7 @@ public:
     ~Duck();
 
     // Actions
-    void move(Direction &d);
+    void move(Direction d);
     void stop_moving();
     void look_up();
     void stop_looking_up();

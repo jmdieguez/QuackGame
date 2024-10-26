@@ -17,10 +17,8 @@ void Gameloop::step([[maybe_unused]] unsigned int current_step) {
         while (recv_queue->try_pop(command)) {
             game.process(command);
         }
-        
-        // simular juego
         game.step();
-        // enviar info a clientes
         Snapshot snapshot = game.get_status();
-    } catch (ClosedQueue& e) {}
+        handler.broadcast(snapshot);
+    } catch (ClosedQueue& e) {} 
 }

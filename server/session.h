@@ -3,6 +3,7 @@
 
 #include <memory>
 
+#include "../common/snapshots.h"
 #include "client_command.h"
 #include "../common/socket.h"
 #include "receiver.h"
@@ -21,7 +22,7 @@ public:
     ~Session();
     void run();
     void stop();
-    // void send(const ServerMessage& msg);
+    void send(const Snapshot& msg);
     bool has_finished() const;
 };
 

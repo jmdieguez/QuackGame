@@ -3,22 +3,21 @@
 #include "../../common/liberror.h"
 
 Receiver::Receiver(Socket& skt, Queue<Snapshot>& recv_q) :
-        protocol(skt), recv_queue(recv_q), closed(false){}
+        protocol(skt), recv_queue(recv_q) {}
 
 Receiver::~Receiver() {}
 
 void Receiver::run() {
     try {
-        while (!closed && _keep_running) {
+        while (_keep_running) {
             Snapshot snapshot;
             protocol.read_snapshot(snapshot);
-            if (!closed) {
-                try {
-                    recv_queue.push(snapshot);
-                } catch (ClosedQueue& e) {
-                    return;
-                }
-            }
+            recv_queue.push(snapshot);
         }
-    } catch (LibError& e) {}
+    } catch (ClosedQueue& e) {} catch (LibError& e) {}
+}
+
+void Receiver::stop() {
+    _keep_running = false;
+    recv_queue.close();
 }

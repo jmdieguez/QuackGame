@@ -1,7 +1,7 @@
 #ifndef SERVER_GAME_H
 #define SERVER_GAME_H
 
-#include <vector>
+#include <map>
 
 #include "../client_command.h"
 #include "../../common/snapshots.h"
@@ -11,7 +11,7 @@
 class Game {
 private:
     Map map;
-    std::vector<Duck> ducks;
+    std::map<uint8_t, Duck> ducks;
 public:
     Game();
     ~Game() {}

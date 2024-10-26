@@ -6,7 +6,7 @@ Duck::Duck(const uint8_t &i, const uint16_t &initial_x, const uint16_t &initial_
 
 Duck::~Duck() {}
 
-void Duck::move(Direction &direction)
+void Duck::move(Direction direction)
 {
     action = DuckAction::MOVING;
     switch (direction)

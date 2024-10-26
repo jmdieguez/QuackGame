@@ -34,13 +34,10 @@ void SessionsHandler::remove_all_sessions() {
     }
 }
 
-/*
-void SessionsHandler::broadcast(const ServerMessage& msg) {
+void SessionsHandler::broadcast(const Snapshot& msg) {
     std::lock_guard<std::mutex> lock(mtx);
 
     for (auto& session: sessions) {
         session->send(msg);
     }
 }
-
-*/

@@ -7,7 +7,6 @@ target_sources(quack_game_client
     controller/command/movebentdowncommand.cpp
     controller/command/moveleftcommand.cpp
     controller/command/moverightcommand.cpp
-    model/network.cpp
     model/protocol.cpp
     model/receiver.cpp
     model/sender.cpp
@@ -21,7 +20,6 @@ target_sources(quack_game_client
     controller/command/movebentdowncommand.h
     controller/command/moveleftcommand.h
     controller/command/moverightcommand.h
-    model/network.h
     model/protocol.h
     model/receiver.h
     model/sender.h

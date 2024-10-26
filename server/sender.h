@@ -19,6 +19,7 @@ public:
     ~Sender();
     void run() override;
     void stop() override;
+    void send(const Snapshot &snapshot);
 };
 
 #endif  // SERVER_SENDER_H

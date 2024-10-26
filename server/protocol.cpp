@@ -39,12 +39,12 @@ void ServerProtocol::send_duck(const DuckSnapshot& duck) {
 
 
 void ServerProtocol::send_duck_status(const DuckStatus& status) {
-    send_data(status.has_chestplate);
-    send_data(status.shooting);
-    send_data(status.looking_right);
-    send_data(status.looking_up);
-    send_data(status.has_helmet);
-    send_data(status.is_alive);
+    send_data(static_cast<uint16_t>(status.has_chestplate));
+    send_data(static_cast<uint16_t>(status.shooting));
+    send_data(static_cast<uint16_t>(status.looking_right));
+    send_data(static_cast<uint16_t>(status.looking_up));
+    send_data(static_cast<uint16_t>(status.has_helmet));
+    send_data(static_cast<uint16_t>(status.is_alive));
 }
 
 

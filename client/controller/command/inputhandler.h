@@ -5,8 +5,8 @@
 #include "moveleftcommand.h"
 #include "moverightcommand.h"
 #include "movebentdowncommand.h"
-#include "../../common/client_actions.h"
-#include "../../common/queue.h"
+#include "../../../common/client_actions.h"
+#include "../../../common/queue.h"
 
 class InputHandler
 {

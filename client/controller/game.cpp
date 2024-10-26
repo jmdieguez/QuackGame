@@ -32,7 +32,7 @@ void Game::update_run_phase_and_position(unsigned int frame_ticks, unsigned int 
 
 void Game::handle_event(SDL_Event &event)
 {
-    if (event.type == SDL_QUIT)
+    if (event.type == SDL_QUIT || event.key.keysym.sym == SDLK_END)
         keep_running = false;
     else if (event.type == SDL_KEYDOWN)
         input.execute_command(event, game_context);
@@ -123,15 +123,15 @@ Game::Game(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites, const char* sv,
 
 void Game::run()
 {
-    //Receiver receiver(socket, queue_receiver);
-    //receiver.start();
-    //Sender sender(socket, queue_sender);
-    //sender.start();
-
+    Receiver receiver(socket, queue_receiver);
+    receiver.start();
+    Sender sender(socket, queue_sender);
+    sender.start();
     constant_rate_loop.execute();
-   //receiver.join();
-   //sender.join();
-
+    receiver.stop();
+    sender.stop();
+    receiver.join();
+    sender.join();
 }
 
 Game::~Game() {}

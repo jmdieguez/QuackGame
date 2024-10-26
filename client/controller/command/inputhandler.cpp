@@ -25,6 +25,7 @@ void InputHandler::execute_command(SDL_Event &event, GameContext &game_context)
         command = &right_command;
         break;
     case SDLK_s:
+        queue_sender.push(ClientActionType::LAY);
         command = &bent_down_command;
         break;
     default:
@@ -42,12 +43,15 @@ void InputHandler::undo_command(SDL_Event &event, GameContext &game_context)
     switch (event.key.keysym.sym)
     {
     case SDLK_a:
+        queue_sender.push(ClientActionType::STOP_MOVING_LEFT);
         command = &left_command;
         break;
     case SDLK_d:
+        queue_sender.push(ClientActionType::STOP_MOVING_RIGHT);
         command = &right_command;
         break;
     case SDLK_s:
+        queue_sender.push(ClientActionType::STAND_UP);
         command = &bent_down_command;
         break;
     default:

@@ -22,6 +22,6 @@ void Session::stop() {
     receiver.join();
 }
 
-// void Session::send(const ServerMessage& msg) { sender.send(msg); }
+void Session::send(const Snapshot& msg) { sender.send(msg); }
 
 bool Session::has_finished() const { return finished; }

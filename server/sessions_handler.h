@@ -21,7 +21,7 @@ public:
     explicit SessionsHandler(const std::shared_ptr<Queue<ClientCommand>>& recv_q);
     ~SessionsHandler();
 
-    // void broadcast(const ServerMessage& msg);
+    void broadcast(const Snapshot& msg);
     void add(Socket& client);
     void remove_closed_sessions();
     void remove_all_sessions();

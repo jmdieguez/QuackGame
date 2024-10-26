@@ -19,7 +19,7 @@ void ConstantRateLoop::execute()
     auto t1 = clock::now();
     int it = 0;
 
-    while (keep_running)
+    while (keep_running.load())
     {
         func(it);
         auto t2 = clock::now();

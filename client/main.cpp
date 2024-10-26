@@ -1,7 +1,7 @@
 #include "controller/game.h"
 
-#define DEFAULT_WINDOW_WIDTH 480
-#define DEFAULT_WINDOW_HEIGHT 640
+#define DEFAULT_WINDOW_WIDTH 1024
+#define DEFAULT_WINDOW_HEIGHT 1024
 #define WINDOW_TITTLE "Duck Game"
 #define DUCK_PATH "assets/duck.png"
 
@@ -19,7 +19,7 @@ int main(int argc, const char* argv[])
 
        const char* hostname = NULL;
        const char* servname = NULL;
-
+       
        if (argc == 2) {
            hostname = argv[1];
        } else if (argc == 3) {
