@@ -2,6 +2,7 @@
 #define COMMAND_H
 
 #include "gamecontext.h"
+#include "../common/client_actions.h"
 
 class Command
 {

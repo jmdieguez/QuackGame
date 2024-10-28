@@ -2,6 +2,7 @@
 #define MOVE_RIGHT_COMMAND_H
 
 #include "command.h"
+#include <iostream>
 
 class MoveRightCommand : public Command
 

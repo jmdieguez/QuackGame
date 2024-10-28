@@ -11,9 +11,10 @@
 #include "../../common/snapshots.h"
 #include "gun.h"
 
-class Duck {
+class Duck
+{
 private:
-    const uint8_t id;
+    uint8_t id;
     Position position;
     DuckStatus status;
     DuckAction action = DuckAction::IDLE;

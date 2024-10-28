@@ -9,7 +9,8 @@
 #include "receiver.h"
 #include "sender.h"
 
-class Session {
+class Session
+{
 private:
     uint16_t id;
     bool finished = false;
@@ -18,12 +19,12 @@ private:
     Receiver receiver;
 
 public:
-    Session(Socket&& client, std::shared_ptr<Queue<ClientCommand>>& recv_q, uint16_t &s_id);
+    Session(Socket &&client, std::shared_ptr<Queue<ClientCommand>> &recv_q, uint16_t &s_id);
     ~Session();
     void run();
     void stop();
-    void send(const Snapshot& msg);
+    void send(const Snapshot &msg);
     bool has_finished() const;
 };
 
-#endif  // SERVER_SESSION_H
+#endif // SERVER_SESSION_H

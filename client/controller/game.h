@@ -23,19 +23,16 @@ class Game
 private:
     std::atomic<bool> keep_running;
     int run_phase;
-    float position;
     unsigned int prev_ticks;
     ConstantRateLoop constant_rate_loop;
     SDL2pp::Renderer &duck_renderer;
     SDL2pp::Texture &duck_sprites;
     Queue<Snapshot> queue_receiver;
     Queue<ClientActionType> queue_sender;
-    // Network network;
     InputHandler input;
     GameContext game_context;
     Socket socket;
     void get_and_execute_events();
-    void check_duck_in_window();
     void set_xy(int &src_x, int &src_y);
     void set_renderer();
     void update_renderer();
@@ -44,7 +41,7 @@ private:
     void step(unsigned int current_step);
 
 public:
-    Game(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites, const char* sv, const char* hostname);
+    Game(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites, const char *host, const char *port);
     void run();
     ~Game();
 };

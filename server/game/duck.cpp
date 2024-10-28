@@ -93,11 +93,11 @@ bool Duck::receive_shot()
 DuckSnapshot Duck::get_status()
 {
     PositionSnapshot position_snapshot = position.get_status();
-   // GunSnapshot gun_snapshot = gun->get_status();
+    // GunSnapshot gun_snapshot = gun->get_status();
     return DuckSnapshot(id,
                         position_snapshot,
-                        static_cast<DuckAction>(action));
+                        action);
     //  100,
     //  status,
-  // gun_snapshot);
+    // gun_snapshot);
 }

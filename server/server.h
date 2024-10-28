@@ -8,7 +8,8 @@
 #include "gameloop.h"
 #include "sessions_handler.h"
 
-class Server {
+class Server
+{
 private:
     bool open;
     std::shared_ptr<Queue<ClientCommand>> recv_queue;
@@ -17,9 +18,9 @@ private:
     Acceptor acceptor;
 
 public:
-    explicit Server(const char* port);
+    explicit Server(const char *port);
     ~Server();
     int run();
 };
 
-#endif  // SERVER_SERVER_H
+#endif // SERVER_SERVER_H

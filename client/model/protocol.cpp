@@ -3,13 +3,15 @@
 #include "../../common/liberror.h"
 #include "../../common/snapshots.h"
 
-ClientProtocol::ClientProtocol(Socket& skt) : skt(skt) {}
+ClientProtocol::ClientProtocol(Socket &skt) : skt(skt) {}
 
-void ClientProtocol::read_snapshot(Snapshot& snapshot) {
+void ClientProtocol::read_snapshot(Snapshot &snapshot)
+{
     uint16_t it;
     read_data(it);
 
-    for (uint16_t i = 0; i < it; i++) {
+    for (uint16_t i = 0; i < it; i++)
+    {
         uint16_t id;
         read_data(id);
         uint16_t pos_x;
@@ -23,25 +25,25 @@ void ClientProtocol::read_snapshot(Snapshot& snapshot) {
         DuckSnapshot duck(id, p_snap, action_value);
         snapshot.ducks.emplace_back(duck);
 
-        std::cout << pos_x << " y " << pos_y << std::endl;
+        std::cout << "x: " << pos_x << " " << "y: " << pos_y << std::endl;
     }
-
 }
 
-void ClientProtocol::read_data(uint16_t& data) {
+void ClientProtocol::read_data(uint16_t &data)
+{
     bool was_closed = false;
     uint16_t data_received = 0;
     skt.recvall(&data_received, sizeof(uint16_t), &was_closed);
-      if (was_closed) {
+    if (was_closed)
+    {
         throw LibError(errno, "Error al intentar enviar datos a cliente");
     }
     data = ntohs(data_received);
 }
 
-void ClientProtocol::send_action(const ClientActionType& action, bool& was_closed) {
+void ClientProtocol::send_action(const ClientActionType &action, bool &was_closed)
+{
     uint16_t action_to_send = static_cast<uint16_t>(action);
     uint16_t data_converted = htons(action_to_send);
     skt.sendall(&data_converted, sizeof(data_converted), &was_closed);
 }
-
-
