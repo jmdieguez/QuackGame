@@ -15,10 +15,10 @@
 class PositionSnapshot
 {
 public:
-    uint8_t pos_x;
-    uint8_t pos_y;
+    uint16_t pos_x;
+    uint16_t pos_y;
 
-    PositionSnapshot(uint8_t x, uint8_t y) : pos_x(x), pos_y(y) {}
+    PositionSnapshot(uint16_t x, uint16_t y) : pos_x(x), pos_y(y) {}
     ~PositionSnapshot() {}
 };
 

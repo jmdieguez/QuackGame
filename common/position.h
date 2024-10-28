@@ -5,19 +5,24 @@
 
 #include "snapshots.h"
 
-class Position {
+class Position
+{
 private:
     uint16_t pos_x;
     uint16_t pos_y;
+
 public:
     Position(const uint16_t &initial_x, const uint16_t &initial_y) : pos_x(initial_x), pos_y(initial_y) {}
     ~Position() {}
 
-    void move_x(const int &x) {
+    void move_x(const int &x)
+    {
         pos_x += x;
+        std::cout << "Me muevo y mi valor es de: " << pos_x << std::endl;
     }
 
-    PositionSnapshot get_status() {
+    PositionSnapshot get_status()
+    {
         return PositionSnapshot(pos_x, pos_y);
     }
 };
