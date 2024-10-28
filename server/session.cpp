@@ -2,17 +2,18 @@
 
 #include <utility>
 
-Session::Session(Socket&& client, std::shared_ptr<Queue<ClientCommand>>& recv_q, uint16_t &i):
-        id(i), socket(std::move(client)), sender(socket, i), receiver(socket, recv_q, i) {}
+Session::Session(Socket &&client, std::shared_ptr<Queue<ClientCommand>> &recv_q, uint16_t &i) : id(i), socket(std::move(client)), sender(socket, id), receiver(socket, recv_q, id) {}
 
 Session::~Session() {}
 
-void Session::run() {
+void Session::run()
+{
     receiver.start();
     sender.start();
 }
 
-void Session::stop() {
+void Session::stop()
+{
     finished = true;
     receiver.stop();
     sender.stop();
@@ -22,6 +23,6 @@ void Session::stop() {
     receiver.join();
 }
 
-void Session::send(const Snapshot& msg) { sender.send(msg); }
+void Session::send(const Snapshot &msg) { sender.send(msg); }
 
 bool Session::has_finished() const { return finished; }
