@@ -18,7 +18,6 @@ public:
     void move_x(const int &x)
     {
         pos_x += x;
-        std::cout << "Me muevo y mi valor es de: " << pos_x << std::endl;
     }
 
     PositionSnapshot get_status()

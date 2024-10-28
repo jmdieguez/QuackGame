@@ -10,6 +10,7 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
     uint16_t it;
     read_data(it);
 
+    // std::cout << "La cantidad de patos son: " << (int)it << std::endl;
     for (uint16_t i = 0; i < it; i++)
     {
         uint16_t id;
@@ -24,8 +25,6 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
         DuckAction action_value = static_cast<DuckAction>(current_action);
         DuckSnapshot duck(id, p_snap, action_value);
         snapshot.ducks.emplace_back(duck);
-
-        std::cout << "x: " << pos_x << " " << "y: " << pos_y << std::endl;
     }
 }
 
