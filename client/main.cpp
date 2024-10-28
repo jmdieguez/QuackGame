@@ -19,14 +19,15 @@ int main(int argc, const char *argv[])
 
     try
     {
-
         SDL2pp::SDL sdl(SDL_INIT_VIDEO);
         SDL2pp::Window window(WINDOW_TITTLE,
                               SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                               DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT,
                               SDL_WINDOW_RESIZABLE);
         SDL2pp::Renderer duck_renderer(window, -1, SDL_RENDERER_ACCELERATED);
-        SDL2pp::Texture duck_sprites(duck_renderer, SDL2pp::Surface(DUCK_PATH).SetColorKey(true, 0));
+        SDL2pp::Surface duck_surface(DUCK_PATH);
+        SDL2pp::Texture duck_sprites(duck_renderer, duck_surface);
+        SDL_FreeSurface(duck_surface.Get());
 
         const char *host = argv[HOST];
         const char *port = argv[PORT];
