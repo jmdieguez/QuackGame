@@ -50,34 +50,25 @@ void Game::get_and_execute_events()
         handle_event(event);
 }
 
-void Game::set_xy(int &src_x, int &src_y)
+void Game::set_xy(DuckAction action, int frame_ticks, int &src_x, int &src_y)
 {
-    (void)src_x;
+
     (void)src_y;
-    // if (game_context.get_is_running())
-    //     src_x = IMAGE_WIDTH * run_phase;
-
-    // if (game_context.get_is_bent_down())
-    // {
-    //     src_x = IMAGE_WIDTH * 5;
-    //     src_y = POS_INIT_Y_IMAGE + IMAGE_HEIGHT;
-    // }
-
-    // if (game_context.get_is_running() && game_context.get_is_bent_down())
-    // {
-    //     src_x = IMAGE_WIDTH;
-    //     src_y = POS_INIT_Y_IMAGE + IMAGE_HEIGHT * 2;
-    // }
+    if (action == DuckAction::MOVING)
+    {
+        int run_phase = (frame_ticks / 4) % 5 + 1;
+        src_x = IMAGE_WIDTH * run_phase;
+    }
 }
 
-void Game::update_renderer()
+void Game::update_renderer(int frame_ticks)
 {
     duck_renderer.Clear();
-    set_renderer();
+    set_renderer(frame_ticks);
     duck_renderer.Present();
 }
 
-void Game::set_renderer()
+void Game::set_renderer(int frame_ticks)
 {
     Snapshot snapshot;
     if (!queue_receiver.try_pop(snapshot))
@@ -85,7 +76,7 @@ void Game::set_renderer()
     for (DuckSnapshot duck : snapshot.ducks)
     {
         int src_x = POS_INIT_X_IMAGE, src_y = POS_INIT_Y_IMAGE;
-        set_xy(src_x, src_y);
+        set_xy(duck.current_action, frame_ticks, src_x, src_y);
         SDL_Rect src_rect = {src_x, src_y, IMAGE_WIDTH, IMAGE_HEIGHT};
         SDL_Rect dst_rect = {duck.position.pos_x, duck.position.pos_y - IMAGE_HEIGHT, IMAGE_RECT_WIDTH, IMAGE_RECT_HEIGHT};
         // SDL_RendererFlip flip = game_context.get_is_right_direction() ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
@@ -94,16 +85,12 @@ void Game::set_renderer()
     }
 }
 
-void Game::step([[maybe_unused]] unsigned int current_step)
+void Game::step(unsigned int current_step)
 {
-    (void)current_step;
     unsigned int frame_ticks = current_step;
-    unsigned int frame_delta = frame_ticks - prev_ticks;
-    prev_ticks = frame_ticks;
-
     get_and_execute_events();
-    update_run_phase_and_position(frame_ticks, frame_delta);
-    update_renderer();
+    update_run_phase_and_position(frame_ticks, frame_ticks);
+    update_renderer(frame_ticks);
 }
 
 /***************************************************************************
@@ -113,7 +100,6 @@ void Game::step([[maybe_unused]] unsigned int current_step)
 Game::Game(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites, const char *host, const char *port)
     : keep_running(true),
       run_phase(1),
-      prev_ticks(0),
       constant_rate_loop(keep_running, [this](unsigned int step)
                          { this->step(step); }),
       duck_renderer(renderer),

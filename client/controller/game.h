@@ -23,7 +23,6 @@ class Game
 private:
     std::atomic<bool> keep_running;
     int run_phase;
-    unsigned int prev_ticks;
     ConstantRateLoop constant_rate_loop;
     SDL2pp::Renderer &duck_renderer;
     SDL2pp::Texture &duck_sprites;
@@ -33,9 +32,9 @@ private:
     GameContext game_context;
     Socket socket;
     void get_and_execute_events();
-    void set_xy(int &src_x, int &src_y);
-    void set_renderer();
-    void update_renderer();
+    void set_xy(DuckAction action, int frame_ticks, int &src_x, int &src_y);
+    void set_renderer(int current_step);
+    void update_renderer(int current_step);
     void update_run_phase_and_position(unsigned int frame_ticks, unsigned int frame_delta);
     void handle_event(SDL_Event &event);
     void step(unsigned int current_step);
