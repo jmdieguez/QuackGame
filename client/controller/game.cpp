@@ -19,20 +19,6 @@
                               PRIVATE METHODS
 ****************************************************************************/
 
-void Game::update_run_phase_and_position(unsigned int frame_ticks, unsigned int frame_delta)
-{
-    (void)frame_ticks;
-    (void)frame_delta;
-    // if (!game_context.get_is_running())
-    // {
-    //     run_phase = FIRST_RUN_PHASE;
-    //     return;
-    // }
-    // position += frame_delta * 0.2 * (game_context.get_is_right_direction() ? 1 : -1);
-
-    // run_phase = (frame_ticks / 100) % 5 + 1;
-}
-
 void Game::handle_event(SDL_Event &event)
 {
     if (event.type == SDL_QUIT || event.key.keysym.sym == SDLK_END)
@@ -88,7 +74,6 @@ void Game::step(unsigned int current_step)
 {
     unsigned int frame_ticks = current_step;
     get_and_execute_events();
-    update_run_phase_and_position(frame_ticks, frame_ticks);
     update_renderer(frame_ticks);
 }
 
