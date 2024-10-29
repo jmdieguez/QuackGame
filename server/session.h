@@ -18,6 +18,8 @@ private:
     Sender sender;
     Receiver receiver;
 
+    void check_close_socket();
+
 public:
     Session(Socket &&client, std::shared_ptr<Queue<ClientCommand>> &recv_q, uint16_t &s_id);
     ~Session();
