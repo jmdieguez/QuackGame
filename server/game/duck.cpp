@@ -96,7 +96,7 @@ DuckSnapshot Duck::get_status()
     // GunSnapshot gun_snapshot = gun->get_status();
     return DuckSnapshot(id,
                         position_snapshot,
-                        action);
+                        action, status.looking_right);
     //  100,
     //  status,
     // gun_snapshot);

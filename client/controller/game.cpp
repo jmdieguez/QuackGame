@@ -50,11 +50,11 @@ void Game::get_and_execute_events()
         handle_event(event);
 }
 
-void Game::set_xy(DuckAction action, int frame_ticks, int &src_x, int &src_y)
+void Game::set_xy(DuckSnapshot duck, int frame_ticks, int &src_x, int &src_y)
 {
 
     (void)src_y;
-    if (action == DuckAction::MOVING)
+    if (duck.current_action == DuckAction::MOVING)
     {
         int run_phase = (frame_ticks / 4) % 5 + 1;
         src_x = IMAGE_WIDTH * run_phase;
@@ -76,11 +76,10 @@ void Game::set_renderer(int frame_ticks)
     for (DuckSnapshot duck : snapshot.ducks)
     {
         int src_x = POS_INIT_X_IMAGE, src_y = POS_INIT_Y_IMAGE;
-        set_xy(duck.current_action, frame_ticks, src_x, src_y);
+        set_xy(duck, frame_ticks, src_x, src_y);
         SDL_Rect src_rect = {src_x, src_y, IMAGE_WIDTH, IMAGE_HEIGHT};
         SDL_Rect dst_rect = {duck.position.pos_x, duck.position.pos_y - IMAGE_HEIGHT, IMAGE_RECT_WIDTH, IMAGE_RECT_HEIGHT};
-        // SDL_RendererFlip flip = game_context.get_is_right_direction() ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
-        SDL_RendererFlip flip = SDL_FLIP_HORIZONTAL;
+        SDL_RendererFlip flip = duck.right_direction ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
         SDL_RenderCopyEx(duck_renderer.Get(), duck_sprites.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);
     }
 }
