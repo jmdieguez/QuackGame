@@ -1,6 +1,6 @@
 #include "duck.h"
 
-#define X_VELOCITY 4
+#define X_VELOCITY 8
 
 Duck::Duck(const uint8_t &i, const uint16_t &initial_x, const uint16_t &initial_y) : id(i), position(initial_x, initial_y) {}
 

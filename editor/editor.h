@@ -18,7 +18,7 @@ private:
     Font font;
     bool running = true;
     bool save_on_exit = false;
-    uint8_t current_style = 0;
+    uint8_t current_style = 1;
     std::shared_ptr<Texture> all_tilesets;
     std::unique_ptr<Tileset> current_tileset;
     std::string selected_texture;

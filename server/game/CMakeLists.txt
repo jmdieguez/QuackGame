@@ -2,7 +2,6 @@ target_sources(quack_game_common
     PRIVATE
     # .cpp files
     game.cpp
-    map.cpp
     duck.cpp
     PUBLIC
     # .h files

@@ -82,15 +82,14 @@ void Editor::save() {
     root["n_tiles_x"] = 16;
     root["n_tiles_y"] = 16;
     root["tileset"] = 0;
-
-    for (auto& [coord, tile] : tiles.tiles_map) {
-        root["tiles"][coord.first][coord.second] = tile;
-    }
-    /*
     root["items"] = YAML::Node(YAML::NodeType::Sequence);
-    root["items"].push_back("item1");
-    root["items"].push_back("item2");
-    root["items"].push_back("item3");*/
+    for (auto& [coord, tile] : tiles.tiles_map) {
+        YAML::Node node;
+        node["x"] = coord.first;
+        node["y"] = coord.second;
+        node["type"] = tile;
+        root["items"].push_back(node);
+    }
 
     std::ofstream fout(out_file);
     fout << root;

@@ -2,8 +2,9 @@
 
 #define DEFAULT_SIZE_X 1280 // 32x32 tiles
 #define DEFAULT_SIZE_Y 720
+#define DEFAULT_TILESET 0
 
-Game::Game() : map(DEFAULT_SIZE_X, DEFAULT_SIZE_Y) {}
+Game::Game() : map(DEFAULT_TILESET, DEFAULT_SIZE_X, DEFAULT_SIZE_Y) {}
 
 void Game::process(ClientCommand &command)
 {
