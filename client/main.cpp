@@ -27,7 +27,7 @@ int main(int argc, const char *argv[])
         SDL2pp::Renderer duck_renderer(window, -1, SDL_RENDERER_ACCELERATED);
         SDL2pp::Surface duck_surface(DUCK_PATH);
         SDL2pp::Texture duck_sprites(duck_renderer, duck_surface);
-        SDL_FreeSurface(duck_surface.Get());
+        SDL_SetColorKey(duck_surface.Get(), SDL_TRUE, SDL_MapRGB(duck_surface.Get()->format, 0xFF, 0, 0xFF));
 
         const char *host = argv[HOST];
         const char *port = argv[PORT];
