@@ -4,20 +4,30 @@
                               PUBLIC METHODS
 ****************************************************************************/
 
-GameContext::GameContext(Queue<ClientActionType> &queue_sender) : other_direction(false),
+GameContext::GameContext(Queue<ClientActionType> &queue_sender) : left_direction(false), right_direction(false),
                                                                   is_bent_down(false),
                                                                   queue_sender(queue_sender)
 {
 }
 
-void GameContext::set_opposite_direction_active(bool value)
+void GameContext::set_left_direction_active(bool value)
 {
-    other_direction = value;
+    left_direction = value;
 }
 
-bool GameContext::is_opposite_direction_pressed()
+bool GameContext::is_left_direction_pressed()
 {
-    return other_direction;
+    return left_direction;
+}
+
+void GameContext::set_right_direction_active(bool value)
+{
+    right_direction = value;
+}
+
+bool GameContext::is_right_direction_pressed()
+{
+    return right_direction;
 }
 
 void GameContext::push_message(ClientActionType action)
