@@ -97,7 +97,7 @@ void Game::set_renderer()
 void Game::step([[maybe_unused]] unsigned int current_step)
 {
     (void)current_step;
-    unsigned int frame_ticks = SDL_GetTicks();
+    unsigned int frame_ticks = current_step;
     unsigned int frame_delta = frame_ticks - prev_ticks;
     prev_ticks = frame_ticks;
 
@@ -113,7 +113,7 @@ void Game::step([[maybe_unused]] unsigned int current_step)
 Game::Game(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites, const char *host, const char *port)
     : keep_running(true),
       run_phase(1),
-      prev_ticks(SDL_GetTicks()),
+      prev_ticks(0),
       constant_rate_loop(keep_running, [this](unsigned int step)
                          { this->step(step); }),
       duck_renderer(renderer),

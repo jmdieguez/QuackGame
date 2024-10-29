@@ -4,7 +4,7 @@
                               PUBLIC METHODS
 ****************************************************************************/
 
-InputHandler::InputHandler(Queue<ClientActionType>& queue_sender): queue_sender(queue_sender)
+InputHandler::InputHandler(Queue<ClientActionType> &queue_sender) : queue_sender(queue_sender)
 {
 }
 
@@ -29,7 +29,8 @@ void InputHandler::execute_command(SDL_Event &event, GameContext &game_context)
         command = &bent_down_command;
         break;
     default:
-      break;
+        return;
+        break;
     }
     command->execute(game_context);
 }
@@ -55,6 +56,7 @@ void InputHandler::undo_command(SDL_Event &event, GameContext &game_context)
         command = &bent_down_command;
         break;
     default:
+        return;
         break;
     }
     command->undo(game_context);
