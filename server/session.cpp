@@ -6,6 +6,14 @@ Session::Session(Socket &&client, std::shared_ptr<Queue<ClientCommand>> &recv_q,
 
 Session::~Session() {}
 
+void Session::check_close_socket()
+{
+    if (!receiver.is_alive() || !sender.is_alive())
+        return;
+    socket.shutdown(2);
+    socket.close();
+}
+
 void Session::run()
 {
     receiver.start();
@@ -17,8 +25,7 @@ void Session::stop()
     finished = true;
     receiver.stop();
     sender.stop();
-    socket.shutdown(2);
-    socket.close();
+    check_close_socket();
     sender.join();
     receiver.join();
 }

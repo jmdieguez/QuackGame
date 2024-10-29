@@ -21,9 +21,12 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
         read_data(pos_y);
         uint16_t current_action;
         read_data(current_action);
+        uint16_t right_direction;   // Eliminar cuando se pueda enviar status al cliente
+        read_data(right_direction); // Eliminar cuando se pueda enviar status al cliente
+        bool is_right_direction = right_direction;
         PositionSnapshot p_snap(pos_x, pos_y);
         DuckAction action_value = static_cast<DuckAction>(current_action);
-        DuckSnapshot duck(id, p_snap, action_value);
+        DuckSnapshot duck(id, p_snap, action_value, is_right_direction);
         snapshot.ducks.emplace_back(duck);
     }
 }
