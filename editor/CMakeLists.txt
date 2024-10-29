@@ -1,7 +1,10 @@
 target_sources(quack_game_editor
     PRIVATE
-    # .cpp files
+    editor.cpp
     main.cpp
     PUBLIC
-    # .h files
+    editor.h
+    grid.h
+    tiles.h
+    tileset.h
     )
