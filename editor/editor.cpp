@@ -1,4 +1,6 @@
 #include "editor.h"
+#include <yaml-cpp/yaml.h>
+#include <fstream>
 
 void Editor::draw_tiles() {
     for (auto& [coord, tile] : tiles.tiles_map) {
@@ -36,7 +38,7 @@ void Editor::draw_textures() {
 }
 
 void Editor::handle_event(const SDL_Event& event) {
-    if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT) {
+    if (event.button.button == SDL_BUTTON_LEFT) {
         SDL_Point mousePos = { event.button.x, event.button.y };
         
         int totalWidth = (1920 - 128);
@@ -53,6 +55,10 @@ void Editor::handle_event(const SDL_Event& event) {
 
             if (SDL_PointInRect(&mousePos, &textureRect)) {
                 selected_texture = key;
+                return;
+            } else if (SDL_PointInRect(&mousePos, &s_button.rect)) {
+                running = false;
+                save_on_exit = true;
                 return;
             }
 
@@ -71,16 +77,36 @@ void Editor::handle_event(const SDL_Event& event) {
     }
 }
 
+void Editor::save() {
+    YAML::Node root;
+    root["n_tiles_x"] = 16;
+    root["n_tiles_y"] = 16;
+    root["tileset"] = 0;
+
+    for (auto& [coord, tile] : tiles.tiles_map) {
+        root["tiles"][coord.first][coord.second] = tile;
+    }
+    /*
+    root["items"] = YAML::Node(YAML::NodeType::Sequence);
+    root["items"].push_back("item1");
+    root["items"].push_back("item2");
+    root["items"].push_back("item3");*/
+
+    std::ofstream fout(out_file);
+    fout << root;
+    fout.close();
+}
+
 int Editor::run() {
     try {
         SDL_Event event;
-        bool running = true;
         while (running) {
             renderer.SetDrawColor(0, 0, 0, 255);
             renderer.Clear();
             tiles_grid.draw(renderer);
             draw_textures();
             draw_tiles();
+            s_button.draw();
             renderer.Present();
 
             if (SDL_WaitEvent(&event)) {
@@ -90,6 +116,8 @@ int Editor::run() {
                     handle_event(event);
                 }
             }
+
+            if (save_on_exit) { save(); }
         }
     } catch (Exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;

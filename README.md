@@ -45,3 +45,11 @@ en los tps individuales, recaps y hands-on.
 # Dependencias
 
 sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libsdl2-mixer-dev
+
+git clone https://github.com/jbeder/yaml-cpp.git
+cd yaml-cpp
+mkdir build
+cd build
+cmake ..
+make
+sudo make install

@@ -31,6 +31,15 @@ message(CMAKE_CXX_COMPILER_ID="${CMAKE_CXX_COMPILER_ID}")
 # Define target: lib common between client, server and editor programs
 add_library(quack_game_common STATIC)
 
+include(FetchContent)
+
+FetchContent_Declare(
+  yaml-cpp
+  GIT_REPOSITORY https://github.com/jbeder/yaml-cpp.git
+  GIT_TAG master
+)
+FetchContent_MakeAvailable(yaml-cpp)
+
 # Add the source files that make the lib
 add_subdirectory(common/)
 
@@ -103,12 +112,12 @@ if(TALLER_EDITOR)
         ${SDL2_LIBRARIES}
         SDL2::SDL2
         SDL2_image::SDL2_image
+        yaml-cpp::yaml-cpp
     )
 endif()
 
 # Testing section
 if(TALLER_TESTS)
-    include(FetchContent)
     FetchContent_Declare(
         googletest
         URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip

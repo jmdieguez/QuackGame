@@ -7,15 +7,17 @@
 #include "tiles.h"
 #include "tileset.h"
 #include "grid.h"
+#include "save_button.h"
 
 #define TILESETS "assets/tiles.png"
-#define FONT_PATH "assets/04B_30.TTF"
 #define N_TILESETS 5
 
 class Editor {
 private:
     Renderer &renderer;
     Font font;
+    bool running = true;
+    bool save_on_exit = false;
     uint8_t current_style = 0;
     std::shared_ptr<Texture> all_tilesets;
     std::unique_ptr<Tileset> current_tileset;
@@ -24,17 +26,19 @@ private:
     const int w_height = 1080;
     Grid tiles_grid;
     Tiles tiles;
-
+    SaveButton s_button;
+    std::string out_file;
 public:
-    explicit Editor(Renderer &r) : renderer(r), font(FONT_PATH, 16), all_tilesets(std::make_shared<Texture>(renderer, TILESETS)) {
+    explicit Editor(Renderer &r, std::string &path) : renderer(r), font(FONT_PATH, 16), 
+        all_tilesets(std::make_shared<Texture>(renderer, TILESETS)), s_button(r), out_file(path) {
         current_tileset = std::make_unique<Tileset>(current_style, renderer, all_tilesets); 
     }
 
     ~Editor() {}
 
     int run();
+    void save();
     void draw_tiles();
-    void draw_grid();
     void draw_textures();
     void handle_event(const SDL_Event& event);
 };
