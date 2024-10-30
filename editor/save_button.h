@@ -3,7 +3,7 @@
 
 #include <SDL2pp/SDL2pp.hh>
 
-#define FONT_PATH "assets/04B_30.TTF"
+#define FONT_PATH "var/quackgame/04B_30.TTF"
 
 using namespace SDL2pp;
 

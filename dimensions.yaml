@@ -1,10 +1,19 @@
 components:
-  BIG_WALL:
+  - type: 1 # BIG_WALL
     dim_x: 3
     dim_y: 1
-  SINGLE_GROUND:
+  - type: 2 # BIG_WALL_BASE
+    dim_x: 3
+    dim_y: 1
+  - type: 3 # BIG_WALL_GROUND
+    dim_x: 3
+    dim_y: 1
+  - type: 4 # LONG_GROUND
+    dim_x: 3
+    dim_y: 1
+  - type: 5 # SINGLE_GROUND
     dim_x: 1
     dim_y: 1
-  SLIM_WALL:
+  - type: 6 # SLIM_WALL
     dim_x: 1
     dim_y: 3

@@ -5,6 +5,7 @@
 #include "../../common/snapshots.h"
 #include "../../common/map.h"
 
+#include <utility>
 #include <yaml-cpp/yaml.h>
 
 #define DIMENSIONS_FILE "dimensions.yaml"
@@ -44,12 +45,17 @@ public:
                                 bit_map(size_x * size_y, false) {
         
         YAML::Node root = YAML::LoadFile(DIMENSIONS_FILE);
+        for (const auto& dim : root["components"]) {
+            Component type = dim["type"].as<Component>();
+            uint16_t dim_x = dim["dim_x"].as<uint16_t>(); // n tiles
+            uint16_t dim_y = dim["dim_y"].as<uint16_t>();
+            dimensions.emplace(type, std::make_pair(dim_x, dim_y));
+        }
 
         for (const MapComponent& component : cfg.components) {
             std::pair<int, int> component_dimensions = dimensions[component.type];
-
-            for (int i = 0; i < component_dimensions.first; i++) {
-                for (int j = 0; j < component_dimensions.second; j++) {
+            for (int i = component.x; i < component.x + component_dimensions.first; i++) {
+                for (int j = component.y; j < component.y + component_dimensions.second; j++) {
                     bit_map[i + (j * TILE_SIZE)] = true; // ground or wall
                 }
             }

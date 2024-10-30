@@ -10,7 +10,7 @@
 #include "grid.h"
 #include "save_button.h"
 
-#define TILESETS "assets/tiles.png"
+#define TILESETS "var/quackgame/tiles.png"
 #define N_TILESETS 5
 
 class Editor {
