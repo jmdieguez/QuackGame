@@ -10,12 +10,12 @@ MoveBentDownCommand::MoveBentDownCommand()
 
 void MoveBentDownCommand::execute(GameContext &game_context)
 {
-    game_context.push_message(ClientActionType::MOVE_LEFT);
+    game_context.push_message(ClientActionType::LAY);
 }
 
 void MoveBentDownCommand::undo(GameContext &game_context)
 {
-    game_context.push_message(ClientActionType::STOP_MOVING_LEFT);
+    game_context.push_message(ClientActionType::STAND_UP);
 }
 
 MoveBentDownCommand::~MoveBentDownCommand()
