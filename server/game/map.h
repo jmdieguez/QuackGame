@@ -64,7 +64,7 @@ public:
 
     ~Map() {}
     
-    MapSnapshot get_status() { return MapSnapshot(style, size_x, size_y, components, bit_map); }
+    MapSnapshot get_status() { return MapSnapshot(style, size_x, size_y, components); }
 };
 
 #endif // SERVER_MAP_H
