@@ -10,6 +10,9 @@ target_sources(quack_game_client
     model/protocol.cpp
     model/receiver.cpp
     model/sender.cpp
+    model/resource/texture.cpp
+    model/resource/texturefactory.cpp
+    model/resource/texturestorage.cpp
     main.cpp
     PUBLIC
     # .h files
@@ -23,4 +26,7 @@ target_sources(quack_game_client
     model/protocol.h
     model/receiver.h
     model/sender.h
+    model/resource/texture.h
+    model/resource/texturefactory.h
+    model/resource/texturestorage.h
     )
