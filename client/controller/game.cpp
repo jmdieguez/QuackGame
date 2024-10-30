@@ -1,7 +1,8 @@
 #include "game.h"
 #include "../model/receiver.h"
 #include "../model/sender.h"
-
+#include "../model/resource/texturestorage.h"
+#include "../common/texturefigure.h"
 #define MAX_MESSAGES_QUEUE_RECEIVER 100000
 #define MAX_MESSAGES_QUEUE_SENDER 100000
 
@@ -66,7 +67,7 @@ void Game::set_renderer(int frame_ticks)
         SDL_Rect src_rect = {src_x, src_y, IMAGE_WIDTH, IMAGE_HEIGHT};
         SDL_Rect dst_rect = {duck.position.pos_x, duck.position.pos_y - IMAGE_HEIGHT, IMAGE_RECT_WIDTH, IMAGE_RECT_HEIGHT};
         SDL_RendererFlip flip = duck.right_direction ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
-        SDL_RenderCopyEx(duck_renderer.Get(), duck_sprites.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);
+        SDL_RenderCopyEx(duck_renderer.Get(), duck_sprites, &src_rect, &dst_rect, 0.0, nullptr, flip);
     }
 }
 
@@ -81,18 +82,22 @@ void Game::step(unsigned int current_step)
                               PUBLIC METHODS
 ****************************************************************************/
 
-Game::Game(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites, const char *host, const char *port)
+Game::Game(SDL2pp::Renderer &renderer, const char *host, const char *port)
     : keep_running(true),
       run_phase(1),
       constant_rate_loop(keep_running, [this](unsigned int step)
                          { this->step(step); }),
       duck_renderer(renderer),
-      duck_sprites(sprites),
       queue_receiver(MAX_MESSAGES_QUEUE_RECEIVER),
       queue_sender(MAX_MESSAGES_QUEUE_SENDER),
       input(queue_sender),
       game_context(queue_sender),
-      socket(host, port) {}
+      socket(host, port)
+{
+    TextureStorage &storage = TextureStorage::get_instance();
+    std::shared_ptr<Texture> fly = storage.get_texture(duck_renderer, TextureFigure::DUCK);
+    duck_sprites = fly.get()->get_texture();
+}
 
 void Game::run()
 {

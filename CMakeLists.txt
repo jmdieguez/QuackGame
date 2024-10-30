@@ -55,8 +55,8 @@ if(TALLER_CLIENT OR TALLER_EDITOR)
     set(SDL2PP_WITH_IMAGE YES)
     set(SDL2PP_WITH_TTF YES)
     add_subdirectory(SDL2pp)
-    find_package(SDL2 REQUIRED)
-    find_package(SDL2_image REQUIRED)
+    # find_package(SDL2 REQUIRED)
+    # find_package(SDL2_image REQUIRED)
     target_include_directories(quack_game_common PUBLIC ${SDL2_INCLUDE_DIRS})
 endif()
 
@@ -76,8 +76,8 @@ if(TALLER_CLIENT)
         quack_game_common
         SDL2pp::SDL2pp
         ${SDL2_LIBRARIES}
-        SDL2::SDL2
-        SDL2_image::SDL2_image
+        # SDL2::SDL2
+        # SDL2_image::SDL2_image
     )
 endif()
 
@@ -110,8 +110,8 @@ if(TALLER_EDITOR)
         quack_game_common
         SDL2pp::SDL2pp
         ${SDL2_LIBRARIES}
-        SDL2::SDL2
-        SDL2_image::SDL2_image
+        # SDL2::SDL2
+        # SDL2_image::SDL2_image
         yaml-cpp::yaml-cpp
     )
 endif()

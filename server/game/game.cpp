@@ -63,7 +63,7 @@ void Game::process(ClientCommand &command)
     }
     catch (const std::out_of_range &e)
     {
-        ducks.emplace(command.player_id, Duck(command.player_id, 100, 200));
+        ducks.emplace(command.player_id, Duck(command.player_id, 100, 370));
     }
 }
 

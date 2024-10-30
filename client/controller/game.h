@@ -25,7 +25,7 @@ private:
     int run_phase;
     ConstantRateLoop constant_rate_loop;
     SDL2pp::Renderer &duck_renderer;
-    SDL2pp::Texture &duck_sprites;
+    SDL_Texture *duck_sprites;
     Queue<Snapshot> queue_receiver;
     Queue<ClientActionType> queue_sender;
     InputHandler input;
@@ -40,7 +40,7 @@ private:
     void step(unsigned int current_step);
 
 public:
-    Game(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites, const char *host, const char *port);
+    Game(SDL2pp::Renderer &renderer, const char *host, const char *port);
     void run();
     ~Game();
 };
