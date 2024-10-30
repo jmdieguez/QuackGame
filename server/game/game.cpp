@@ -69,8 +69,7 @@ void Game::process(ClientCommand &command)
 
 void Game::step()
 {
-    for (auto &[id, duck] : ducks)
-        duck.step();
+    for (auto &[id, duck] : ducks) duck.step(map);
 }
 
 Snapshot Game::get_status()

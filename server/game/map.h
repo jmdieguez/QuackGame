@@ -4,6 +4,8 @@
 #include "../../common/defs.h"
 #include "../../common/snapshots.h"
 #include "../../common/map.h"
+#include "../../common/position.h"
+
 
 #include <utility>
 #include <yaml-cpp/yaml.h>
@@ -65,6 +67,10 @@ public:
     ~Map() {}
     
     MapSnapshot get_status() { return MapSnapshot(style, size_x, size_y, components); }
+
+    bool validate_coordinate(Position &p) {
+        return (p.pos_x < size_x) && (p.pos_y < size_y) && !bit_map[p.pos_x + (p.pos_y * TILE_SIZE)];
+    }
 };
 
 #endif // SERVER_MAP_H

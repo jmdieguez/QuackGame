@@ -10,6 +10,7 @@
 #include "../../common/direction.h"
 #include "../../common/snapshots.h"
 #include "gun.h"
+#include "map.h"
 
 class Duck
 {
@@ -41,7 +42,7 @@ public:
     DuckSnapshot get_status();
 
     // Simulate an iteration
-    void step();
+    void step(Map &map);
 };
 
 #endif // SERVER_DUCK_H

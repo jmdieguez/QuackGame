@@ -1,6 +1,6 @@
 #include "duck.h"
 
-#define X_VELOCITY 8
+#define X_VELOCITY 4
 
 Duck::Duck(const uint8_t &i, const uint16_t &initial_x, const uint16_t &initial_y) : id(i), position(initial_x, initial_y) {}
 
@@ -51,17 +51,20 @@ void Duck::jump() { action = DuckAction::JUMPING; }
 
 void Duck::lay() { action = DuckAction::LAYING; }
 
-void Duck::step()
+void Duck::step(Map &map)
 {
     if (action == DuckAction::MOVING)
-    {
-        if (status.looking_right)
-        {
-            position.move_x(X_VELOCITY);
-        }
-        else
-        {
-            position.move_x(-X_VELOCITY);
+    {   
+        int i = 1;
+        while (i <= X_VELOCITY) {
+            if (!status.looking_right) { i *= -1; }
+            Position new_position(position.pos_x + i, position.pos_y);
+            if (map.validate_coordinate(new_position)) {
+                position = new_position;
+                i++;
+            } else {
+                break;
+            }
         }
     }
 
