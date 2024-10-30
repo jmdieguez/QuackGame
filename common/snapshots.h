@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <vector>
 
+#include "map.h"
 #include "duck.h"
 #include "gun_type.h"
 
@@ -57,27 +58,6 @@ public:
     const GunSnapshot &gun;
 
     BoxSnapshot(PositionSnapshot &p, GunSnapshot &g) : pos(p), gun(g) {}
-};
-
-enum class Component {
-    NONE = 0,
-    BIG_WALL,
-    BIG_WALL_BASE,
-    BIG_WALL_GROUND,
-    LONG_GROUND,
-    SINGLE_GROUND,
-    SLIM_WALL
-};
-
-class MapComponent {
-private:
-    uint16_t x;
-    uint16_t y;
-    Component component;  
-
-public:
-    MapComponent(uint16_t &pos_x, uint16_t &pos_y, Component &c) : x(pos_x), y(pos_y), component(c) {}
-    ~MapComponent() {}
 };
 
 class MapSnapshot

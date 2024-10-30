@@ -92,7 +92,7 @@ if(TALLER_SERVER)
     set_project_warnings(quack_game_server ${TALLER_MAKE_WARNINGS_AS_ERRORS} FALSE)
 
     # Link the quack_game_common lib target
-    target_link_libraries(quack_game_server quack_game_common)
+    target_link_libraries(quack_game_server quack_game_common yaml-cpp::yaml-cpp)
 endif()
 
 if(TALLER_EDITOR)

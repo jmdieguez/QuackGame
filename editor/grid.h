@@ -3,9 +3,9 @@
 
 #include <SDL2pp/SDL2pp.hh>
 
-using namespace SDL2pp;
+#include "../common/defs.h"
 
-#define TILE_SIZE 32
+using namespace SDL2pp;
 
 class Grid {
 public:

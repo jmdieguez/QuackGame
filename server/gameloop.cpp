@@ -4,8 +4,7 @@
 
 Gameloop::Gameloop(SessionsHandler& h, const std::shared_ptr<Queue<ClientCommand>>& recv_q):
         constant_rate_loop(_keep_running, [this](unsigned int step) { this->step(step); }),
-        handler(h),
-        recv_queue(recv_q) {}
+        handler(h), recv_queue(recv_q), game("map.yaml") {}
 
 void Gameloop::run() {
     constant_rate_loop.execute();

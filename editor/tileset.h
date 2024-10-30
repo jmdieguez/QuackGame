@@ -5,22 +5,24 @@
 #include <map>
 #include <SDL2pp/SDL2pp.hh>
 
+#include "../common/snapshots.h"
+
 using namespace SDL2pp;
 
 class Tileset {
     
 public:
-    std::map<std::string, std::shared_ptr<Texture>> textures;
-    std::map<std::string, SDL_Rect> areas;
+    std::map<Component, std::shared_ptr<Texture>> textures;
+    std::map<Component, SDL_Rect> areas;
     
     Tileset(uint8_t &style, Renderer &renderer, std::shared_ptr<Texture> all_tilesets) {
         areas = {
-            {"SINGLE_GROUND", {16 + (style * 128), 0, 16, 16}},
-            {"BIG_WALL_GROUND", {0 + (style * 128), 16, 48, 16}},
-            {"BIG_WALL", {0 + (style * 128), 32, 48, 16}},
-            {"BIG_WALL_BASE", {0 + (style * 128), 48, 48, 16}},
-            {"SLIM_WALL", {48 + (style * 128), 16, 16, 48}},
-            {"LONG_GROUND", {64 + (style * 128), 16, 48, 16}}
+            { Component::SINGLE_GROUND, {16 + (style * 128), 0, 16, 16} },
+            { Component::BIG_WALL_GROUND, {0 + (style * 128), 16, 48, 16} },
+            { Component::BIG_WALL, {0 + (style * 128), 32, 48, 16} },
+            { Component::BIG_WALL_BASE, {0 + (style * 128), 48, 48, 16} },
+            { Component::SLIM_WALL, {48 + (style * 128), 16, 16, 48} },
+            { Component::LONG_GROUND, {64 + (style * 128), 16, 48, 16} }
         };
 
         for (const auto& [key, area] : areas) {

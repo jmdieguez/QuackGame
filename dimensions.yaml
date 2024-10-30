@@ -1,0 +1,10 @@
+components:
+  BIG_WALL:
+    dim_x: 3
+    dim_y: 1
+  SINGLE_GROUND:
+    dim_x: 1
+    dim_y: 1
+  SLIM_WALL:
+    dim_x: 1
+    dim_y: 3

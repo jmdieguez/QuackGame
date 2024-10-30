@@ -1,15 +1,13 @@
 n_tiles_x: 16
 n_tiles_y: 16
 tileset: 0
-tiles:
-  1:
-    7: SLIM_WALL
-    12: SLIM_WALL
-  4:
-    4: SLIM_WALL
-  5:
-    9: BIG_WALL_GROUND
-  9:
-    2: SLIM_WALL
-  10:
-    4: LONG_GROUND
+items:
+  - x: 3
+    y: 6
+    type: 3
+  - x: 4
+    y: 9
+    type: 3
+  - x: 5
+    y: 14
+    type: 3

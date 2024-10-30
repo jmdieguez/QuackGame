@@ -2,6 +2,9 @@
 #include <yaml-cpp/yaml.h>
 #include <fstream>
 
+#define BLUE SDL_Color{100, 100, 255, 255}
+#define WHITE SDL_Color{255, 255, 255, 255}
+
 void Editor::draw_tiles() {
     for (auto& [coord, tile] : tiles.tiles_map) {
         uint16_t x = tiles_grid.x + (coord.first * TILE_SIZE);
@@ -20,8 +23,8 @@ void Editor::draw_textures() {
     int textureY = (1080 * 2) / 3;
 
     for (auto& [key, texture] : current_tileset->textures) {
-        SDL_Color textColor = (key == selected_texture) ? SDL_Color{100, 100, 255, 255} : SDL_Color{255, 255, 255, 255};
-        Texture textTexture(renderer, font.RenderText_Blended(key, textColor));
+        SDL_Color textColor = (key == selected_texture) ? BLUE : WHITE;
+        Texture textTexture(renderer, font.RenderText_Blended(titles[key], textColor));
         int textPosX = textureX + ((texture->GetWidth() * 4) / 2) - (textTexture.GetWidth() / 2);
         renderer.Copy(textTexture, NullOpt, 
                       Rect(textPosX, textureY - textTexture.GetHeight(), 
@@ -66,13 +69,11 @@ void Editor::handle_event(const SDL_Event& event) {
         }
 
         if (tiles_grid.contains(mousePos)) {
-            std::cout << selected_texture << " at " << mousePos.x << ", " << mousePos.y; 
             uint16_t aligned_x = (mousePos.x - tiles_grid.x) / TILE_SIZE;
             uint16_t aligned_y = (mousePos.y - tiles_grid.y) / TILE_SIZE;
-            std::cout << " - Coords: (" << aligned_x << ", " << aligned_y << ")\n"; 
             tiles.add_tile(aligned_x, aligned_y, selected_texture);
         } else {
-            selected_texture = "";
+            selected_texture = Component::NONE;
         }
     }
 }

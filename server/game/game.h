@@ -13,7 +13,7 @@ private:
     Map map;
     std::map<uint8_t, Duck> ducks;
 public:
-    Game();
+    Game(const std::string &map_file);
     ~Game() {}
 
     void process(ClientCommand &command);

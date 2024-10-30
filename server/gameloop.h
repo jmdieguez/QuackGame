@@ -12,11 +12,10 @@
 
 class Gameloop: public Thread {
 private:
-    Game game;
     ConstantRateLoop constant_rate_loop;
     SessionsHandler& handler;
     std::shared_ptr<Queue<ClientCommand>> recv_queue;
-
+    Game game;
 public:
     Gameloop(SessionsHandler& h, const std::shared_ptr<Queue<ClientCommand>>& recv_q);
     void run() override;
