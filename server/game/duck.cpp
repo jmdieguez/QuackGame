@@ -55,15 +55,18 @@ void Duck::step(Map &map)
 {
     if (action == DuckAction::MOVING)
     {   
+        std::function<int(int, int)> operation = status.looking_right ? 
+            [](int a, int b) { return a + b; } : // if looking right, increment x
+            [](int a, int b) { return a - b; }; // if looking, decrease x
+
         int i = 1;
         while (i <= X_VELOCITY) {
-            if (!status.looking_right) { i *= -1; }
-            Position new_position(position.pos_x + i, position.pos_y);
+            Position new_position(operation(position.pos_x, i), position.pos_y);
             if (map.validate_coordinate(new_position)) {
                 position = new_position;
                 i++;
-            } else {
-                break;
+            } else { 
+                break; 
             }
         }
     }

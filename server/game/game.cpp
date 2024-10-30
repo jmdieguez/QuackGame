@@ -1,9 +1,5 @@
 #include "game.h"
 
-#define DEFAULT_SIZE_X 1280 // 32x32 tiles
-#define DEFAULT_SIZE_Y 720
-#define DEFAULT_TILESET 0
-
 Game::Game(const std::string &map_file) : map(map_file) {}
 
 void Game::process(ClientCommand &command)
