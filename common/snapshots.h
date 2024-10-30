@@ -63,12 +63,20 @@ public:
 class MapSnapshot
 {
 public:
-    const uint16_t size_x;
-    const uint16_t size_y;
-    std::vector<BoxSnapshot> boxes;
+    const uint16_t &style;
+    const uint16_t &size_x;
+    const uint16_t &size_y;
     const std::vector<MapComponent> &components;
-    MapSnapshot(const uint16_t &s_x, const uint16_t &s_y, const std::vector<MapComponent> &c)
-     : size_x(s_x), size_y(s_y), components(c) {}
+    const std::vector<bool> &bit_map; // true: wall/ground. false: empty space
+    // std::vector<BoxSnapshot> boxes;
+    
+    MapSnapshot(const uint16_t &s,
+                const uint16_t &s_x, 
+                const uint16_t &s_y, 
+                const std::vector<MapComponent> &c,
+                const std::vector<bool> &b_m)
+     : style(s), size_x(s_x), size_y(s_y), components(c), bit_map(b_m) {}
+    
     ~MapSnapshot() {}
 };
 
