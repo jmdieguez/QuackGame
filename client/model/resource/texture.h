@@ -12,7 +12,7 @@ private:
 
 public:
     explicit Texture(SDL2pp::Renderer &renderer, const std::string &path);
-    SDL_Texture *get_texture() const;
+    SDL2pp::Texture &get_texture();
     ~Texture();
 };
 

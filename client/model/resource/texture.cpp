@@ -10,9 +10,9 @@ Texture::Texture(SDL2pp::Renderer &renderer, const std::string &path)
     SDL_SetColorKey(surface.Get(), SDL_TRUE, SDL_MapRGB(surface.Get()->format, 0xFF, 0, 0xFF));
 }
 
-SDL_Texture *Texture::get_texture() const
+SDL2pp::Texture &Texture::get_texture()
 {
-    return texture.Get();
+    return texture;
 }
 
 Texture::~Texture() {}

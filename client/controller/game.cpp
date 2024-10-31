@@ -19,6 +19,13 @@
                               PRIVATE METHODS
 ****************************************************************************/
 
+SDL2pp::Texture &Game::get_duck_texture()
+{
+    TextureStorage &storage = TextureStorage::get_instance();
+    std::shared_ptr<Texture> texture_created = storage.get_texture(renderer, TextureFigure::DUCK);
+    return texture_created.get()->get_texture();
+}
+
 void Game::handle_event(SDL_Event &event)
 {
     if (event.type == SDL_QUIT || event.key.keysym.sym == SDLK_END)
@@ -66,7 +73,7 @@ void Game::set_renderer(int frame_ticks)
         SDL_Rect src_rect = {src_x, src_y, IMAGE_WIDTH, IMAGE_HEIGHT};
         SDL_Rect dst_rect = {duck.position.pos_x, duck.position.pos_y - IMAGE_HEIGHT, IMAGE_RECT_WIDTH, IMAGE_RECT_HEIGHT};
         SDL_RendererFlip flip = duck.right_direction ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
-        SDL_RenderCopyEx(renderer.Get(), duck_sprites, &src_rect, &dst_rect, 0.0, nullptr, flip);
+        SDL_RenderCopyEx(renderer.Get(), duck_texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);
     }
 }
 
@@ -90,11 +97,9 @@ Game::Game(const char *host, const char *port)
       input(queue_sender),
       game_context(queue_sender),
       socket(host, port),
-      renderer(window.get_renderer())
+      renderer(window.get_renderer()),
+      duck_texture(get_duck_texture())
 {
-    TextureStorage &storage = TextureStorage::get_instance();
-    std::shared_ptr<Texture> fly = storage.get_texture(renderer, TextureFigure::DUCK);
-    duck_sprites = fly.get()->get_texture();
 }
 
 void Game::run()
