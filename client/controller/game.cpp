@@ -12,7 +12,6 @@
 #define IMAGE_HEIGHT 32
 #define IMAGE_RECT_WIDTH 64
 #define IMAGE_RECT_HEIGHT 64
-#define FIRST_RUN_PHASE 1
 #define POS_INIT_X_IMAGE 1
 #define POS_INIT_Y_IMAGE 8
 
@@ -50,9 +49,9 @@ void Game::set_xy(DuckSnapshot duck, int frame_ticks, int &src_x, int &src_y)
 
 void Game::update_renderer(int frame_ticks)
 {
-    duck_renderer.Clear();
+    renderer.Clear();
     set_renderer(frame_ticks);
-    duck_renderer.Present();
+    renderer.Present();
 }
 
 void Game::set_renderer(int frame_ticks)
@@ -67,7 +66,7 @@ void Game::set_renderer(int frame_ticks)
         SDL_Rect src_rect = {src_x, src_y, IMAGE_WIDTH, IMAGE_HEIGHT};
         SDL_Rect dst_rect = {duck.position.pos_x, duck.position.pos_y - IMAGE_HEIGHT, IMAGE_RECT_WIDTH, IMAGE_RECT_HEIGHT};
         SDL_RendererFlip flip = duck.right_direction ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
-        SDL_RenderCopyEx(duck_renderer.Get(), duck_sprites, &src_rect, &dst_rect, 0.0, nullptr, flip);
+        SDL_RenderCopyEx(renderer.Get(), duck_sprites, &src_rect, &dst_rect, 0.0, nullptr, flip);
     }
 }
 
@@ -82,20 +81,19 @@ void Game::step(unsigned int current_step)
                               PUBLIC METHODS
 ****************************************************************************/
 
-Game::Game(SDL2pp::Renderer &renderer, const char *host, const char *port)
+Game::Game(const char *host, const char *port)
     : keep_running(true),
-      run_phase(1),
       constant_rate_loop(keep_running, [this](unsigned int step)
                          { this->step(step); }),
-      duck_renderer(renderer),
       queue_receiver(MAX_MESSAGES_QUEUE_RECEIVER),
       queue_sender(MAX_MESSAGES_QUEUE_SENDER),
       input(queue_sender),
       game_context(queue_sender),
-      socket(host, port)
+      socket(host, port),
+      renderer(window.get_renderer())
 {
     TextureStorage &storage = TextureStorage::get_instance();
-    std::shared_ptr<Texture> fly = storage.get_texture(duck_renderer, TextureFigure::DUCK);
+    std::shared_ptr<Texture> fly = storage.get_texture(renderer, TextureFigure::DUCK);
     duck_sprites = fly.get()->get_texture();
 }
 

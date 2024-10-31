@@ -13,6 +13,7 @@ target_sources(quack_game_client
     model/resource/texture.cpp
     model/resource/texturefactory.cpp
     model/resource/texturestorage.cpp
+    view/SDLWindow.cpp
     main.cpp
     PUBLIC
     # .h files
@@ -29,4 +30,5 @@ target_sources(quack_game_client
     model/resource/texture.h
     model/resource/texturefactory.h
     model/resource/texturestorage.h
+    view/SDLWindow.h
     )

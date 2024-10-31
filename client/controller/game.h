@@ -10,6 +10,7 @@
 #include "./command/gamecontext.h"
 #include "./command/inputhandler.h"
 #include "../model/protocol.h"
+#include "../view/SDLWindow.h"
 #include <utility>
 #include <vector>
 #include <cstdint>
@@ -22,15 +23,15 @@ class Game
 {
 private:
     std::atomic<bool> keep_running;
-    int run_phase;
+    SDLWindow window;
     ConstantRateLoop constant_rate_loop;
-    SDL2pp::Renderer &duck_renderer;
     SDL_Texture *duck_sprites;
     Queue<Snapshot> queue_receiver;
     Queue<ClientActionType> queue_sender;
     InputHandler input;
     GameContext game_context;
     Socket socket;
+    SDL2pp::Renderer &renderer;
     void get_and_execute_events();
     void set_xy(DuckSnapshot duck, int frame_ticks, int &src_x, int &src_y);
     void set_renderer(int current_step);
@@ -40,7 +41,7 @@ private:
     void step(unsigned int current_step);
 
 public:
-    Game(SDL2pp::Renderer &renderer, const char *host, const char *port);
+    Game(const char *host, const char *port);
     void run();
     ~Game();
 };
