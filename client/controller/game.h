@@ -36,7 +36,6 @@ private:
     void set_xy(DuckSnapshot duck, int frame_ticks, int &src_x, int &src_y);
     void set_renderer(int current_step);
     void update_renderer(int current_step);
-    void update_run_phase_and_position(unsigned int frame_ticks, unsigned int frame_delta);
     void handle_event(SDL_Event &event);
     void step(unsigned int current_step);
 
