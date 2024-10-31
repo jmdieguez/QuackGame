@@ -21,7 +21,7 @@ private:
     std::vector<MapComponent> components;
     std::vector<bool> bit_map; // true: wall/ground. false: empty space
     std::map<Component, std::pair<uint8_t, uint8_t>> dimensions; 
-
+ 
     MapConfig load_yaml_config(const std::string& filename) {
         MapConfig config;
         YAML::Node root = YAML::LoadFile(filename);
@@ -39,13 +39,7 @@ private:
         return config;
     }
 
-public:
-    Map(const std::string &map_file) : cfg(load_yaml_config(map_file)),
-                                style(cfg.tileset_style), 
-                                size_x(cfg.n_tiles_x * TILE_SIZE), 
-                                size_y(cfg.n_tiles_y * TILE_SIZE),
-                                bit_map(size_x * size_y, false) {
-        
+    void initiate_components_dimensions() {
         YAML::Node root = YAML::LoadFile(DIMENSIONS_FILE);
         for (const auto& dim : root["components"]) {
             Component type = dim["type"].as<Component>();
@@ -53,15 +47,36 @@ public:
             uint16_t dim_y = dim["dim_y"].as<uint16_t>();
             dimensions.emplace(type, std::make_pair(dim_x, dim_y));
         }
+    }
 
+    void initiate_components() {
         for (const MapComponent& component : cfg.components) {
             std::pair<int, int> component_dimensions = dimensions[component.type];
-            for (int i = component.x; i < component.x + component_dimensions.first; i++) {
-                for (int j = component.y; j < component.y + component_dimensions.second; j++) {
-                    bit_map[i + (j * TILE_SIZE)] = true; // ground or wall
+            int x_pixels = component_dimensions.first * TILE_SIZE;
+            int y_pixels = component_dimensions.second * TILE_SIZE;
+            int start_x = component.x * TILE_SIZE;
+            int start_y = component.y * TILE_SIZE;
+
+            for (int i = 0; i < x_pixels; i++) {
+                for (int j = 0; j < y_pixels; j++) {
+                    int x_pos = start_x + i;
+                    int y_pos = start_y + j;
+                    int index = x_pos + (y_pos * size_x);
+                    bit_map[index] = true;
                 }
             }
         }
+    }
+
+public:
+    Map(const std::string &map_file) : cfg(load_yaml_config(map_file)),
+                                style(cfg.tileset_style), 
+                                size_x(cfg.n_tiles_x * TILE_SIZE), 
+                                size_y(cfg.n_tiles_y * TILE_SIZE),
+                                bit_map(size_x * size_y, false) {
+        
+        initiate_components_dimensions();
+        initiate_components();
     }
 
     ~Map() {}
@@ -69,7 +84,11 @@ public:
     MapSnapshot get_status() { return MapSnapshot(style, size_x, size_y, components); }
 
     bool validate_coordinate(Position &p) {
-        return (p.pos_x < size_x) && (p.pos_y < size_y) && !bit_map[p.pos_x + (p.pos_y * TILE_SIZE)];
+        return (p.pos_x < size_x) && (p.pos_y < size_y) && !has_something_in(p);
+    }
+    
+    bool has_something_in(Position &p) {
+        return bit_map[p.pos_x + (p.pos_y * size_x)];
     }
 };
 
