@@ -63,8 +63,9 @@ void Duck::step(Map &map)
 
         int i = 1;
         while (i <= X_VELOCITY) {
-            Position new_position(operation(position.pos_x, i), position.pos_y);
-            if (map.validate_coordinate(new_position)) {
+            Position new_position(operation(position.pos_x, 1), position.pos_y);
+            Position end_hitbox(new_position.pos_x + TILE_SIZE - 1, new_position.pos_y);
+            if (map.validate_coordinate(new_position) && map.validate_coordinate(end_hitbox)) {
                 position = new_position;
                 i++;
             } else { 
