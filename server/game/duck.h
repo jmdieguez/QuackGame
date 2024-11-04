@@ -23,11 +23,11 @@ private:
     Position position;
     DuckStatus status;
     DuckAction action = DuckAction::IDLE;
-    std::shared_ptr<Gun> gun; // Para polimorfismo
+    std::shared_ptr<Gun> gun;
     int y_velocity = 0;
 
 public:
-    Duck(const uint8_t &i, const uint16_t &initial_x, const uint16_t &initial_y);
+    explicit Duck(const uint8_t &i, const uint16_t &initial_x, const uint16_t &initial_y);
     ~Duck();
 
     // Actions
@@ -48,7 +48,7 @@ public:
     DuckSnapshot get_status();
 
     // Simulate an iteration
-    void step(Map &map);
+    void step(Map &map, std::map<uint8_t, std::shared_ptr<Gun>> &guns);
 };
 
 #endif // SERVER_DUCK_H

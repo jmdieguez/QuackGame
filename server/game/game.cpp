@@ -3,7 +3,7 @@
 Game::Game(const std::string &map_file) : map(map_file), gun_id(0)
 {
     // Eliminar una vez que se tengan los spawns de las armas
-    guns.emplace(gun_id, std::make_shared<CowboyPistol>(220, 142));
+    guns.emplace(gun_id, std::make_shared<CowboyPistol>(190, 128));
     gun_id++;
 }
 
@@ -71,7 +71,7 @@ void Game::process(ClientCommand &command)
 void Game::step()
 {
     for (auto &[id, duck] : ducks)
-        duck.step(map);
+        duck.step(map, guns);
 }
 
 Snapshot Game::get_status()
