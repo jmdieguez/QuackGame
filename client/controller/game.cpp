@@ -78,7 +78,7 @@ void Game::render_duck(DuckSnapshot &duck, int frame_ticks)
     int src_x = POS_INIT_X_IMAGE, src_y = POS_INIT_Y_IMAGE;
     set_xy(duck, frame_ticks, src_x, src_y);
     SDL_Rect src_rect = {src_x, src_y, SRC_DUCK_WIDTH, SRC_DUCK_HEIGHT};
-    SDL_Rect dst_rect = {duck.position.pos_x, duck.position.pos_y - SRC_DUCK_HEIGHT, DUCK_WIDTH, DUCK_HEIGHT};
+    SDL_Rect dst_rect = {duck.position.pos_x, duck.position.pos_y, DUCK_WIDTH, DUCK_HEIGHT};
     SDL_RendererFlip flip = duck.right_direction ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
     SDL_RenderCopyEx(renderer.Get(), duck_texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);
 }
@@ -90,7 +90,7 @@ void Game::render_weapon(DuckSnapshot &duck)
     SDL_RendererFlip flip = duck.right_direction ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
     SDL_Rect src_rect = {src_x, src_y, SRC_GUN_WIDTH, SRC_GUN_HEIGHT};
     uint16_t dst_rect_x = duck.position.pos_x + (duck.right_direction ? GUN_RIGHT_DIRECTION_X : GUN_LEFT_DIRECTION_X);
-    SDL_Rect dst_rect = {dst_rect_x, duck.position.pos_y, GUN_WIDTH, GUN_HEIGHT};
+    SDL_Rect dst_rect = {dst_rect_x, duck.position.pos_y + SRC_DUCK_HEIGHT / 2, GUN_WIDTH, GUN_HEIGHT};
     SDL_RenderCopyEx(renderer.Get(), texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);
 }
 
