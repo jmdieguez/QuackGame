@@ -79,6 +79,7 @@ Snapshot Game::get_status()
     for (auto &[id, duck] : ducks)
         duck_snapshots.push_back(duck.get_status());
 
+    // Colocar en map.get_status cuando se envie el mapa al cliente
     for (auto &[id, gun] : map.get_guns())
     {
         if (gun.get()->has_been_equipped())

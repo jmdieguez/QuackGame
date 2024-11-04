@@ -1,0 +1,14 @@
+#ifndef FIGURE_SIZES_H
+#define FIGURE_SIZES_H
+
+// Duck
+#define DUCK_HEIGHT 64
+#define DUCK_WIDTH 64
+
+// Gun
+#define GUN_HEIGHT 32
+#define GUN_WIDTH 32
+#define GUN_RIGHT_DIRECTION_X 25
+#define GUN_LEFT_DIRECTION_X 12
+
+#endif // FIGURE_SIZES_H
