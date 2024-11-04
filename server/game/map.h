@@ -115,7 +115,11 @@ public:
     }
 
     bool has_something_in(Position &p)
-    {
+    {   
+        if ((p.pos_x >= size_x) || (p.pos_y >= size_y)) {
+            return false; // Lanzar excepción
+        }
+
         return bit_map[p.pos_x + (p.pos_y * size_x)];
     }
 

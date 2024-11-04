@@ -75,7 +75,7 @@ void Duck::step(Map &map)
         while (i <= X_VELOCITY)
         {
             Position new_position(operation(position.pos_x, 1), position.pos_y);
-            Position end_hitbox(new_position.pos_x + TILE_SIZE - 1, new_position.pos_y);
+            Position end_hitbox(new_position.pos_x + TILE_SIZE - 1, new_position.pos_y + TILE_SIZE - 1);
             if (map.validate_coordinate(new_position) && map.validate_coordinate(end_hitbox))
             {
                 for (auto &[id, gun] : map.get_guns())
@@ -99,8 +99,9 @@ void Duck::step(Map &map)
         }
     }
 
-    Position below(position.pos_x, position.pos_y + TILE_SIZE);
-    status.grounded = map.has_something_in(below);
+    Position below_left(position.pos_x, position.pos_y + TILE_SIZE);
+    Position below_right(position.pos_x + TILE_SIZE - 1, position.pos_y + TILE_SIZE);
+    status.grounded = map.has_something_in(below_left) || map.has_something_in(below_right);
 
     if (status.grounded)
     {
@@ -108,7 +109,6 @@ void Duck::step(Map &map)
         if (status.jumping)
         {
             y_velocity = Y_VELOCITY_ON_JUMP; // take a big impulse at the start
-            std::cout << "Starting jump at: " << position.pos_x << " " << position.pos_y << std::endl;
             status.jumping = false;
         }
     }
@@ -119,7 +119,6 @@ void Duck::step(Map &map)
 
     if (y_velocity != Y_VELOCITY_INITIAL)
     {
-        std::cout << "y_v : " << y_velocity << std::endl;
         std::function<int(int, int)> operation = (y_velocity < Y_VELOCITY_INITIAL) ? [](int a, int b)
         { return a + b; }                                                          : // if falling, increment y
                                                      [](int a, int b)
@@ -133,12 +132,10 @@ void Duck::step(Map &map)
             if (map.validate_coordinate(new_position) && map.validate_coordinate(end_hitbox))
             {
                 position = new_position;
-                std::cout << "Updated to: " << position.pos_x << " " << position.pos_y << std::endl;
                 i++;
             }
             else
             {
-                std::cout << "Found wall at : " << new_position.pos_x << " " << new_position.pos_y << std::endl;
                 y_velocity = Y_VELOCITY_INITIAL;
                 break;
             }
