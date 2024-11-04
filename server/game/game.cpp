@@ -3,7 +3,7 @@
 Game::Game(const std::string &map_file) : map(map_file), gun_id(0)
 {
     // Eliminar una vez que se tengan los spawns de las armas
-    guns.emplace(gun_id, std::make_shared<CowboyPistol>(140, 128));
+    guns.emplace(gun_id, std::make_shared<CowboyPistol>(220, 142));
     gun_id++;
 }
 

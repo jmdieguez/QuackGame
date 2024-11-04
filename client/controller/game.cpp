@@ -15,6 +15,13 @@
 #define POS_INIT_X_IMAGE 1
 #define POS_INIT_Y_IMAGE 8
 
+#define POS_INIT_X_GUN 73
+#define POS_INIT_Y_GUN 73
+#define GUN_WIDTH 120
+#define GUN_HEIGHT 120
+#define GUN_RECT_WIDTH 32
+#define GUN_RECT_HEIGHT 32
+
 /***************************************************************************
                               PRIVATE METHODS
 ****************************************************************************/
@@ -23,6 +30,13 @@ SDL2pp::Texture &Game::get_duck_texture()
 {
     TextureStorage &storage = TextureStorage::get_instance();
     std::shared_ptr<Texture> texture_created = storage.get_texture(renderer, TextureFigure::DUCK);
+    return texture_created.get()->get_texture();
+}
+
+SDL2pp::Texture &Game::get_gun_texture(GunType gun)
+{
+    TextureStorage &storage = TextureStorage::get_instance();
+    std::shared_ptr<Texture> texture_created = storage.get_texture(renderer, gun);
     return texture_created.get()->get_texture();
 }
 
@@ -74,6 +88,14 @@ void Game::set_renderer(int frame_ticks)
         SDL_Rect dst_rect = {duck.position.pos_x, duck.position.pos_y - IMAGE_HEIGHT, IMAGE_RECT_WIDTH, IMAGE_RECT_HEIGHT};
         SDL_RendererFlip flip = duck.right_direction ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
         SDL_RenderCopyEx(renderer.Get(), duck_texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);
+    }
+    for (GunNoEquippedSnapshot gun : snapshot.guns)
+    {
+        SDL2pp::Texture &texture = get_gun_texture(gun.type);
+        int src_x = POS_INIT_X_GUN, src_y = POS_INIT_Y_GUN;
+        SDL_Rect src_rect = {src_x, src_y, GUN_WIDTH, GUN_HEIGHT};
+        SDL_Rect dst_rect = {gun.pos_x, gun.pos_y, GUN_RECT_WIDTH, GUN_RECT_HEIGHT};
+        SDL_RenderCopyEx(renderer.Get(), texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, SDL_FLIP_NONE);
     }
 }
 

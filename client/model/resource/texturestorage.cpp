@@ -1,6 +1,17 @@
 #include "texturestorage.h"
 
 /***************************************************************************
+                              PRIVATE METHODS
+****************************************************************************/
+
+TextureFigure TextureStorage::gun_type_to_texture(GunType gun)
+{
+    if (GunType::CowboyPistol == gun)
+        return TextureFigure::CowboyPistol;
+    return TextureFigure::CowboyPistol;
+}
+
+/***************************************************************************
                               PUBLIC METHODS
 ****************************************************************************/
 
@@ -12,6 +23,14 @@ TextureStorage &TextureStorage::get_instance()
 
 std::shared_ptr<Texture> TextureStorage::get_texture(SDL2pp::Renderer &renderer, TextureFigure figure)
 {
+    if (textures_created.find(figure) == textures_created.end())
+        textures_created[figure] = factory.create_texture(renderer, figure);
+    return textures_created[figure];
+}
+
+std::shared_ptr<Texture> TextureStorage::get_texture(SDL2pp::Renderer &renderer, GunType gun)
+{
+    TextureFigure figure = gun_type_to_texture(gun);
     if (textures_created.find(figure) == textures_created.end())
         textures_created[figure] = factory.create_texture(renderer, figure);
     return textures_created[figure];
