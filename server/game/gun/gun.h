@@ -37,16 +37,11 @@ public:
         return ((pos_x - 32) == this->pos_x || (pos_x + 32) == this->pos_x) && pos_y == this->pos_y;
     }
 
-    uint16_t get_pos_x()
-    {
-        return pos_x;
-    }
-
-    uint16_t get_pos_y() { return pos_y; }
-
     virtual ShootEvent shoot(bool &looking_right, bool &looking_up) = 0;
 
     virtual GunNoEquippedSnapshot get_status() = 0;
+
+    virtual GunType get_type() = 0;
 };
 
 #endif // SERVER_GUN_H

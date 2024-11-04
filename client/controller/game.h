@@ -36,8 +36,10 @@ private:
     SDL2pp::Texture &get_duck_texture();
     SDL2pp::Texture &get_gun_texture(GunType gun);
     void get_and_execute_events();
-    void set_xy(DuckSnapshot duck, int frame_ticks, int &src_x, int &src_y);
+    void set_xy(DuckSnapshot &duck, int frame_ticks, int &src_x, int &src_y);
     void set_renderer(int current_step);
+    void render_duck(DuckSnapshot &duck, int frame_ticks);
+    void render_weapon(DuckSnapshot &duck);
     void update_renderer(int current_step);
     void handle_event(SDL_Event &event);
     void step(unsigned int current_step);

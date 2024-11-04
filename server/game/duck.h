@@ -35,7 +35,7 @@ public:
     void stop_moving();
     void look_up();
     void stop_looking_up();
-    void pickup_gun(std::shared_ptr<Gun> &gun_ptr);
+    GunType get_gun_type();
     void drop_gun();
     void shoot();
     void stop_shooting();

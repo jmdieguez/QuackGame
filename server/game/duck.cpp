@@ -1,6 +1,6 @@
 #include "duck.h"
 
-Duck::Duck(const uint8_t &i, const uint16_t &initial_x, const uint16_t &initial_y) : id(i), position(initial_x, initial_y) {}
+Duck::Duck(const uint8_t &i, const uint16_t &initial_x, const uint16_t &initial_y) : id(i), position(initial_x, initial_y), gun(nullptr) {}
 
 Duck::~Duck() {}
 
@@ -27,9 +27,12 @@ void Duck::look_up() { status.looking_up = true; }
 
 void Duck::stop_looking_up() { status.looking_up = false; }
 
-void Duck::stop_moving() { action = DuckAction::IDLE; }
+GunType Duck::get_gun_type()
+{
+    return gun == nullptr ? GunType::None : gun.get()->get_type();
+}
 
-// void Duck::pickup_gun(std::shared_ptr<Gun> &gun_ptr) { gun = gun_ptr; }
+void Duck::stop_moving() { action = DuckAction::IDLE; }
 
 void Duck::drop_gun()
 {
@@ -170,9 +173,10 @@ DuckSnapshot Duck::get_status()
 {
     PositionSnapshot position_snapshot = position.get_status();
     // GunSnapshot gun_snapshot = gun->get_status();
+    GunType gun_type = get_gun_type();
     return DuckSnapshot(id,
                         position_snapshot,
-                        action, status.looking_right);
+                        action, gun_type, status.looking_right);
     //  100,
     //  status,
     // gun_snapshot);

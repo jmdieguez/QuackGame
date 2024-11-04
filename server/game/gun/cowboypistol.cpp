@@ -22,6 +22,11 @@ GunNoEquippedSnapshot CowboyPistol::get_status()
     return GunNoEquippedSnapshot(GunType::CowboyPistol, pos_x, pos_y);
 }
 
+GunType CowboyPistol::get_type()
+{
+    return GunType::CowboyPistol;
+}
+
 CowboyPistol::~CowboyPistol()
 {
 }

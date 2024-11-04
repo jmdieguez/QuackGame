@@ -10,6 +10,7 @@ public:
     explicit CowboyPistol(uint16_t pos_x, uint16_t pos_y);
     ShootEvent shoot(bool &looking_right, bool &looking_up) override;
     GunNoEquippedSnapshot get_status() override;
+    GunType get_type() override;
     ~CowboyPistol();
 };
 

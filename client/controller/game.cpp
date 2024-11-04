@@ -57,7 +57,7 @@ void Game::get_and_execute_events()
         handle_event(event);
 }
 
-void Game::set_xy(DuckSnapshot duck, int frame_ticks, int &src_x, int &src_y)
+void Game::set_xy(DuckSnapshot &duck, int frame_ticks, int &src_x, int &src_y)
 {
 
     (void)src_y;
@@ -75,6 +75,27 @@ void Game::update_renderer(int frame_ticks)
     renderer.Present();
 }
 
+void Game::render_duck(DuckSnapshot &duck, int frame_ticks)
+{
+    int src_x = POS_INIT_X_IMAGE, src_y = POS_INIT_Y_IMAGE;
+    set_xy(duck, frame_ticks, src_x, src_y);
+    SDL_Rect src_rect = {src_x, src_y, IMAGE_WIDTH, IMAGE_HEIGHT};
+    SDL_Rect dst_rect = {duck.position.pos_x, duck.position.pos_y - IMAGE_HEIGHT, IMAGE_RECT_WIDTH, IMAGE_RECT_HEIGHT};
+    SDL_RendererFlip flip = duck.right_direction ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
+    SDL_RenderCopyEx(renderer.Get(), duck_texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);
+}
+
+void Game::render_weapon(DuckSnapshot &duck)
+{
+    SDL2pp::Texture &texture = get_gun_texture(duck.gun);
+    int src_x = POS_INIT_X_GUN, src_y = POS_INIT_Y_GUN;
+    SDL_RendererFlip flip = duck.right_direction ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
+    SDL_Rect src_rect = {src_x, src_y, GUN_WIDTH, GUN_HEIGHT};
+    uint16_t dst_rect_x = duck.position.pos_x + (duck.right_direction ? 25 : 12);
+    SDL_Rect dst_rect = {dst_rect_x, duck.position.pos_y, GUN_RECT_WIDTH, GUN_RECT_HEIGHT};
+    SDL_RenderCopyEx(renderer.Get(), texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);
+}
+
 void Game::set_renderer(int frame_ticks)
 {
     Snapshot snapshot;
@@ -82,12 +103,9 @@ void Game::set_renderer(int frame_ticks)
         return;
     for (DuckSnapshot duck : snapshot.ducks)
     {
-        int src_x = POS_INIT_X_IMAGE, src_y = POS_INIT_Y_IMAGE;
-        set_xy(duck, frame_ticks, src_x, src_y);
-        SDL_Rect src_rect = {src_x, src_y, IMAGE_WIDTH, IMAGE_HEIGHT};
-        SDL_Rect dst_rect = {duck.position.pos_x, duck.position.pos_y - IMAGE_HEIGHT, IMAGE_RECT_WIDTH, IMAGE_RECT_HEIGHT};
-        SDL_RendererFlip flip = duck.right_direction ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
-        SDL_RenderCopyEx(renderer.Get(), duck_texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);
+        render_duck(duck, frame_ticks);
+        if (duck.gun != GunType::None)
+            render_weapon(duck);
     }
     for (GunNoEquippedSnapshot gun : snapshot.guns)
     {
