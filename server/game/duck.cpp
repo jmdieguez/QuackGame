@@ -1,4 +1,5 @@
 #include "duck.h"
+#include <optional>
 
 Duck::Duck(const uint8_t &i, const uint16_t &initial_x, const uint16_t &initial_y) : id(i), position(initial_x, initial_y), gun(nullptr) {}
 
@@ -61,7 +62,7 @@ void Duck::jump()
 
 void Duck::lay() { action = DuckAction::LAYING; }
 
-void Duck::step(Map &map, std::map<uint8_t, std::shared_ptr<Gun>> &guns)
+void Duck::step(Map &map)
 {
     if (action == DuckAction::MOVING)
     {
@@ -69,7 +70,7 @@ void Duck::step(Map &map, std::map<uint8_t, std::shared_ptr<Gun>> &guns)
         { return a + b; }                                             : // if looking right, increment x
                                                      [](int a, int b)
         { return a - b; }; // if looking, decrease x
-        int gun_id_to_erase = -1;
+        std::optional<uint16_t> gun_id_to_erase;
         int i = 1;
         while (i <= X_VELOCITY)
         {
@@ -77,7 +78,7 @@ void Duck::step(Map &map, std::map<uint8_t, std::shared_ptr<Gun>> &guns)
             Position end_hitbox(new_position.pos_x + TILE_SIZE - 1, new_position.pos_y);
             if (map.validate_coordinate(new_position) && map.validate_coordinate(end_hitbox))
             {
-                for (auto &[id, gun] : guns)
+                for (auto &[id, gun] : map.get_guns())
                 {
                     if (gun.get()->can_take_this_gun(new_position.pos_x, new_position.pos_y))
                     {
@@ -86,8 +87,8 @@ void Duck::step(Map &map, std::map<uint8_t, std::shared_ptr<Gun>> &guns)
                         break;
                     }
                 }
-                if (gun_id_to_erase >= 0)
-                    guns.erase(gun_id_to_erase);
+                if (gun_id_to_erase.has_value())
+                    map.remove_gun(gun_id_to_erase.value());
                 position = new_position;
                 i++;
             }

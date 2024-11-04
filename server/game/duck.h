@@ -48,7 +48,7 @@ public:
     DuckSnapshot get_status();
 
     // Simulate an iteration
-    void step(Map &map, std::map<uint8_t, std::shared_ptr<Gun>> &guns);
+    void step(Map &map);
 };
 
 #endif // SERVER_DUCK_H

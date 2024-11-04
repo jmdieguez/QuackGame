@@ -15,9 +15,7 @@ class Game
 {
 private:
     Map map;
-    uint16_t gun_id;
     std::map<uint8_t, Duck> ducks;
-    std::map<uint8_t, std::shared_ptr<Gun>> guns;
 
 public:
     explicit Game(const std::string &map_file);

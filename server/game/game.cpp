@@ -1,10 +1,7 @@
 #include "game.h"
 
-Game::Game(const std::string &map_file) : map(map_file), gun_id(0)
+Game::Game(const std::string &map_file) : map(map_file)
 {
-    // Eliminar una vez que se tengan los spawns de las armas
-    guns.emplace(gun_id, std::make_shared<CowboyPistol>(190, 128));
-    gun_id++;
 }
 
 void Game::process(ClientCommand &command)
@@ -71,7 +68,7 @@ void Game::process(ClientCommand &command)
 void Game::step()
 {
     for (auto &[id, duck] : ducks)
-        duck.step(map, guns);
+        duck.step(map);
 }
 
 Snapshot Game::get_status()
@@ -82,7 +79,7 @@ Snapshot Game::get_status()
     for (auto &[id, duck] : ducks)
         duck_snapshots.push_back(duck.get_status());
 
-    for (auto &[id, gun] : guns)
+    for (auto &[id, gun] : map.get_guns())
     {
         if (gun.get()->has_been_equipped())
             continue;
