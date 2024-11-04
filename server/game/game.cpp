@@ -74,18 +74,10 @@ void Game::step()
 Snapshot Game::get_status()
 {
     MapSnapshot map_snapshot = map.get_status();
+    std::vector<GunNoEquippedSnapshot> guns_snapshots = map.get_guns_snapshots();
     std::vector<DuckSnapshot> duck_snapshots;
-    std::vector<GunNoEquippedSnapshot> guns_snapshots;
     for (auto &[id, duck] : ducks)
         duck_snapshots.push_back(duck.get_status());
-
-    // Colocar en map.get_status cuando se envie el mapa al cliente
-    for (auto &[id, gun] : map.get_guns())
-    {
-        if (gun.get()->has_been_equipped())
-            continue;
-        guns_snapshots.push_back(gun.get()->get_status());
-    }
 
     return Snapshot(std::move(duck_snapshots), std::move(guns_snapshots));
 }

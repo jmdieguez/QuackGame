@@ -95,7 +95,17 @@ public:
         gun_id++;
     }
 
-    ~Map() {}
+    std::vector<GunNoEquippedSnapshot> get_guns_snapshots()
+    {
+        std::vector<GunNoEquippedSnapshot> guns_snapshots;
+        for (auto &[id, gun] : guns)
+        {
+            if (gun.get()->has_been_equipped())
+                continue;
+            guns_snapshots.push_back(gun.get()->get_status());
+        }
+        return guns_snapshots;
+    }
 
     MapSnapshot get_status() { return MapSnapshot(style, size_x, size_y, components); }
 
@@ -118,6 +128,8 @@ public:
     {
         guns.erase(id);
     }
+
+    ~Map() {}
 };
 
 #endif // SERVER_MAP_H
