@@ -29,7 +29,7 @@ void Duck::stop_looking_up() { status.looking_up = false; }
 
 void Duck::stop_moving() { action = DuckAction::IDLE; }
 
-void Duck::pickup_gun(std::shared_ptr<Gun> &gun_ptr) { gun = gun_ptr; }
+// void Duck::pickup_gun(std::shared_ptr<Gun> &gun_ptr) { gun = gun_ptr; }
 
 void Duck::drop_gun()
 {

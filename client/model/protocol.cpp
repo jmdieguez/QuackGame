@@ -7,11 +7,9 @@ ClientProtocol::ClientProtocol(Socket &skt) : skt(skt) {}
 
 void ClientProtocol::read_snapshot(Snapshot &snapshot)
 {
-    uint16_t it;
-    read_data(it);
-
-    // std::cout << "La cantidad de patos son: " << (int)it << std::endl;
-    for (uint16_t i = 0; i < it; i++)
+    uint16_t duck_lenght;
+    read_data(duck_lenght);
+    for (uint16_t i = 0; i < duck_lenght; i++)
     {
         uint16_t id;
         read_data(id);
@@ -28,6 +26,21 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
         DuckAction action_value = static_cast<DuckAction>(current_action);
         DuckSnapshot duck(id, p_snap, action_value, is_right_direction);
         snapshot.ducks.emplace_back(duck);
+    }
+    uint16_t guns_lenght;
+    read_data(guns_lenght);
+
+    for (uint16_t i = 0; i < guns_lenght; i++)
+    {
+        uint16_t type;
+        read_data(type);
+        uint16_t pos_x;
+        read_data(pos_x);
+        uint16_t pos_y;
+        read_data(pos_y);
+        GunType type_value = static_cast<GunType>(type);
+        GunNoEquippedSnapshot gun(type_value, pos_x, pos_y);
+        snapshot.guns.emplace_back(gun);
     }
 }
 

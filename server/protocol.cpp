@@ -43,6 +43,13 @@ void ServerProtocol::send_duck(const DuckSnapshot &duck)
     //   send_data(static_cast<uint16_t>(duck.gun));
 }
 
+void ServerProtocol::send_gun(const GunNoEquippedSnapshot &gun)
+{
+    send_data(static_cast<uint16_t>(gun.type));
+    send_data(static_cast<uint16_t>(gun.pos_x));
+    send_data(static_cast<uint16_t>(gun.pos_y));
+}
+
 void ServerProtocol::send_duck_status(const DuckStatus &status)
 {
     send_data(static_cast<uint16_t>(status.has_chestplate));
@@ -55,10 +62,12 @@ void ServerProtocol::send_duck_status(const DuckStatus &status)
 
 void ServerProtocol::send_snapshot(const Snapshot &snapshot)
 {
-    const uint16_t cant_ducks = static_cast<uint16_t>(snapshot.ducks.size());
-    send_data(cant_ducks);
+    const uint16_t ducks_lenght = static_cast<uint16_t>(snapshot.ducks.size());
+    send_data(ducks_lenght);
     for (const DuckSnapshot &duck : snapshot.ducks)
-    {
         send_duck(duck);
-    }
+    const uint16_t guns_lenght = static_cast<uint16_t>(snapshot.guns.size());
+    send_data(guns_lenght);
+    for (const GunNoEquippedSnapshot &gun : snapshot.guns)
+        send_gun(gun);
 }

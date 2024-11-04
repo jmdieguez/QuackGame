@@ -13,7 +13,7 @@
 #include "../../common/position.h"
 #include "../../common/direction.h"
 #include "../../common/snapshots.h"
-#include "gun.h"
+#include "gun/gun.h"
 #include "map.h"
 
 class Duck
@@ -25,6 +25,7 @@ private:
     DuckAction action = DuckAction::IDLE;
     std::shared_ptr<Gun> gun; // Para polimorfismo
     int y_velocity = 0;
+
 public:
     Duck(const uint8_t &i, const uint16_t &initial_x, const uint16_t &initial_y);
     ~Duck();

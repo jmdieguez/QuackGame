@@ -23,15 +23,13 @@ public:
     ~PositionSnapshot() {}
 };
 
-class GunSnapshot
+class GunNoEquippedSnapshot
 {
 public:
-    const GunType type;
-    const uint8_t rounds;
-    const uint8_t range;
-    const uint8_t ammo;
-
-    GunSnapshot(const GunType &t, const uint8_t &r, const uint8_t &rng, const uint8_t &ammo) : type(t), rounds(r), range(rng), ammo(ammo) {}
+    GunType type;
+    uint16_t pos_x;
+    uint16_t pos_y;
+    GunNoEquippedSnapshot(GunType t, uint16_t x, uint16_t y) : type(t), pos_x(x), pos_y(y) {}
 };
 
 class DuckSnapshot
@@ -43,7 +41,7 @@ public:
     DuckAction current_action;
     bool right_direction; // Eliminar cuando se pueda enviar status al cliente
     // const DuckStatus& status;
-    // const GunSnapshot& gun;
+    // const GunNoEquippedSnapshot& gun;
 
     explicit DuckSnapshot(uint16_t i, PositionSnapshot p_snap, DuckAction action, bool right_direction) : id(i),
                                                                                                           position(std::move(p_snap)),
@@ -55,9 +53,9 @@ class BoxSnapshot
 {
 public:
     const PositionSnapshot &pos;
-    const GunSnapshot &gun;
+    const GunNoEquippedSnapshot &gun;
 
-    BoxSnapshot(PositionSnapshot &p, GunSnapshot &g) : pos(p), gun(g) {}
+    BoxSnapshot(PositionSnapshot &p, GunNoEquippedSnapshot &g) : pos(p), gun(g) {}
 };
 
 class MapSnapshot
@@ -68,13 +66,13 @@ public:
     const uint16_t &size_y;
     const std::vector<MapComponent> &components;
     // std::vector<BoxSnapshot> boxes;
-    
+
     MapSnapshot(const uint16_t &s,
-                const uint16_t &s_x, 
-                const uint16_t &s_y, 
+                const uint16_t &s_x,
+                const uint16_t &s_y,
                 const std::vector<MapComponent> &c)
-     : style(s), size_x(s_x), size_y(s_y), components(c) {}
-    
+        : style(s), size_x(s_x), size_y(s_y), components(c) {}
+
     ~MapSnapshot() {}
 };
 
@@ -82,8 +80,9 @@ class Snapshot
 {
 public:
     std::vector<DuckSnapshot> ducks;
-    Snapshot() : ducks({}) {}
-    Snapshot(std::vector<DuckSnapshot> &&d_s) : ducks(d_s) {}
+    std::vector<GunNoEquippedSnapshot> guns;
+    Snapshot() : ducks({}), guns({}) {}
+    Snapshot(std::vector<DuckSnapshot> &&d_s, std::vector<GunNoEquippedSnapshot> &&g_s) : ducks(d_s), guns(g_s) {}
 };
 
 #endif // SNAPSHOTS_H
