@@ -38,8 +38,10 @@ private:
     void get_and_execute_events();
     void set_xy(DuckSnapshot &duck, int frame_ticks, int &src_x, int &src_y);
     void set_renderer(int current_step);
+    void render_duck_with_gun(DuckSnapshot &duck, int frame_ticks);
     void render_duck(DuckSnapshot &duck, int frame_ticks);
     void render_weapon(DuckSnapshot &duck);
+    void render_weapon_in_map(GunNoEquippedSnapshot &gun);
     void update_renderer(int current_step);
     void handle_event(SDL_Event &event);
     void step(unsigned int current_step);

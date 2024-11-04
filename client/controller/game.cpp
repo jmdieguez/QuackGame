@@ -96,25 +96,31 @@ void Game::render_weapon(DuckSnapshot &duck)
     SDL_RenderCopyEx(renderer.Get(), texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);
 }
 
+void Game::render_weapon_in_map(GunNoEquippedSnapshot &gun)
+{
+    SDL2pp::Texture &texture = get_gun_texture(gun.type);
+    int src_x = POS_INIT_X_GUN, src_y = POS_INIT_Y_GUN;
+    SDL_Rect src_rect = {src_x, src_y, GUN_WIDTH, GUN_HEIGHT};
+    SDL_Rect dst_rect = {gun.pos_x, gun.pos_y, GUN_RECT_WIDTH, GUN_RECT_HEIGHT};
+    SDL_RenderCopyEx(renderer.Get(), texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, SDL_FLIP_NONE);
+}
+
+void Game::render_duck_with_gun(DuckSnapshot &duck, int frame_ticks)
+{
+    render_duck(duck, frame_ticks);
+    if (duck.gun != GunType::None)
+        render_weapon(duck);
+}
+
 void Game::set_renderer(int frame_ticks)
 {
     Snapshot snapshot;
     if (!queue_receiver.try_pop(snapshot))
         return;
-    for (DuckSnapshot duck : snapshot.ducks)
-    {
-        render_duck(duck, frame_ticks);
-        if (duck.gun != GunType::None)
-            render_weapon(duck);
-    }
-    for (GunNoEquippedSnapshot gun : snapshot.guns)
-    {
-        SDL2pp::Texture &texture = get_gun_texture(gun.type);
-        int src_x = POS_INIT_X_GUN, src_y = POS_INIT_Y_GUN;
-        SDL_Rect src_rect = {src_x, src_y, GUN_WIDTH, GUN_HEIGHT};
-        SDL_Rect dst_rect = {gun.pos_x, gun.pos_y, GUN_RECT_WIDTH, GUN_RECT_HEIGHT};
-        SDL_RenderCopyEx(renderer.Get(), texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, SDL_FLIP_NONE);
-    }
+    for (DuckSnapshot &duck : snapshot.ducks)
+        render_duck_with_gun(duck, frame_ticks);
+    for (GunNoEquippedSnapshot &gun : snapshot.guns)
+        render_weapon_in_map(gun);
 }
 
 void Game::step(unsigned int current_step)
