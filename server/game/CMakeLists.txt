@@ -1,13 +1,13 @@
 target_sources(quack_game_common
     PRIVATE
     # .cpp files
-    gun/cowboyweapon.cpp
+    gun/cowboypistol.cpp
     game.cpp
     duck.cpp
     PUBLIC
     # .h files
     gun/gun.h
-    gun/cowboyweapon.h
+    gun/cowboypistol.h
     duck.h
     game.h
     map.h

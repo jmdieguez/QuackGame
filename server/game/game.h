@@ -7,7 +7,7 @@
 #include "../client_command.h"
 #include "../../common/snapshots.h"
 #include "gun/gun.h"
-#include "gun/cowboyweapon.h"
+#include "gun/cowboypistol.h"
 #include "map.h"
 #include "duck.h"
 
