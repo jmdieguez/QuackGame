@@ -2,6 +2,18 @@ n_tiles_x: 16
 n_tiles_y: 16
 tileset: 0
 items:
-  - x: 4
-    y: 5
+  - x: 0
+    y: 15
+    type: 3
+  - x: 3
+    y: 15
+    type: 3
+  - x: 6
+    y: 15
+    type: 3
+  - x: 9
+    y: 15
+    type: 3
+  - x: 12
+    y: 15
     type: 3

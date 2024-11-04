@@ -5,6 +5,11 @@
 #include <yaml-cpp/yaml.h>
 #include <cstdint>
 #include <stdexcept>
+#include <utility>
+
+#include "defs.h"
+
+#define DIMENSIONS_FILE "dimensions.yaml"
 
 enum class Component : uint16_t {
     NONE = 0,
@@ -14,22 +19,6 @@ enum class Component : uint16_t {
     LONG_GROUND,
     SINGLE_GROUND,
     SLIM_WALL
-};
-
-class MapComponent {
-public:
-    const uint16_t x;
-    const uint16_t y;
-    const Component type;  
-    MapComponent(uint16_t &pos_x, uint16_t &pos_y, Component &c) : x(pos_x), y(pos_y), type(c) {}
-    ~MapComponent() {}
-};
-
-struct MapConfig {
-    uint16_t tileset_style;
-    uint16_t n_tiles_x;
-    uint16_t n_tiles_y;
-    std::vector<MapComponent> components;
 };
 
 namespace YAML {
@@ -59,5 +48,14 @@ namespace YAML {
         }    
     };
 }
+
+class MapComponent {
+public:
+    const uint16_t x;
+    const uint16_t y;
+    const Component type;  
+    MapComponent(uint16_t &pos_x, uint16_t &pos_y, Component &c) : x(pos_x), y(pos_y), type(c) {}
+    ~MapComponent() {}
+};
 
 #endif // COMMON_MAP_H

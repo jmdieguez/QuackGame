@@ -1,47 +1,41 @@
 #ifndef SERVER_MAP_H
 #define SERVER_MAP_H
 
-#include "../../common/defs.h"
 #include "../../common/snapshots.h"
 #include "../../common/map.h"
 #include "../../common/position.h"
 #include "gun/cowboypistol.h"
 
-#include <utility>
-#include <yaml-cpp/yaml.h>
 
-#define DIMENSIONS_FILE "dimensions.yaml"
-
-class Map
-{
-private:
-    MapConfig cfg;
+class MapConfig {
+public:
     uint16_t style;
     uint16_t size_x;
     uint16_t size_y;
-    uint16_t gun_id;
     std::vector<MapComponent> components;
     std::vector<bool> bit_map; // true: wall/ground. false: empty space
     std::map<Component, std::pair<uint8_t, uint8_t>> dimensions;
-    std::map<uint8_t, std::shared_ptr<Gun>> guns;
-
-    MapConfig load_yaml_config(const std::string &filename)
-    {
-        MapConfig config;
+    
+    MapConfig(const std::string &filename) {
         YAML::Node root = YAML::LoadFile(filename);
-        config.n_tiles_x = root["n_tiles_x"].as<uint16_t>();
-        config.n_tiles_y = root["n_tiles_y"].as<uint16_t>();
-        config.tileset_style = root["tileset"].as<uint16_t>();
+
+        uint16_t n_tiles_x = root["n_tiles_x"].as<uint16_t>();
+        uint16_t n_tiles_y = root["n_tiles_y"].as<uint16_t>();
+        style = root["tileset"].as<uint16_t>();
 
         for (const auto &itemNode : root["items"])
         {
             uint16_t x = itemNode["x"].as<uint16_t>();
             uint16_t y = itemNode["y"].as<uint16_t>();
             Component component = itemNode["type"].as<Component>();
-            config.components.push_back(MapComponent(x, y, component));
+            components.push_back(MapComponent(x, y, component));
         }
 
-        return config;
+        size_x = n_tiles_x * TILE_SIZE;
+        size_y = n_tiles_y * TILE_SIZE;
+        bit_map = std::vector(size_x * size_y, false);
+        initiate_components_dimensions();
+        initiate_components();
     }
 
     void initiate_components_dimensions()
@@ -52,44 +46,42 @@ private:
             Component type = dim["type"].as<Component>();
             uint16_t dim_x = dim["dim_x"].as<uint16_t>(); // n tiles
             uint16_t dim_y = dim["dim_y"].as<uint16_t>();
-            dimensions.emplace(type, std::make_pair(dim_x, dim_y));
+            dimensions.emplace(type, std::make_pair(dim_x * TILE_SIZE, dim_y * TILE_SIZE));
         }
     }
 
     void initiate_components()
     {
-        for (const MapComponent &component : cfg.components)
-        {
-            std::pair<int, int> component_dimensions = dimensions[component.type];
-            int x_pixels = component_dimensions.first * TILE_SIZE;
-            int y_pixels = component_dimensions.second * TILE_SIZE;
+        for (const MapComponent &component : components)
+        {   
             int start_x = component.x * TILE_SIZE;
             int start_y = component.y * TILE_SIZE;
-
-            for (int i = 0; i < x_pixels; i++)
+            std::pair<int, int> component_dimensions = dimensions[component.type];
+            for (int i = 0; i < component_dimensions.first; i++)
             {
-                for (int j = 0; j < y_pixels; j++)
+                int x_pos = start_x + i;
+                for (int j = 0; j < component_dimensions.second; j++)
                 {
-                    int x_pos = start_x + i;
                     int y_pos = start_y + j;
-                    int index = x_pos + (y_pos * size_x);
-                    bit_map[index] = true;
+                    bit_map[x_pos + (y_pos * size_x)] = true;
                 }
             }
         }
     }
+};
+
+
+class Map
+{
+private:
+    MapConfig cfg;
+    uint16_t gun_id;
+    std::map<uint8_t, std::shared_ptr<Gun>> guns;
 
 public:
-    Map(const std::string &map_file) : cfg(load_yaml_config(map_file)),
-                                       style(cfg.tileset_style),
-                                       size_x(cfg.n_tiles_x * TILE_SIZE),
-                                       size_y(cfg.n_tiles_y * TILE_SIZE),
-                                       gun_id(0),
-                                       bit_map(size_x * size_y, false)
+    Map(const std::string &map_file) : cfg(map_file),
+                                       gun_id(0)
     {
-
-        initiate_components_dimensions();
-        initiate_components();
         // Eliminar una vez que se tengan los spawns de las armas
         guns.emplace(gun_id, std::make_shared<CowboyPistol>(190, 128));
         gun_id++;
@@ -107,20 +99,16 @@ public:
         return guns_snapshots;
     }
 
-    MapSnapshot get_status() { return MapSnapshot(style, size_x, size_y, components); }
+    MapSnapshot get_status() const { return MapSnapshot(cfg.style, cfg.size_x, cfg.size_y, cfg.components); }
 
-    bool validate_coordinate(Position &p)
-    {
-        return (p.pos_x < size_x) && (p.pos_y < size_y) && !has_something_in(p);
+    bool validate_coordinate(Position &p) const
+    {   
+        return (p.pos_x < cfg.size_x) && (p.pos_y < cfg.size_y) && !has_something_in(p);
     }
 
-    bool has_something_in(Position &p)
+    bool has_something_in(Position &p) const
     {   
-        if ((p.pos_x >= size_x) || (p.pos_y >= size_y)) {
-            return false; // Lanzar excepción
-        }
-
-        return bit_map[p.pos_x + (p.pos_y * size_x)];
+        return cfg.bit_map[p.pos_x + (p.pos_y * cfg.size_x)];
     }
 
     std::map<uint8_t, std::shared_ptr<Gun>> &get_guns()

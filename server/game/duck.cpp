@@ -7,7 +7,6 @@ Duck::~Duck() {}
 
 void Duck::move(Direction direction)
 {
-    action = DuckAction::JUMPING;
     switch (direction)
     {
     case Direction::RIGHT:
@@ -93,7 +92,7 @@ void Duck::step(Map &map)
                 i++;
             }
             else
-            {
+            {   
                 break;
             }
         }
@@ -105,11 +104,12 @@ void Duck::step(Map &map)
 
     if (status.grounded)
     {
-        y_velocity = Y_VELOCITY_INITIAL;
         if (status.jumping)
         {
             y_velocity = Y_VELOCITY_ON_JUMP; // take a big impulse at the start
             status.jumping = false;
+        } else {
+            y_velocity = Y_VELOCITY_INITIAL;
         }
     }
     else
@@ -135,7 +135,7 @@ void Duck::step(Map &map)
                 i++;
             }
             else
-            {
+            {   
                 y_velocity = Y_VELOCITY_INITIAL;
                 break;
             }
