@@ -2,6 +2,7 @@
 #define COMMON_DUCK_H
 
 #include <iostream>
+#include <cstdint>
 
 struct DuckStatus {
     bool shooting = false;

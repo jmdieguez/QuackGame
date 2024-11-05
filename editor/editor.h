@@ -5,8 +5,8 @@
 #include <map>
 
 #include "../common/map.h"
-#include "tiles.h"
-#include "tileset.h"
+#include "../ui/tiles.h"
+#include "../ui/tileset.h"
 #include "grid.h"
 #include "save_button.h"
 

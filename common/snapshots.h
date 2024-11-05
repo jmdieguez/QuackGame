@@ -63,11 +63,13 @@ public:
 class MapSnapshot
 {
 public:
-    const uint16_t &style;
-    const uint16_t &size_x;
-    const uint16_t &size_y;
-    const std::vector<MapComponent> &components;
+    uint16_t style;
+    uint16_t size_x;
+    uint16_t size_y;
+    std::vector<MapComponent> components;
     // std::vector<BoxSnapshot> boxes;
+
+    MapSnapshot() : style(0), size_x(0), size_y(0) {}
 
     MapSnapshot(const uint16_t &s,
                 const uint16_t &s_x,
@@ -83,8 +85,13 @@ class Snapshot
 public:
     std::vector<DuckSnapshot> ducks;
     std::vector<GunNoEquippedSnapshot> guns;
+    MapSnapshot map;
+
     Snapshot() : ducks({}), guns({}) {}
-    Snapshot(std::vector<DuckSnapshot> &&d_s, std::vector<GunNoEquippedSnapshot> &&g_s) : ducks(d_s), guns(g_s) {}
+    Snapshot(std::vector<DuckSnapshot> &&d_s,
+             std::vector<GunNoEquippedSnapshot> &&g_s,
+             MapSnapshot &map_snapshot
+            ) : ducks(d_s), guns(g_s), map(map_snapshot) {}
 };
 
 #endif // SNAPSHOTS_H

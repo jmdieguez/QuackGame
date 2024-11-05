@@ -14,6 +14,7 @@ private:
     void send_duck(const DuckSnapshot &duck);
     void send_gun(const GunNoEquippedSnapshot &gun);
     void send_position(const PositionSnapshot &pos);
+    void send_map_component(const MapComponent &component);
 
 public:
     explicit ServerProtocol(Socket &);

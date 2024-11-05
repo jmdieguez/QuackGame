@@ -5,7 +5,5 @@ target_sources(quack_game_editor
     PUBLIC
     editor.h
     grid.h
-    tiles.h
-    tileset.h
     save_button.h
     )

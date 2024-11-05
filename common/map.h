@@ -51,10 +51,11 @@ namespace YAML {
 
 class MapComponent {
 public:
-    const uint16_t x;
-    const uint16_t y;
-    const Component type;  
+    uint16_t x;
+    uint16_t y;
+    Component type;  
     MapComponent(uint16_t &pos_x, uint16_t &pos_y, Component &c) : x(pos_x), y(pos_y), type(c) {}
+
     ~MapComponent() {}
 };
 

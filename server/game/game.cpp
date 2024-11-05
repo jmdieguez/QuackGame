@@ -79,5 +79,5 @@ Snapshot Game::get_status()
     for (auto &[id, duck] : ducks)
         duck_snapshots.push_back(duck.get_status());
 
-    return Snapshot(std::move(duck_snapshots), std::move(guns_snapshots));
+    return Snapshot(std::move(duck_snapshots), std::move(guns_snapshots), map_snapshot);
 }

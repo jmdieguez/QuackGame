@@ -61,6 +61,12 @@ void ServerProtocol::send_duck_status(const DuckStatus &status)
     send_data(static_cast<uint16_t>(status.is_alive));
 }
 
+void ServerProtocol::send_map_component(const MapComponent &component) {
+    send_data(static_cast<uint16_t>(component.type));
+    send_data(component.x);
+    send_data(component.y);
+}
+
 void ServerProtocol::send_snapshot(const Snapshot &snapshot)
 {
     const uint16_t ducks_lenght = static_cast<uint16_t>(snapshot.ducks.size());
@@ -71,4 +77,12 @@ void ServerProtocol::send_snapshot(const Snapshot &snapshot)
     send_data(guns_lenght);
     for (const GunNoEquippedSnapshot &gun : snapshot.guns)
         send_gun(gun);
+
+    send_data(snapshot.map.style);
+    send_data(snapshot.map.size_x);
+    send_data(snapshot.map.size_y);
+    const uint16_t components_length = static_cast<uint16_t>(snapshot.map.components.size());
+    send_data(components_length);
+    for (const MapComponent &component : snapshot.map.components)
+        send_map_component(component);
 }

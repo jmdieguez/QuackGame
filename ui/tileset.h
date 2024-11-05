@@ -1,5 +1,5 @@
-#ifndef EDITOR_TILESET_H
-#define EDITOR_TILESET_H
+#ifndef UI_TILESET_H
+#define UI_TILESET_H
 
 #include <memory>
 #include <map>
@@ -7,15 +7,13 @@
 
 #include "../common/snapshots.h"
 
-using namespace SDL2pp;
-
 class Tileset {
     
 public:
-    std::map<Component, std::shared_ptr<Texture>> textures;
+    std::map<Component, std::shared_ptr<SDL2pp::Texture>> textures;
     std::map<Component, SDL_Rect> areas;
     
-    Tileset(uint8_t &style, Renderer &renderer, std::shared_ptr<Texture> all_tilesets) {
+    Tileset(uint8_t &style, SDL2pp::Renderer &renderer, std::shared_ptr<SDL2pp::Texture> all_tilesets) {
         areas = {
             { Component::SINGLE_GROUND, {16 + (style * 128), 0, 16, 16} },
             { Component::BIG_WALL_GROUND, {0 + (style * 128), 16, 48, 16} },
@@ -26,7 +24,7 @@ public:
         };
 
         for (const auto& [key, area] : areas) {
-            std::shared_ptr<Texture> texture = std::make_shared<Texture>
+            std::shared_ptr<SDL2pp::Texture> texture = std::make_shared<SDL2pp::Texture>
                 (renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, area.w, area.h);
             renderer.SetTarget(*texture);
             renderer.Clear();
@@ -39,4 +37,4 @@ public:
     ~Tileset() {}
 };
 
-#endif // TILESET_H
+#endif // UI_TILESET_H

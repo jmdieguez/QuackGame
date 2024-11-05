@@ -110,6 +110,16 @@ void Game::render_duck_with_gun(DuckSnapshot &duck, int frame_ticks)
         render_weapon(duck);
 }
 
+void Game::render_component_in_map(MapComponent &component, uint16_t &style) {
+    std::unique_ptr<Tileset>& tileset = tilesets[style];
+    std::shared_ptr<SDL2pp::Texture>& texture = tileset->textures[component.type];
+    uint8_t dim_x = dimensions[component.type].first;
+    uint8_t dim_y = dimensions[component.type].second;
+    SDL_Rect src_rect = {0, 0, dim_x, dim_y};
+    SDL_Rect dst_rect = {component.x * TILE_SIZE, component.y * TILE_SIZE, dim_x, dim_y};
+    renderer.Copy(*texture, src_rect, dst_rect);
+}
+
 void Game::set_renderer(int frame_ticks)
 {
     Snapshot snapshot;
@@ -119,6 +129,9 @@ void Game::set_renderer(int frame_ticks)
         render_duck_with_gun(duck, frame_ticks);
     for (GunNoEquippedSnapshot &gun : snapshot.guns)
         render_weapon_in_map(gun);
+
+    for (MapComponent &component : snapshot.map.components)
+        render_component_in_map(component, snapshot.map.style);
 }
 
 void Game::step(unsigned int current_step)
@@ -142,8 +155,23 @@ Game::Game(const char *host, const char *port)
       game_context(queue_sender),
       socket(host, port),
       renderer(window.get_renderer()),
-      duck_texture(get_duck_texture())
+      duck_texture(get_duck_texture()),
+      all_tilesets_texture(std::make_shared<SDL2pp::Texture>(renderer, TILESETS))
 {
+    YAML::Node root = YAML::LoadFile(DIMENSIONS_FILE);
+    for (const auto &dim : root["components"])
+    {
+        Component type = dim["type"].as<Component>();
+        uint16_t dim_x = dim["dim_x"].as<uint16_t>(); // n tiles
+        uint16_t dim_y = dim["dim_y"].as<uint16_t>();
+        dimensions.emplace(type, std::make_pair(dim_x * TILE_SIZE, dim_y * TILE_SIZE));
+    }
+
+    int n_tilesets = 5;
+    
+    for (uint8_t i = 0; i < n_tilesets; i++) {
+        tilesets.emplace(i, std::make_unique<Tileset>(i, renderer, all_tilesets_texture));
+    }
 }
 
 void Game::run()

@@ -2,6 +2,7 @@
 #include <arpa/inet.h>
 #include "../../common/liberror.h"
 #include "../../common/snapshots.h"
+#include "../../common/map.h"
 
 ClientProtocol::ClientProtocol(Socket &skt) : skt(skt) {}
 
@@ -44,6 +45,26 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
         GunType type_value = static_cast<GunType>(type);
         GunNoEquippedSnapshot gun(type_value, pos_x, pos_y);
         snapshot.guns.emplace_back(gun);
+    }
+
+    uint16_t style, size_x, size_y, components_length;
+    read_data(style);
+    read_data(size_x);
+    read_data(size_y);
+    read_data(components_length);
+
+    snapshot.map.style = style;
+    snapshot.map.size_x = size_x;
+    snapshot.map.size_y = size_y;
+
+    for (uint16_t i = 0; i < components_length; i++) {
+        uint16_t type, x, y;
+        read_data(type);
+        read_data(x);
+        read_data(y);
+        Component aux = static_cast<Component>(type);
+        MapComponent component(x, y, aux);
+        snapshot.map.components.emplace_back(component);
     }
 }
 

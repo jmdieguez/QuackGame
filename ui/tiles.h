@@ -1,5 +1,5 @@
-#ifndef EDITOR_TILE_H
-#define EDITOR_TILE_H
+#ifndef UI_TILE_H
+#define UI_TILE_H
 
 #include <map>
 #include <utility>
@@ -21,4 +21,4 @@ public:
     ~Tiles() {}
 };
 
-#endif // EDITOR_TILE_H
+#endif // UI_TILE_H
