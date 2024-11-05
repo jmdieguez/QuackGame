@@ -79,7 +79,7 @@ void Game::render_duck(DuckSnapshot &duck, int frame_ticks)
     set_xy(duck, frame_ticks, src_x, src_y);
     SDL_Rect src_rect = {src_x, src_y, SRC_DUCK_WIDTH, SRC_DUCK_HEIGHT};
     SDL_Rect dst_rect = {duck.position.pos_x, duck.position.pos_y, DUCK_WIDTH, DUCK_HEIGHT};
-    SDL_RendererFlip flip = duck.right_direction ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
+    SDL_RendererFlip flip = duck.status.looking_right ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
     SDL_RenderCopyEx(renderer.Get(), duck_texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);
 }
 
@@ -87,9 +87,9 @@ void Game::render_weapon(DuckSnapshot &duck)
 {
     SDL2pp::Texture &texture = get_gun_texture(duck.gun);
     int src_x = POS_INIT_X_GUN, src_y = POS_INIT_Y_GUN;
-    SDL_RendererFlip flip = duck.right_direction ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
+    SDL_RendererFlip flip = duck.status.looking_right ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
     SDL_Rect src_rect = {src_x, src_y, SRC_GUN_WIDTH, SRC_GUN_HEIGHT};
-    uint16_t dst_rect_x = duck.position.pos_x + (duck.right_direction ? GUN_RIGHT_DIRECTION_X : GUN_LEFT_DIRECTION_X);
+    uint16_t dst_rect_x = duck.position.pos_x + (duck.status.looking_right ? GUN_RIGHT_DIRECTION_X : GUN_LEFT_DIRECTION_X);
     SDL_Rect dst_rect = {dst_rect_x, duck.position.pos_y + SRC_DUCK_HEIGHT / 2, GUN_WIDTH, GUN_HEIGHT};
     SDL_RenderCopyEx(renderer.Get(), texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);
 }
@@ -110,9 +110,10 @@ void Game::render_duck_with_gun(DuckSnapshot &duck, int frame_ticks)
         render_weapon(duck);
 }
 
-void Game::render_component_in_map(MapComponent &component, uint16_t &style) {
-    std::unique_ptr<Tileset>& tileset = tilesets[style];
-    std::shared_ptr<SDL2pp::Texture>& texture = tileset->textures[component.type];
+void Game::render_component_in_map(MapComponent &component, uint16_t &style)
+{
+    std::unique_ptr<Tileset> &tileset = tilesets[style];
+    std::shared_ptr<SDL2pp::Texture> &texture = tileset->textures[component.type];
     uint8_t dim_x = dimensions[component.type].first;
     uint8_t dim_y = dimensions[component.type].second;
     SDL_Rect src_rect = {0, 0, dim_x, dim_y};
@@ -168,8 +169,9 @@ Game::Game(const char *host, const char *port)
     }
 
     int n_tilesets = 5;
-    
-    for (uint8_t i = 0; i < n_tilesets; i++) {
+
+    for (uint8_t i = 0; i < n_tilesets; i++)
+    {
         tilesets.emplace(i, std::make_unique<Tileset>(i, renderer, all_tilesets_texture));
     }
 }

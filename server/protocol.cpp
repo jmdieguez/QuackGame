@@ -38,10 +38,7 @@ void ServerProtocol::send_duck(const DuckSnapshot &duck)
     send_data(duck.position.pos_y);
     send_data(static_cast<uint16_t>(duck.current_action));
     send_data(static_cast<uint16_t>(duck.gun));
-    send_data(duck.right_direction ? 1 : 0);
-
-    //    send_duck_status(duck.status);
-    //   send_data(static_cast<uint16_t>(duck.gun));
+    send_duck_status(duck.status);
 }
 
 void ServerProtocol::send_gun(const GunNoEquippedSnapshot &gun)
@@ -53,15 +50,18 @@ void ServerProtocol::send_gun(const GunNoEquippedSnapshot &gun)
 
 void ServerProtocol::send_duck_status(const DuckStatus &status)
 {
-    send_data(static_cast<uint16_t>(status.has_chestplate));
     send_data(static_cast<uint16_t>(status.shooting));
-    send_data(static_cast<uint16_t>(status.looking_right));
+    send_data(static_cast<uint16_t>(status.jumping));
+    send_data(static_cast<uint16_t>(status.grounded));
     send_data(static_cast<uint16_t>(status.looking_up));
+    send_data(static_cast<uint16_t>(status.looking_right));
     send_data(static_cast<uint16_t>(status.has_helmet));
+    send_data(static_cast<uint16_t>(status.has_chestplate));
     send_data(static_cast<uint16_t>(status.is_alive));
 }
 
-void ServerProtocol::send_map_component(const MapComponent &component) {
+void ServerProtocol::send_map_component(const MapComponent &component)
+{
     send_data(static_cast<uint16_t>(component.type));
     send_data(component.x);
     send_data(component.y);

@@ -92,7 +92,7 @@ void Duck::step(Map &map)
                 i++;
             }
             else
-            {   
+            {
                 break;
             }
         }
@@ -108,7 +108,9 @@ void Duck::step(Map &map)
         {
             y_velocity = Y_VELOCITY_ON_JUMP; // take a big impulse at the start
             status.jumping = false;
-        } else {
+        }
+        else
+        {
             y_velocity = Y_VELOCITY_INITIAL;
         }
     }
@@ -135,7 +137,7 @@ void Duck::step(Map &map)
                 i++;
             }
             else
-            {   
+            {
                 y_velocity = Y_VELOCITY_INITIAL;
                 break;
             }
@@ -170,11 +172,10 @@ bool Duck::receive_shot()
 DuckSnapshot Duck::get_status()
 {
     PositionSnapshot position_snapshot = position.get_status();
-    // GunSnapshot gun_snapshot = gun->get_status();
     GunType gun_type = get_gun_type();
     return DuckSnapshot(id,
                         position_snapshot,
-                        action, gun_type, status.looking_right);
+                        action, gun_type, status);
     //  100,
     //  status,
     // gun_snapshot);

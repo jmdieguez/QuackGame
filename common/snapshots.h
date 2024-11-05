@@ -40,15 +40,13 @@ public:
     PositionSnapshot position;
     DuckAction current_action;
     GunType gun;
-    bool right_direction; // Eliminar cuando se pueda enviar status al cliente
+    DuckStatus status;
 
-    // const DuckStatus& status;
-
-    explicit DuckSnapshot(uint16_t i, PositionSnapshot p_snap, DuckAction action, GunType gun, bool right_direction) : id(i),
-                                                                                                                       position(std::move(p_snap)),
-                                                                                                                       current_action(action),
-                                                                                                                       gun(gun),
-                                                                                                                       right_direction(right_direction) {}
+    explicit DuckSnapshot(uint16_t i, PositionSnapshot p_snap, DuckAction action, GunType gun, DuckStatus status) : id(i),
+                                                                                                                    position(std::move(p_snap)),
+                                                                                                                    current_action(action),
+                                                                                                                    gun(gun),
+                                                                                                                    status(status) {}
 };
 
 class BoxSnapshot
@@ -90,8 +88,7 @@ public:
     Snapshot() : ducks({}), guns({}) {}
     Snapshot(std::vector<DuckSnapshot> &&d_s,
              std::vector<GunNoEquippedSnapshot> &&g_s,
-             MapSnapshot &map_snapshot
-            ) : ducks(d_s), guns(g_s), map(map_snapshot) {}
+             MapSnapshot &map_snapshot) : ducks(d_s), guns(g_s), map(map_snapshot) {}
 };
 
 #endif // SNAPSHOTS_H

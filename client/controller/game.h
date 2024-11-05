@@ -39,7 +39,7 @@ private:
     SDL2pp::Texture &duck_texture;
     SDL2pp::Texture &get_duck_texture();
     SDL2pp::Texture &get_gun_texture(GunType gun);
-    
+
     std::shared_ptr<SDL2pp::Texture> all_tilesets_texture;
     std::map<uint8_t, std::unique_ptr<Tileset>> tilesets;
     std::map<Component, std::pair<uint8_t, uint8_t>> dimensions;

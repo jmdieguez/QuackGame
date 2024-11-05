@@ -9,6 +9,7 @@ class ClientProtocol
 {
 private:
     Socket &skt;
+    DuckStatus read_status();
     void read_data(uint16_t &data);
 
 public:

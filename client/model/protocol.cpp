@@ -4,6 +4,28 @@
 #include "../../common/snapshots.h"
 #include "../../common/map.h"
 
+DuckStatus ClientProtocol::read_status()
+{
+    uint16_t shooting;
+    read_data(shooting);
+    uint16_t jumping;
+    read_data(jumping);
+    uint16_t grounded;
+    read_data(grounded);
+    uint16_t looking_up;
+    read_data(looking_up);
+    uint16_t looking_right;
+    read_data(looking_right);
+    uint16_t has_helmet;
+    read_data(has_helmet);
+    uint16_t has_chestplate;
+    read_data(has_chestplate);
+    uint16_t is_alive;
+    read_data(is_alive);
+    DuckStatus duck_status = {!!shooting, !!jumping, !!grounded, !!looking_up, !!looking_right, !!has_helmet, !!has_chestplate, !!is_alive};
+    return duck_status;
+}
+
 ClientProtocol::ClientProtocol(Socket &skt) : skt(skt) {}
 
 void ClientProtocol::read_snapshot(Snapshot &snapshot)
@@ -22,13 +44,11 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
         read_data(current_action);
         uint16_t current_gun;
         read_data(current_gun);
-        uint16_t right_direction;   // Eliminar cuando se pueda enviar status al cliente
-        read_data(right_direction); // Eliminar cuando se pueda enviar status al cliente
-        bool is_right_direction = right_direction;
+        DuckStatus duck_status = read_status();
         PositionSnapshot p_snap(pos_x, pos_y);
         DuckAction action_value = static_cast<DuckAction>(current_action);
         GunType gun_value = static_cast<GunType>(current_gun);
-        DuckSnapshot duck(id, p_snap, action_value, gun_value, is_right_direction);
+        DuckSnapshot duck(id, p_snap, action_value, gun_value, duck_status);
         snapshot.ducks.emplace_back(duck);
     }
     uint16_t guns_lenght;
@@ -57,7 +77,8 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
     snapshot.map.size_x = size_x;
     snapshot.map.size_y = size_y;
 
-    for (uint16_t i = 0; i < components_length; i++) {
+    for (uint16_t i = 0; i < components_length; i++)
+    {
         uint16_t type, x, y;
         read_data(type);
         read_data(x);
