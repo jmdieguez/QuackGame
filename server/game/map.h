@@ -6,8 +6,8 @@
 #include "../../common/position.h"
 #include "gun/cowboypistol.h"
 
-
-class MapConfig {
+class MapConfig
+{
 public:
     uint16_t style;
     uint16_t size_x;
@@ -15,8 +15,9 @@ public:
     std::vector<MapComponent> components;
     std::vector<bool> bit_map; // true: wall/ground. false: empty space
     std::map<Component, std::pair<uint8_t, uint8_t>> dimensions;
-    
-    MapConfig(const std::string &filename) {
+
+    MapConfig(const std::string &filename)
+    {
         YAML::Node root = YAML::LoadFile(filename);
 
         uint16_t n_tiles_x = root["n_tiles_x"].as<uint16_t>();
@@ -53,7 +54,7 @@ public:
     void initiate_components()
     {
         for (const MapComponent &component : components)
-        {   
+        {
             int start_x = component.x * TILE_SIZE;
             int start_y = component.y * TILE_SIZE;
             std::pair<int, int> component_dimensions = dimensions[component.type];
@@ -69,7 +70,6 @@ public:
         }
     }
 };
-
 
 class Map
 {
@@ -102,12 +102,12 @@ public:
     MapSnapshot get_status() const { return MapSnapshot(cfg.style, cfg.size_x, cfg.size_y, cfg.components); }
 
     bool validate_coordinate(Position &p) const
-    {   
+    {
         return (p.pos_x < cfg.size_x) && (p.pos_y < cfg.size_y) && !has_something_in(p);
     }
 
     bool has_something_in(Position &p) const
-    {   
+    {
         return cfg.bit_map[p.pos_x + (p.pos_y * cfg.size_x)];
     }
 
