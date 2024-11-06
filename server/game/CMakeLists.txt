@@ -11,5 +11,5 @@ target_sources(quack_game_common
     duck.h
     game.h
     map.h
-    shoot_event.h
+    projectile.h
     )

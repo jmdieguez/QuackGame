@@ -71,7 +71,7 @@ void Duck::lay()
     action = DuckAction::LAYING;
 }
 
-void Duck::step(Map &map)
+void Duck::step(Map &map, std::vector<Projectile> &projectiles)
 {
     if (action == DuckAction::MOVING)
     {
@@ -156,7 +156,8 @@ void Duck::step(Map &map)
 
     if (status.shooting && gun != nullptr)
     {
-        ShootEvent shoot_event = gun->shoot(status.looking_right, status.looking_up);
+        Projectile projectile = gun->shoot(status.looking_right, status.looking_up, position);
+        projectiles.push_back(projectile);
     }
 }
 

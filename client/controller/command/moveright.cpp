@@ -1,14 +1,14 @@
-#include "moverightcommand.h"
+#include "moveright.h"
 
 /***************************************************************************
                               PUBLIC METHODS
 ****************************************************************************/
 
-MoveRightCommand::MoveRightCommand()
+MoveRight::MoveRight()
 {
 }
 
-void MoveRightCommand::execute(GameContext &game_context)
+void MoveRight::execute(GameContext &game_context)
 {
     if (game_context.is_right_direction_pressed() || game_context.is_bent_down_pressed())
         return;
@@ -16,7 +16,7 @@ void MoveRightCommand::execute(GameContext &game_context)
     game_context.push_message(ClientActionType::MOVE_RIGHT);
 }
 
-void MoveRightCommand::undo(GameContext &game_context)
+void MoveRight::undo(GameContext &game_context)
 {
     game_context.set_right_direction_active(false);
     if (game_context.is_left_direction_pressed())
@@ -24,6 +24,6 @@ void MoveRightCommand::undo(GameContext &game_context)
     game_context.push_message(ClientActionType::STOP_MOVING_RIGHT);
 }
 
-MoveRightCommand::~MoveRightCommand()
+MoveRight::~MoveRight()
 {
 }

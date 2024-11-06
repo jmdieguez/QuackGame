@@ -69,10 +69,18 @@ void Game::process(ClientCommand &command)
     }
 }
 
+void Game::moves_projectiles(Map &map)
+{
+    (void)map;
+    for (Projectile &p : projectiles)
+        p.move();
+}
+
 void Game::step()
 {
+    moves_projectiles(map);
     for (auto &[id, duck] : ducks)
-        duck.step(map);
+        duck.step(map, projectiles);
 }
 
 Snapshot Game::get_status()
@@ -82,6 +90,8 @@ Snapshot Game::get_status()
     std::vector<DuckSnapshot> duck_snapshots;
     for (auto &[id, duck] : ducks)
         duck_snapshots.push_back(duck.get_status());
-
-    return Snapshot(std::move(duck_snapshots), std::move(guns_snapshots), map_snapshot);
+    std::vector<ProjectileSnapshot> projectile_snapshots;
+    for (auto &projectile : projectiles)
+        projectile_snapshots.push_back(projectile.get_status());
+    return Snapshot(std::move(duck_snapshots), std::move(guns_snapshots), std::move(projectile_snapshots), map_snapshot);
 }

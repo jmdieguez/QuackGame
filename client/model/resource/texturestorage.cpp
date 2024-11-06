@@ -11,6 +11,13 @@ TextureFigure TextureStorage::gun_type_to_texture(GunType gun)
     return TextureFigure::CowboyPistol;
 }
 
+TextureFigure TextureStorage::projectile_type_to_texture(ProjectileType projectile)
+{
+    if (ProjectileType::CowboyBullet == projectile)
+        return TextureFigure::CowboyBullet;
+    return TextureFigure::CowboyBullet;
+}
+
 /***************************************************************************
                               PUBLIC METHODS
 ****************************************************************************/
@@ -31,6 +38,14 @@ std::shared_ptr<Texture> TextureStorage::get_texture(SDL2pp::Renderer &renderer,
 std::shared_ptr<Texture> TextureStorage::get_texture(SDL2pp::Renderer &renderer, GunType gun)
 {
     TextureFigure figure = gun_type_to_texture(gun);
+    if (textures_created.find(figure) == textures_created.end())
+        textures_created[figure] = factory.create_texture(renderer, figure);
+    return textures_created[figure];
+}
+
+std::shared_ptr<Texture> TextureStorage::get_texture(SDL2pp::Renderer &renderer, ProjectileType projectile)
+{
+    TextureFigure figure = projectile_type_to_texture(projectile);
     if (textures_created.find(figure) == textures_created.end())
         textures_created[figure] = factory.create_texture(renderer, figure);
     return textures_created[figure];

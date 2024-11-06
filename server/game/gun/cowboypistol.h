@@ -8,7 +8,7 @@ class CowboyPistol : public Gun
 private:
 public:
     explicit CowboyPistol(uint16_t pos_x, uint16_t pos_y);
-    ShootEvent shoot(bool &looking_right, bool &looking_up) override;
+    Projectile shoot(bool &looking_right, bool &looking_up, Position &duck_position) override;
     GunNoEquippedSnapshot get_status() override;
     GunType get_type() override;
     ~CowboyPistol();

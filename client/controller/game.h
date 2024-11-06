@@ -39,6 +39,7 @@ private:
     SDL2pp::Texture &duck_texture;
     SDL2pp::Texture &get_duck_texture();
     SDL2pp::Texture &get_gun_texture(GunType gun);
+    SDL2pp::Texture &get_projectile_texture(ProjectileType projectile);
 
     std::shared_ptr<SDL2pp::Texture> all_tilesets_texture;
     std::map<uint8_t, std::unique_ptr<Tileset>> tilesets;
@@ -52,6 +53,7 @@ private:
     void render_weapon(DuckSnapshot &duck);
     void render_weapon_in_map(GunNoEquippedSnapshot &gun);
     void render_component_in_map(MapComponent &component, uint16_t &style);
+    void render_projectile(ProjectileSnapshot &projectile);
     void update_renderer(int current_step);
     void handle_event(SDL_Event &event);
     void step(unsigned int current_step);

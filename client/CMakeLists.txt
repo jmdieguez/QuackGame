@@ -4,9 +4,10 @@ target_sources(quack_game_client
     controller/command/gamecontext.cpp
     controller/game.cpp
     controller/command/inputhandler.cpp
-    controller/command/movebentdowncommand.cpp
-    controller/command/moveleftcommand.cpp
-    controller/command/moverightcommand.cpp
+    controller/command/movebentdown.cpp
+    controller/command/moveleft.cpp
+    controller/command/moveright.cpp
+    controller/command/shoot.cpp
     model/protocol.cpp
     model/receiver.cpp
     model/sender.cpp
@@ -21,9 +22,10 @@ target_sources(quack_game_client
     controller/game.h 
     controller/command/command.h
     controller/command/inputhandler.h
-    controller/command/movebentdowncommand.h
-    controller/command/moveleftcommand.h
-    controller/command/moverightcommand.h
+    controller/command/movebentdown.h
+    controller/command/moveleft.h
+    controller/command/moveright.h
+    controller/command/shoot.h
     model/protocol.h
     model/receiver.h
     model/sender.h

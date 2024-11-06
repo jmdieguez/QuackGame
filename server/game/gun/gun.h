@@ -3,9 +3,11 @@
 
 #include <cstdint>
 
-#include "../shoot_event.h"
 #include "../../../common/snapshots.h"
 #include "../../../common/texturesize.h"
+#include "../../../common/projectiletype.h"
+#include "../../../common/position.h"
+#include "../projectile.h"
 
 class Gun
 {
@@ -38,7 +40,7 @@ public:
         return ((duck_pos_x - GUN_WIDTH) == pos_x || (duck_pos_x + GUN_WIDTH) == pos_x) && duck_pos_y == pos_y;
     }
 
-    virtual ShootEvent shoot(bool &looking_right, bool &looking_up) = 0;
+    virtual Projectile shoot(bool &looking_right, bool &looking_up, Position &duck_position) = 0;
 
     virtual GunNoEquippedSnapshot get_status() = 0;
 

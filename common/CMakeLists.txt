@@ -25,4 +25,6 @@ target_sources(quack_game_common
     duck.h
     texturesize.h
     map.h
+    projectiletype.h
+    projectiledirection.h
 )

@@ -12,4 +12,8 @@
 #define GUN_HEIGHT 16
 #define GUN_WIDTH 16
 
+// Projectile
+#define PROJECTILE_HEIGHT 8
+#define PROJECTILE_WIDTH 8
+
 #endif // FIGURE_SIZES_H

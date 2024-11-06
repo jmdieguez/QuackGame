@@ -10,6 +10,7 @@ class ClientProtocol
 private:
     Socket &skt;
     DuckStatus read_status();
+    ProjectileSnapshot read_projectile();
     void read_data(uint16_t &data);
 
 public:

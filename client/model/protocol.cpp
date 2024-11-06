@@ -28,13 +28,31 @@ DuckStatus ClientProtocol::read_status()
     return duck_status;
 }
 
+ProjectileSnapshot ClientProtocol::read_projectile()
+{
+    uint16_t type;
+    read_data(type);
+    uint16_t type_direction;
+    read_data(type_direction);
+    uint16_t pos_x;
+    read_data(pos_x);
+    uint16_t pos_y;
+    read_data(pos_y);
+    uint16_t finish;
+    read_data(finish);
+    ProjectileType type_value = static_cast<ProjectileType>(type);
+    ProjectileDirection type_direction_value = static_cast<ProjectileDirection>(type_direction);
+    ProjectileSnapshot projectile(pos_x, pos_y, type_value, type_direction_value, !!finish);
+    return projectile;
+}
+
 ClientProtocol::ClientProtocol(Socket &skt) : skt(skt) {}
 
 void ClientProtocol::read_snapshot(Snapshot &snapshot)
 {
-    uint16_t duck_lenght;
-    read_data(duck_lenght);
-    for (uint16_t i = 0; i < duck_lenght; i++)
+    uint16_t duck_length;
+    read_data(duck_length);
+    for (uint16_t i = 0; i < duck_length; i++)
     {
         uint16_t id;
         read_data(id);
@@ -53,10 +71,10 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
         DuckSnapshot duck(id, p_snap, action_value, gun_value, duck_status);
         snapshot.ducks.emplace_back(duck);
     }
-    uint16_t guns_lenght;
-    read_data(guns_lenght);
+    uint16_t guns_length;
+    read_data(guns_length);
 
-    for (uint16_t i = 0; i < guns_lenght; i++)
+    for (uint16_t i = 0; i < guns_length; i++)
     {
         uint16_t type;
         read_data(type);
@@ -67,6 +85,15 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
         GunType type_value = static_cast<GunType>(type);
         GunNoEquippedSnapshot gun(type_value, pos_x, pos_y);
         snapshot.guns.emplace_back(gun);
+    }
+
+    uint16_t projectile_length;
+    read_data(projectile_length);
+
+    for (uint16_t i = 0; i < projectile_length; i++)
+    {
+        ProjectileSnapshot projectile = read_projectile();
+        snapshot.projectiles.emplace_back(projectile);
     }
 
     uint16_t style, size_x, size_y, components_length;

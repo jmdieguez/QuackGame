@@ -13,8 +13,8 @@ private:
     void send_duck_status(const DuckStatus &status);
     void send_duck(const DuckSnapshot &duck);
     void send_gun(const GunNoEquippedSnapshot &gun);
-    void send_position(const PositionSnapshot &pos);
     void send_map_component(const MapComponent &component);
+    void send_projectile(const ProjectileSnapshot &projectile);
 
 public:
     explicit ServerProtocol(Socket &);

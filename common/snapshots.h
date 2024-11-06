@@ -12,6 +12,8 @@
 #include "map.h"
 #include "duck.h"
 #include "gun_type.h"
+#include "projectiletype.h"
+#include "projectiledirection.h"
 
 class PositionSnapshot
 {
@@ -30,6 +32,17 @@ public:
     uint16_t pos_x;
     uint16_t pos_y;
     GunNoEquippedSnapshot(GunType t, uint16_t x, uint16_t y) : type(t), pos_x(x), pos_y(y) {}
+};
+
+class ProjectileSnapshot
+{
+public:
+    uint16_t pos_x;
+    uint16_t pos_y;
+    ProjectileType type;
+    ProjectileDirection type_direction;
+    bool finish;
+    explicit ProjectileSnapshot(uint16_t x, uint16_t y, ProjectileType type, ProjectileDirection type_direction, bool finish) : pos_x(x), pos_y(y), type(type), type_direction(type_direction), finish(finish) {}
 };
 
 class DuckSnapshot
@@ -83,12 +96,14 @@ class Snapshot
 public:
     std::vector<DuckSnapshot> ducks;
     std::vector<GunNoEquippedSnapshot> guns;
+    std::vector<ProjectileSnapshot> projectiles;
     MapSnapshot map;
 
-    Snapshot() : ducks({}), guns({}) {}
+    Snapshot() : ducks({}), guns({}), projectiles({}) {}
     Snapshot(std::vector<DuckSnapshot> &&d_s,
              std::vector<GunNoEquippedSnapshot> &&g_s,
-             MapSnapshot &map_snapshot) : ducks(d_s), guns(g_s), map(map_snapshot) {}
+             std::vector<ProjectileSnapshot> &&p,
+             MapSnapshot &map_snapshot) : ducks(d_s), guns(g_s), projectiles(p), map(map_snapshot) {}
 };
 
 #endif // SNAPSHOTS_H

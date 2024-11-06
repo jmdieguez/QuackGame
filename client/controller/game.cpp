@@ -20,6 +20,11 @@
 #define SRC_GUN_WIDTH 120
 #define SRC_GUN_HEIGHT 120
 
+#define POS_INIT_X_PROJECTILE 0
+#define POS_INIT_Y_PROJECTILE 0
+#define SRC_PROJECTILE_WIDTH 60
+#define SRC_PROJECTILE_HEIGHT 60
+
 /***************************************************************************
                               PRIVATE METHODS
 ****************************************************************************/
@@ -35,6 +40,13 @@ SDL2pp::Texture &Game::get_gun_texture(GunType gun)
 {
     TextureStorage &storage = TextureStorage::get_instance();
     std::shared_ptr<Texture> texture_created = storage.get_texture(renderer, gun);
+    return texture_created.get()->get_texture();
+}
+
+SDL2pp::Texture &Game::get_projectile_texture(ProjectileType projectile)
+{
+    TextureStorage &storage = TextureStorage::get_instance();
+    std::shared_ptr<Texture> texture_created = storage.get_texture(renderer, projectile);
     return texture_created.get()->get_texture();
 }
 
@@ -95,6 +107,19 @@ void Game::render_weapon(DuckSnapshot &duck)
     SDL_RenderCopyEx(renderer.Get(), texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);
 }
 
+void Game::render_projectile(ProjectileSnapshot &projectile)
+{
+
+    SDL2pp::Texture &texture = get_projectile_texture(projectile.type);
+    int src_x = POS_INIT_X_PROJECTILE, src_y = POS_INIT_Y_PROJECTILE;
+    bool looking_right = projectile.type_direction == ProjectileDirection::Right;
+    SDL_RendererFlip flip = looking_right ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
+    SDL_Rect src_rect = {src_x, src_y, SRC_PROJECTILE_WIDTH, SRC_PROJECTILE_HEIGHT};
+    uint16_t dst_rect_x = projectile.pos_x + (looking_right ? DUCK_WITH_GUN_RIGHT_DIRECTION : DUCK_WITH_GUN_LEFT_DIRECTION);
+    SDL_Rect dst_rect = {dst_rect_x, projectile.pos_y + DUCK_WITH_GUN_Y_DIRECTION, PROJECTILE_WIDTH, PROJECTILE_HEIGHT};
+    SDL_RenderCopyEx(renderer.Get(), texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);
+}
+
 void Game::render_weapon_in_map(GunNoEquippedSnapshot &gun)
 {
     SDL2pp::Texture &texture = get_gun_texture(gun.type);
@@ -131,6 +156,8 @@ void Game::set_renderer(int frame_ticks)
         render_duck_with_gun(duck, frame_ticks);
     for (GunNoEquippedSnapshot &gun : snapshot.guns)
         render_weapon_in_map(gun);
+    for (ProjectileSnapshot &projectile : snapshot.projectiles)
+        render_projectile(projectile);
     for (MapComponent &component : snapshot.map.components)
         render_component_in_map(component, snapshot.map.style);
 }
