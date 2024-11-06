@@ -4,7 +4,8 @@
 enum TextureFigure
 {
     DUCK = 0,
-    CowboyPistol
+    CowboyPistol,
+    CowboyBullet
 };
 
 #endif // TEXTURE_FIGURE_GAME_H
