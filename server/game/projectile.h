@@ -42,7 +42,7 @@ public:
 
     bool is_finish()
     {
-        return !iterations_left;
+        return finish;
     }
 
     ProjectileType get_type()

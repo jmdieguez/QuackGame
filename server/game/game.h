@@ -17,10 +17,11 @@ private:
     Map map;
     std::map<uint8_t, Duck> ducks;
     std::vector<Projectile> projectiles;
+    void moves_projectiles(Map &map);
+    void remove_projectiles();
 
 public:
     explicit Game(const std::string &map_file);
-    void moves_projectiles(Map &map);
     void process(ClientCommand &command);
     void step();
     Snapshot get_status();

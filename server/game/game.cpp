@@ -76,8 +76,22 @@ void Game::moves_projectiles(Map &map)
         p.move();
 }
 
+void Game::remove_projectiles()
+{
+    for (auto it = projectiles.begin(); it != projectiles.end();)
+    {
+        if (it->is_finish())
+        {
+            it = projectiles.erase(it);
+            continue;
+        }
+        ++it;
+    }
+}
+
 void Game::step()
 {
+    remove_projectiles();
     moves_projectiles(map);
     for (auto &[id, duck] : ducks)
         duck.step(map, projectiles);
