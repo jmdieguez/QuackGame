@@ -5,7 +5,7 @@
 ****************************************************************************/
 
 GameContext::GameContext(Queue<ClientActionType> &queue_sender) : left_direction(false), right_direction(false),
-                                                                  is_bent_down(false),
+                                                                  is_bent_down(false), is_shooting(false),
                                                                   queue_sender(queue_sender)
 {
 }
@@ -38,6 +38,16 @@ void GameContext::set_bent_down_active(bool value)
 bool GameContext::is_bent_down_pressed()
 {
     return is_bent_down;
+}
+
+void GameContext::set_shooting_active(bool value)
+{
+    is_shooting = value;
+}
+
+bool GameContext::is_shooting_pressed()
+{
+    return is_shooting;
 }
 
 void GameContext::push_message(ClientActionType action)

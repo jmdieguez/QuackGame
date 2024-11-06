@@ -158,6 +158,7 @@ void Duck::step(Map &map, std::vector<Projectile> &projectiles)
     {
         Projectile projectile = gun->shoot(status.looking_right, status.looking_up, position);
         projectiles.push_back(projectile);
+        status.shooting = false;
     }
 }
 
