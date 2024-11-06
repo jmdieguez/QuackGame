@@ -8,6 +8,7 @@ struct DuckStatus
 {
     bool shooting = false;
     bool jumping = false;
+    bool bent_down = false;
     bool grounded = false;
     bool looking_up = false;
     bool looking_right = false;

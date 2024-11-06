@@ -30,6 +30,16 @@ bool GameContext::is_right_direction_pressed()
     return right_direction;
 }
 
+void GameContext::set_bent_down_active(bool value)
+{
+    is_bent_down = value;
+}
+
+bool GameContext::is_bent_down_pressed()
+{
+    return is_bent_down;
+}
+
 void GameContext::push_message(ClientActionType action)
 {
     queue_sender.try_push(action);

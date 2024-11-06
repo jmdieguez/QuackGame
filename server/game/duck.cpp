@@ -59,7 +59,17 @@ void Duck::jump()
     }
 }
 
-void Duck::lay() { action = DuckAction::LAYING; }
+void Duck::stand_up()
+{
+    status.bent_down = false;
+    action = DuckAction::IDLE;
+}
+
+void Duck::lay()
+{
+    status.bent_down = true;
+    action = DuckAction::LAYING;
+}
 
 void Duck::step(Map &map)
 {

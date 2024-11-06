@@ -58,7 +58,8 @@ void Game::get_and_execute_events()
 void Game::set_xy(DuckSnapshot &duck, int frame_ticks, int &src_x, int &src_y)
 {
 
-    (void)src_y;
+    if (duck.status.bent_down)
+        src_y += DUCK_HEIGHT * 2;
     if (duck.current_action == DuckAction::MOVING)
     {
         int run_phase = (frame_ticks / 4) % 5 + 1;
@@ -130,7 +131,6 @@ void Game::set_renderer(int frame_ticks)
         render_duck_with_gun(duck, frame_ticks);
     for (GunNoEquippedSnapshot &gun : snapshot.guns)
         render_weapon_in_map(gun);
-
     for (MapComponent &component : snapshot.map.components)
         render_component_in_map(component, snapshot.map.style);
 }
@@ -171,9 +171,7 @@ Game::Game(const char *host, const char *port)
     int n_tilesets = 5;
 
     for (uint8_t i = 0; i < n_tilesets; i++)
-    {
         tilesets.emplace(i, std::make_unique<Tileset>(i, renderer, all_tilesets_texture));
-    }
 }
 
 void Game::run()

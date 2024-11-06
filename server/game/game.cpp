@@ -55,6 +55,10 @@ void Game::process(ClientCommand &command)
             duck.lay();
             break;
 
+        case ClientActionType::STAND_UP:
+            duck.stand_up();
+            break;
+
         default:
             break;
         }

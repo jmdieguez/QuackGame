@@ -18,6 +18,8 @@ public:
     bool is_left_direction_pressed();
     void set_right_direction_active(bool value);
     bool is_right_direction_pressed();
+    void set_bent_down_active(bool value);
+    bool is_bent_down_pressed();
     void push_message(ClientActionType action);
     ~GameContext();
 };

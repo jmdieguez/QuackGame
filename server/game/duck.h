@@ -42,6 +42,7 @@ public:
     void flap();
     void lay();
     void jump();
+    void stand_up();
     bool receive_shot(); // true if duck dies after receiving the shot
 
     // Get current duck snapshot
