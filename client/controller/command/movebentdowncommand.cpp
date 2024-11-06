@@ -10,6 +10,8 @@ MoveBentDownCommand::MoveBentDownCommand()
 
 void MoveBentDownCommand::execute(GameContext &game_context)
 {
+    if (game_context.is_bent_down_pressed())
+        return;
     game_context.set_bent_down_active(true);
     game_context.push_message(ClientActionType::LAY);
 }
