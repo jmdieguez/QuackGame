@@ -1,7 +1,3 @@
-//
-//
-// Created by trini-taller on 10/21/24.
-//
 
 #ifndef SNAPSHOTS_H
 #define SNAPSHOTS_H

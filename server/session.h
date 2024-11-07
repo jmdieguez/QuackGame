@@ -1,27 +1,31 @@
-#ifndef SERVER_SESSION_H
-#define SERVER_SESSION_H
+#ifndef SESSION_H
+#define SESSION_H
 
 #include <memory>
 
 #include "../common/snapshots.h"
+#include "../common/lobby_messages.h"
 #include "client_command.h"
 #include "../common/socket.h"
 #include "receiver.h"
 #include "sender.h"
+#include "games_manager.h"
 
 class Session
 {
 private:
     uint16_t id;
-    bool finished = false;
+    bool finished;
     Socket socket;
+    Queue<Snapshot> sender_queue;
+    Queue<LobbyMessages> lobby_queue;
+    std::atomic<bool> is_playing;
     Sender sender;
     Receiver receiver;
-
     void check_close_socket();
 
 public:
-    Session(Socket &&client, std::shared_ptr<Queue<ClientCommand>> &recv_q, uint16_t &s_id);
+    Session(const uint16_t& id, Socket, GamesManager& game_manager);
     ~Session();
     void run();
     void stop();
@@ -29,4 +33,4 @@ public:
     bool has_finished() const;
 };
 
-#endif // SERVER_SESSION_H
+#endif // SESSION_H

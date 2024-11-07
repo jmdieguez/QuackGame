@@ -10,11 +10,14 @@ class ClientProtocol
 private:
     Socket &skt;
     void read_data(uint16_t &data);
-
+    void recv(void* data, size_t size);
+    void send_name(const std::vector<unsigned char>& data);
 public:
     explicit ClientProtocol(Socket &);
     void read_snapshot(Snapshot &);
     void send_action(const ClientActionType &, bool &);
+    void get_game_list(uint16_t& game_id, std::string& name);
+    void send_create_game(const std::string&);
 };
 
 #endif // PROTOCOL_H

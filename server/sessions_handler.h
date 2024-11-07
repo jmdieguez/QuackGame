@@ -10,19 +10,18 @@
 #include "../common/socket.h"
 #include "session.h"
 #include "client_command.h"
+#include "games_manager.h"
 
 class SessionsHandler {
 private:
-    std::vector<std::shared_ptr<Session>> sessions;
-    std::shared_ptr<Queue<ClientCommand>> recv_queue;
+    std::list<std::pair<Queue<Snapshot>&, uint8_t>> clientsQueues;
     std::mutex mtx;
-    uint16_t current_id = 0; // Contador de clientes
 public:
-    explicit SessionsHandler(const std::shared_ptr<Queue<ClientCommand>>& recv_q);
+    SessionsHandler();
     ~SessionsHandler();
 
     void broadcast(const Snapshot& msg);
-    void add(Socket& client);
+    void add(const uint16_t&, Queue<Snapshot>&);
     void remove_closed_sessions();
     void remove_all_sessions();
 };

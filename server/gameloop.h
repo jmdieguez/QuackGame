@@ -1,5 +1,5 @@
-#ifndef SERVER_GAMELOOP_H
-#define SERVER_GAMELOOP_H
+#ifndef GAMELOOP_H
+#define GAMELOOP_H
 
 #include <memory>
 
@@ -12,14 +12,22 @@
 
 class Gameloop: public Thread {
 private:
+    uint16_t game_id;
+    uint16_t creator_id;
+    std::string name;
+    bool started;
     ConstantRateLoop constant_rate_loop;
-    SessionsHandler& handler;
-    std::shared_ptr<Queue<ClientCommand>> recv_queue;
+    std::shared_ptr<Queue<ClientCommand>> game_queue;
     Game game;
+    SessionsHandler handler;
+    uint16_t max_player_quantity = 0;
 public:
-    Gameloop(SessionsHandler& h, const std::shared_ptr<Queue<ClientCommand>>& recv_q);
+    Gameloop(const uint16_t& id, const uint16_t& creator_id);
     void run() override;
     void step(unsigned int current_step);
+    void add_new_player(const uint16_t&, Queue<Snapshot>&);
+    void start_game(const uint16_t&);
+    const std::string& get_name();
 };
 
-#endif  // SERVER_GAMELOOP_H
+#endif // GAMELOOP_H

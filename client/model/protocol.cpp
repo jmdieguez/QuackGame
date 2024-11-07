@@ -38,7 +38,7 @@ void ClientProtocol::read_data(uint16_t &data)
     skt.recvall(&data_received, sizeof(uint16_t), &was_closed);
     if (was_closed)
     {
-        throw LibError(errno, "Error al intentar enviar datos a cliente");
+        throw LibError(errno, "Error al intentar recibir datos del servidor");
     }
     data = ntohs(data_received);
 }
@@ -48,4 +48,50 @@ void ClientProtocol::send_action(const ClientActionType &action, bool &was_close
     uint16_t action_to_send = static_cast<uint16_t>(action);
     uint16_t data_converted = htons(action_to_send);
     skt.sendall(&data_converted, sizeof(data_converted), &was_closed);
+}
+
+
+void ClientProtocol::get_game_list(uint16_t& game_id, std::string& name) {
+    uint16_t game_id_network_order;
+    recv(&game_id_network_order, sizeof(game_id_network_order));
+    game_id = ntohs(game_id_network_order);
+
+    uint16_t nameLength_network_order;
+    recv(&nameLength_network_order, sizeof(nameLength_network_order));
+    uint16_t nameLength = ntohs(nameLength_network_order);
+
+    std::vector<unsigned char> nameBytes(nameLength);
+    recv(nameBytes.data(), nameLength);
+    name.assign(nameBytes.begin(), nameBytes.end());
+}
+
+void ClientProtocol::recv(void* data, size_t size) {
+    bool was_closed = false;
+    skt.recvall(data, size, &was_closed);
+    if (was_closed) {
+        throw LibError(errno, "Error al intentar recibir datos del servidor");
+    }
+}
+
+void ClientProtocol::send_create_game(const std::string& name) {
+    bool was_closed = false;
+    send_action(ClientActionType::CREATE_GAME, was_closed);
+    if (was_closed) {
+        throw LibError(errno, "Error al intentar enviar datos del servidor");
+    }
+    uint16_t length = static_cast<uint16_t>(name.size());
+    uint16_t nameLength = htons(length);
+    skt.sendall(&nameLength , sizeof(nameLength), &was_closed);
+
+    std::vector<unsigned char> nameBytes(nameLength);
+    send_name(nameBytes);
+
+}
+
+void ClientProtocol::send_name(const std::vector<unsigned char>& data) {
+    bool was_closed = false;
+    skt.sendall(data.data(), data.size(), &was_closed);
+    if (was_closed) {
+        throw LibError(errno, "Error al intentar enviar datos a cliente");
+    }
 }

@@ -22,7 +22,9 @@ enum class ClientActionType : uint16_t {
     STOP_SHOOTING,
     STOP_FLAPPING,
     STAND_UP,
-    STOP_LOOKING_UP
+    STOP_LOOKING_UP,
+    GAME_LIST,
+    START_GAME
 };
 
 class ActionMessage {

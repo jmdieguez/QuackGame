@@ -8,17 +8,22 @@
 #include "../common/thread.h"
 #include "client_command.h"
 #include "protocol.h"
+#include "games_manager.h"
+#include "../common/snapshots.h"
 
 class Receiver: public Thread {
 private:
-    uint16_t &session_id;
+    uint16_t session_id;
     Socket& client;                                    // Socket compartido con Sender
-    std::shared_ptr<Queue<ClientCommand>> recv_queue;  // Queue compartida con Server
+    Queue<Snapshot>& sender_queue;
+    Queue<LobbyMessage>& lobby_queue;
+    Queue<ClientCommand>* game_queue;
     ServerProtocol protocol;
+    GamesManager& game_manager;
     bool closed;
-
+    std::atomic<bool>& is_playing;
 public:
-    Receiver(Socket& skt, const std::shared_ptr<Queue<ClientCommand>>& recv_q, uint16_t &id);
+    Receiver(Socket& skt, const uint16_t &id, GamesManager& game_manager, Queue<Snapshot>&, Queue<LobbyMessage>&, std::atomic<bool>&);
     ~Receiver();
     void run() override;
 };

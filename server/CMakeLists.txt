@@ -8,9 +8,9 @@ target_sources(quack_game_server
     protocol.cpp
     receiver.cpp
     sender.cpp
-    server.cpp
     session.cpp
     sessions_handler.cpp
+    games_manager.cpp
     
     PUBLIC
     # .h files
@@ -23,6 +23,7 @@ target_sources(quack_game_server
     server.h
     session.h
     sessions_handler.h
+    games_manager.h
     )
 
 add_subdirectory(game/)

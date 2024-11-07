@@ -3,19 +3,18 @@
 #include <memory>
 
 #include "../common/liberror.h"
-#include "session.h"
 
-Acceptor::Acceptor(const char *port, SessionsHandler &h) : socket(port), handler(h) {}
+Acceptor::Acceptor(const char *port) :
+    socket(port), session_id(0) {}
 
 Acceptor::~Acceptor() {}
 
 void Acceptor::stop()
 {
-
     _keep_running = false;
     socket.shutdown(2);
     socket.close();
-    handler.remove_all_sessions();
+    remove_all_sessions();
 }
 
 void Acceptor::run()
@@ -24,12 +23,28 @@ void Acceptor::run()
     {
         while (_keep_running.load())
         {
-            Socket client = socket.accept();
-            handler.add(client);
-            handler.remove_closed_sessions();
+            Socket peer = socket.accept();
+            auto client = std::make_unique<Session>(session_id, std::move(peer), games_manager);
+            sessions.push_back(std::move(client));
+            client->run();
+            session_id++;
+            remove_disconnected_sessions();
         }
     }
     catch (LibError &e)
     {
     }
+}
+
+void Acceptor::remove_disconnected_sessions() {
+    sessions.remove_if([this](const std::unique_ptr<Session>& session) {
+        return session == nullptr || session->has_finished();
+    });
+}
+
+void Acceptor::remove_all_sessions() {
+    for (auto& session: sessions) {
+        session->stop();
+    }
+    sessions.clear();
 }
