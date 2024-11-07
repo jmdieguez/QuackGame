@@ -7,7 +7,7 @@
 #include "defs.h"
 #include "client_actions.h"
 
-class LobbyMessag {
+class LobbyMessage {
 public:
     uint16_t game_id;
     std::string name;
