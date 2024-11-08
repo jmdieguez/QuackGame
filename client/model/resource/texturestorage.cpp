@@ -12,6 +12,8 @@ TextureFigure TextureStorage::gun_type_to_texture(GunType gun)
         return TextureFigure::Magnum;
     else if (GunType::DuelingPistol == gun)
         return TextureFigure::DuelingPistol;
+    else if (GunType::Shotgun == gun)
+        return TextureFigure::Shotgun;
     return TextureFigure::CowboyPistol;
 }
 
