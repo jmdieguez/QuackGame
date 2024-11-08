@@ -11,6 +11,8 @@ std::string TextureFactory::get_path(TextureFigure figure)
         return DUCK_PATH;
     else if (TextureFigure::CowboyPistol == figure)
         return COWBOY_PISTOL_PATH;
+    else if (TextureFigure::Magnum == figure)
+        return MAGNUM_PATH;
     else if (TextureFigure::CowboyBullet == figure)
         return COWBOY_BULLET_PATH;
     return DUCK_PATH;

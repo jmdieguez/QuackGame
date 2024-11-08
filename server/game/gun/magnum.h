@@ -1,20 +1,22 @@
-#ifndef COWBOY_PISTOL_H
-#define COWBOY_PISTOL_H
+#ifndef MAGNUM_H
+#define MAGNUM_H
 
 #include "gun.h"
 
-class CowboyPistol : public Gun
+class Magnum : public Gun
 {
 private:
     uint8_t ammo;
 
+    void apply_dispersion(std::pair<int, int> &directions);
+
 public:
-    explicit CowboyPistol(uint16_t pos_x, uint16_t pos_y);
+    explicit Magnum(uint16_t pos_x, uint16_t pos_y);
     std::pair<Projectile, Position> shoot(bool &looking_right, bool &looking_up, const Position &duck_position) override;
     GunNoEquippedSnapshot get_status() override;
     bool have_ammo() override;
     GunType get_type() override;
-    ~CowboyPistol();
+    ~Magnum();
 };
 
-#endif // COWBOY_PISTOL_H
+#endif // MAGNUM_H

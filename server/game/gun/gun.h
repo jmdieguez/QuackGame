@@ -20,6 +20,15 @@ protected:
     uint16_t pos_x;
     uint16_t pos_y;
 
+    std::pair<int, int> getDirections(bool looking_right, bool looking_up)
+    {
+        int direction_x = looking_right ? 1 : -1;
+        int direction_y = looking_up ? -1 : 0;
+        if (looking_up)
+            direction_x = 0;
+        return {direction_x, direction_y};
+    }
+
 public:
     Gun() : is_equipped(false), rounds(0), shooting(false), pos_x(0), pos_y(0) {}
 
@@ -40,7 +49,7 @@ public:
         return ((duck_pos_x - GUN_WIDTH) == pos_x || (duck_pos_x + GUN_WIDTH) == pos_x) && duck_pos_y == pos_y;
     }
 
-    virtual Projectile shoot(bool &looking_right, bool &looking_up, Position &duck_position) = 0;
+    virtual std::pair<Projectile, Position> shoot(bool &looking_right, bool &looking_up, const Position &duck_position) = 0;
 
     virtual GunNoEquippedSnapshot get_status() = 0;
 
