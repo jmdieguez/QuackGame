@@ -162,7 +162,6 @@ void Duck::step(Map &map, std::vector<Projectile> &projectiles)
         {
             if (result.second.pos_x != position.pos_x)
             {
-                std::cout << "La posicion actual de x es: " << (int)position.pos_x << std::endl;
                 int start_x = std::min(position.pos_x, result.second.pos_x);
                 int end_x = std::max(position.pos_x, result.second.pos_x);
                 for (int x = status.looking_right ? end_x : start_x;
@@ -170,12 +169,10 @@ void Duck::step(Map &map, std::vector<Projectile> &projectiles)
                      status.looking_right ? --x : ++x)
                 {
                     {
-                        std::cout << "El valor de x es: " << (int)x << std::endl;
                         Position new_position(x, position.pos_y);
                         if (map.validate_coordinate(new_position))
                         {
                             position.pos_x = (uint16_t)x;
-                            std::cout << "La nueva posicion en x es: " << (int)position.pos_x << std::endl;
                             continue;
                         }
                         break;
@@ -199,7 +196,6 @@ void Duck::step(Map &map, std::vector<Projectile> &projectiles)
             }
             projectiles.push_back(result.first);
             status.shooting = false;
-            std::cout << "Termino el disparo la posicion en x es: " << (int)position.pos_x << std::endl;
         }
     }
 }
