@@ -1,6 +1,7 @@
 #include "cowboypistol.h"
+#include "defminvalue.h"
 
-#define VELOCITY 3
+#define VELOCITY 10
 #define MAX_AMMO 6
 #define MAX_DISTANCE 20
 
@@ -36,7 +37,9 @@ Projectile CowboyPistol::shoot(bool &looking_right, bool &looking_up, Position &
 {
     std::pair<int, int> directions = getDirections(looking_right, looking_up);
     ammo--;
-    Projectile projectile(ProjectileType::CowboyBullet, duck_position, directions, MAX_DISTANCE, VELOCITY);
+    uint16_t adjusted_pos_x = duck_position.pos_x + (directions.first == 1 ? MIN_VALUE_RIGHT_DIRECTION_POS_X : MIN_VALUE_LEFT_DIRECTION_POS_X);
+    Position projectile_position(adjusted_pos_x, duck_position.pos_y);
+    Projectile projectile(ProjectileType::CowboyBullet, projectile_position, directions, MAX_DISTANCE, VELOCITY);
     return projectile;
 }
 

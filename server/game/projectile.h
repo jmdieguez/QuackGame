@@ -21,9 +21,10 @@ public:
     Projectile(ProjectileType t, Position p, std::pair<int, int> &d, uint8_t tiles, uint8_t velocity)
         : type(t), position(p), direction(d), iterations_left(tiles * TILE_SIZE), velocity(velocity), finish(false)
     {
-        type_direction = direction.first == 1 ? ProjectileDirection::Right : ProjectileDirection::Left;
-        if (direction.second)
+        if (direction.second > 0)
             type_direction = ProjectileDirection::Up;
+        else
+            type_direction = direction.first == 1 ? ProjectileDirection::Right : ProjectileDirection::Left;
     }
 
     void move()

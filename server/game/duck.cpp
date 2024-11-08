@@ -173,10 +173,12 @@ void Duck::set_receive_shot()
     else
         status.is_alive = false;
 }
+
 bool Duck::is_in_range(Position &position_item)
 {
-    return position_item.pos_x >= position.pos_x && position_item.pos_x <= position.pos_x + 32 &&
-           position_item.pos_y >= position.pos_y && position_item.pos_y <= position.pos_y + 32;
+    uint16_t half_tile_size = TILE_SIZE / 2;
+    return position_item.pos_x >= position.pos_x && position_item.pos_x < position.pos_x + half_tile_size &&
+           position_item.pos_y >= position.pos_y && position_item.pos_y < position.pos_y + TILE_SIZE;
 }
 
 DuckSnapshot Duck::get_status()
