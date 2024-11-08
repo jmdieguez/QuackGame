@@ -19,7 +19,10 @@ enum class Component : uint16_t
     BIG_WALL_GROUND,
     LONG_GROUND,
     SINGLE_GROUND,
-    SLIM_WALL
+    SLIM_WALL,
+    DUCK_SPAWN,
+    GUN_SPAWN,
+    BOX
 };
 
 namespace YAML
@@ -62,6 +65,15 @@ namespace YAML
                 break;
             case 6:
                 rhs = Component::SLIM_WALL;
+                break;
+            case 7:
+                rhs = Component::DUCK_SPAWN;
+                break;
+            case 8:
+                rhs = Component::GUN_SPAWN;
+                break;
+            case 9:
+                rhs = Component::BOX;
                 break;
             default:
                 throw std::runtime_error("Error while reading map components");
