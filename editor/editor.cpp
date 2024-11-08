@@ -25,7 +25,7 @@ void Editor::draw_textures() {
     for (auto& [key, texture] : current_tileset->textures) {
         SDL_Color textColor = (key == selected_texture) ? BLUE : WHITE;
         Texture textTexture(renderer, font.RenderText_Blended(titles[key], textColor));
-        int textPosX = textureX + ((texture->GetWidth() * 4) / 2) - (textTexture.GetWidth() / 2);
+        int textPosX = textureX + ((texture->GetWidth() * 3) / 2);
         renderer.Copy(textTexture, NullOpt, 
                       Rect(textPosX, textureY - textTexture.GetHeight(), 
                         textTexture.GetWidth(), 
