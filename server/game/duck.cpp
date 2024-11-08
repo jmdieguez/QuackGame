@@ -154,16 +154,20 @@ void Duck::step(Map &map, std::vector<Projectile> &projectiles)
         }
     }
 
-    if (status.shooting && gun != nullptr && gun->have_ammo())
+    if (status.shooting && gun != nullptr)
     {
 
-        std::pair<Projectile, Position> result = gun->shoot(status.looking_right, status.looking_up, position);
-        if (result.second.pos_x != position.pos_x || result.second.pos_y != position.pos_y)
+        std::optional<std::pair<Projectile, Position>> result = gun->shoot(status.looking_right, status.looking_up, position);
+        if (!result.has_value())
+            return;
+        Projectile projectile = result.value().first;
+        Position duck_position_after_shoot = result.value().second;
+        if (duck_position_after_shoot.pos_x != position.pos_x || duck_position_after_shoot.pos_y != position.pos_y)
         {
-            if (result.second.pos_x != position.pos_x)
+            if (duck_position_after_shoot.pos_x != position.pos_x)
             {
-                int start_x = std::min(position.pos_x, result.second.pos_x);
-                int end_x = std::max(position.pos_x, result.second.pos_x);
+                int start_x = std::min(position.pos_x, duck_position_after_shoot.pos_x);
+                int end_x = std::max(position.pos_x, duck_position_after_shoot.pos_x);
                 for (int x = status.looking_right ? end_x : start_x;
                      status.looking_right ? x >= start_x : x <= end_x;
                      status.looking_right ? --x : ++x)
@@ -178,10 +182,10 @@ void Duck::step(Map &map, std::vector<Projectile> &projectiles)
                         break;
                     }
                 }
-                if (result.second.pos_y != position.pos_y)
+                if (duck_position_after_shoot.pos_y != position.pos_y)
                 {
-                    int start_y = std::min(position.pos_y, result.second.pos_y);
-                    int end_y = std::max(position.pos_y, result.second.pos_y);
+                    int start_y = std::min(position.pos_y, duck_position_after_shoot.pos_y);
+                    int end_y = std::max(position.pos_y, duck_position_after_shoot.pos_y);
                     for (int y = start_y; y <= end_y; ++y)
                     {
                         Position new_position(position.pos_x, y);
@@ -195,7 +199,7 @@ void Duck::step(Map &map, std::vector<Projectile> &projectiles)
                     }
                 }
             }
-            projectiles.push_back(result.first);
+            projectiles.push_back(projectile);
             status.shooting = false;
         }
     }

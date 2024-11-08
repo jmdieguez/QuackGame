@@ -2,18 +2,14 @@
 #define COWBOY_PISTOL_H
 
 #include "gun.h"
+#include "gunammo.h"
 
-class CowboyPistol : public Gun
+class CowboyPistol : public Gun, public GunAmmo
 {
 private:
-    uint8_t ammo;
-
 public:
     explicit CowboyPistol(uint16_t pos_x, uint16_t pos_y);
-    std::pair<Projectile, Position> shoot(bool &looking_right, bool &looking_up, const Position &duck_position) override;
-    GunNoEquippedSnapshot get_status() override;
-    bool have_ammo() override;
-    GunType get_type() override;
+    std::optional<std::pair<Projectile, Position>> shoot(bool &looking_right, bool &looking_up, const Position &duck_position) override;
     ~CowboyPistol();
 };
 

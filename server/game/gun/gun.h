@@ -2,6 +2,7 @@
 #define SERVER_GUN_H
 
 #include <cstdint>
+#include <optional>
 
 #include "../../../common/snapshots.h"
 #include "../../../common/texturesize.h"
@@ -12,13 +13,13 @@
 class Gun
 {
 private:
+    GunType type;
     bool is_equipped;
-
-protected:
-    uint8_t rounds;
-    bool shooting;
     uint16_t pos_x;
     uint16_t pos_y;
+
+protected:
+    bool shooting;
 
     std::pair<int, int> getDirections(bool looking_right, bool looking_up)
     {
@@ -30,7 +31,8 @@ protected:
     }
 
 public:
-    Gun() : is_equipped(false), rounds(0), shooting(false), pos_x(0), pos_y(0) {}
+    explicit Gun(GunType type, uint16_t pos_x,
+                 uint16_t pos_y) : type(type), is_equipped(false), pos_x(pos_x), pos_y(pos_y), shooting(false) {}
 
     virtual ~Gun() = default;
 
@@ -49,13 +51,17 @@ public:
         return ((duck_pos_x - GUN_WIDTH) == pos_x || (duck_pos_x + GUN_WIDTH) == pos_x) && duck_pos_y == pos_y;
     }
 
-    virtual std::pair<Projectile, Position> shoot(bool &looking_right, bool &looking_up, const Position &duck_position) = 0;
+    GunNoEquippedSnapshot get_status()
+    {
+        return GunNoEquippedSnapshot(type, pos_x, pos_y);
+    }
 
-    virtual GunNoEquippedSnapshot get_status() = 0;
+    GunType get_type()
+    {
+        return type;
+    }
 
-    virtual bool have_ammo() = 0;
-
-    virtual GunType get_type() = 0;
+    virtual std::optional<std::pair<Projectile, Position>> shoot(bool &looking_right, bool &looking_up, const Position &duck_position) = 0;
 };
 
 #endif // SERVER_GUN_H
