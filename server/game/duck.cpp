@@ -188,6 +188,7 @@ void Duck::step(Map &map, std::vector<Projectile> &projectiles)
                         if (map.validate_coordinate(new_position))
                         {
                             position.pos_y = y;
+                            continue;
                         }
 
                         break;
