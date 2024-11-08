@@ -86,7 +86,7 @@ void Game::moves_projectiles(Map &map)
     for (Projectile &p : projectiles)
     {
         p.move();
-        if (!map.has_something_in(p.get_position()))
+        if (map.validate_coordinate(p.get_position()) && !map.has_something_in(p.get_position()))
             continue;
         p.cancel_move();
         p.destroy();

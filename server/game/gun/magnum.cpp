@@ -7,31 +7,7 @@
 #define VELOCITY 10
 #define MAX_AMMO 6
 #define MAX_DISTANCE 20
-
-/***************************************************************************
-                              PRIVATE METHODS
-****************************************************************************/
-
-void Magnum::apply_dispersion(std::pair<int, int> &directions)
-{
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    if (directions.first > 0)
-    {
-        std::uniform_real_distribution<> dist(0, 1);
-        uint16_t random_number = dist(gen);
-        directions.first += random_number;
-    }
-    else
-    {
-        std::uniform_real_distribution<> dist(-1, 0);
-        uint16_t random_number = dist(gen);
-        if (directions.first < 0)
-            directions.first += random_number;
-        if (directions.second < 0)
-            directions.second += random_number;
-    }
-}
+#define BACK 5
 
 /***************************************************************************
                               PUBLIC METHODS
@@ -52,11 +28,12 @@ std::pair<Projectile, Position> Magnum::shoot(bool &looking_right, bool &looking
 {
     std::pair<int, int> directions = getDirections(looking_right, looking_up);
     ammo--;
-    // apply_dispersion(directions);
+    apply_dispersion(directions);
     uint16_t adjusted_pos_x = duck_position.pos_x + (directions.first == 1 ? MIN_VALUE_RIGHT_DIRECTION_POS_X : MIN_VALUE_LEFT_DIRECTION_POS_X);
     Position projectile_position(adjusted_pos_x, duck_position.pos_y);
     Projectile projectile(ProjectileType::CowboyBullet, projectile_position, directions, MAX_DISTANCE, VELOCITY);
-    std::pair<Projectile, Position> result(projectile, duck_position);
+    Position new_position = move_back(duck_position, looking_right, BACK);
+    std::pair<Projectile, Position> result(projectile, new_position);
     return result;
 }
 

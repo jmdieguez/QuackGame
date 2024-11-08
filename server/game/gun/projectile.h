@@ -1,10 +1,10 @@
 #include <vector>
 #include <cstdint>
-// #include "map.h"
-#include "../../common/projectiletype.h"
-#include "../../common/projectiledirection.h"
-#include "../../common/defs.h"
-#include "../../common/position.h"
+
+#include "../../../common/projectiletype.h"
+#include "../../../common/projectiledirection.h"
+#include "../../../common/defs.h"
+#include "../../../common/position.h"
 
 class Projectile
 {

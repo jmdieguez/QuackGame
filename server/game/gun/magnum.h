@@ -1,14 +1,14 @@
 #ifndef MAGNUM_H
 #define MAGNUM_H
 
+#include "dispersion.h"
+#include "moveback.h"
 #include "gun.h"
 
-class Magnum : public Gun
+class Magnum : public Gun, protected Dispersion, protected MoveBack
 {
 private:
     uint8_t ammo;
-
-    void apply_dispersion(std::pair<int, int> &directions);
 
 public:
     explicit Magnum(uint16_t pos_x, uint16_t pos_y);

@@ -160,46 +160,49 @@ void Duck::step(Map &map, std::vector<Projectile> &projectiles)
         std::pair<Projectile, Position> result = gun->shoot(status.looking_right, status.looking_up, position);
         if (result.second.pos_x != position.pos_x || result.second.pos_y != position.pos_y)
         {
-            // bool all_positions_valid = true;
             if (result.second.pos_x != position.pos_x)
             {
+                std::cout << "La posicion actual de x es: " << (int)position.pos_x << std::endl;
                 int start_x = std::min(position.pos_x, result.second.pos_x);
                 int end_x = std::max(position.pos_x, result.second.pos_x);
-                for (int x = start_x; x <= end_x; ++x)
+                for (int x = status.looking_right ? end_x : start_x;
+                     status.looking_right ? x >= start_x : x <= end_x;
+                     status.looking_right ? --x : ++x)
                 {
-                    Position new_position(x, position.pos_y);
-                    if (map.validate_coordinate(new_position))
                     {
-                        position.pos_x = x;
-                        continue;
+                        std::cout << "El valor de x es: " << (int)x << std::endl;
+                        Position new_position(x, position.pos_y);
+                        if (map.validate_coordinate(new_position))
+                        {
+                            position.pos_x = (uint16_t)x;
+                            std::cout << "La nueva posicion en x es: " << (int)position.pos_x << std::endl;
+                            continue;
+                        }
+                        break;
                     }
-                    // all_positions_valid = false;
-                    break;
+                }
+                if (result.second.pos_y != position.pos_y)
+                {
+                    int start_y = std::min(position.pos_y, result.second.pos_y);
+                    int end_y = std::max(position.pos_y, result.second.pos_y);
+                    for (int y = start_y; y <= end_y; ++y)
+                    {
+                        Position new_position(position.pos_x, y);
+                        if (map.validate_coordinate(new_position))
+                        {
+                            position.pos_y = y;
+                        }
+
+                        break;
+                    }
                 }
             }
-
-            // if (all_positions_valid && result.second.pos_y != position.pos_y)
-            if (result.second.pos_y != position.pos_y)
-            {
-                int start_y = std::min(position.pos_y, result.second.pos_y);
-                int end_y = std::max(position.pos_y, result.second.pos_y);
-                for (int y = start_y; y <= end_y; ++y)
-                {
-                    Position new_position(position.pos_x, y);
-                    if (map.validate_coordinate(new_position))
-                    {
-                        position.pos_y = y;
-                    }
-
-                    break;
-                }
-            }
+            projectiles.push_back(result.first);
+            status.shooting = false;
+            std::cout << "Termino el disparo la posicion en x es: " << (int)position.pos_x << std::endl;
         }
-        projectiles.push_back(result.first);
-        status.shooting = false;
     }
 }
-
 // true if duck dies after receiving the shot
 void Duck::set_receive_shot()
 {
