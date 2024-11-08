@@ -11,4 +11,5 @@ target_sources(quack_game_server
     defminvalue.h
     moveback.h
     projectile.h
+    gunammo.h
 )

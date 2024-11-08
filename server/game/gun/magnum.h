@@ -3,19 +3,15 @@
 
 #include "dispersion.h"
 #include "moveback.h"
+#include "gunammo.h"
 #include "gun.h"
 
-class Magnum : public Gun, protected Dispersion, protected MoveBack
+class Magnum : public Gun, public GunAmmo, protected Dispersion, protected MoveBack
 {
 private:
-    uint8_t ammo;
-
 public:
     explicit Magnum(uint16_t pos_x, uint16_t pos_y);
-    std::pair<Projectile, Position> shoot(bool &looking_right, bool &looking_up, const Position &duck_position) override;
-    GunNoEquippedSnapshot get_status() override;
-    bool have_ammo() override;
-    GunType get_type() override;
+    std::optional<std::pair<Projectile, Position>> shoot(bool &looking_right, bool &looking_up, const Position &duck_position) override;
     ~Magnum();
 };
 
