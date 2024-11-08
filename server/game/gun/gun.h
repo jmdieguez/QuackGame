@@ -22,7 +22,7 @@ private:
 protected:
     bool shooting;
 
-    std::pair<int, int> getDirections(bool looking_right, bool looking_up)
+    std::pair<int, int> get_directions(bool looking_right, bool looking_up)
     {
         int direction_x = looking_right ? 1 : -1;
         int direction_y = looking_up ? -1 : 0;

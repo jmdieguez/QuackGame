@@ -25,6 +25,7 @@ private:
     DuckAction action = DuckAction::IDLE;
     std::shared_ptr<Gun> gun;
     int y_velocity = 0;
+    bool block_shooting_command;
 
 public:
     explicit Duck(const uint8_t &i, const uint16_t &initial_x, const uint16_t &initial_y);

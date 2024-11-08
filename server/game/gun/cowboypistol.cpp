@@ -16,7 +16,7 @@ std::optional<std::pair<std::vector<Projectile>, Position>> CowboyPistol::shoot(
 {
     if (!have_ammo())
         return std::nullopt;
-    std::pair<int, int> directions = getDirections(looking_right, looking_up);
+    std::pair<int, int> directions = get_directions(looking_right, looking_up);
     reduce_ammo();
     uint16_t adjusted_pos_x = duck_position.pos_x + (directions.first == 1 ? MIN_VALUE_RIGHT_DIRECTION_POS_X : MIN_VALUE_LEFT_DIRECTION_POS_X);
     Position projectile_position(adjusted_pos_x, duck_position.pos_y);

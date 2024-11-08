@@ -1,7 +1,7 @@
 #include "duck.h"
 #include <optional>
 
-Duck::Duck(const uint8_t &i, const uint16_t &initial_x, const uint16_t &initial_y) : id(i), position(initial_x, initial_y), gun(nullptr) {}
+Duck::Duck(const uint8_t &i, const uint16_t &initial_x, const uint16_t &initial_y) : id(i), position(initial_x, initial_y), gun(nullptr), block_shooting_command(false) {}
 
 Duck::~Duck() {}
 
@@ -42,7 +42,13 @@ void Duck::drop_gun()
 
 void Duck::shoot() { status.shooting = true; }
 
-void Duck::stop_shooting() { status.shooting = false; }
+void Duck::stop_shooting()
+{
+    status.shooting = false;
+    block_shooting_command = false;
+    if (gun->get_type() == GunType::Shotgun)
+        ((Shotgun *)gun.get())->check_reset();
+}
 
 void Duck::flap()
 {
@@ -154,10 +160,15 @@ void Duck::step(Map &map, std::vector<Projectile> &projectiles)
         }
     }
 
-    if (status.shooting && gun != nullptr)
+    if (status.shooting && !block_shooting_command && gun != nullptr)
     {
 
         auto result = gun->shoot(status.looking_right, status.looking_up, position);
+        if (!result.has_value() && gun->get_type() == GunType::Shotgun && (((Shotgun *)gun.get())->is_block_shoot()))
+        {
+            block_shooting_command = true;
+            return;
+        }
         if (!result.has_value())
             return;
         std::vector<Projectile> shot_projectile = result.value().first;
@@ -202,7 +213,9 @@ void Duck::step(Map &map, std::vector<Projectile> &projectiles)
         }
         for (Projectile p : shot_projectile)
             projectiles.push_back(p);
-        status.shooting = false;
+        if (gun->get_type() == GunType::Shotgun && !(((Shotgun *)gun.get())->is_block_shoot()))
+            return;
+        block_shooting_command = true;
     }
 }
 // true if duck dies after receiving the shot

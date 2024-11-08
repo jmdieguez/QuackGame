@@ -86,7 +86,7 @@ public:
                                        gun_id(0)
     {
         // Eliminar una vez que se tengan los spawns de las armas
-        guns.emplace(gun_id, std::make_shared<Shotgun>(290, 256));
+        guns.emplace(gun_id, std::make_shared<Shotgun>(290, 480));
         gun_id++;
     }
 
