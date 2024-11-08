@@ -164,22 +164,19 @@ void Duck::step(Map &map, std::vector<Projectile> &projectiles)
 }
 
 // true if duck dies after receiving the shot
-bool Duck::receive_shot()
+void Duck::set_receive_shot()
 {
     if (status.has_chestplate)
-    {
         status.has_chestplate = false;
-        return false;
-    }
     else if (status.has_helmet)
-    {
         status.has_helmet = false;
-        return false;
-    }
     else
-    {
-        return true;
-    }
+        status.is_alive = false;
+}
+bool Duck::is_in_range(Position &position_item)
+{
+    return position_item.pos_x >= position.pos_x && position_item.pos_x <= position.pos_x + 32 &&
+           position_item.pos_y >= position.pos_y && position_item.pos_y <= position.pos_y + 32;
 }
 
 DuckSnapshot Duck::get_status()

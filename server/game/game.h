@@ -17,6 +17,8 @@ private:
     Map map;
     std::map<uint8_t, Duck> ducks;
     std::vector<Projectile> projectiles;
+
+    void verify_hit_ducks();
     void moves_projectiles(Map &map);
     void remove_projectiles();
 

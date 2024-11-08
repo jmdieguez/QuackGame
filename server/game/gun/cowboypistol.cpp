@@ -1,6 +1,6 @@
 #include "cowboypistol.h"
 
-#define VELOCITY 10
+#define VELOCITY 3
 #define MAX_AMMO 6
 #define MAX_DISTANCE 20
 

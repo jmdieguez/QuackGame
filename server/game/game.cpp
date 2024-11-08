@@ -69,9 +69,20 @@ void Game::process(ClientCommand &command)
     }
 }
 
+void Game::verify_hit_ducks()
+{
+    for (auto &[id, duck] : ducks)
+        for (Projectile &p : projectiles)
+        {
+            if (!duck.is_in_range(p.get_position()))
+                continue;
+            duck.set_receive_shot();
+            p.destroy();
+        }
+}
+
 void Game::moves_projectiles(Map &map)
 {
-    (void)map;
     for (Projectile &p : projectiles)
     {
         p.move();
@@ -99,6 +110,7 @@ void Game::step()
 {
     remove_projectiles();
     moves_projectiles(map);
+    verify_hit_ducks();
     for (auto &[id, duck] : ducks)
         duck.step(map, projectiles);
 }

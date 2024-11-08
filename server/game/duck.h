@@ -43,7 +43,8 @@ public:
     void lay();
     void jump();
     void stand_up();
-    bool receive_shot(); // true if duck dies after receiving the shot
+    void set_receive_shot();
+    bool is_in_range(Position &position_item);
 
     // Get current duck snapshot
     DuckSnapshot get_status();

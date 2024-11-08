@@ -70,9 +70,12 @@ void Game::get_and_execute_events()
 void Game::set_xy(DuckSnapshot &duck, int frame_ticks, int &src_x, int &src_y)
 {
 
-    if (duck.status.bent_down)
+    if (!duck.status.is_alive)
         src_y += DUCK_HEIGHT * 2;
-    if (duck.current_action == DuckAction::MOVING)
+
+    else if (duck.status.bent_down)
+        src_y += DUCK_HEIGHT * 2;
+    else if (duck.current_action == DuckAction::MOVING)
     {
         int run_phase = (frame_ticks / 4) % 5 + 1;
         src_x = SRC_DUCK_WIDTH * run_phase;
