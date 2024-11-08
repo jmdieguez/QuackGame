@@ -2,6 +2,7 @@
 #define SERVER_GUN_H
 
 #include <cstdint>
+#include <vector>
 #include <optional>
 
 #include "../../../common/snapshots.h"
@@ -61,7 +62,7 @@ public:
         return type;
     }
 
-    virtual std::optional<std::pair<Projectile, Position>> shoot(bool &looking_right, bool &looking_up, const Position &duck_position) = 0;
+    virtual std::optional<std::pair<std::vector<Projectile>, Position>> shoot(bool &looking_right, bool &looking_up, const Position &duck_position) = 0;
 };
 
 #endif // SERVER_GUN_H
