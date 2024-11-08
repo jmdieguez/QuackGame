@@ -157,10 +157,10 @@ void Duck::step(Map &map, std::vector<Projectile> &projectiles)
     if (status.shooting && gun != nullptr)
     {
 
-        std::optional<std::pair<Projectile, Position>> result = gun->shoot(status.looking_right, status.looking_up, position);
+        auto result = gun->shoot(status.looking_right, status.looking_up, position);
         if (!result.has_value())
             return;
-        Projectile projectile = result.value().first;
+        std::vector<Projectile> shot_projectile = result.value().first;
         Position duck_position_after_shoot = result.value().second;
         if (duck_position_after_shoot.pos_x != position.pos_x || duck_position_after_shoot.pos_y != position.pos_y)
         {
@@ -199,9 +199,10 @@ void Duck::step(Map &map, std::vector<Projectile> &projectiles)
                     }
                 }
             }
-            projectiles.push_back(projectile);
-            status.shooting = false;
         }
+        for (Projectile p : shot_projectile)
+            projectiles.push_back(p);
+        status.shooting = false;
     }
 }
 // true if duck dies after receiving the shot

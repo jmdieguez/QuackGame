@@ -11,7 +11,7 @@ class Magnum : public Gun, public GunAmmo, protected Dispersion, protected MoveB
 private:
 public:
     explicit Magnum(uint16_t pos_x, uint16_t pos_y);
-    std::optional<std::pair<Projectile, Position>> shoot(bool &looking_right, bool &looking_up, const Position &duck_position) override;
+    std::optional<std::pair<std::vector<Projectile>, Position>> shoot(bool &looking_right, bool &looking_up, const Position &duck_position) override;
     ~Magnum();
 };
 

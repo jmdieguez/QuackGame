@@ -1,18 +1,19 @@
-#include "cowboypistol.h"
+#include "duelingpistol.h"
 #include "defminvalue.h"
 
 #define VELOCITY 10
-#define MAX_AMMO 6
-#define MAX_DISTANCE 20
+#define MAX_AMMO 1
+#define MAX_DISTANCE 5
 
 /***************************************************************************
                               PUBLIC METHODS
 ****************************************************************************/
 
-CowboyPistol::CowboyPistol(uint16_t pos_x, uint16_t pos_y) : Gun(GunType::CowboyPistol, pos_x, pos_y), GunAmmo(MAX_AMMO)
+DuelingPistol::DuelingPistol(uint16_t pos_x, uint16_t pos_y) : Gun(GunType::DuelingPistol, pos_x, pos_y), GunAmmo(MAX_AMMO)
 {
 }
-std::optional<std::pair<std::vector<Projectile>, Position>> CowboyPistol::shoot(bool &looking_right, bool &looking_up, const Position &duck_position)
+
+std::optional<std::pair<std::vector<Projectile>, Position>> DuelingPistol::shoot(bool &looking_right, bool &looking_up, const Position &duck_position)
 {
     if (!have_ammo())
         return std::nullopt;
@@ -26,6 +27,7 @@ std::optional<std::pair<std::vector<Projectile>, Position>> CowboyPistol::shoot(
     std::pair<std::vector<Projectile>, Position> result(projectiles, duck_position);
     return std::optional<std::pair<std::vector<Projectile>, Position>>(result);
 }
-CowboyPistol::~CowboyPistol()
+
+DuelingPistol::~DuelingPistol()
 {
 }
