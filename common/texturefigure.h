@@ -6,7 +6,8 @@ enum TextureFigure
     DUCK = 0,
     CowboyPistol,
     CowboyBullet,
-    Magnum
+    Magnum,
+    DuelingPistol
 };
 
 #endif // TEXTURE_FIGURE_GAME_H

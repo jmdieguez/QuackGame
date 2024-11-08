@@ -199,9 +199,9 @@ void Duck::step(Map &map, std::vector<Projectile> &projectiles)
                     }
                 }
             }
-            projectiles.push_back(projectile);
-            status.shooting = false;
         }
+        projectiles.push_back(projectile);
+        status.shooting = false;
     }
 }
 // true if duck dies after receiving the shot

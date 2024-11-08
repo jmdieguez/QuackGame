@@ -1,7 +1,8 @@
 #ifndef COMMON_GUN_TYPE_H
 #define COMMON_GUN_TYPE_H
 
-enum class GunType {
+enum class GunType
+{
     None = 0,
     Shotgun,
     Banana,
