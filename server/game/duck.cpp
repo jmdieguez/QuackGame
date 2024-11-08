@@ -154,8 +154,9 @@ void Duck::step(Map &map, std::vector<Projectile> &projectiles)
         }
     }
 
-    if (status.shooting && gun != nullptr)
+    if (status.shooting && gun != nullptr && gun->have_ammo())
     {
+
         Projectile projectile = gun->shoot(status.looking_right, status.looking_up, position);
         projectiles.push_back(projectile);
         status.shooting = false;

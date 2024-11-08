@@ -32,17 +32,30 @@ public:
             return;
         position.pos_x += direction.first * velocity;
         position.pos_y += direction.second * velocity;
-        // if (map.validate_coordinate(position))
-        //     iterations_left--;
         iterations_left -= velocity;
-        // iterations_left = 0;
         if (iterations_left <= 0)
             finish = true;
+    }
+
+    void cancel_move()
+    {
+        position.pos_x -= direction.first * velocity;
+        position.pos_y -= direction.second * velocity;
     }
 
     bool is_finish()
     {
         return finish;
+    }
+
+    void destroy()
+    {
+        finish = true;
+    }
+
+    Position &get_position()
+    {
+        return position;
     }
 
     ProjectileType get_type()

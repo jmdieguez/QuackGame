@@ -73,7 +73,13 @@ void Game::moves_projectiles(Map &map)
 {
     (void)map;
     for (Projectile &p : projectiles)
+    {
         p.move();
+        if (!map.has_something_in(p.get_position()))
+            continue;
+        p.cancel_move();
+        p.destroy();
+    }
 }
 
 void Game::remove_projectiles()

@@ -44,6 +44,8 @@ public:
 
     virtual GunNoEquippedSnapshot get_status() = 0;
 
+    virtual bool have_ammo() = 0;
+
     virtual GunType get_type() = 0;
 };
 
