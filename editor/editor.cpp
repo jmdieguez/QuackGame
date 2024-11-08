@@ -15,6 +15,26 @@ void Editor::draw_tiles() {
                     Rect(0, 0, current_tileset->areas[tile].w, current_tileset->areas[tile].h),
                     Rect(x, y, texture->GetWidth() * 2, texture->GetHeight() * 2));
     }
+
+    for (auto& [coord, spawn] : tiles.spawns_map) {
+        uint16_t x = tiles_grid.x + (coord.first * TILE_SIZE);
+        uint16_t y = tiles_grid.y + (coord.second * TILE_SIZE);
+        if (spawn == Spawn::DUCK_SPAWN) {
+            int width = duck_texture.GetWidth();
+            int height = duck_texture.GetHeight();
+            renderer.Copy(duck_texture,
+                          Rect(0, 0, width, height),
+                          Rect(x, y, width, height)
+                         );
+        } else if (spawn == Spawn::GUN_SPAWN) {
+            int width = gun_spawn_texture.GetWidth();
+            int height = gun_spawn_texture.GetHeight();
+            renderer.Copy(gun_spawn_texture,
+                          Rect(0, 0, width, height),
+                          Rect(x + 2, y + TILE_SIZE - height, width, height)
+                         );
+        }
+    }
 }
 
 void Editor::draw_textures() {
@@ -57,22 +77,52 @@ void Editor::handle_event(const SDL_Event& event) {
             SDL_Rect textureRect = {textureX, textureY, textureWidth, textureHeight};
 
             if (SDL_PointInRect(&mousePos, &textureRect)) {
+                delete_button.unselect();
+                duck_button.unselect();
+                gun_button.unselect();
                 selected_texture = key;
-                return;
-            } else if (SDL_PointInRect(&mousePos, &s_button.rect)) {
-                running = false;
-                save_on_exit = true;
+                state = EditorState::CREATING_COMPONENTS;
                 return;
             }
-
             textureX += totalWidth / current_tileset->textures.size();
         }
 
+        if (SDL_PointInRect(&mousePos, &save_button.rect)) {
+            save_button.select();
+            running = false;
+            save_on_exit = true;
+            return;
+        } else if (SDL_PointInRect(&mousePos, &delete_button.rect)) {
+            delete_button.select();
+            state = EditorState::CLEANING_TILES;
+            return;
+        }  else if (SDL_PointInRect(&mousePos, &duck_button.rect)) {
+            duck_button.select();
+            state = EditorState::CREATING_DUCK_SPAWNS;
+            return;
+        }  else if (SDL_PointInRect(&mousePos, &gun_button.rect)) {
+            gun_button.select();
+            state = EditorState::CREATING_GUN_SPAWNS;
+            return;
+        }
+
         if (tiles_grid.contains(mousePos)) {
-            uint16_t aligned_x = (mousePos.x - tiles_grid.x) / TILE_SIZE;
-            uint16_t aligned_y = (mousePos.y - tiles_grid.y) / TILE_SIZE;
-            tiles.add_tile(aligned_x, aligned_y, selected_texture);
+            std::pair<uint16_t, uint16_t> pair = 
+                std::make_pair((mousePos.x - tiles_grid.x) / TILE_SIZE, (mousePos.y - tiles_grid.y) / TILE_SIZE);
+            
+            if (state == EditorState::CREATING_COMPONENTS) {
+                tiles.tiles_map[pair] = selected_texture;
+            } else if (state == EditorState::CLEANING_TILES) {
+                tiles.tiles_map.erase(pair);
+            } else if (state == EditorState::CREATING_DUCK_SPAWNS) {
+                tiles.spawns_map[pair] = Spawn::DUCK_SPAWN;
+            } else if (state == EditorState::CREATING_GUN_SPAWNS) {
+                tiles.spawns_map[pair] = Spawn::GUN_SPAWN;
+            }
         } else {
+            delete_button.unselect();
+            duck_button.unselect();
+            gun_button.unselect();
             selected_texture = Component::NONE;
         }
     }
@@ -83,13 +133,23 @@ void Editor::save() {
     root["n_tiles_x"] = 16;
     root["n_tiles_y"] = 16;
     root["tileset"] = 0;
-    root["items"] = YAML::Node(YAML::NodeType::Sequence);
+    
+    root["components"] = YAML::Node(YAML::NodeType::Sequence);
     for (auto& [coord, tile] : tiles.tiles_map) {
         YAML::Node node;
         node["x"] = coord.first;
         node["y"] = coord.second;
         node["type"] = tile;
-        root["items"].push_back(node);
+        root["components"].push_back(node);
+    }
+
+    root["spawns"] = YAML::Node(YAML::NodeType::Sequence);
+    for (auto& [coord, spawn] : tiles.spawns_map) {
+        YAML::Node node;
+        node["x"] = coord.first;
+        node["y"] = coord.second;
+        node["type"] = spawn;
+        root["spawns"].push_back(node);
     }
 
     std::ofstream fout(out_file);
@@ -106,7 +166,10 @@ int Editor::run() {
             tiles_grid.draw(renderer);
             draw_textures();
             draw_tiles();
-            s_button.draw();
+            save_button.draw(w_width);
+            duck_button.draw(w_width);
+            gun_button.draw(w_width);
+            delete_button.draw(w_width);
             renderer.Present();
 
             if (SDL_WaitEvent(&event)) {

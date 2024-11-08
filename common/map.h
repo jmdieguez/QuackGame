@@ -11,6 +11,18 @@
 
 #define DIMENSIONS_FILE "../dimensions.yaml"
 
+enum class Spawn : uint16_t {
+    GUN_SPAWN = 1,
+    DUCK_SPAWN
+};
+
+enum class Box : uint16_t {
+    BOX_1_HP = 1,
+    BOX_2_HP,
+    BOX_3_HP,
+    BOX_4_HP
+};
+
 enum class Component : uint16_t
 {
     NONE = 0,
@@ -19,16 +31,12 @@ enum class Component : uint16_t
     BIG_WALL_GROUND,
     LONG_GROUND,
     SINGLE_GROUND,
-    SLIM_WALL,
-    DUCK_SPAWN,
-    GUN_SPAWN,
-    BOX
+    SLIM_WALL
 };
 
 namespace YAML
 {
-    template <>
-    struct convert<Component>
+    template <> struct convert<Component>
     {
         static Node encode(const Component &rhs)
         {
@@ -66,17 +74,38 @@ namespace YAML
             case 6:
                 rhs = Component::SLIM_WALL;
                 break;
-            case 7:
-                rhs = Component::DUCK_SPAWN;
-                break;
-            case 8:
-                rhs = Component::GUN_SPAWN;
-                break;
-            case 9:
-                rhs = Component::BOX;
-                break;
             default:
                 throw std::runtime_error("Error while reading map components");
+            }
+            return true;
+        }
+    };
+
+    template <> struct convert<Spawn>
+    {
+        static Node encode(const Spawn &rhs)
+        {
+            Node node;
+            node = static_cast<uint16_t>(rhs);
+            return node;
+        }
+
+        static bool decode(const Node &node, Spawn &rhs)
+        {
+            if (!node.IsScalar())
+                return false;
+            uint16_t value = node.as<uint16_t>();
+
+            switch (value)
+            {
+            case 1:
+                rhs = Spawn::GUN_SPAWN;
+                break;
+            case 2:
+                rhs = Spawn::DUCK_SPAWN;
+                break;
+            default:
+                throw std::runtime_error("Error while reading map spawns");
             }
             return true;
         }

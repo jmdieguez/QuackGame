@@ -8,17 +8,11 @@
 
 #include "../common/map.h"
 
-class Tiles {
+struct Tiles {
 public:
     std::map<std::pair<uint16_t, uint16_t>, Component> tiles_map;
-
-    void add_tile(uint16_t x, uint16_t y, const Component& component) {
-        std::pair<uint16_t, uint16_t> key = std::make_pair(x, y);
-        tiles_map[key] = component;
-    }
-
-    Tiles() {}
-    ~Tiles() {}
+    std::map<std::pair<uint16_t, uint16_t>, Spawn> spawns_map;
+    std::map<std::pair<uint16_t, uint16_t>, Box> boxes_map;
 };
 
 #endif // UI_TILE_H
