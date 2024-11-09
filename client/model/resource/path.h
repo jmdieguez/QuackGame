@@ -13,5 +13,7 @@
 #define COWBOY_BULLET_PATH "./var/quackgame/weapon/cowboybullet.png"
 #define SPAWN_PATH "./var/quackgame/spawn.png"
 #define BOX_PATH "./var/quackgame/box.png"
+#define CHESTPLATE_PATH "./var/quackgame/armor/chestplate.png"
+#define HELMET_PATH "./var/quackgame/armor/helmet.png"
 
 #endif // PATH_H

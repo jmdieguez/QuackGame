@@ -26,6 +26,12 @@
 #define SRC_PROJECTILE_WIDTH 60
 #define SRC_PROJECTILE_HEIGHT 60
 
+#define CHESTPLATE_WIDTH 20
+#define CHESTPLATE_HEIGHT 15
+
+#define HELMET_WIDTH 20
+#define HELMET_HEIGHT 20
+
 /***************************************************************************
                               PRIVATE METHODS
 ****************************************************************************/
@@ -55,6 +61,13 @@ SDL2pp::Texture &Game::get_projectile_texture(ProjectileType projectile)
 {
     TextureStorage &storage = TextureStorage::get_instance();
     std::shared_ptr<Texture> texture_created = storage.get_texture(renderer, projectile);
+    return texture_created.get()->get_texture();
+}
+
+SDL2pp::Texture &Game::get_texture(TextureFigure figure)
+{
+    TextureStorage &storage = TextureStorage::get_instance();
+    std::shared_ptr<Texture> texture_created = storage.get_texture(renderer, figure);
     return texture_created.get()->get_texture();
 }
 
@@ -107,6 +120,26 @@ void Game::render_duck(DuckSnapshot &duck, int frame_ticks)
     SDL_RenderCopyEx(renderer.Get(), duck_texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);
 }
 
+void Game::render_helmet_chestplate(DuckSnapshot &duck)
+{
+    int src_x = POS_INIT_X_IMAGE, src_y = POS_INIT_Y_IMAGE;
+    if (duck.status.has_chestplate)
+    {
+        SDL2pp::Texture &chestplate_texture = get_texture(TextureFigure::Chestplate);
+        SDL_Rect src_rect = {src_x, src_y, SRC_DUCK_WIDTH, SRC_DUCK_HEIGHT};
+        SDL_Rect dst_rect = {duck.position.x + (duck.status.looking_right ? 3 : 8), duck.position.y + 15, CHESTPLATE_WIDTH, CHESTPLATE_HEIGHT};
+        SDL_RendererFlip flip = duck.status.looking_right ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
+        SDL_RenderCopyEx(renderer.Get(), chestplate_texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);
+    }
+    if (duck.status.has_helmet)
+    {
+        SDL2pp::Texture &helmet = get_texture(TextureFigure::Helmet);
+        SDL_Rect src_rect = {src_x, src_y, SRC_DUCK_WIDTH, SRC_DUCK_HEIGHT};
+        SDL_Rect dst_rect = {duck.position.x + (duck.status.looking_right ? 3 : 8), duck.position.y - 2, HELMET_WIDTH, HELMET_HEIGHT};
+        SDL_RendererFlip flip = duck.status.looking_right ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
+        SDL_RenderCopyEx(renderer.Get(), helmet.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);
+    }
+}
 void Game::render_weapon(DuckSnapshot &duck)
 {
     SDL2pp::Texture &texture = get_gun_texture(duck.gun);
@@ -143,6 +176,7 @@ void Game::render_weapon_in_map(GunNoEquippedSnapshot &gun)
 void Game::render_duck_with_gun(DuckSnapshot &duck, int frame_ticks)
 {
     render_duck(duck, frame_ticks);
+    render_helmet_chestplate(duck);
     if (duck.gun != GunType::None)
         render_weapon(duck);
 }
@@ -158,8 +192,10 @@ void Game::render_component_in_map(MapComponent &component, uint16_t &style)
     renderer.Copy(*texture, src_rect, dst_rect);
 }
 
-void Game::render_box_in_map(BoxSnapshot &box) {
-    if (box.status != Box::NONE) {
+void Game::render_box_in_map(BoxSnapshot &box)
+{
+    if (box.status != Box::NONE)
+    {
         SDL2pp::Texture &texture = get_box_texture();
         int x = static_cast<int>(box.status) * texture.GetHeight();
         SDL_Rect src_rect = {x, 0, texture.GetHeight(), texture.GetHeight()};
@@ -181,7 +217,8 @@ void Game::set_renderer(int frame_ticks)
         render_projectile(projectile);
     for (MapComponent &component : snapshot.map.components)
         render_component_in_map(component, snapshot.map.style);
-    for (BoxSnapshot &box : snapshot.map.boxes) {
+    for (BoxSnapshot &box : snapshot.map.boxes)
+    {
         render_box_in_map(box);
     }
 }

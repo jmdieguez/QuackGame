@@ -14,7 +14,9 @@ enum TextureFigure
     PewPewLaser,
     Grenade,
     Box_T,
-    Spawn_T
+    Spawn_T,
+    Helmet,
+    Chestplate
 };
 
 #endif // TEXTURE_FIGURE_GAME_H
