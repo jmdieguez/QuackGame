@@ -62,17 +62,13 @@ public:
                                                                                                                     status(status) {}
 };
 
-class NoExplotedSnapshot
+class GrenadeSnapshot
 {
-    uint16_t pos_x;
-    uint16_t pos_y;
-};
-
-class ExplotedSnapshot
-{
+public:
     uint16_t pos_x;
     uint16_t pos_y;
     uint16_t phase;
+    explicit GrenadeSnapshot(uint16_t x, uint16_t y, uint16_t phase) : pos_x(x), pos_y(y), phase(phase) {}
 };
 
 class BoxSnapshot

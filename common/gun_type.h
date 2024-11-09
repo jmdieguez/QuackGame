@@ -6,7 +6,7 @@ enum class GunType
     None = 0,
     Shotgun,
     Banana,
-    Granade,
+    Grenade,
     DuelingPistol,
     CowboyPistol,
     Magnum,

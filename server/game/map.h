@@ -11,6 +11,7 @@
 #include "gun/sniper.h"
 #include "gun/ak.h"
 #include "gun/pewpewlaser.h"
+#include "gun/grenade.h"
 
 class MapConfig
 {

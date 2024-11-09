@@ -8,6 +8,7 @@ target_sources(quack_game_server
     sniper.cpp
     ak.cpp
     pewpewlaser.cpp
+    grenade.cpp
 
     PUBLIC
     # .h files
@@ -19,6 +20,7 @@ target_sources(quack_game_server
     sniper.h
     ak.h
     pewpewlaser.h
+    grenade.h
     dispersion.h
     defminvalue.h
     moveback.h

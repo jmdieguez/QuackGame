@@ -40,6 +40,7 @@ public:
     void drop_gun();
     void shoot();
     void stop_shooting();
+    void drop_gun(std::vector<Projectile> &projectiles);
     void flap();
     void lay();
     void jump();

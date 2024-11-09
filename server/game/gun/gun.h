@@ -16,10 +16,10 @@ class Gun
 private:
     GunType type;
     bool is_equipped;
-    uint16_t pos_x;
-    uint16_t pos_y;
 
 protected:
+    uint16_t pos_x;
+    uint16_t pos_y;
     bool shooting;
 
     std::pair<int, int> get_directions(bool looking_right, bool looking_up)
