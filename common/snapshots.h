@@ -15,13 +15,15 @@
 #include "projectiletype.h"
 #include "position.h"
 #include "projectiledirection.h"
+#include "size.h"
 
 class GunNoEquippedSnapshot
 {
 public:
     GunType type;
     Position position;
-    explicit GunNoEquippedSnapshot(const GunType &t, const Position &p) : type(t), position(p) {}
+    Size size;
+    explicit GunNoEquippedSnapshot(const GunType &t, const Position &p, const Size &s) : type(t), position(p), size(s) {}
 };
 
 class ProjectileSnapshot
@@ -39,17 +41,18 @@ class DuckSnapshot
 {
 public:
     uint16_t id;
-    // const uint16_t health;
     Position position;
     DuckAction current_action;
     GunType gun;
+    Size size_gun;
     DuckStatus status;
 
-    explicit DuckSnapshot(uint16_t i, Position p, DuckAction action, GunType gun, DuckStatus status) : id(i),
-                                                                                                       position(std::move(p)),
-                                                                                                       current_action(action),
-                                                                                                       gun(gun),
-                                                                                                       status(status) {}
+    explicit DuckSnapshot(const uint16_t &i, const Position &p, const DuckAction &action, const GunType &gun, const Size &size, const DuckStatus &status) : id(i),
+                                                                                                                                                            position(std::move(p)),
+                                                                                                                                                            current_action(action),
+                                                                                                                                                            gun(gun),
+                                                                                                                                                            size_gun(size),
+                                                                                                                                                            status(status) {}
 };
 
 class ExplosionSnapshot

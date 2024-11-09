@@ -12,8 +12,8 @@
 #define VALUE_DISPERSION 1
 #define VALUE_MORE_DISPERSION 2
 #define BACK 3
-#define WIDTH 35
-#define HEIGHT 19
+#define WIDTH 20
+#define HEIGHT 10
 
 /***************************************************************************
                               PUBLIC METHODS

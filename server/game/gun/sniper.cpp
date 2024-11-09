@@ -7,8 +7,8 @@
 #define MAX_DISTANCE 20
 #define TIME_TO_SHOOT 20
 #define TIME_TO_REALOAD 5
-#define WIDTH 35
-#define HEIGHT 19
+#define WIDTH 20
+#define HEIGHT 10
 
 /***************************************************************************
                               PRIVATE METHODS

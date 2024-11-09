@@ -26,6 +26,7 @@ private:
     std::shared_ptr<Gun> gun;
     int y_velocity = 0;
     bool block_shooting_command;
+    Size get_gun_size();
 
 public:
     explicit Duck(const uint8_t &i, const uint16_t &initial_x, const uint16_t &initial_y);
@@ -36,9 +37,9 @@ public:
     void stop_moving();
     void look_up();
     void stop_looking_up();
-    GunType get_gun_type();
     void drop_gun();
     void shoot();
+    GunType get_gun_type();
     void stop_shooting();
     void drop_gun(std::vector<std::shared_ptr<Projectile>> &projectiles);
     void flap();
