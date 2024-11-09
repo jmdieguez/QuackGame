@@ -43,10 +43,6 @@ public:
 
     bool has_been_equipped() { return is_equipped; };
 
-    void start_shooting() { shooting = true; }
-
-    void stop_shooting() { shooting = false; }
-
     bool can_take_this_gun(uint16_t duck_pos_x, uint16_t duck_pos_y)
     {
         return ((duck_pos_x - GUN_WIDTH) == pos_x || (duck_pos_x + GUN_WIDTH) == pos_x) && duck_pos_y == pos_y;
