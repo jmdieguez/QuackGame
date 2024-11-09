@@ -8,6 +8,8 @@ target_sources(quack_game_server
     sniper.cpp
     ak.cpp
     pewpewlaser.cpp
+
+    PUBLIC
     # .h files
     gun.h
     cowboypistol.h

@@ -22,7 +22,7 @@ private:
     uint8_t id;
     Position position;
     DuckStatus status;
-    DuckAction action = DuckAction::IDLE;
+    DuckAction action;
     std::shared_ptr<Gun> gun;
     int y_velocity = 0;
     bool block_shooting_command;

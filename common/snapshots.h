@@ -62,6 +62,19 @@ public:
                                                                                                                     status(status) {}
 };
 
+class NoExplotedSnapshot
+{
+    uint16_t pos_x;
+    uint16_t pos_y;
+};
+
+class ExplotedSnapshot
+{
+    uint16_t pos_x;
+    uint16_t pos_y;
+    uint16_t phase;
+};
+
 class BoxSnapshot
 {
 public:

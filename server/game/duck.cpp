@@ -1,7 +1,7 @@
 #include "duck.h"
 #include <optional>
 
-Duck::Duck(const uint8_t &i, const uint16_t &initial_x, const uint16_t &initial_y) : id(i), position(initial_x, initial_y), gun(nullptr), block_shooting_command(false) {}
+Duck::Duck(const uint8_t &i, const uint16_t &initial_x, const uint16_t &initial_y) : id(i), position(initial_x, initial_y), action(DuckAction::IDLE), gun(nullptr), block_shooting_command(false) {}
 
 Duck::~Duck() {}
 
