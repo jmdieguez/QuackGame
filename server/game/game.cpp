@@ -10,6 +10,8 @@ void Game::process(ClientCommand &command)
     try
     {
         Duck &duck = ducks.at(command.player_id);
+        if (!duck.get_status().status.is_alive)
+            return;
         switch (command.message.type)
         {
         case ClientActionType::MOVE_RIGHT:
