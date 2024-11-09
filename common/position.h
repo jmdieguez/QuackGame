@@ -6,10 +6,10 @@
 class Position
 {
 public:
-    uint16_t pos_x;
-    uint16_t pos_y;
+    uint16_t x;
+    uint16_t y;
 
-    Position(const uint16_t &initial_x, const uint16_t &initial_y) : pos_x(initial_x), pos_y(initial_y) {}
+    Position(const uint16_t &initial_x, const uint16_t &initial_y) : x(initial_x), y(initial_y) {}
 
     ~Position() {}
 };

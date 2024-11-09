@@ -57,7 +57,7 @@ public:
 
     ProjectileSnapshot get_status()
     {
-        return ProjectileSnapshot(position.pos_x, position.pos_y, type, type_direction, finish);
+        return ProjectileSnapshot(position.x, position.y, type, type_direction, finish);
     }
 
     virtual ~Projectile() = default;

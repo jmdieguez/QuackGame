@@ -10,8 +10,8 @@ void ProjectileGun::move()
 
     if (iterations_left <= 0)
         return;
-    position.pos_x += direction.first * velocity;
-    position.pos_y += direction.second * velocity;
+    position.x += direction.first * velocity;
+    position.y += direction.second * velocity;
     iterations_left -= velocity;
     if (iterations_left <= 0)
         finish = true;
@@ -19,8 +19,8 @@ void ProjectileGun::move()
 
 void ProjectileGun::cancel_move()
 {
-    position.pos_x -= direction.first * velocity;
-    position.pos_y -= direction.second * velocity;
+    position.x -= direction.first * velocity;
+    position.y -= direction.second * velocity;
 }
 
 void ProjectileGun::collide_walls()

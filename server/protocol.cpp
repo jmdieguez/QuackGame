@@ -34,8 +34,8 @@ void ServerProtocol::send_data(const uint16_t &data)
 void ServerProtocol::send_duck(const DuckSnapshot &duck)
 {
     send_data(duck.id);
-    send_data(duck.position.pos_x);
-    send_data(duck.position.pos_y);
+    send_data(duck.position.x);
+    send_data(duck.position.y);
     send_data(static_cast<uint16_t>(duck.current_action));
     send_data(static_cast<uint16_t>(duck.gun));
     send_duck_status(duck.status);
@@ -44,8 +44,8 @@ void ServerProtocol::send_duck(const DuckSnapshot &duck)
 void ServerProtocol::send_gun(const GunNoEquippedSnapshot &gun)
 {
     send_data(static_cast<uint16_t>(gun.type));
-    send_data(static_cast<uint16_t>(gun.position.pos_x));
-    send_data(static_cast<uint16_t>(gun.position.pos_y));
+    send_data(static_cast<uint16_t>(gun.position.x));
+    send_data(static_cast<uint16_t>(gun.position.y));
 }
 
 void ServerProtocol::send_projectile(const ProjectileSnapshot &projectile)

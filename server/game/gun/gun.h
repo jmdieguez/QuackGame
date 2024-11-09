@@ -45,7 +45,7 @@ public:
 
     bool can_take_this_gun(const Position &duck_position) const
     {
-        return ((duck_position.pos_x - GUN_WIDTH) == position.pos_x || (duck_position.pos_x + GUN_WIDTH) == position.pos_x) && duck_position.pos_y == position.pos_y;
+        return ((duck_position.x - GUN_WIDTH) == position.x || (duck_position.x + GUN_WIDTH) == position.x) && duck_position.y == position.y;
     }
 
     GunNoEquippedSnapshot get_status()

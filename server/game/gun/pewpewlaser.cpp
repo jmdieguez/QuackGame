@@ -27,8 +27,8 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Pew
     std::vector<std::shared_ptr<Projectile>> projectiles;
     for (auto dir : directions_shotgun)
     {
-        uint16_t adjusted_pos_x = duck_position.pos_x + (dir.first == 1 ? MIN_VALUE_RIGHT_DIRECTION_POS_X : MIN_VALUE_LEFT_DIRECTION_POS_X);
-        Position projectile_position(adjusted_pos_x, duck_position.pos_y);
+        uint16_t adjusted_pos_x = duck_position.x + (dir.first == 1 ? MIN_VALUE_RIGHT_DIRECTION_POS_X : MIN_VALUE_LEFT_DIRECTION_POS_X);
+        Position projectile_position(adjusted_pos_x, duck_position.y);
         uint8_t distance = (dir.first == 1 && dir.second == 0) || (dir.first == -1 && dir.second == 0) ? MAX_DISTANCE : MIN_DISTANCE;
         ProjectileType type = ProjectileType::CowboyBullet;
         projectiles.push_back(std::make_shared<ProjectileGun>(type, projectile_position, dir, VELOCITY, distance));

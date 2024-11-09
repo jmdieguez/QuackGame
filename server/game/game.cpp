@@ -96,8 +96,8 @@ void Game::move_grenade(std::shared_ptr<Projectile> &p)
     grenade->reduce_time();
     if (grenade->is_finish())
     {
-        Position fragment_left(current_position.pos_x - (5 * TILE_SIZE), current_position.pos_y);
-        Position fragment_right(current_position.pos_x + (5 * TILE_SIZE), current_position.pos_y);
+        Position fragment_left(current_position.x - (5 * TILE_SIZE), current_position.y);
+        Position fragment_right(current_position.x + (5 * TILE_SIZE), current_position.y);
         Explosion explosion(current_position);
         explosions.push_back(explosion);
         if (map.validate_coordinate(fragment_left))

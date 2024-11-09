@@ -103,8 +103,8 @@ void Duck::step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles)
         int i = 1;
         while (i <= X_VELOCITY)
         {
-            Position new_position(operation(position.pos_x, 1), position.pos_y);
-            Position end_hitbox(new_position.pos_x + TILE_SIZE - 1, new_position.pos_y + TILE_SIZE - 1);
+            Position new_position(operation(position.x, 1), position.y);
+            Position end_hitbox(new_position.x + TILE_SIZE - 1, new_position.y + TILE_SIZE - 1);
             if (map.validate_coordinate(new_position) && map.validate_coordinate(end_hitbox))
             {
                 for (auto &[id, gun] : map.get_guns())
@@ -128,8 +128,8 @@ void Duck::step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles)
         }
     }
 
-    Position below_left(position.pos_x, position.pos_y + TILE_SIZE);
-    Position below_right(position.pos_x + TILE_SIZE - 1, position.pos_y + TILE_SIZE);
+    Position below_left(position.x, position.y + TILE_SIZE);
+    Position below_right(position.x + TILE_SIZE - 1, position.y + TILE_SIZE);
     status.grounded = map.has_something_in(below_left) || map.has_something_in(below_right);
 
     if (status.grounded)
@@ -159,8 +159,8 @@ void Duck::step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles)
         int abs_y_velocity = std::abs(y_velocity);
         while (i <= abs_y_velocity)
         {
-            Position new_position(position.pos_x, operation(position.pos_y, 1));
-            Position end_hitbox(new_position.pos_x + TILE_SIZE - 1, new_position.pos_y + TILE_SIZE - 1); // El duck ocupa 32x32
+            Position new_position(position.x, operation(position.y, 1));
+            Position end_hitbox(new_position.x + TILE_SIZE - 1, new_position.y + TILE_SIZE - 1); // El duck ocupa 32x32
             if (map.validate_coordinate(new_position) && map.validate_coordinate(end_hitbox))
             {
                 position = new_position;
@@ -192,36 +192,36 @@ void Duck::step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles)
             return;
         std::vector<std::shared_ptr<Projectile>> shot_projectile = result.value().first;
         Position duck_position_after_shoot = result.value().second;
-        if (duck_position_after_shoot.pos_x != position.pos_x || duck_position_after_shoot.pos_y != position.pos_y)
+        if (duck_position_after_shoot.x != position.x || duck_position_after_shoot.y != position.y)
         {
-            if (duck_position_after_shoot.pos_x != position.pos_x)
+            if (duck_position_after_shoot.x != position.x)
             {
-                int start_x = std::min(position.pos_x, duck_position_after_shoot.pos_x);
-                int end_x = std::max(position.pos_x, duck_position_after_shoot.pos_x);
+                int start_x = std::min(position.x, duck_position_after_shoot.x);
+                int end_x = std::max(position.x, duck_position_after_shoot.x);
                 for (int x = status.looking_right ? end_x : start_x;
                      status.looking_right ? x >= start_x : x <= end_x;
                      status.looking_right ? --x : ++x)
                 {
                     {
-                        Position new_position(x, position.pos_y);
+                        Position new_position(x, position.y);
                         if (map.validate_coordinate(new_position))
                         {
-                            position.pos_x = (uint16_t)x;
+                            position.x = (uint16_t)x;
                             continue;
                         }
                         break;
                     }
                 }
-                if (duck_position_after_shoot.pos_y != position.pos_y)
+                if (duck_position_after_shoot.y != position.y)
                 {
-                    int start_y = std::min(position.pos_y, duck_position_after_shoot.pos_y);
-                    int end_y = std::max(position.pos_y, duck_position_after_shoot.pos_y);
+                    int start_y = std::min(position.y, duck_position_after_shoot.y);
+                    int end_y = std::max(position.y, duck_position_after_shoot.y);
                     for (int y = start_y; y <= end_y; ++y)
                     {
-                        Position new_position(position.pos_x, y);
+                        Position new_position(position.x, y);
                         if (map.validate_coordinate(new_position))
                         {
-                            position.pos_y = y;
+                            position.y = y;
                             continue;
                         }
 
@@ -255,8 +255,8 @@ void Duck::set_receive_shot()
 bool Duck::is_in_range(Position &position_item)
 {
     uint16_t half_tile_size = TILE_SIZE / 2;
-    return position_item.pos_x >= position.pos_x && position_item.pos_x < position.pos_x + half_tile_size &&
-           position_item.pos_y >= position.pos_y && position_item.pos_y < position.pos_y + TILE_SIZE;
+    return position_item.x >= position.x && position_item.x < position.x + half_tile_size &&
+           position_item.y >= position.y && position_item.y < position.y + TILE_SIZE;
 }
 
 DuckSnapshot Duck::get_status()

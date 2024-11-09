@@ -16,15 +16,15 @@ void ProjectileGrenade::move()
 {
     if (!time_to_explosion)
         return;
-    position.pos_x += direction.first * velocity;
-    position.pos_y += direction.second * velocity;
+    position.x += direction.first * velocity;
+    position.y += direction.second * velocity;
     time_to_explosion--;
 }
 
 void ProjectileGrenade::cancel_move()
 {
-    position.pos_x -= direction.first * velocity;
-    position.pos_y -= direction.second * velocity;
+    position.x -= direction.first * velocity;
+    position.y -= direction.second * velocity;
 }
 
 void ProjectileGrenade::collide_walls()

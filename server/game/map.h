@@ -110,12 +110,12 @@ public:
 
     bool validate_coordinate(Position &p) const
     {
-        return (p.pos_x < cfg.size_x) && (p.pos_y < cfg.size_y) && !has_something_in(p);
+        return (p.x < cfg.size_x) && (p.y < cfg.size_y) && !has_something_in(p);
     }
 
     bool has_something_in(Position &p) const
     {
-        return cfg.bit_map[p.pos_x + (p.pos_y * cfg.size_x)];
+        return cfg.bit_map[p.x + (p.y * cfg.size_x)];
     }
 
     std::map<uint8_t, std::shared_ptr<Gun>> &get_guns()

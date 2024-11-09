@@ -40,8 +40,8 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> AK:
     if (time_shooting < START_MORE_DISPERSION)
         value_dispersion = VALUE_MORE_DISPERSION;
     apply_dispersion(directions, value_dispersion);
-    uint16_t adjusted_pos_x = duck_position.pos_x + (directions.first > 0 ? MIN_VALUE_RIGHT_DIRECTION_POS_X : MIN_VALUE_LEFT_DIRECTION_POS_X);
-    Position projectile_position(adjusted_pos_x, duck_position.pos_y);
+    uint16_t adjusted_pos_x = duck_position.x + (directions.first > 0 ? MIN_VALUE_RIGHT_DIRECTION_POS_X : MIN_VALUE_LEFT_DIRECTION_POS_X);
+    Position projectile_position(adjusted_pos_x, duck_position.y);
     std::vector<std::shared_ptr<Projectile>> projectiles;
     projectiles.push_back(std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, projectile_position, directions, VELOCITY, MAX_DISTANCE));
     Position new_position = move_back(duck_position, looking_right, BACK);
