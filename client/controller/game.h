@@ -12,7 +12,7 @@
 #include "./command/inputhandler.h"
 #include "../model/protocol.h"
 #include "../view/SDLWindow.h"
-#include "../ui/tiles.h"
+#include "../common/tiles.h"
 #include "../ui/tileset.h"
 #include <utility>
 #include <vector>
@@ -22,7 +22,7 @@
 
 #include <SDL2pp/SDL2pp.hh>
 
-#define TILESETS "../var/quackgame/tiles.png"
+#define TILESETS "./var/quackgame/tiles.png"
 
 class Game
 {

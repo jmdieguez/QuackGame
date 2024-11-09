@@ -11,7 +11,7 @@ inline bool ends_with(std::string const & value, std::string const & ending)
 int main(int argc, char *argv[]) {
     if (argc == N_ARGS) {
         std::string out_file = argv[1];
-        if (out_file.ends_with(".yaml")) {
+        if (ends_with(out_file, ".yaml")) {
             SDL sdl(SDL_INIT_VIDEO);
             SDLTTF ttf;
             Window window("Quack Game Editor", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1920, 1080, SDL_WINDOW_SHOWN);

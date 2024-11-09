@@ -5,7 +5,7 @@
 #include <map>
 
 #include "common/map.h"
-#include "ui/tiles.h"
+#include "common/tiles.h"
 #include "ui/tileset.h"
 #include "grid.h"
 #include "buttons.h"
@@ -21,7 +21,8 @@ enum class EditorState {
     CREATING_COMPONENTS,
     CLEANING_TILES,
     CREATING_GUN_SPAWNS,
-    CREATING_DUCK_SPAWNS
+    CREATING_DUCK_SPAWNS,
+    CREATING_BOXES
 };
 
 class Editor
@@ -48,6 +49,7 @@ private:
     DuckSpawnButton duck_button;
     GunSpawnButton gun_button;
     DeleteButton delete_button;
+    BoxButton box_button;
     std::string out_file;
 public:
     explicit Editor(Renderer &r, std::string &path) : renderer(r), font(FONT_PATH, 16),
@@ -59,6 +61,7 @@ public:
                                                       duck_button(r),
                                                       gun_button(r),
                                                       delete_button(r),
+                                                      box_button(r),
                                                       out_file(path)
     {
         current_tileset = std::make_unique<Tileset>(current_style, renderer, all_tilesets);
@@ -79,6 +82,8 @@ public:
     void save();
     void draw_tiles();
     void draw_textures();
+    void unselect();
+    void handle_selection(const SDL_Point &mousePos);
     void handle_event(const SDL_Event &event);
 };
 

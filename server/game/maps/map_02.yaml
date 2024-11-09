@@ -1,0 +1,106 @@
+n_tiles_x: 32
+n_tiles_y: 16
+tileset: 1
+components:
+  - x: 5
+    y: 9
+    type: 4
+  - x: 6
+    y: 13
+    type: 5
+  - x: 9
+    y: 11
+    type: 4
+  - x: 9
+    y: 14
+    type: 4
+  - x: 10
+    y: 7
+    type: 4
+  - x: 12
+    y: 15
+    type: 4
+  - x: 13
+    y: 12
+    type: 5
+  - x: 14
+    y: 11
+    type: 6
+  - x: 15
+    y: 8
+    type: 3
+  - x: 15
+    y: 9
+    type: 1
+  - x: 15
+    y: 10
+    type: 1
+  - x: 15
+    y: 11
+    type: 1
+  - x: 15
+    y: 12
+    type: 1
+  - x: 15
+    y: 13
+    type: 2
+  - x: 15
+    y: 15
+    type: 4
+  - x: 18
+    y: 11
+    type: 6
+  - x: 18
+    y: 15
+    type: 4
+  - x: 19
+    y: 12
+    type: 5
+  - x: 20
+    y: 7
+    type: 4
+  - x: 21
+    y: 11
+    type: 4
+  - x: 21
+    y: 14
+    type: 4
+  - x: 25
+    y: 9
+    type: 4
+  - x: 26
+    y: 13
+    type: 5
+spawns:
+  - x: 6
+    y: 8
+    type: 1
+  - x: 10
+    y: 10
+    type: 2
+  - x: 10
+    y: 13
+    type: 2
+  - x: 16
+    y: 14
+    type: 1
+  - x: 22
+    y: 10
+    type: 2
+  - x: 22
+    y: 13
+    type: 2
+  - x: 26
+    y: 8
+    type: 1
+boxes:
+  - x: 11
+    y: 6
+  - x: 12
+    y: 14
+  - x: 16
+    y: 7
+  - x: 20
+    y: 14
+  - x: 21
+    y: 6

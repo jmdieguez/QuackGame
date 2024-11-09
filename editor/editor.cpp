@@ -35,6 +35,15 @@ void Editor::draw_tiles() {
                          );
         }
     }
+
+    for (auto& [coord, box] : tiles.boxes_map) {
+        uint16_t x = tiles_grid.x + (coord.first * TILE_SIZE);
+        uint16_t y = tiles_grid.y + (coord.second * TILE_SIZE);
+        renderer.Copy(box_texture,
+                      Rect(0, 0, 16, 16),
+                      Rect(x, y, 32, 32)
+        );
+    }
 }
 
 void Editor::draw_textures() {
@@ -60,52 +69,70 @@ void Editor::draw_textures() {
     }
 }
 
+void Editor::unselect() {
+    selected_texture = Component::NONE;
+    save_button.unselect();
+    delete_button.unselect();
+    duck_button.unselect();
+    gun_button.unselect();
+    box_button.unselect();
+}
+
+void Editor::handle_selection(const SDL_Point &mousePos) {        
+    int totalWidth = (1920 - 128);
+    int textureX = 64;
+    int textureY = (1080 * 2) / 3;
+    int textureWidth = 0;
+    int textureHeight = 0;
+
+    for (auto& [key, texture] : current_tileset->textures) {
+        textureWidth = texture->GetWidth() * 4;
+        textureHeight = texture->GetHeight() * 4;
+
+        SDL_Rect textureRect = {textureX, textureY, textureWidth, textureHeight};
+
+        if (SDL_PointInRect(&mousePos, &textureRect)) {
+            unselect();
+            selected_texture = key;
+            state = EditorState::CREATING_COMPONENTS;
+            return;
+        }
+        textureX += totalWidth / current_tileset->textures.size();
+    }
+
+    if (SDL_PointInRect(&mousePos, &save_button.rect)) {
+        unselect();
+        save_button.select();
+        running = false;
+        save_on_exit = true;
+        return;
+    } else if (SDL_PointInRect(&mousePos, &delete_button.rect)) {
+        unselect();
+        delete_button.select();
+        state = EditorState::CLEANING_TILES;
+        return;
+    }  else if (SDL_PointInRect(&mousePos, &duck_button.rect)) {
+        unselect();
+        duck_button.select();
+        state = EditorState::CREATING_DUCK_SPAWNS;
+        return;
+    }  else if (SDL_PointInRect(&mousePos, &gun_button.rect)) {
+        unselect();
+        gun_button.select();
+        state = EditorState::CREATING_GUN_SPAWNS;
+        return;
+    } else if (SDL_PointInRect(&mousePos, &box_button.rect)) {
+        unselect();
+        box_button.select();
+        state = EditorState::CREATING_BOXES;
+        return;
+    }
+}
+
 void Editor::handle_event(const SDL_Event& event) {
     if (event.button.button == SDL_BUTTON_LEFT) {
         SDL_Point mousePos = { event.button.x, event.button.y };
-        
-        int totalWidth = (1920 - 128);
-        int textureX = 64;
-        int textureY = (1080 * 2) / 3;
-        int textureWidth = 0;
-        int textureHeight = 0;
-
-        for (auto& [key, texture] : current_tileset->textures) {
-            textureWidth = texture->GetWidth() * 4;
-            textureHeight = texture->GetHeight() * 4;
-
-            SDL_Rect textureRect = {textureX, textureY, textureWidth, textureHeight};
-
-            if (SDL_PointInRect(&mousePos, &textureRect)) {
-                delete_button.unselect();
-                duck_button.unselect();
-                gun_button.unselect();
-                selected_texture = key;
-                state = EditorState::CREATING_COMPONENTS;
-                return;
-            }
-            textureX += totalWidth / current_tileset->textures.size();
-        }
-
-        if (SDL_PointInRect(&mousePos, &save_button.rect)) {
-            save_button.select();
-            running = false;
-            save_on_exit = true;
-            return;
-        } else if (SDL_PointInRect(&mousePos, &delete_button.rect)) {
-            delete_button.select();
-            state = EditorState::CLEANING_TILES;
-            return;
-        }  else if (SDL_PointInRect(&mousePos, &duck_button.rect)) {
-            duck_button.select();
-            state = EditorState::CREATING_DUCK_SPAWNS;
-            return;
-        }  else if (SDL_PointInRect(&mousePos, &gun_button.rect)) {
-            gun_button.select();
-            state = EditorState::CREATING_GUN_SPAWNS;
-            return;
-        }
-
+        handle_selection(mousePos);
         if (tiles_grid.contains(mousePos)) {
             std::pair<uint16_t, uint16_t> pair = 
                 std::make_pair((mousePos.x - tiles_grid.x) / TILE_SIZE, (mousePos.y - tiles_grid.y) / TILE_SIZE);
@@ -114,25 +141,26 @@ void Editor::handle_event(const SDL_Event& event) {
                 tiles.tiles_map[pair] = selected_texture;
             } else if (state == EditorState::CLEANING_TILES) {
                 tiles.tiles_map.erase(pair);
+                tiles.spawns_map.erase(pair);
+                tiles.boxes_map.erase(pair);
             } else if (state == EditorState::CREATING_DUCK_SPAWNS) {
                 tiles.spawns_map[pair] = Spawn::DUCK_SPAWN;
             } else if (state == EditorState::CREATING_GUN_SPAWNS) {
                 tiles.spawns_map[pair] = Spawn::GUN_SPAWN;
+            } else if (state == EditorState::CREATING_BOXES) {
+                tiles.boxes_map[pair] = Box::BOX_4_HP;
             }
-        } else {
-            delete_button.unselect();
-            duck_button.unselect();
-            gun_button.unselect();
-            selected_texture = Component::NONE;
         }
+    } else if (event.button.button == SDL_BUTTON_RIGHT) {
+        unselect();
     }
 }
 
 void Editor::save() {
     YAML::Node root;
-    root["n_tiles_x"] = 16;
+    root["n_tiles_x"] = 32;
     root["n_tiles_y"] = 16;
-    root["tileset"] = 0;
+    root["tileset"] = current_style;
     
     root["components"] = YAML::Node(YAML::NodeType::Sequence);
     for (auto& [coord, tile] : tiles.tiles_map) {
@@ -152,6 +180,14 @@ void Editor::save() {
         root["spawns"].push_back(node);
     }
 
+    root["boxes"] = YAML::Node(YAML::NodeType::Sequence);
+    for (auto& [coord, box] : tiles.boxes_map) {
+        YAML::Node node;
+        node["x"] = coord.first;
+        node["y"] = coord.second;
+        root["boxes"].push_back(node);
+    }
+
     std::ofstream fout(out_file);
     fout << root;
     fout.close();
@@ -169,6 +205,7 @@ int Editor::run() {
             save_button.draw(w_width);
             duck_button.draw(w_width);
             gun_button.draw(w_width);
+            box_button.draw(w_width);
             delete_button.draw(w_width);
             renderer.Present();
 
