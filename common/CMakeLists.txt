@@ -27,4 +27,5 @@ target_sources(quack_game_common
     map.h
     projectiletype.h
     projectiledirection.h
+    size.h
 )

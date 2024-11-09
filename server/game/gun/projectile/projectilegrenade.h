@@ -8,15 +8,15 @@ private:
     bool change_direction;
 
 public:
-    explicit ProjectileGrenade(ProjectileType t, Position p, std::pair<int, int> &d, uint8_t velocity);
+    explicit ProjectileGrenade(const ProjectileType &t, const Position &p, const std::pair<int, int> &d, uint8_t velocity);
 
     void move() override;
     void cancel_move() override;
     void collide_walls() override;
 
     void reduce_time();
-    bool is_change_direction_apply();
-    uint8_t get_time_fire();
+    bool is_change_direction_apply() const;
+    uint8_t get_time_fire() const;
 
     ~ProjectileGrenade();
 };

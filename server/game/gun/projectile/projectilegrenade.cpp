@@ -8,8 +8,9 @@
                               PUBLIC METHODS
 ****************************************************************************/
 
-ProjectileGrenade::ProjectileGrenade(ProjectileType t, Position p, std::pair<int, int> &d, uint8_t velocity) : Projectile(t, p, d, velocity),
-                                                                                                               time_to_explosion(TIME_TO_EXPLOSION), time_fire(TIME_FIRE), change_direction(false) {}
+ProjectileGrenade::ProjectileGrenade(const ProjectileType &t, const Position &p, const std::pair<int, int> &d, uint8_t velocity) : Projectile(t, p, d, velocity),
+                                                                                                                                   time_to_explosion(TIME_TO_EXPLOSION),
+                                                                                                                                   time_fire(TIME_FIRE), change_direction(false) {}
 
 void ProjectileGrenade::move()
 {
@@ -38,11 +39,11 @@ void ProjectileGrenade::reduce_time()
     time_to_explosion--;
 }
 
-bool ProjectileGrenade::is_change_direction_apply()
+bool ProjectileGrenade::is_change_direction_apply() const
 {
     return change_direction;
 }
-uint8_t ProjectileGrenade::get_time_fire()
+uint8_t ProjectileGrenade::get_time_fire() const
 {
     return time_fire;
 }

@@ -12,7 +12,7 @@ private:
     void reset();
 
 public:
-    explicit Shotgun(uint16_t pos_x, uint16_t pos_y);
+    explicit Shotgun(const uint16_t &pos_x, const uint16_t &pos_y);
     std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> shoot(bool &looking_right, bool &looking_up, const Position &duck_position) override;
     bool is_block_shoot() const;
     void check_reset();

@@ -5,12 +5,14 @@
 #define MAX_DISTANCE 10
 #define VELOCITY 5
 #define TIME_EXPLOSION 100
+#define HEIGHT 19
+#define WIDTH 19
 
 /***************************************************************************
                               PUBLIC METHODS
 ****************************************************************************/
 
-Grenade::Grenade(uint16_t pos_x, uint16_t pos_y) : Gun(GunType::Grenade, pos_x, pos_y), GunAmmo(MAX_AMMO), start_explosion_state(false), time_explosion(TIME_EXPLOSION) {}
+Grenade::Grenade(const uint16_t &pos_x, const uint16_t &pos_y) : Gun(GunType::Grenade, Position(pos_x, pos_y), Size(WIDTH, HEIGHT)), GunAmmo(MAX_AMMO), start_explosion_state(false), time_explosion(TIME_EXPLOSION) {}
 
 std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Grenade::shoot(bool &looking_right, bool &looking_up, const Position &duck_position)
 {
@@ -29,13 +31,13 @@ std::shared_ptr<Projectile> Grenade::get_projectile(bool &looking_right, bool &l
     (void)looking_up;
     if (!start_explosion_state)
         return nullptr;
-    Position position(pos_x, pos_y);
     std::pair<int, int> directions;
     if (looking_right)
         directions = {1, -1};
     if (!looking_right)
         directions = {-1, -1};
-    return std::make_shared<ProjectileGrenade>(ProjectileType::Grenade, position, directions, VELOCITY);
+    ProjectileType type = ProjectileType::Grenade;
+    return std::make_shared<ProjectileGrenade>(type, position, directions, VELOCITY);
 }
 
 Grenade::~Grenade()

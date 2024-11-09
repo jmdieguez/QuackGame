@@ -12,12 +12,14 @@
 #define VALUE_DISPERSION 1
 #define VALUE_MORE_DISPERSION 2
 #define BACK 3
+#define WIDTH 35
+#define HEIGHT 19
 
 /***************************************************************************
                               PUBLIC METHODS
 ****************************************************************************/
 
-AK::AK(uint16_t pos_x, uint16_t pos_y) : Gun(GunType::AK, pos_x, pos_y), GunAmmo(MAX_AMMO), time_shooting(TIME_SHOOTING), delay_shooting(DELAY_SHOOTING)
+AK::AK(const uint16_t &pos_x, const uint16_t &pos_y) : Gun(GunType::AK, Position(pos_x, pos_y), Size(WIDTH, HEIGHT)), GunAmmo(MAX_AMMO), time_shooting(TIME_SHOOTING), delay_shooting(DELAY_SHOOTING)
 {
 }
 

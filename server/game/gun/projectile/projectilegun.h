@@ -6,7 +6,7 @@ private:
     uint16_t iterations_left;
 
 public:
-    explicit ProjectileGun(ProjectileType t, Position p, std::pair<int, int> &d, uint8_t velocity, uint8_t tiles);
+    explicit ProjectileGun(const ProjectileType &t, const Position &p, const std::pair<int, int> &d, uint8_t velocity, uint8_t tiles);
     void move() override;
     void cancel_move() override;
     void collide_walls() override;

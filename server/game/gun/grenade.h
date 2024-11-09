@@ -14,7 +14,7 @@ private:
     uint8_t time_explosion;
 
 public:
-    explicit Grenade(uint16_t pos_x, uint16_t pos_y);
+    explicit Grenade(const uint16_t &pos_x, const uint16_t &pos_y);
     std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> shoot(bool &looking_right, bool &looking_up, const Position &duck_position) override;
     std::shared_ptr<Projectile> get_projectile(bool &looking_right, bool &looking_up);
     ~Grenade();

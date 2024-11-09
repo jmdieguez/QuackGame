@@ -8,7 +8,7 @@ class CowboyPistol : public Gun, public GunAmmo
 {
 private:
 public:
-    explicit CowboyPistol(uint16_t pos_x, uint16_t pos_y);
+    explicit CowboyPistol(const uint16_t &pos_x, const uint16_t &pos_y);
     std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> shoot(bool &looking_right, bool &looking_up, const Position &duck_position) override;
     ~CowboyPistol();
 };

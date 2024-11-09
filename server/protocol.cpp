@@ -44,8 +44,8 @@ void ServerProtocol::send_duck(const DuckSnapshot &duck)
 void ServerProtocol::send_gun(const GunNoEquippedSnapshot &gun)
 {
     send_data(static_cast<uint16_t>(gun.type));
-    send_data(static_cast<uint16_t>(gun.pos_x));
-    send_data(static_cast<uint16_t>(gun.pos_y));
+    send_data(static_cast<uint16_t>(gun.position.pos_x));
+    send_data(static_cast<uint16_t>(gun.position.pos_y));
 }
 
 void ServerProtocol::send_projectile(const ProjectileSnapshot &projectile)

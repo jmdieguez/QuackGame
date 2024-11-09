@@ -8,6 +8,7 @@
 #include "../../../../common/projectiledirection.h"
 #include "../../../../common/defs.h"
 #include "../../../../common/position.h"
+#include "../../../../common/snapshots.h"
 
 class Projectile
 {
@@ -22,7 +23,7 @@ protected:
     bool finish;
 
 public:
-    Projectile(ProjectileType t, Position p, std::pair<int, int> &d, uint8_t velocity)
+    Projectile(const ProjectileType &t, const Position &p, const std::pair<int, int> &d, uint8_t velocity)
         : type(t), velocity(velocity), position(p), direction(d), finish(false)
     {
         if (direction.second > 0)

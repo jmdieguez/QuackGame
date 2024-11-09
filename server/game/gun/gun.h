@@ -10,6 +10,7 @@
 #include "../../../common/texturesize.h"
 #include "../../../common/projectiletype.h"
 #include "../../../common/position.h"
+#include "../../../common/size.h"
 #include "projectile/projectile.h"
 
 class Gun
@@ -17,11 +18,10 @@ class Gun
 private:
     GunType type;
     bool is_equipped;
+    Size size;
 
 protected:
-    uint16_t pos_x;
-    uint16_t pos_y;
-    bool shooting;
+    Position position;
 
     std::pair<int, int> get_directions(bool looking_right, bool looking_up)
     {
@@ -33,8 +33,7 @@ protected:
     }
 
 public:
-    explicit Gun(GunType type, uint16_t pos_x,
-                 uint16_t pos_y) : type(type), is_equipped(false), pos_x(pos_x), pos_y(pos_y), shooting(false) {}
+    explicit Gun(GunType type, Position p, Size size) : type(type), is_equipped(false), size(size), position(p) {}
 
     virtual ~Gun() = default;
 
@@ -44,14 +43,14 @@ public:
 
     bool has_been_equipped() { return is_equipped; };
 
-    bool can_take_this_gun(uint16_t duck_pos_x, uint16_t duck_pos_y)
+    bool can_take_this_gun(const Position &duck_position) const
     {
-        return ((duck_pos_x - GUN_WIDTH) == pos_x || (duck_pos_x + GUN_WIDTH) == pos_x) && duck_pos_y == pos_y;
+        return ((duck_position.pos_x - GUN_WIDTH) == position.pos_x || (duck_position.pos_x + GUN_WIDTH) == position.pos_x) && duck_position.pos_y == position.pos_y;
     }
 
     GunNoEquippedSnapshot get_status()
     {
-        return GunNoEquippedSnapshot(type, pos_x, pos_y);
+        return GunNoEquippedSnapshot(type, position);
     }
 
     GunType get_type()

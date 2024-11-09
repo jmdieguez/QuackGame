@@ -1,7 +1,7 @@
 #include "projectilegun.h"
 
-ProjectileGun::ProjectileGun(ProjectileType t, Position p, std::pair<int, int> &d, uint8_t velocity, uint8_t tiles) : Projectile(t, p, d, velocity),
-                                                                                                                      iterations_left(tiles * TILE_SIZE)
+ProjectileGun::ProjectileGun(const ProjectileType &t, const Position &p, const std::pair<int, int> &d, uint8_t velocity, uint8_t tiles) : Projectile(t, p, d, velocity),
+                                                                                                                                          iterations_left(tiles * TILE_SIZE)
 {
 }
 

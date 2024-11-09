@@ -109,7 +109,7 @@ void Duck::step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles)
             {
                 for (auto &[id, gun] : map.get_guns())
                 {
-                    if (gun.get()->can_take_this_gun(new_position.pos_x, new_position.pos_y))
+                    if (gun.get()->can_take_this_gun(new_position))
                     {
                         this->gun = gun;
                         gun_id_to_erase = id;
@@ -261,10 +261,9 @@ bool Duck::is_in_range(Position &position_item)
 
 DuckSnapshot Duck::get_status()
 {
-    PositionSnapshot position_snapshot = position.get_status();
     GunType gun_type = get_gun_type();
     return DuckSnapshot(id,
-                        position_snapshot,
+                        position,
                         action, gun_type, status);
     //  100,
     //  status,
