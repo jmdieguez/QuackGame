@@ -17,7 +17,8 @@ enum class Spawn : uint16_t {
 };
 
 enum class Box : uint16_t {
-    BOX_1_HP = 1,
+    NONE = 0,
+    BOX_1_HP,
     BOX_2_HP,
     BOX_3_HP,
     BOX_4_HP

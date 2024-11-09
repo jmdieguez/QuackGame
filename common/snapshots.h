@@ -73,10 +73,9 @@ public:
 class BoxSnapshot
 {
 public:
-    const Position &pos;
-    const GunNoEquippedSnapshot &gun;
-
-    BoxSnapshot(Position &p, GunNoEquippedSnapshot &g) : pos(p), gun(g) {}
+    Position pos;
+    Box status;
+    BoxSnapshot(const Position &p, const Box &s) : pos(p), status(s) {}
 };
 
 class MapSnapshot
@@ -86,15 +85,16 @@ public:
     uint16_t size_x;
     uint16_t size_y;
     std::vector<MapComponent> components;
-    // std::vector<BoxSnapshot> boxes;
+    std::vector<BoxSnapshot> boxes;
 
     MapSnapshot() : style(0), size_x(0), size_y(0) {}
 
     MapSnapshot(const uint16_t &s,
                 const uint16_t &s_x,
                 const uint16_t &s_y,
-                const std::vector<MapComponent> &c)
-        : style(s), size_x(s_x), size_y(s_y), components(c) {}
+                const std::vector<MapComponent> &c,
+                const std::vector<BoxSnapshot> &b)
+        : style(s), size_x(s_x), size_y(s_y), components(c), boxes(b) {}
 
     ~MapSnapshot() {}
 };

@@ -20,6 +20,8 @@ public:
     uint16_t size_x;
     uint16_t size_y;
     std::vector<MapComponent> components;
+    std::vector<Position> boxes;
+    std::map<Position, Spawn> spawns;
     std::vector<bool> bit_map; // true: wall/ground. false: empty space
     std::map<Component, std::pair<uint8_t, uint8_t>> dimensions;
 
@@ -36,6 +38,21 @@ public:
             uint16_t y = itemNode["y"].as<uint16_t>();
             Component component = itemNode["type"].as<Component>();
             components.push_back(MapComponent(x, y, component));
+        }
+
+        for (const auto &itemNode : root["spawns"])
+        {
+            uint16_t x = itemNode["x"].as<uint16_t>();
+            uint16_t y = itemNode["y"].as<uint16_t>();
+            Spawn type = itemNode["type"].as<Spawn>();
+            spawns.emplace(Position(x, y), type);
+        }
+
+        for (const auto &itemNode : root["boxes"])
+        {
+            uint16_t x = itemNode["x"].as<uint16_t>();
+            uint16_t y = itemNode["y"].as<uint16_t>();
+            boxes.push_back(Position(x, y));
         }
 
         size_x = n_tiles_x * TILE_SIZE;
@@ -57,22 +74,31 @@ public:
         }
     }
 
+    void change_pixels(const bool &ocuppied, const int &x, const int &y, const int &w, const int &h) {
+        int start_x = x * TILE_SIZE;
+        int start_y = y * TILE_SIZE;
+        for (int i = 0; i < w; i++)
+        {
+            int x_pos = start_x + i;
+            for (int j = 0; j < h; j++)
+            {
+                int y_pos = start_y + j;
+                bit_map[x_pos + (y_pos * size_x)] = ocuppied;
+            }
+        }
+    }
+
     void initiate_components()
     {
         for (const MapComponent &component : components)
         {
-            int start_x = component.x * TILE_SIZE;
-            int start_y = component.y * TILE_SIZE;
             std::pair<int, int> component_dimensions = dimensions[component.type];
-            for (int i = 0; i < component_dimensions.first; i++)
-            {
-                int x_pos = start_x + i;
-                for (int j = 0; j < component_dimensions.second; j++)
-                {
-                    int y_pos = start_y + j;
-                    bit_map[x_pos + (y_pos * size_x)] = true;
-                }
-            }
+            change_pixels(true, component.x, component.y, component_dimensions.first, component_dimensions.second);
+        }
+
+        for (const auto& box : boxes)
+        {
+            change_pixels(true, box.x, box.y, TILE_SIZE, TILE_SIZE);
         }
     }
 };
@@ -83,7 +109,7 @@ private:
     MapConfig cfg;
     uint16_t gun_id;
     std::map<uint8_t, std::shared_ptr<Gun>> guns;
-
+    std::map<Position, Box> boxes;
 public:
     Map(const std::string &map_file) : cfg(map_file),
                                        gun_id(0)
@@ -91,6 +117,10 @@ public:
         // Eliminar una vez que se tengan los spawns de las armas
         guns.emplace(gun_id, std::make_shared<AK>(290, 480));
         gun_id++;
+
+        for (const auto &position : cfg.boxes) {
+            boxes.emplace(position, Box::BOX_4_HP);
+        }
     }
 
     std::vector<GunNoEquippedSnapshot> get_guns_snapshots()
@@ -105,7 +135,14 @@ public:
         return guns_snapshots;
     }
 
-    MapSnapshot get_status() const { return MapSnapshot(cfg.style, cfg.size_x, cfg.size_y, cfg.components); }
+    MapSnapshot get_status() const {
+        std::vector<BoxSnapshot> box_snapshots;
+        for (auto &[position, box] : boxes)
+        {
+            box_snapshots.push_back(BoxSnapshot(position, box));
+        }
+        return MapSnapshot(cfg.style, cfg.size_x, cfg.size_y, cfg.components, box_snapshots);
+    }
 
     bool validate_coordinate(Position &p) const
     {

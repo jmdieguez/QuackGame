@@ -12,6 +12,11 @@ public:
     Position(const uint16_t &initial_x, const uint16_t &initial_y) : x(initial_x), y(initial_y) {}
 
     ~Position() {}
+
+    bool operator<(const Position& other) const {
+        // Ordenar primero por x, luego por y
+        return (x < other.x) || (x == other.x && y < other.y);
+    }
 };
 
 #endif // COMMON_POSITION_H
