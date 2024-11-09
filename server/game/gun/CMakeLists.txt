@@ -24,7 +24,8 @@ target_sources(quack_game_server
     dispersion.h
     defminvalue.h
     moveback.h
-    projectile.h
     gunammo.h
 
 )
+
+add_subdirectory(projectile/)

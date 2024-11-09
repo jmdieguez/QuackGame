@@ -1,5 +1,6 @@
 #include "ak.h"
 #include "defminvalue.h"
+#include "projectile/projectilegun.h"
 
 #define VELOCITY 10
 #define MAX_AMMO 30
@@ -40,7 +41,7 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> AK:
     uint16_t adjusted_pos_x = duck_position.pos_x + (directions.first > 0 ? MIN_VALUE_RIGHT_DIRECTION_POS_X : MIN_VALUE_LEFT_DIRECTION_POS_X);
     Position projectile_position(adjusted_pos_x, duck_position.pos_y);
     std::vector<std::shared_ptr<Projectile>> projectiles;
-    projectiles.push_back(std::make_shared<Projectile>(ProjectileType::CowboyBullet, projectile_position, directions, MAX_DISTANCE, VELOCITY));
+    projectiles.push_back(std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, projectile_position, directions, VELOCITY, MAX_DISTANCE));
     Position new_position = move_back(duck_position, looking_right, BACK);
     delay_shooting = DELAY_SHOOTING;
     time_shooting--;

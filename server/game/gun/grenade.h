@@ -3,8 +3,7 @@
 #include <cstdint>
 #include "../../../common/position.h"
 #include "../../../common/snapshots.h"
-#include "projectile.h"
-#include "grenadeprojectile.h"
+#include "projectile/projectile.h"
 #include "gun.h"
 #include "gunammo.h"
 

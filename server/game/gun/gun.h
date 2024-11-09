@@ -10,7 +10,7 @@
 #include "../../../common/texturesize.h"
 #include "../../../common/projectiletype.h"
 #include "../../../common/position.h"
-#include "projectile.h"
+#include "projectile/projectile.h"
 
 class Gun
 {

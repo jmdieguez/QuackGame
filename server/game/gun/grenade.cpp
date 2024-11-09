@@ -1,4 +1,5 @@
 #include "grenade.h"
+#include "projectile/projectilegrenade.h"
 
 #define MAX_AMMO 1
 #define MAX_DISTANCE 10
@@ -34,7 +35,7 @@ std::shared_ptr<Projectile> Grenade::get_projectile(bool &looking_right, bool &l
         directions = {1, -1};
     if (!looking_right)
         directions = {-1, -1};
-    return std::make_shared<GrenadeProjectile>(ProjectileType::Grenade, position, directions, MAX_DISTANCE, VELOCITY, TIME_EXPLOSION);
+    return std::make_shared<ProjectileGrenade>(ProjectileType::Grenade, position, directions, VELOCITY);
 }
 
 Grenade::~Grenade()

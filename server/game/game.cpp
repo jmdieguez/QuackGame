@@ -1,4 +1,5 @@
 #include "game.h"
+#include "gun/projectile/projectilegrenade.h"
 
 Game::Game(const std::string &map_file) : map(map_file)
 {
@@ -88,12 +89,11 @@ void Game::verify_hit_ducks()
 void Game::move_grenade(std::shared_ptr<Projectile> &p)
 {
     p->move();
-    GrenadeProjectile *grenade = (GrenadeProjectile *)p.get();
+    ProjectileGrenade *grenade = (ProjectileGrenade *)p.get();
     Position current_position = p->get_position();
     grenade->reduce_time();
     if (grenade->is_finish())
     {
-        std::cout << "Explote" << std::endl;
         Position fragment_left(current_position.pos_x - (5 * TILE_SIZE), current_position.pos_y);
         Position fragment_right(current_position.pos_x + (5 * TILE_SIZE), current_position.pos_y);
         Explosion explosion(current_position);
@@ -143,7 +143,7 @@ void Game::remove_projectiles()
 {
     for (auto it = projectiles.begin(); it != projectiles.end();)
     {
-        if (it->get()->get_type() == ProjectileType::Grenade && (GrenadeProjectile *)it->get()->is_finish())
+        if (it->get()->get_type() == ProjectileType::Grenade && (ProjectileGrenade *)it->get()->is_finish())
         {
             it = projectiles.erase(it);
             continue;
