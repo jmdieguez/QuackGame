@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <vector>
 #include <optional>
+#include <memory>
 
 #include "../../../common/snapshots.h"
 #include "../../../common/texturesize.h"
@@ -58,7 +59,7 @@ public:
         return type;
     }
 
-    virtual std::optional<std::pair<std::vector<Projectile>, Position>> shoot(bool &looking_right, bool &looking_up, const Position &duck_position) = 0;
+    virtual std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> shoot(bool &looking_right, bool &looking_up, const Position &duck_position) = 0;
 };
 
 #endif // SERVER_GUN_H

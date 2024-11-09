@@ -72,24 +72,24 @@ void Game::process(ClientCommand &command)
 void Game::verify_hit_ducks()
 {
     for (auto &[id, duck] : ducks)
-        for (Projectile &p : projectiles)
+        for (std::shared_ptr<Projectile> &p : projectiles)
         {
-            if (!duck.is_in_range(p.get_position()))
+            if (!duck.is_in_range(p->get_position()))
                 continue;
             duck.set_receive_shot();
-            p.destroy();
+            p->destroy();
         }
 }
 
 void Game::moves_projectiles(Map &map)
 {
-    for (Projectile &p : projectiles)
+    for (std::shared_ptr<Projectile> &p : projectiles)
     {
-        p.move();
-        if (map.validate_coordinate(p.get_position()) && !map.has_something_in(p.get_position()))
+        p->move();
+        if (map.validate_coordinate(p->get_position()))
             continue;
-        p.cancel_move();
-        p.destroy();
+        p->cancel_move();
+        p->destroy();
     }
 }
 
@@ -97,7 +97,7 @@ void Game::remove_projectiles()
 {
     for (auto it = projectiles.begin(); it != projectiles.end();)
     {
-        if (it->is_finish())
+        if (it->get()->is_finish())
         {
             it = projectiles.erase(it);
             continue;
@@ -124,6 +124,6 @@ Snapshot Game::get_status()
         duck_snapshots.push_back(duck.get_status());
     std::vector<ProjectileSnapshot> projectile_snapshots;
     for (auto &projectile : projectiles)
-        projectile_snapshots.push_back(projectile.get_status());
+        projectile_snapshots.push_back(projectile->get_status());
     return Snapshot(std::move(duck_snapshots), std::move(guns_snapshots), std::move(projectile_snapshots), map_snapshot);
 }

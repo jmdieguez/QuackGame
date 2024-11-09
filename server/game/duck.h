@@ -52,7 +52,7 @@ public:
     DuckSnapshot get_status();
 
     // Simulate an iteration
-    void step(Map &map, std::vector<Projectile> &projectiles);
+    void step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles);
 };
 
 #endif // SERVER_DUCK_H

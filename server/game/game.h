@@ -16,7 +16,7 @@ class Game
 private:
     Map map;
     std::map<uint8_t, Duck> ducks;
-    std::vector<Projectile> projectiles;
+    std::vector<std::shared_ptr<Projectile>> projectiles;
 
     void verify_hit_ducks();
     void moves_projectiles(Map &map);

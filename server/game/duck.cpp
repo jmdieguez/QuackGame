@@ -88,7 +88,7 @@ void Duck::lay()
     action = DuckAction::LAYING;
 }
 
-void Duck::step(Map &map, std::vector<Projectile> &projectiles)
+void Duck::step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles)
 {
     if (action == DuckAction::MOVING)
     {
@@ -187,7 +187,7 @@ void Duck::step(Map &map, std::vector<Projectile> &projectiles)
         }
         if (!result.has_value())
             return;
-        std::vector<Projectile> shot_projectile = result.value().first;
+        std::vector<std::shared_ptr<Projectile>> shot_projectile = result.value().first;
         Position duck_position_after_shoot = result.value().second;
         if (duck_position_after_shoot.pos_x != position.pos_x || duck_position_after_shoot.pos_y != position.pos_y)
         {
@@ -227,7 +227,7 @@ void Duck::step(Map &map, std::vector<Projectile> &projectiles)
                 }
             }
         }
-        for (Projectile p : shot_projectile)
+        for (std::shared_ptr<Projectile> p : shot_projectile)
             projectiles.push_back(p);
         if (gun->get_type() == GunType::Shotgun && !(((Shotgun *)gun.get())->is_block_shoot()))
             return;

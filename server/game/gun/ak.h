@@ -11,7 +11,7 @@ private:
 
 public:
     explicit AK(uint16_t pos_x, uint16_t pos_y);
-    std::optional<std::pair<std::vector<Projectile>, Position>> shoot(bool &looking_right, bool &looking_up, const Position &duck_position) override;
+    std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> shoot(bool &looking_right, bool &looking_up, const Position &duck_position) override;
     void check_reset();
     ~AK();
 };
