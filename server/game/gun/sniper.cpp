@@ -36,7 +36,6 @@ std::optional<std::pair<std::vector<Projectile>, Position>> Sniper::shoot(bool &
         {
             time_to_reaload--;
             block_shoot = false;
-            std::cout << "Desconte el tiempo de recarga y es: " << (int)time_to_reaload << std::endl;
             return std::nullopt;
         }
         block_shoot = true;
@@ -48,7 +47,6 @@ std::optional<std::pair<std::vector<Projectile>, Position>> Sniper::shoot(bool &
     if (time_to_shoot)
     {
         time_to_shoot--;
-        std::cout << "Desconte el tiempo de disparo y es: " << (int)time_to_shoot << std::endl;
         return std::nullopt;
     }
     std::pair<int, int> directions = get_directions(looking_right, looking_up);
