@@ -8,6 +8,7 @@
 #include "gun/magnum.h"
 #include "gun/duelingpistol.h"
 #include "gun/shotgun.h"
+#include "gun/sniper.h"
 
 class MapConfig
 {
@@ -86,7 +87,7 @@ public:
                                        gun_id(0)
     {
         // Eliminar una vez que se tengan los spawns de las armas
-        guns.emplace(gun_id, std::make_shared<Magnum>(290, 480));
+        guns.emplace(gun_id, std::make_shared<Sniper>(290, 480));
         gun_id++;
     }
 

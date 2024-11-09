@@ -19,6 +19,8 @@ std::string TextureFactory::get_path(TextureFigure figure)
         return DUELING_PISTOL_PATH;
     else if (TextureFigure::Shotgun == figure)
         return SHOTGUN_PATH;
+    else if (TextureFigure::Sniper == figure)
+        return SNIPER_PATH;
     return DUCK_PATH;
 }
 
