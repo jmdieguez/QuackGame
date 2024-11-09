@@ -48,9 +48,14 @@ public:
         return ((duck_position.x - GUN_WIDTH) == position.x || (duck_position.x + GUN_WIDTH) == position.x) && duck_position.y == position.y;
     }
 
+    Size get_size()
+    {
+        return size;
+    }
+
     GunNoEquippedSnapshot get_status()
     {
-        return GunNoEquippedSnapshot(type, position);
+        return GunNoEquippedSnapshot(type, position, size);
     }
 
     GunType get_type()

@@ -38,6 +38,8 @@ void ServerProtocol::send_duck(const DuckSnapshot &duck)
     send_data(duck.position.y);
     send_data(static_cast<uint16_t>(duck.current_action));
     send_data(static_cast<uint16_t>(duck.gun));
+    send_data(static_cast<uint16_t>(duck.size_gun.width));
+    send_data(static_cast<uint16_t>(duck.size_gun.height));
     send_duck_status(duck.status);
 }
 
@@ -46,6 +48,8 @@ void ServerProtocol::send_gun(const GunNoEquippedSnapshot &gun)
     send_data(static_cast<uint16_t>(gun.type));
     send_data(static_cast<uint16_t>(gun.position.x));
     send_data(static_cast<uint16_t>(gun.position.y));
+    send_data(static_cast<uint16_t>(gun.size.width));
+    send_data(static_cast<uint16_t>(gun.size.height));
 }
 
 void ServerProtocol::send_projectile(const ProjectileSnapshot &projectile)

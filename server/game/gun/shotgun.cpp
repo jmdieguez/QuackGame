@@ -8,8 +8,8 @@
 #define MIN_DISTANCE 7
 #define MAX_DISTANCE 9
 #define TIME_TO_SHOOT 20
-#define WIDTH 35
-#define HEIGHT 19
+#define WIDTH 20
+#define HEIGHT 10
 /***************************************************************************
                               PRIVATE METHODS
 ****************************************************************************/

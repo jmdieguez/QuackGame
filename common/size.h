@@ -6,8 +6,8 @@
 class Size
 {
 public:
-    const uint16_t width;
-    const uint16_t height;
+    uint16_t width;
+    uint16_t height;
 
     explicit Size(const uint16_t &width, const uint16_t &height) : width(width), height(height) {};
     ~Size() {};

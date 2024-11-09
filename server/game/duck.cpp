@@ -32,6 +32,11 @@ GunType Duck::get_gun_type()
     return gun == nullptr ? GunType::None : gun.get()->get_type();
 }
 
+Size Duck::get_gun_size()
+{
+    return gun == nullptr ? Size(0, 0) : gun.get()->get_size();
+}
+
 void Duck::stop_moving() { action = DuckAction::IDLE; }
 
 void Duck::drop_gun()
@@ -262,9 +267,10 @@ bool Duck::is_in_range(Position &position_item)
 DuckSnapshot Duck::get_status()
 {
     GunType gun_type = get_gun_type();
+    Size size = get_gun_size();
     return DuckSnapshot(id,
                         position,
-                        action, gun_type, status);
+                        action, gun_type, size, status);
     //  100,
     //  status,
     // gun_snapshot);

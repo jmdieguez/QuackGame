@@ -6,8 +6,8 @@
 #define MAX_AMMO 12
 #define MAX_DISTANCE 38
 #define MIN_DISTANCE 35
-#define WIDTH 30
-#define HEIGHT 19
+#define WIDTH 20
+#define HEIGHT 10
 
 /***************************************************************************
                               PUBLIC METHODS
