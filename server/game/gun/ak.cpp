@@ -16,7 +16,7 @@
                               PUBLIC METHODS
 ****************************************************************************/
 
-AK::AK(uint16_t pos_x, uint16_t pos_y) : Gun(GunType::AK47, pos_x, pos_y), GunAmmo(MAX_AMMO), time_shooting(TIME_SHOOTING), delay_shooting(DELAY_SHOOTING)
+AK::AK(uint16_t pos_x, uint16_t pos_y) : Gun(GunType::AK, pos_x, pos_y), GunAmmo(MAX_AMMO), time_shooting(TIME_SHOOTING), delay_shooting(DELAY_SHOOTING)
 {
 }
 

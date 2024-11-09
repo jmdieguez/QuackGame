@@ -11,7 +11,7 @@ enum class GunType
     CowboyPistol,
     Magnum,
     Sniper,
-    AK47,
+    AK,
     LaserRifle,
     PewPewLaser
 };
