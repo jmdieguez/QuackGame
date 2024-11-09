@@ -7,6 +7,7 @@ target_sources(quack_game_server
     shotgun.cpp
     sniper.cpp
     ak.cpp
+    pewpewlaser.cpp
     # .h files
     gun.h
     cowboypistol.h
@@ -15,9 +16,11 @@ target_sources(quack_game_server
     shotgun.h
     sniper.h
     ak.h
+    pewpewlaser.h
     dispersion.h
     defminvalue.h
     moveback.h
     projectile.h
     gunammo.h
+
 )

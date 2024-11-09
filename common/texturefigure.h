@@ -10,7 +10,8 @@ enum TextureFigure
     DuelingPistol,
     Shotgun,
     Sniper,
-    AK47
+    AK,
+    PewPewLaser
 };
 
 #endif // TEXTURE_FIGURE_GAME_H

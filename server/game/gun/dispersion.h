@@ -22,19 +22,24 @@ public:
     std::vector<std::pair<int, int>> apply_dispersion_shotgun(const std::pair<int, int> &direction)
     {
         std::vector<std::pair<int, int>> directions;
-
         if (direction.first == 1)
-
             directions = {{1, 0}, {1, 1}, {1, -1}, {1, 3}, {1, 2}, {1, -2}};
-
         if (direction.first == -1)
-
             directions = {{-1, 0}, {-1, 1}, {-1, -1}, {-1, 3}, {-1, 2}, {-1, -2}};
-
         if (direction.second == -1)
-
             directions = {{0, -1}, {1, -1}, {-1, -1}, {0, -3}, {1, -2}, {-1, -2}};
+        return directions;
+    }
 
+    std::vector<std::pair<int, int>> apply_dispersion_pew_pew_laser(const std::pair<int, int> &direction)
+    {
+        std::vector<std::pair<int, int>> directions;
+        if (direction.first == 1)
+            directions = {{1, 0}, {1, 1}, {1, -1}};
+        if (direction.first == -1)
+            directions = {{-1, 0}, {-1, 1}, {-1, -1}};
+        if (direction.second == -1)
+            directions = {{0, -1}, {1, -1}, {-1, -1}};
         return directions;
     }
 

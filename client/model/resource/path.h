@@ -8,6 +8,7 @@
 #define SHOTGUN_PATH "../var/quackgame/weapon/shotgun.png"
 #define SNIPER_PATH "../var/quackgame/weapon/sniper.png"
 #define AK_PATH "../var/quackgame/weapon/ak.png"
+#define PEW_PEW_LASER_PATH "../var/quackgame/weapon/pewpewlaser.png"
 
 #define COWBOY_BULLET_PATH "../var/quackgame/weapon/cowboybullet.png"
 
