@@ -18,6 +18,8 @@ Command *InputHandler::get_command(SDL_Keycode key)
         return &shoot;
     case SDLK_g:
         return &drop;
+    case SDLK_e:
+        return &grab;
     default:
         return nullptr;
     }

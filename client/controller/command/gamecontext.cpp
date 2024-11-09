@@ -5,7 +5,7 @@
 ****************************************************************************/
 
 GameContext::GameContext(Queue<ClientActionType> &queue_sender) : left_direction(false), right_direction(false),
-                                                                  is_bent_down(false), is_shooting(false), is_droping(false),
+                                                                  is_bent_down(false), is_shooting(false), is_droping(false), is_grabing(false),
                                                                   queue_sender(queue_sender)
 {
 }
@@ -58,6 +58,16 @@ void GameContext::set_droping_active(bool value)
 bool GameContext::is_droping_pressed()
 {
     return is_droping;
+}
+
+void GameContext::set_grabing_active(bool value)
+{
+    is_grabing = value;
+}
+
+bool GameContext::is_grabing_pressed()
+{
+    return is_grabing;
 }
 
 void GameContext::push_message(ClientActionType action)

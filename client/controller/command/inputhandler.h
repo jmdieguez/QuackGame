@@ -7,6 +7,7 @@
 #include "movebentdown.h"
 #include "shoot.h"
 #include "drop.h"
+#include "grab.h"
 #include "../../../common/client_actions.h"
 
 class InputHandler
@@ -18,6 +19,7 @@ private:
     MoveBentDown bent_down;
     Shoot shoot;
     Drop drop;
+    Grab grab;
     Command *get_command(SDL_Keycode key);
 
 public:

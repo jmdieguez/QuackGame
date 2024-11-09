@@ -9,6 +9,7 @@ target_sources(quack_game_client
     controller/command/moveright.cpp
     controller/command/shoot.cpp
     controller/command/drop.cpp
+    controller/command/grab.cpp
     model/protocol.cpp
     model/receiver.cpp
     model/sender.cpp
@@ -28,6 +29,7 @@ target_sources(quack_game_client
     controller/command/moveright.h
     controller/command/shoot.h
     controller/command/drop.h
+    controller/command/grab.cpp
     model/protocol.h
     model/receiver.h
     model/sender.h
