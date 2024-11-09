@@ -94,7 +94,7 @@ void Game::render_duck(DuckSnapshot &duck, int frame_ticks)
     int src_x = POS_INIT_X_IMAGE, src_y = POS_INIT_Y_IMAGE;
     set_xy(duck, frame_ticks, src_x, src_y);
     SDL_Rect src_rect = {src_x, src_y, SRC_DUCK_WIDTH, SRC_DUCK_HEIGHT};
-    SDL_Rect dst_rect = {duck.position.pos_x, duck.position.pos_y, DUCK_WIDTH, DUCK_HEIGHT};
+    SDL_Rect dst_rect = {duck.position.x, duck.position.y, DUCK_WIDTH, DUCK_HEIGHT};
     SDL_RendererFlip flip = duck.status.looking_right ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
     SDL_RenderCopyEx(renderer.Get(), duck_texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);
 }
@@ -105,8 +105,8 @@ void Game::render_weapon(DuckSnapshot &duck)
     int src_x = POS_INIT_X_GUN, src_y = POS_INIT_Y_GUN;
     SDL_RendererFlip flip = duck.status.looking_right ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
     SDL_Rect src_rect = {src_x, src_y, SRC_GUN_WIDTH, SRC_GUN_HEIGHT};
-    uint16_t dst_rect_x = duck.position.pos_x + (duck.status.looking_right ? DUCK_WITH_GUN_RIGHT_DIRECTION : DUCK_WITH_GUN_LEFT_DIRECTION);
-    SDL_Rect dst_rect = {dst_rect_x, duck.position.pos_y + DUCK_WITH_GUN_Y_DIRECTION, GUN_WIDTH, GUN_HEIGHT};
+    uint16_t dst_rect_x = duck.position.x + (duck.status.looking_right ? DUCK_WITH_GUN_RIGHT_DIRECTION : DUCK_WITH_GUN_LEFT_DIRECTION);
+    SDL_Rect dst_rect = {dst_rect_x, duck.position.y + DUCK_WITH_GUN_Y_DIRECTION, GUN_WIDTH, GUN_HEIGHT};
     SDL_RenderCopyEx(renderer.Get(), texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);
 }
 
@@ -128,7 +128,7 @@ void Game::render_weapon_in_map(GunNoEquippedSnapshot &gun)
     SDL2pp::Texture &texture = get_gun_texture(gun.type);
     int src_x = POS_INIT_X_GUN, src_y = POS_INIT_Y_GUN;
     SDL_Rect src_rect = {src_x, src_y, SRC_GUN_WIDTH, SRC_GUN_HEIGHT};
-    SDL_Rect dst_rect = {gun.pos_x, gun.pos_y + GUN_HEIGHT, GUN_WIDTH, GUN_HEIGHT};
+    SDL_Rect dst_rect = {gun.position.x, gun.position.y + GUN_HEIGHT, GUN_WIDTH, GUN_HEIGHT};
     SDL_RenderCopyEx(renderer.Get(), texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, SDL_FLIP_NONE);
 }
 

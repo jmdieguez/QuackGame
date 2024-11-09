@@ -8,7 +8,10 @@
 #include "gun/magnum.h"
 #include "gun/duelingpistol.h"
 #include "gun/shotgun.h"
-#include <filesystem>
+#include "gun/sniper.h"
+#include "gun/ak.h"
+#include "gun/pewpewlaser.h"
+#include "gun/grenade.h"
 
 class MapConfig
 {
@@ -86,7 +89,7 @@ public:
                                        gun_id(0)
     {
         // Eliminar una vez que se tengan los spawns de las armas
-        guns.emplace(gun_id, std::make_shared<Shotgun>(290, 256));
+        guns.emplace(gun_id, std::make_shared<AK>(290, 480));
         gun_id++;
     }
 
@@ -106,12 +109,12 @@ public:
 
     bool validate_coordinate(Position &p) const
     {
-        return (p.pos_x < cfg.size_x) && (p.pos_y < cfg.size_y) && !has_something_in(p);
+        return (p.x < cfg.size_x) && (p.y < cfg.size_y) && !has_something_in(p);
     }
 
     bool has_something_in(Position &p) const
     {
-        return cfg.bit_map[p.pos_x + (p.pos_y * cfg.size_x)];
+        return cfg.bit_map[p.x + (p.y * cfg.size_x)];
     }
 
     std::map<uint8_t, std::shared_ptr<Gun>> &get_guns()

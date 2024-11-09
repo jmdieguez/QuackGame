@@ -8,6 +8,7 @@
 #include "../../common/snapshots.h"
 #include "gun/gun.h"
 #include "gun/cowboypistol.h"
+#include "gun/explosion.h"
 #include "map.h"
 #include "duck.h"
 
@@ -16,9 +17,11 @@ class Game
 private:
     Map map;
     std::map<uint8_t, Duck> ducks;
-    std::vector<Projectile> projectiles;
+    std::vector<std::shared_ptr<Projectile>> projectiles;
+    std::vector<Explosion> explosions;
 
     void verify_hit_ducks();
+    void move_grenade(std::shared_ptr<Projectile> &p);
     void moves_projectiles(Map &map);
     void remove_projectiles();
 

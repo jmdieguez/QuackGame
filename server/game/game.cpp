@@ -1,4 +1,5 @@
 #include "game.h"
+#include "gun/projectile/projectilegrenade.h"
 
 Game::Game(const std::string &map_file) : map(map_file)
 {
@@ -9,6 +10,8 @@ void Game::process(ClientCommand &command)
     try
     {
         Duck &duck = ducks.at(command.player_id);
+        if (!duck.get_status().status.is_alive)
+            return;
         switch (command.message.type)
         {
         case ClientActionType::MOVE_RIGHT:
@@ -59,6 +62,9 @@ void Game::process(ClientCommand &command)
             duck.stand_up();
             break;
 
+        case ClientActionType::DROP:
+            duck.get_gun_type() == GunType::Grenade ? duck.drop_gun(projectiles) : duck.drop_gun();
+            break;
         default:
             break;
         }
@@ -72,24 +78,66 @@ void Game::process(ClientCommand &command)
 void Game::verify_hit_ducks()
 {
     for (auto &[id, duck] : ducks)
-        for (Projectile &p : projectiles)
+        for (std::shared_ptr<Projectile> &p : projectiles)
         {
-            if (!duck.is_in_range(p.get_position()))
+            Position current_position = p->get_position();
+            if (!duck.is_in_range(current_position))
                 continue;
             duck.set_receive_shot();
-            p.destroy();
+            p->destroy();
         }
+}
+
+void Game::move_grenade(std::shared_ptr<Projectile> &p)
+{
+    p->move();
+    ProjectileGrenade *grenade = (ProjectileGrenade *)p.get();
+    Position current_position = p->get_position();
+    grenade->reduce_time();
+    if (grenade->is_finish())
+    {
+        Position fragment_left(current_position.x - (5 * TILE_SIZE), current_position.y);
+        Position fragment_right(current_position.x + (5 * TILE_SIZE), current_position.y);
+        Explosion explosion(current_position);
+        explosions.push_back(explosion);
+        if (map.validate_coordinate(fragment_left))
+        {
+            Explosion explosion_left(fragment_left);
+            explosions.push_back(explosion_left);
+        }
+        if (map.validate_coordinate(fragment_right))
+        {
+            Explosion explosion_right(fragment_right);
+            explosions.push_back(explosion_right);
+        }
+        return;
+    }
+    if (map.validate_coordinate(current_position))
+        return;
+    if (grenade->is_change_direction_apply())
+    {
+        grenade->cancel_move();
+        return;
+    }
+    grenade->collide_walls();
+    grenade->cancel_move();
 }
 
 void Game::moves_projectiles(Map &map)
 {
-    for (Projectile &p : projectiles)
+    for (std::shared_ptr<Projectile> &p : projectiles)
     {
-        p.move();
-        if (map.validate_coordinate(p.get_position()) && !map.has_something_in(p.get_position()))
+        if (p->get_type() == ProjectileType::Grenade)
+        {
+            move_grenade(p);
             continue;
-        p.cancel_move();
-        p.destroy();
+        }
+        p->move();
+        Position current_position = p->get_position();
+        if (map.validate_coordinate(current_position))
+            continue;
+        p->cancel_move();
+        p->destroy();
     }
 }
 
@@ -97,7 +145,7 @@ void Game::remove_projectiles()
 {
     for (auto it = projectiles.begin(); it != projectiles.end();)
     {
-        if (it->is_finish())
+        if (it->get()->is_finish())
         {
             it = projectiles.erase(it);
             continue;
@@ -124,6 +172,6 @@ Snapshot Game::get_status()
         duck_snapshots.push_back(duck.get_status());
     std::vector<ProjectileSnapshot> projectile_snapshots;
     for (auto &projectile : projectiles)
-        projectile_snapshots.push_back(projectile.get_status());
+        projectile_snapshots.push_back(projectile->get_status());
     return Snapshot(std::move(duck_snapshots), std::move(guns_snapshots), std::move(projectile_snapshots), map_snapshot);
 }

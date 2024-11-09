@@ -8,7 +8,11 @@ enum TextureFigure
     CowboyBullet,
     Magnum,
     DuelingPistol,
-    Shotgun
+    Shotgun,
+    Sniper,
+    AK,
+    PewPewLaser,
+    Grenade
 };
 
 #endif // TEXTURE_FIGURE_GAME_H

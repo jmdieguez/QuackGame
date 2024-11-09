@@ -14,6 +14,14 @@ TextureFigure TextureStorage::gun_type_to_texture(GunType gun)
         return TextureFigure::DuelingPistol;
     else if (GunType::Shotgun == gun)
         return TextureFigure::Shotgun;
+    else if (GunType::Sniper == gun)
+        return TextureFigure::Sniper;
+    else if (GunType::AK == gun)
+        return TextureFigure::AK;
+    else if (GunType::PewPewLaser == gun)
+        return TextureFigure::PewPewLaser;
+    else if (GunType::Grenade == gun)
+        return TextureFigure::Grenade;
     return TextureFigure::CowboyPistol;
 }
 
@@ -21,6 +29,8 @@ TextureFigure TextureStorage::projectile_type_to_texture(ProjectileType projecti
 {
     if (ProjectileType::CowboyBullet == projectile)
         return TextureFigure::CowboyBullet;
+    if (ProjectileType::Grenade == projectile)
+        return TextureFigure::Grenade;
     return TextureFigure::CowboyBullet;
 }
 

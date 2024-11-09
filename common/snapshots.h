@@ -13,25 +13,15 @@
 #include "duck.h"
 #include "gun_type.h"
 #include "projectiletype.h"
+#include "position.h"
 #include "projectiledirection.h"
-
-class PositionSnapshot
-{
-public:
-    uint16_t pos_x;
-    uint16_t pos_y;
-
-    PositionSnapshot(uint16_t x, uint16_t y) : pos_x(x), pos_y(y) {}
-    ~PositionSnapshot() {}
-};
 
 class GunNoEquippedSnapshot
 {
 public:
     GunType type;
-    uint16_t pos_x;
-    uint16_t pos_y;
-    GunNoEquippedSnapshot(GunType t, uint16_t x, uint16_t y) : type(t), pos_x(x), pos_y(y) {}
+    Position position;
+    explicit GunNoEquippedSnapshot(const GunType &t, const Position &p) : type(t), position(p) {}
 };
 
 class ProjectileSnapshot
@@ -50,25 +40,43 @@ class DuckSnapshot
 public:
     uint16_t id;
     // const uint16_t health;
-    PositionSnapshot position;
+    Position position;
     DuckAction current_action;
     GunType gun;
     DuckStatus status;
 
-    explicit DuckSnapshot(uint16_t i, PositionSnapshot p_snap, DuckAction action, GunType gun, DuckStatus status) : id(i),
-                                                                                                                    position(std::move(p_snap)),
-                                                                                                                    current_action(action),
-                                                                                                                    gun(gun),
-                                                                                                                    status(status) {}
+    explicit DuckSnapshot(uint16_t i, Position p, DuckAction action, GunType gun, DuckStatus status) : id(i),
+                                                                                                       position(std::move(p)),
+                                                                                                       current_action(action),
+                                                                                                       gun(gun),
+                                                                                                       status(status) {}
+};
+
+class ExplosionSnapshot
+{
+public:
+    uint16_t pos_x;
+    uint16_t pos_y;
+    uint16_t phase;
+    explicit ExplosionSnapshot(uint16_t pos_x, uint16_t pos_y) : pos_x(pos_x), pos_y(pos_y), phase(0) {}
+};
+
+class GrenadeSnapshot
+{
+public:
+    uint16_t pos_x;
+    uint16_t pos_y;
+    uint16_t phase;
+    explicit GrenadeSnapshot(uint16_t x, uint16_t y, uint16_t phase) : pos_x(x), pos_y(y), phase(phase) {}
 };
 
 class BoxSnapshot
 {
 public:
-    const PositionSnapshot &pos;
+    const Position &pos;
     const GunNoEquippedSnapshot &gun;
 
-    BoxSnapshot(PositionSnapshot &p, GunNoEquippedSnapshot &g) : pos(p), gun(g) {}
+    BoxSnapshot(Position &p, GunNoEquippedSnapshot &g) : pos(p), gun(g) {}
 };
 
 class MapSnapshot

@@ -22,9 +22,10 @@ private:
     uint8_t id;
     Position position;
     DuckStatus status;
-    DuckAction action = DuckAction::IDLE;
+    DuckAction action;
     std::shared_ptr<Gun> gun;
     int y_velocity = 0;
+    bool block_shooting_command;
 
 public:
     explicit Duck(const uint8_t &i, const uint16_t &initial_x, const uint16_t &initial_y);
@@ -39,6 +40,7 @@ public:
     void drop_gun();
     void shoot();
     void stop_shooting();
+    void drop_gun(std::vector<std::shared_ptr<Projectile>> &projectiles);
     void flap();
     void lay();
     void jump();
@@ -50,7 +52,7 @@ public:
     DuckSnapshot get_status();
 
     // Simulate an iteration
-    void step(Map &map, std::vector<Projectile> &projectiles);
+    void step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles);
 };
 
 #endif // SERVER_DUCK_H
