@@ -15,7 +15,7 @@ private:
     void send_gun(const GunNoEquippedSnapshot &gun);
     void send_map_component(const MapComponent &component);
     void send_projectile(const ProjectileSnapshot &projectile);
-
+    void send_box(const BoxSnapshot &box);
 public:
     explicit ServerProtocol(Socket &);
     ActionMessage read_action();

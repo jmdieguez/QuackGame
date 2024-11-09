@@ -12,7 +12,9 @@ enum TextureFigure
     Sniper,
     AK,
     PewPewLaser,
-    Grenade
+    Grenade,
+    Box_T,
+    Spawn_T
 };
 
 #endif // TEXTURE_FIGURE_GAME_H

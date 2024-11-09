@@ -4,6 +4,7 @@
 #include "../model/resource/texturestorage.h"
 #include "../common/texturefigure.h"
 #include "../common/texturesize.h"
+
 #define MAX_MESSAGES_QUEUE_RECEIVER 100000
 #define MAX_MESSAGES_QUEUE_SENDER 100000
 
@@ -40,6 +41,13 @@ SDL2pp::Texture &Game::get_gun_texture(GunType gun)
 {
     TextureStorage &storage = TextureStorage::get_instance();
     std::shared_ptr<Texture> texture_created = storage.get_texture(renderer, gun);
+    return texture_created.get()->get_texture();
+}
+
+SDL2pp::Texture &Game::get_box_texture()
+{
+    TextureStorage &storage = TextureStorage::get_instance();
+    std::shared_ptr<Texture> texture_created = storage.get_texture(renderer, TextureFigure::Box_T);
     return texture_created.get()->get_texture();
 }
 
@@ -150,6 +158,16 @@ void Game::render_component_in_map(MapComponent &component, uint16_t &style)
     renderer.Copy(*texture, src_rect, dst_rect);
 }
 
+void Game::render_box_in_map(BoxSnapshot &box) {
+    if (box.status != Box::NONE) {
+        SDL2pp::Texture &texture = get_box_texture();
+        int x = static_cast<int>(box.status) * texture.GetHeight();
+        SDL_Rect src_rect = {x, 0, texture.GetHeight(), texture.GetHeight()};
+        SDL_Rect dst_rect = {box.pos.x * TILE_SIZE, box.pos.y * TILE_SIZE, TILE_SIZE, TILE_SIZE};
+        renderer.Copy(texture, src_rect, dst_rect);
+    }
+}
+
 void Game::set_renderer(int frame_ticks)
 {
     Snapshot snapshot;
@@ -163,6 +181,9 @@ void Game::set_renderer(int frame_ticks)
         render_projectile(projectile);
     for (MapComponent &component : snapshot.map.components)
         render_component_in_map(component, snapshot.map.style);
+    for (BoxSnapshot &box : snapshot.map.boxes) {
+        render_box_in_map(box);
+    }
 }
 
 void Game::step(unsigned int current_step)

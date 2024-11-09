@@ -89,6 +89,7 @@ public:
     uint16_t size_y;
     std::vector<MapComponent> components;
     std::vector<BoxSnapshot> boxes;
+    std::vector<Position> gun_spawns;
 
     MapSnapshot() : style(0), size_x(0), size_y(0) {}
 
@@ -96,8 +97,9 @@ public:
                 const uint16_t &s_x,
                 const uint16_t &s_y,
                 const std::vector<MapComponent> &c,
-                const std::vector<BoxSnapshot> &b)
-        : style(s), size_x(s_x), size_y(s_y), components(c), boxes(b) {}
+                const std::vector<BoxSnapshot> &b,
+                const std::vector<Position> &g)
+        : style(s), size_x(s_x), size_y(s_y), components(c), boxes(b), gun_spawns(g) {}
 
     ~MapSnapshot() {}
 };

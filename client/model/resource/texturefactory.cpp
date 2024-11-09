@@ -27,6 +27,10 @@ std::string TextureFactory::get_path(TextureFigure figure)
         return PEW_PEW_LASER_PATH;
     else if (TextureFigure::Grenade == figure)
         return GRENADE_PATH;
+    else if(TextureFigure::Box_T == figure)
+        return BOX_PATH;
+    else if(TextureFigure::Spawn_T == figure)
+        return SPAWN_PATH;
     return DUCK_PATH;
 }
 

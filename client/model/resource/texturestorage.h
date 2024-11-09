@@ -5,6 +5,7 @@
 #include <memory>
 #include "texturefactory.h"
 #include "../common/gun_type.h"
+#include "../common/map.h"
 #include "../common/projectiletype.h"
 
 class TextureStorage

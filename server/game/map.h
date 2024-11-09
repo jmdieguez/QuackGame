@@ -141,7 +141,16 @@ public:
         {
             box_snapshots.push_back(BoxSnapshot(position, box));
         }
-        return MapSnapshot(cfg.style, cfg.size_x, cfg.size_y, cfg.components, box_snapshots);
+
+        std::vector<Position> gun_spawns;
+        for (auto &[position, spawn] : cfg.spawns)
+        {
+            if (spawn == Spawn::GUN_SPAWN)
+            {
+                gun_spawns.push_back(position);
+            }
+        }
+        return MapSnapshot(cfg.style, cfg.size_x, cfg.size_y, cfg.components, box_snapshots, gun_spawns);
     }
 
     bool validate_coordinate(Position &p) const

@@ -17,11 +17,11 @@ enum class Spawn : uint16_t {
 };
 
 enum class Box : uint16_t {
-    NONE = 0,
-    BOX_1_HP,
-    BOX_2_HP,
+    BOX_4_HP = 0,
     BOX_3_HP,
-    BOX_4_HP
+    BOX_2_HP,
+    BOX_1_HP,
+    NONE
 };
 
 enum class Component : uint16_t

@@ -81,6 +81,13 @@ void ServerProtocol::send_map_component(const MapComponent &component)
     send_data(component.y);
 }
 
+void ServerProtocol::send_box(const BoxSnapshot &box)
+{
+    send_data(box.pos.x);
+    send_data(box.pos.y);
+    send_data(static_cast<uint16_t>(box.status));
+}
+
 void ServerProtocol::send_snapshot(const Snapshot &snapshot)
 {
     const uint16_t ducks_lenght = static_cast<uint16_t>(snapshot.ducks.size());
@@ -103,4 +110,9 @@ void ServerProtocol::send_snapshot(const Snapshot &snapshot)
     send_data(components_length);
     for (const MapComponent &component : snapshot.map.components)
         send_map_component(component);
+
+    const uint16_t boxes_length = static_cast<uint16_t>(snapshot.map.boxes.size());
+    send_data(boxes_length);
+    for (const BoxSnapshot &box : snapshot.map.boxes)
+        send_box(box);
 }

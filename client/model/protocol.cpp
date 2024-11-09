@@ -125,6 +125,18 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
         MapComponent component(x, y, aux);
         snapshot.map.components.emplace_back(component);
     }
+
+    uint16_t boxes_length;
+    read_data(boxes_length);
+    for (uint16_t i = 0; i < boxes_length; i++)
+    {   
+        uint16_t x, y, box_status;
+        read_data(x);
+        read_data(y);
+        read_data(box_status);
+        Position pos(x, y);
+        snapshot.map.boxes.push_back(BoxSnapshot(pos, static_cast<Box>(box_status)));
+    }
 }
 
 void ClientProtocol::read_data(uint16_t &data)

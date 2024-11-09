@@ -11,5 +11,7 @@
 #define PEW_PEW_LASER_PATH "./var/quackgame/weapon/pewpewlaser.png"
 #define GRENADE_PATH "./var/quackgame/weapon/grenade.png"
 #define COWBOY_BULLET_PATH "./var/quackgame/weapon/cowboybullet.png"
+#define SPAWN_PATH "./var/quackgame/spawn.png"
+#define BOX_PATH "./var/quackgame/box.png"
 
 #endif // PATH_H
