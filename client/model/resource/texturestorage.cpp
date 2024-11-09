@@ -29,6 +29,8 @@ TextureFigure TextureStorage::projectile_type_to_texture(ProjectileType projecti
 {
     if (ProjectileType::CowboyBullet == projectile)
         return TextureFigure::CowboyBullet;
+    if (ProjectileType::Grenade == projectile)
+        return TextureFigure::Grenade;
     return TextureFigure::CowboyBullet;
 }
 

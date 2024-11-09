@@ -61,7 +61,7 @@ public:
         finish = true;
     }
 
-    Position &get_position()
+    Position get_position()
     {
         return position;
     }

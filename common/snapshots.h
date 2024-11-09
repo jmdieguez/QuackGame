@@ -62,6 +62,15 @@ public:
                                                                                                                     status(status) {}
 };
 
+class ExplosionSnapshot
+{
+public:
+    uint16_t pos_x;
+    uint16_t pos_y;
+    uint16_t phase;
+    explicit ExplosionSnapshot(uint16_t pos_x, uint16_t pos_y) : pos_x(pos_x), pos_y(pos_y), phase(0) {}
+};
+
 class GrenadeSnapshot
 {
 public:

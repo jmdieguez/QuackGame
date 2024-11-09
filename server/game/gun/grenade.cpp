@@ -3,7 +3,7 @@
 #define MAX_AMMO 1
 #define MAX_DISTANCE 10
 #define VELOCITY 5
-#define TIME_EXPLOSION 10
+#define TIME_EXPLOSION 100
 
 /***************************************************************************
                               PUBLIC METHODS
@@ -25,8 +25,15 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Gre
 
 std::shared_ptr<Projectile> Grenade::get_projectile(bool &looking_right, bool &looking_up)
 {
+    (void)looking_up;
+    if (!start_explosion_state)
+        return nullptr;
     Position position(pos_x, pos_y);
-    std::pair<int, int> directions = get_directions(looking_right, looking_up);
+    std::pair<int, int> directions;
+    if (looking_right)
+        directions = {1, -1};
+    if (!looking_right)
+        directions = {-1, -1};
     return std::make_shared<GrenadeProjectile>(ProjectileType::Grenade, position, directions, MAX_DISTANCE, VELOCITY, TIME_EXPLOSION);
 }
 
