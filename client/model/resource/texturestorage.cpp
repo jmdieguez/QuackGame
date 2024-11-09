@@ -20,6 +20,8 @@ TextureFigure TextureStorage::gun_type_to_texture(GunType gun)
         return TextureFigure::AK;
     else if (GunType::PewPewLaser == gun)
         return TextureFigure::PewPewLaser;
+    else if (GunType::Grenade == gun)
+        return TextureFigure::Grenade;
     return TextureFigure::CowboyPistol;
 }
 

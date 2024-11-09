@@ -11,6 +11,7 @@ private:
     bool right_direction;
     bool is_bent_down;
     bool is_shooting;
+    bool is_droping;
     Queue<ClientActionType> &queue_sender;
 
 public:
@@ -23,6 +24,8 @@ public:
     bool is_bent_down_pressed();
     void set_shooting_active(bool value);
     bool is_shooting_pressed();
+    void set_droping_active(bool value);
+    bool is_droping_pressed();
     void push_message(ClientActionType action);
     ~GameContext();
 };

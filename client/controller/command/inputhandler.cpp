@@ -16,6 +16,8 @@ Command *InputHandler::get_command(SDL_Keycode key)
         return &bent_down;
     case SDLK_t:
         return &shoot;
+    case SDLK_g:
+        return &drop;
     default:
         return nullptr;
     }

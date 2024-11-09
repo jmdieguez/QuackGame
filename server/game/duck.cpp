@@ -40,7 +40,7 @@ void Duck::drop_gun()
     gun = nullptr;
 }
 
-void Duck::drop_gun(std::vector<Projectile> &projectiles)
+void Duck::drop_gun(std::vector<std::shared_ptr<Projectile>> &projectiles)
 {
     Grenade *grenade = (Grenade *)gun.get();
     projectiles.push_back(grenade->get_projectile(status.looking_right, status.looking_up));

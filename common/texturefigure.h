@@ -11,7 +11,8 @@ enum TextureFigure
     Shotgun,
     Sniper,
     AK,
-    PewPewLaser
+    PewPewLaser,
+    Grenade
 };
 
 #endif // TEXTURE_FIGURE_GAME_H

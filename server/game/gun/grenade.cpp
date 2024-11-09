@@ -23,11 +23,11 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Gre
     return std::nullopt;
 }
 
-Projectile Grenade::get_projectile(bool &looking_right, bool &looking_up)
+std::shared_ptr<Projectile> Grenade::get_projectile(bool &looking_right, bool &looking_up)
 {
     Position position(pos_x, pos_y);
     std::pair<int, int> directions = get_directions(looking_right, looking_up);
-    return Projectile(ProjectileType::Grenade, position, directions, MAX_DISTANCE, VELOCITY);
+    return std::make_shared<GrenadeProjectile>(ProjectileType::Grenade, position, directions, MAX_DISTANCE, VELOCITY, TIME_EXPLOSION);
 }
 
 Grenade::~Grenade()

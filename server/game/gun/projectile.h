@@ -14,15 +14,17 @@ class Projectile
 private:
     ProjectileType type;
     ProjectileDirection type_direction;
+    uint8_t iterations_left = 0;
+    bool finish;
+
+protected:
+    uint8_t velocity;
     Position position;
     std::pair<int, int> direction;
-    uint8_t iterations_left = 0;
-    uint8_t velocity;
-    bool finish;
 
 public:
     Projectile(ProjectileType t, Position p, std::pair<int, int> &d, uint8_t tiles, uint8_t velocity)
-        : type(t), position(p), direction(d), iterations_left(tiles * TILE_SIZE), velocity(velocity), finish(false)
+        : type(t), iterations_left(tiles * TILE_SIZE), finish(false), velocity(velocity), position(p), direction(d)
     {
         if (direction.second > 0)
             type_direction = ProjectileDirection::Up;
@@ -51,6 +53,8 @@ public:
     {
         return finish;
     }
+
+    void collide_walls() {}
 
     void destroy()
     {

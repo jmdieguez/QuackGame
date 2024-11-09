@@ -4,17 +4,18 @@
 #include <cstdint>
 #include <string>
 
-enum class ClientActionType : uint16_t {
+enum class ClientActionType : uint16_t
+{
     UNDEFINED = 0,
-    CREATE_GAME,   // Enums are assigned consecutive values by default
-    JOIN_GAME,     // this number 3
-    SEND_MESSAGE,  // 4
+    CREATE_GAME,  // Enums are assigned consecutive values by default
+    JOIN_GAME,    // this number 3
+    SEND_MESSAGE, // 4
     MOVE_RIGHT,
     MOVE_LEFT,
     JUMP,
     SHOOT,
     FLAP, // aletear
-    LAY, // tirarse al piso,
+    LAY,  // tirarse al piso,
     LOOK_UP,
     STOP_MOVING_RIGHT,
     STOP_MOVING_LEFT,
@@ -22,10 +23,12 @@ enum class ClientActionType : uint16_t {
     STOP_SHOOTING,
     STOP_FLAPPING,
     STAND_UP,
-    STOP_LOOKING_UP
+    STOP_LOOKING_UP,
+    DROP,
 };
 
-class ActionMessage {
+class ActionMessage
+{
 public:
     ClientActionType type;
     std::string opt_message;
