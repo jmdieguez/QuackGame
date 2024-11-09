@@ -143,13 +143,7 @@ void Game::remove_projectiles()
 {
     for (auto it = projectiles.begin(); it != projectiles.end();)
     {
-        if (it->get()->get_type() == ProjectileType::Grenade && (ProjectileGrenade *)it->get()->is_finish())
-        {
-            it = projectiles.erase(it);
-            continue;
-        }
-
-        if (it->get()->get_type() != ProjectileType::Grenade && it->get()->is_finish())
+        if (it->get()->is_finish())
         {
             it = projectiles.erase(it);
             continue;
