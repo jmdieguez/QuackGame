@@ -8,6 +8,7 @@
 #include "gun/magnum.h"
 #include "gun/duelingpistol.h"
 #include "gun/shotgun.h"
+#include <filesystem>
 
 class MapConfig
 {
@@ -20,14 +21,13 @@ public:
     std::map<Component, std::pair<uint8_t, uint8_t>> dimensions;
 
     MapConfig(const std::string &filename)
-    {
+    {   
         YAML::Node root = YAML::LoadFile(filename);
 
         uint16_t n_tiles_x = root["n_tiles_x"].as<uint16_t>();
         uint16_t n_tiles_y = root["n_tiles_y"].as<uint16_t>();
         style = root["tileset"].as<uint16_t>();
-
-        for (const auto &itemNode : root["items"])
+        for (const auto &itemNode : root["components"])
         {
             uint16_t x = itemNode["x"].as<uint16_t>();
             uint16_t y = itemNode["y"].as<uint16_t>();
@@ -43,7 +43,7 @@ public:
     }
 
     void initiate_components_dimensions()
-    {
+    {   
         YAML::Node root = YAML::LoadFile(DIMENSIONS_FILE);
         for (const auto &dim : root["components"])
         {

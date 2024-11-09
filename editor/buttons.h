@@ -52,9 +52,14 @@ public:
     GunSpawnButton(Renderer &r) : Button(r, "CREATE GUN SPAWN", 160) {}
 };
 
+class BoxButton : public Button {
+public:
+    BoxButton(Renderer &r) : Button(r, "CREATE A BOX", 224) {}
+};
+
 class DeleteButton : public Button {
 public:
-    DeleteButton(Renderer &r) : Button(r, "CLEAN A TILE", 224) {}
+    DeleteButton(Renderer &r) : Button(r, "CLEAN A TILE", 288) {}
 };
 
 

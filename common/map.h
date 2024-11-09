@@ -9,7 +9,7 @@
 
 #include "defs.h"
 
-#define DIMENSIONS_FILE "../dimensions.yaml"
+#define DIMENSIONS_FILE "./dimensions.yaml"
 
 enum class Spawn : uint16_t {
     GUN_SPAWN = 1,

@@ -1,5 +1,5 @@
-#ifndef UI_TILE_H
-#define UI_TILE_H
+#ifndef COMMON_TILE_H
+#define COMMON_TILE_H
 
 #include <map>
 #include <utility>
@@ -15,4 +15,4 @@ public:
     std::map<std::pair<uint16_t, uint16_t>, Box> boxes_map;
 };
 
-#endif // UI_TILE_H
+#endif // COMMON_TILE_H
