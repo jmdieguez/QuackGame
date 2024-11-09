@@ -50,6 +50,8 @@ void Duck::stop_shooting()
         ((Shotgun *)gun.get())->check_reset();
     if (gun->get_type() == GunType::Sniper)
         ((Sniper *)gun.get())->check_reset();
+    if (gun->get_type() == GunType::AK47)
+        ((AK *)gun.get())->check_reset();
 }
 
 void Duck::flap()
@@ -223,6 +225,8 @@ void Duck::step(Map &map, std::vector<Projectile> &projectiles)
         if (gun->get_type() == GunType::Shotgun && !(((Shotgun *)gun.get())->is_block_shoot()))
             return;
         if (gun->get_type() == GunType::Sniper && !(((Sniper *)gun.get())->is_block_shoot()))
+            return;
+        if (gun->get_type() == GunType::AK47)
             return;
         block_shooting_command = true;
     }

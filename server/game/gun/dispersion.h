@@ -8,12 +8,12 @@ class Dispersion
 private:
 public:
     Dispersion() {};
-    void apply_dispersion(std::pair<int, int> &directions)
+    void apply_dispersion(std::pair<int, int> &directions, int value_dispersion)
     {
         std::random_device rd;
         std::mt19937 gen(rd());
-        std::uniform_int_distribution<> dist(0, 1);
-        int random_number = dist(gen) == 0 ? -1 : 1;
+        std::uniform_int_distribution<> dist(0, value_dispersion);
+        int random_number = dist(gen) == 0 ? -value_dispersion : value_dispersion;
         if (directions.first != 0)
             directions.second += random_number;
         else if (directions.second < 0)

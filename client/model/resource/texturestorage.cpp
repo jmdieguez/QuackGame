@@ -16,6 +16,8 @@ TextureFigure TextureStorage::gun_type_to_texture(GunType gun)
         return TextureFigure::Shotgun;
     else if (GunType::Sniper == gun)
         return TextureFigure::Sniper;
+    else if (GunType::AK47 == gun)
+        return TextureFigure::AK47;
     return TextureFigure::CowboyPistol;
 }
 

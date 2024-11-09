@@ -1,3 +1,6 @@
+#ifndef MOVE_BACK_H
+#define MOVE_BACK_H
+
 #include "../../../common/position.h"
 
 class MoveBack
@@ -14,3 +17,5 @@ public:
     }
     ~MoveBack() {};
 };
+
+#endif // MOVE_BACK_H

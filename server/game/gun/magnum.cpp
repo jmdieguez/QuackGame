@@ -7,6 +7,7 @@
 #define VELOCITY 10
 #define MAX_AMMO 6
 #define MAX_DISTANCE 20
+#define DISPERSION_VALUE 1
 #define BACK 5
 
 /***************************************************************************
@@ -23,7 +24,7 @@ std::optional<std::pair<std::vector<Projectile>, Position>> Magnum::shoot(bool &
         return std::nullopt;
     std::pair<int, int> directions = get_directions(looking_right, looking_up);
     reduce_ammo();
-    apply_dispersion(directions);
+    apply_dispersion(directions, DISPERSION_VALUE);
     uint16_t adjusted_pos_x = duck_position.pos_x + (directions.first == 1 ? MIN_VALUE_RIGHT_DIRECTION_POS_X : MIN_VALUE_LEFT_DIRECTION_POS_X);
     Position projectile_position(adjusted_pos_x, duck_position.pos_y);
     Projectile projectile(ProjectileType::CowboyBullet, projectile_position, directions, MAX_DISTANCE, VELOCITY);

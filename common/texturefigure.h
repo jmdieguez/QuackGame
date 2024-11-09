@@ -9,7 +9,8 @@ enum TextureFigure
     Magnum,
     DuelingPistol,
     Shotgun,
-    Sniper
+    Sniper,
+    AK47
 };
 
 #endif // TEXTURE_FIGURE_GAME_H
