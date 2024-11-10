@@ -1,40 +1,9 @@
 target_sources(quack_game_client
     PRIVATE
     # .cpp files
-    controller/command/gamecontext.cpp
-    controller/game.cpp
-    controller/command/inputhandler.cpp
-    controller/command/movebentdown.cpp
-    controller/command/moveleft.cpp
-    controller/command/moveright.cpp
-    controller/command/shoot.cpp
-    controller/command/drop.cpp
-    controller/command/grab.cpp
-    model/protocol.cpp
-    model/receiver.cpp
-    model/sender.cpp
-    model/resource/texture.cpp
-    model/resource/texturefactory.cpp
-    model/resource/texturestorage.cpp
-    view/SDLWindow.cpp
     main.cpp
-    PUBLIC
-    # .h files
-    controller/command/gamecontext.h
-    controller/game.h 
-    controller/command/command.h
-    controller/command/inputhandler.h
-    controller/command/movebentdown.h
-    controller/command/moveleft.h
-    controller/command/moveright.h
-    controller/command/shoot.h
-    controller/command/drop.h
-    controller/command/grab.cpp
-    model/protocol.h
-    model/receiver.h
-    model/sender.h
-    model/resource/texture.h
-    model/resource/texturefactory.h
-    model/resource/texturestorage.h
-    view/SDLWindow.h
-    )
+)
+
+add_subdirectory(view/)
+add_subdirectory(model/)
+add_subdirectory(controller/)
