@@ -7,6 +7,7 @@
 #include <memory>
 
 #define ANGLE_LOOK_UP 90
+#define ANGLE_LOOK_UP_REVERSE 270
 #define ANGLE_DEFAULT 0
 
 #include "../../../common/snapshots.h"
@@ -36,7 +37,7 @@ protected:
     }
 
 public:
-    explicit Gun(GunType type, Position p, Size size) : type(type), is_equipped(false), size(size), angle(0), position(p) {}
+    explicit Gun(GunType type, Position p, Size size) : type(type), is_equipped(false), size(size), angle(ANGLE_DEFAULT), position(p) {}
 
     virtual ~Gun() = default;
 
@@ -48,12 +49,12 @@ public:
 
     void change_to_look_up()
     {
-        angle = ANGLE_DEFAULT;
+        angle = ANGLE_LOOK_UP;
     }
 
     void reverse_look_up()
     {
-        angle = ANGLE_LOOK_UP;
+        angle = ANGLE_DEFAULT;
     }
 
     bool can_take_this_gun(const Position &duck_position) const
@@ -61,9 +62,13 @@ public:
         return ((duck_position.x - size.width) == position.x || (duck_position.x + size.width) == position.x) && duck_position.y == position.y;
     }
 
-    uint16_t get_angle()
+    uint16_t get_angle(const bool &looking_right, const bool &looking_up)
     {
-        return angle;
+        if (!looking_up)
+            return ANGLE_DEFAULT;
+        if (looking_right && looking_up)
+            return ANGLE_LOOK_UP_REVERSE;
+        return ANGLE_LOOK_UP;
     }
 
     Size get_size()
@@ -81,7 +86,7 @@ public:
         return type;
     }
 
-    virtual Position get_position_in_duck(const uint16_t &height_duck, const Position &duck, const bool &looking_right) = 0;
+    virtual Position get_position_in_duck(const uint16_t &height_duck, const Position &duck, const bool &looking_right, const bool &looking_up) = 0;
 
     virtual std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> shoot(bool &looking_right, bool &looking_up, const Position &duck_position) = 0;
 };

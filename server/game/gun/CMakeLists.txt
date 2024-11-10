@@ -9,6 +9,7 @@ target_sources(quack_game_server
     ak.cpp
     pewpewlaser.cpp
     grenade.cpp
+    positiongun.cpp
 
     PUBLIC
     # .h files
@@ -24,6 +25,7 @@ target_sources(quack_game_server
     defminvalue.h
     moveback.h
     gunammo.h
+    positiongun.h
 )
 
 add_subdirectory(projectile/)

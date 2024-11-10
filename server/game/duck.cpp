@@ -31,17 +31,11 @@ void Duck::move(Direction direction)
 void Duck::look_up()
 {
     status.looking_up = true;
-    if (gun == nullptr)
-        return;
-    gun->change_to_look_up();
 }
 
 void Duck::stop_looking_up()
 {
     status.looking_up = false;
-    if (gun == nullptr)
-        return;
-    gun->reverse_look_up();
 }
 
 GunType Duck::get_gun_type()
@@ -51,7 +45,7 @@ GunType Duck::get_gun_type()
 
 uint16_t Duck::get_gun_angle() const
 {
-    return gun == nullptr ? 0 : gun->get_angle();
+    return gun == nullptr ? 0 : gun->get_angle(status.looking_right, status.looking_up);
 }
 
 Size Duck::get_gun_size() const
@@ -61,7 +55,7 @@ Size Duck::get_gun_size() const
 
 Position Duck::get_gun_position() const
 {
-    return gun == nullptr ? Position(0, 0) : gun->get_position_in_duck(size.height, position, status.looking_right);
+    return gun == nullptr ? Position(0, 0) : gun->get_position_in_duck(size.height, position, status.looking_right, status.looking_up);
 }
 
 void Duck::stop_moving() { action = DuckAction::IDLE; }

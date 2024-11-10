@@ -9,15 +9,20 @@
 #define GUN_WIDTH 15
 #define GUN_HEIGHT 15
 
-#define DUCK_WITH_GUN_Y_DIRECTION 13
-#define DUCK_WITH_GUN_RIGHT_DIRECTION 0
-#define DUCK_WITH_GUN_LEFT_DIRECTION 17
+#define HORIZONTAL_Y 13
+#define HORIZONTAL_RIGHT 0
+#define HORIZONTAL_LEFT 17
+
+#define VERTICAL_RIGHT 0
+#define VERTICAL_LEFT 8
 
 /***************************************************************************
                               PUBLIC METHODS
 ****************************************************************************/
 
-Grenade::Grenade(const uint16_t &pos_x, const uint16_t &pos_y) : Gun(GunType::Grenade, Position(pos_x, pos_y), Size(GUN_WIDTH, GUN_HEIGHT)), GunAmmo(MAX_AMMO), start_explosion_state(false), time_explosion(TIME_EXPLOSION) {}
+Grenade::Grenade(const uint16_t &pos_x, const uint16_t &pos_y) : Gun(GunType::Grenade, Position(pos_x, pos_y), Size(GUN_WIDTH, GUN_HEIGHT)), GunAmmo(MAX_AMMO),
+                                                                 position_gun(HORIZONTAL_Y, HORIZONTAL_RIGHT, HORIZONTAL_LEFT, VERTICAL_RIGHT, VERTICAL_LEFT),
+                                                                 start_explosion_state(false), time_explosion(TIME_EXPLOSION) {}
 
 std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Grenade::shoot(bool &looking_right, bool &looking_up, const Position &duck_position)
 {
@@ -31,12 +36,12 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Gre
     return std::nullopt;
 }
 
-Position Grenade::get_position_in_duck(const uint16_t &height_duck, const Position &duck, const bool &looking_right)
+Position Grenade::get_position_in_duck(const uint16_t &height_duck, const Position &duck, const bool &looking_right, const bool &looking_up)
 {
     (void)height_duck;
-    (void)looking_right;
-    uint16_t pos_x = duck.x + (looking_right ? DUCK_WITH_GUN_RIGHT_DIRECTION : DUCK_WITH_GUN_LEFT_DIRECTION);
-    uint16_t pos_y = duck.y + DUCK_WITH_GUN_Y_DIRECTION;
+    (void)looking_up;
+    uint16_t pos_x = duck.x + (looking_right ? HORIZONTAL_RIGHT : HORIZONTAL_LEFT);
+    uint16_t pos_y = duck.y + HORIZONTAL_Y;
     return Position(pos_x, pos_y);
 }
 

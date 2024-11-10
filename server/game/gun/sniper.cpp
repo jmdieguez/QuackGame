@@ -10,9 +10,12 @@
 #define GUN_WIDTH 20
 #define GUN_HEIGHT 10
 
-#define DUCK_WITH_GUN_Y_DIRECTION 11
-#define DUCK_WITH_GUN_RIGHT_DIRECTION 10
-#define DUCK_WITH_GUN_LEFT_DIRECTION 0
+#define HORIZONTAL_Y 11
+#define HORIZONTAL_RIGHT 10
+#define HORIZONTAL_LEFT 0
+
+#define VERTICAL_RIGHT 0
+#define VERTICAL_LEFT 12
 
 /***************************************************************************
                               PRIVATE METHODS
@@ -28,6 +31,7 @@ void Sniper::reset()
                               PUBLIC METHODS
 ****************************************************************************/
 Sniper::Sniper(const uint16_t &pos_x, const uint16_t &pos_y) : Gun(GunType::Sniper, Position(pos_x, pos_y), Size(GUN_WIDTH, GUN_HEIGHT)), GunAmmo(MAX_AMMO),
+                                                               position_gun(HORIZONTAL_Y, HORIZONTAL_RIGHT, HORIZONTAL_LEFT, VERTICAL_RIGHT, VERTICAL_LEFT),
                                                                time_to_reaload(TIME_TO_REALOAD), time_to_shoot(TIME_TO_SHOOT), need_reload(false), block_shoot(false)
 {
 }
@@ -69,13 +73,9 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Sni
     return std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>>(result);
 }
 
-Position Sniper::get_position_in_duck(const uint16_t &height_duck, const Position &duck, const bool &looking_right)
+Position Sniper::get_position_in_duck(const uint16_t &height_duck, const Position &duck, const bool &looking_right, const bool &looking_up)
 {
-    (void)looking_right;
-    (void)height_duck;
-    uint16_t pos_x = duck.x + (looking_right ? DUCK_WITH_GUN_RIGHT_DIRECTION : DUCK_WITH_GUN_LEFT_DIRECTION);
-    uint16_t pos_y = duck.y + DUCK_WITH_GUN_Y_DIRECTION;
-    return Position(pos_x, pos_y);
+    return position_gun.get_position(height_duck, duck, looking_right, looking_up);
 }
 
 bool Sniper::is_block_shoot() const
