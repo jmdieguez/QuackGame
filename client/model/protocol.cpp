@@ -76,6 +76,8 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
         read_data(gun_x);
         uint16_t gun_y;
         read_data(gun_y);
+        uint16_t gun_angle;
+        read_data(gun_angle);
         DuckStatus duck_status = read_status();
         Position p(x, y);
         DuckAction action_value = static_cast<DuckAction>(current_action);
@@ -83,7 +85,7 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
         GunType gun_value = static_cast<GunType>(current_gun);
         Size gun_size(gun_width, gun_height);
         Position gun_position(gun_x, gun_y);
-        DuckSnapshot duck(id, p, action_value, duck_size, gun_value, gun_size, gun_position, duck_status);
+        DuckSnapshot duck(id, p, action_value, duck_size, gun_value, gun_size, gun_position, gun_angle, duck_status);
         snapshot.ducks.emplace_back(duck);
     }
     uint16_t guns_length;
@@ -102,7 +104,9 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
         read_data(weigth);
         uint16_t height;
         read_data(height);
-        GunNoEquippedSnapshot gun(type_value, Position(x, y), Size(weigth, height));
+        uint16_t angle;
+        read_data(angle);
+        GunNoEquippedSnapshot gun(type_value, Position(x, y), Size(weigth, height), angle);
         snapshot.guns.emplace_back(gun);
     }
 

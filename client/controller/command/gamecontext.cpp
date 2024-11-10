@@ -10,6 +10,16 @@ GameContext::GameContext(Queue<ClientActionType> &queue_sender) : left_direction
 {
 }
 
+void GameContext::set_looking_up_active(bool value)
+{
+    looking_up = value;
+}
+
+bool GameContext::is_looking_up_pressed()
+{
+    return looking_up;
+}
+
 void GameContext::set_left_direction_active(bool value)
 {
     left_direction = value;

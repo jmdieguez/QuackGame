@@ -8,12 +8,14 @@
 #include "shoot.h"
 #include "drop.h"
 #include "grab.h"
+#include "lookingup.h"
 #include "../../../common/client_actions.h"
 
 class InputHandler
 {
 private:
     Queue<ClientActionType> &queue_sender;
+    LookingUp look_up;
     MoveLeft left;
     MoveRight right;
     MoveBentDown bent_down;

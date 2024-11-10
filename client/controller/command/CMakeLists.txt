@@ -9,6 +9,7 @@ target_sources(quack_game_client
     shoot.cpp
     drop.cpp
     grab.cpp
+    lookingup.cpp
 
     PUBLIC
     # .h files
@@ -20,5 +21,7 @@ target_sources(quack_game_client
     moveright.h
     shoot.h
     drop.h
-    grab.cpp
+    grab.h
+    lookingup.h
+
 )

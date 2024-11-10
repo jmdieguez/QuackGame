@@ -23,7 +23,8 @@ public:
     GunType type;
     Position position;
     Size size;
-    explicit GunNoEquippedSnapshot(const GunType &t, const Position &p, const Size &s) : type(t), position(p), size(s) {}
+    uint16_t angle;
+    explicit GunNoEquippedSnapshot(const GunType &t, const Position &p, const Size &s, const uint16_t &angle) : type(t), position(p), size(s), angle(angle) {}
 };
 
 class ProjectileSnapshot
@@ -47,16 +48,18 @@ public:
     GunType gun;
     Size size_gun;
     Position position_gun;
+    uint16_t angle_gun;
     DuckStatus status;
 
-    explicit DuckSnapshot(const uint16_t &i, const Position &p, const DuckAction &action, const Size &size_duck, const GunType &gun, const Size &size_gun, const Position &position_gun, const DuckStatus &status) : id(i),
-                                                                                                                                                                                                                     position(std::move(p)),
-                                                                                                                                                                                                                     current_action(action),
-                                                                                                                                                                                                                     size_duck(size_duck),
-                                                                                                                                                                                                                     gun(gun),
-                                                                                                                                                                                                                     size_gun(size_gun),
-                                                                                                                                                                                                                     position_gun(position_gun),
-                                                                                                                                                                                                                     status(status) {}
+    explicit DuckSnapshot(const uint16_t &i, const Position &p, const DuckAction &action, const Size &size_duck, const GunType &gun, const Size &size_gun, const Position &position_gun, const uint16_t &angle_gun, const DuckStatus &status) : id(i),
+                                                                                                                                                                                                                                                position(std::move(p)),
+                                                                                                                                                                                                                                                current_action(action),
+                                                                                                                                                                                                                                                size_duck(size_duck),
+                                                                                                                                                                                                                                                gun(gun),
+                                                                                                                                                                                                                                                size_gun(size_gun),
+                                                                                                                                                                                                                                                position_gun(position_gun),
+                                                                                                                                                                                                                                                angle_gun(angle_gun),
+                                                                                                                                                                                                                                                status(status) {}
 };
 
 class ExplosionSnapshot

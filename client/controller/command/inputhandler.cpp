@@ -8,6 +8,8 @@ Command *InputHandler::get_command(SDL_Keycode key)
 {
     switch (key)
     {
+    case SDLK_w:
+        return &look_up;
     case SDLK_a:
         return &left;
     case SDLK_d:

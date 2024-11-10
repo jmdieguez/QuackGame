@@ -7,6 +7,7 @@
 class GameContext
 {
 private:
+    bool looking_up;
     bool left_direction;
     bool right_direction;
     bool is_bent_down;
@@ -17,6 +18,8 @@ private:
 
 public:
     explicit GameContext(Queue<ClientActionType> &queue_sender);
+    void set_looking_up_active(bool value);
+    bool is_looking_up_pressed();
     void set_left_direction_active(bool value);
     bool is_left_direction_pressed();
     void set_right_direction_active(bool value);
