@@ -14,7 +14,7 @@ private:
     ServerProtocol protocol;
     bool closed = false;
     Queue<Snapshot>& out_queue;
-    Queue<LobbyMessages>& lobby_queue;
+    Queue<LobbyMessage>& lobby_queue;
     std::atomic<bool>& is_playing;
 public:
     explicit Sender(Socket& skt, const uint16_t &id, Queue<Snapshot>&, Queue<LobbyMessage>&, std::atomic<bool>&);

@@ -2,7 +2,6 @@
 #define GAMELOOP_H
 
 #include <memory>
-
 #include "client_command.h"
 #include "../common/constant_rate_loop.h"
 #include "../common/queue.h"
@@ -10,7 +9,7 @@
 #include "sessions_handler.h"
 #include "./game/game.h"
 
-class Gameloop: public Thread {
+class Gameloop : public Thread {
 private:
     uint16_t game_id;
     uint16_t creator_id;
@@ -28,6 +27,7 @@ public:
     void add_new_player(const uint16_t&, Queue<Snapshot>&);
     void start_game(const uint16_t&);
     const std::string& get_name();
+    void game_state(std::atomic<bool>&);
 };
 
 #endif // GAMELOOP_H

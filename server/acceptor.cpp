@@ -1,7 +1,7 @@
 #include "acceptor.h"
 
 #include <memory>
-
+#include "games_manager.h"
 #include "../common/liberror.h"
 
 Acceptor::Acceptor(const char *port) :
@@ -21,10 +21,11 @@ void Acceptor::run()
 {
     try
     {
+        GamesManager manager;
         while (_keep_running.load())
         {
             Socket peer = socket.accept();
-            auto client = std::make_unique<Session>(session_id, std::move(peer), games_manager);
+            auto client = std::make_unique<Session>(session_id, std::move(peer), manager);
             sessions.push_back(std::move(client));
             client->run();
             session_id++;

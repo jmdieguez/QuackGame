@@ -62,7 +62,25 @@ endif()
 
 # Program section
 if(TALLER_CLIENT)
+    find_package(Qt5 COMPONENTS
+            Core
+            Widgets
+            REQUIRED
+    )
+
+    # Mover estas líneas antes de add_executable
+    set(CMAKE_AUTOMOC ON)
+    set(CMAKE_AUTOUIC ON)
+    set(CMAKE_AUTORCC ON)
+
     add_executable(quack_game_client)
+
+    # Asegurarse de que el target específico también tiene las propiedades
+    set_target_properties(quack_game_client PROPERTIES
+            AUTOMOC ON
+            AUTORCC ON
+            AUTOUIC ON
+    )
 
     # Make them depend on quack_game_common lib
     add_dependencies(quack_game_client quack_game_common SDL2pp::SDL2pp)
@@ -71,13 +89,12 @@ if(TALLER_CLIENT)
     add_subdirectory(client)
     set_project_warnings(quack_game_client ${TALLER_MAKE_WARNINGS_AS_ERRORS} FALSE)
 
-    # Link with SDL2 and its modules
     target_link_libraries(quack_game_client
-        quack_game_common
-        SDL2pp::SDL2pp
-        ${SDL2_LIBRARIES}
-        # SDL2::SDL2
-        # SDL2_image::SDL2_image
+            quack_game_common
+            SDL2pp::SDL2pp
+            ${SDL2_LIBRARIES}
+            Qt5::Core
+            Qt5::Widgets
     )
 endif()
 

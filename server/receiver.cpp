@@ -18,7 +18,10 @@ void Receiver::run()
         {
             if (!is_playing) {
                 ActionLobby message = protocol.read_lobby();
-                game_queue = game_manager.handle_lobby(message, session_id, lobby_queue);
+                game_queue = game_manager.handle_lobby(message, session_id, sender_queue, lobby_queue);
+                if (game_manager.is_game_started(session_id)) {
+                    is_playing = true;
+                }
             } else {
                 if (!closed) {
                     ActionMessage message = protocol.read_action();

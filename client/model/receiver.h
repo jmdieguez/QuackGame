@@ -1,5 +1,5 @@
-#ifndef SERVER_RECEIVER_H
-#define SERVER_RECEIVER_H
+#ifndef RECEIVER_H
+#define RECEIVER_H
 
 #include <memory>
 
@@ -21,4 +21,4 @@ public:
     void stop() override;
 };
 
-#endif  // SERVER_RECEIVER_H
+#endif  // RECEIVER_H

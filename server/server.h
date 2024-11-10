@@ -5,14 +5,12 @@
 
 #include "../common/defs.h"
 #include "acceptor.h"
-#include "sessions_handler.h"
 
 class Server
 {
 private:
     bool open;
     std::shared_ptr<Queue<ClientCommand>> recv_queue;
-    SessionsHandler handler;
     Acceptor acceptor;
 
 public:

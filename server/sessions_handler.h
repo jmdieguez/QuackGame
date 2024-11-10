@@ -10,20 +10,20 @@
 #include "../common/socket.h"
 #include "session.h"
 #include "client_command.h"
-#include "games_manager.h"
 
 class SessionsHandler {
 private:
-    std::list<std::pair<Queue<Snapshot>&, uint8_t>> clientsQueues;
+    std::list<std::pair<Queue<Snapshot>&, uint16_t>> clients_queues;
     std::mutex mtx;
 public:
     SessionsHandler();
     ~SessionsHandler();
 
     void broadcast(const Snapshot& msg);
-    void add(const uint16_t&, Queue<Snapshot>&);
+    void add(Queue<Snapshot>& queue, uint16_t id);
     void remove_closed_sessions();
     void remove_all_sessions();
+    void remove_client(const uint16_t&);
 };
 
 #endif  // SERVER_SESSIONS_HANDLER_H

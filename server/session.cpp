@@ -3,9 +3,10 @@
 #include <utility>
 
 Session::Session(const uint16_t& id, Socket client, GamesManager& game_manager):
+    manager(game_manager),
     id(id), finished(false), socket(std::move(client)), sender_queue(100), lobby_queue(100), is_playing(false),
     sender(socket, id, sender_queue, lobby_queue, is_playing),
-    receiver(socket, id, game_manager, sender_queue, lobby_queue, is_playing) {}
+    receiver(socket, id, manager, sender_queue, lobby_queue, is_playing) {}
 
 Session::~Session() {}
 

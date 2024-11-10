@@ -8,6 +8,7 @@ Gameloop::Gameloop(const uint16_t& id, const uint16_t& creator_id):
         game_queue(std::make_shared<Queue<ClientCommand>>(100)), game("map.yaml") {}
 
 void Gameloop::run() {
+    started = true;
     constant_rate_loop.execute();
 }
 
@@ -30,9 +31,13 @@ void Gameloop::start_game(const uint16_t& id) {
 }
 
 void Gameloop::add_new_player(const uint16_t& id, Queue<Snapshot>& sender_queue) {
-    handler.add(id, sender_queue);
+    handler.add(sender_queue, id);
 }
 
 const std::string& Gameloop::get_name() {
     return name;
+}
+
+void Gameloop::game_state(std::atomic<bool>& state) {
+    state = started;
 }

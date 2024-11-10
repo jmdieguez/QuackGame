@@ -1,7 +1,7 @@
+#include <iostream>
 #include "controller/game.h"
 #include "model/resource/texturefactory.h"
-#include "../view/lobby.h"
-#include <QApplication>
+#include "model/protocol.h"
 #define OK 0
 #define ERROR 1
 #define HOST 1
@@ -18,10 +18,9 @@ int main(int argc, const char *argv[])
     {
         const char *host = argv[HOST];
         const char *port = argv[PORT];
-        QApplication app(argc, argv);
+        Socket socket(host, port);
+        ClientProtocol protocol(socket);
 
-        Lobby lobby;
-        lobby.show();
         Game game(host, port);
         game.run();
 

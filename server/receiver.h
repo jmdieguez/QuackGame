@@ -2,7 +2,6 @@
 #define SERVER_RECEIVER_H
 
 #include <memory>
-
 #include "../common/queue.h"
 #include "../common/socket.h"
 #include "../common/thread.h"
@@ -10,8 +9,9 @@
 #include "protocol.h"
 #include "games_manager.h"
 #include "../common/snapshots.h"
+class GamesManager;
 
-class Receiver: public Thread {
+class Receiver : public Thread {
 private:
     uint16_t session_id;
     Socket& client;                                    // Socket compartido con Sender
@@ -23,7 +23,7 @@ private:
     bool closed;
     std::atomic<bool>& is_playing;
 public:
-    Receiver(Socket& skt, const uint16_t &id, GamesManager& game_manager, Queue<Snapshot>&, Queue<LobbyMessage>&, std::atomic<bool>&);
+    Receiver(Socket& skt, const uint16_t &id, GamesManager&, Queue<Snapshot>&, Queue<LobbyMessage>&, std::atomic<bool>&);
     ~Receiver();
     void run() override;
 };

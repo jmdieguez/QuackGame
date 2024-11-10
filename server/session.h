@@ -14,11 +14,12 @@
 class Session
 {
 private:
+    GamesManager& manager;
     uint16_t id;
     bool finished;
     Socket socket;
     Queue<Snapshot> sender_queue;
-    Queue<LobbyMessages> lobby_queue;
+    Queue<LobbyMessage> lobby_queue;
     std::atomic<bool> is_playing;
     Sender sender;
     Receiver receiver;

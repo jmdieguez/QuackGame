@@ -13,8 +13,8 @@ class Lobby : public QWidget {
     Q_OBJECT
 
 public:
-    explicit Lobby(ClientProtocol, QWidget *parent = nullptr);
-
+    Lobby(ClientProtocol&);
+    ~Lobby();
     private slots:
         void showCreateGameUI();
     void showMainLobbyUI();
@@ -25,7 +25,7 @@ private:
     QWidget *menuContainer;
     QVBoxLayout *initialLayout;
     QLineEdit *nameEdit;
-    ClientProtocol protocol;
+    ClientProtocol& protocol;
 
     QPushButton *createLobbyButton(const QString &text);
     void clearLayout(QLayout *layout);

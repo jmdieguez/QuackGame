@@ -2,7 +2,7 @@
 #include <QMessageBox>
 #include <QLineEdit>
 
-Lobby::Lobby(ClientProtocol protocol, QWidget *parent) : QWidget(parent), protocol(protocol) {
+Lobby::Lobby(ClientProtocol& protocol): protocol(protocol) {
     setWindowTitle("Lobby");
 
     menuContainer = new QWidget(this);
@@ -114,4 +114,12 @@ void Lobby::applyButtonStyle(QPushButton *button) {
                           "QPushButton:pressed {"
                           "background-color: #3E7F58;"
                           "}");
+}
+Lobby::~Lobby() {
+    // Limpiar los recursos que creaste dinámicamente
+    delete menuContainer;  // Eliminar el contenedor de la UI principal
+    delete initialLayout;   // Eliminar el layout que has creado
+    delete nameEdit;        // Eliminar el campo de texto si es necesario
+
+    // Si has creado más objetos dinámicamente (widgets o layouts), elimínalos aquí
 }

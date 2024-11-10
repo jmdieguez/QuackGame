@@ -1,5 +1,5 @@
-#ifndef SERVER_SENDER_H
-#define SERVER_SENDER_H
+#ifndef SENDER_H
+#define SENDER_H
 
 #include "../../common/queue.h"
 #include "../../common/socket.h"
@@ -22,4 +22,4 @@ public:
     void stop() override;
 };
 
-#endif  // SERVER_SENDER_H
+#endif  // SENDER_H

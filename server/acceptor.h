@@ -5,13 +5,11 @@
 #include <memory>
 #include "../common/socket.h"
 #include "../common/thread.h"
-#include "games_manager.h"
 #include "session.h"
 
 class Acceptor : public Thread {
 private:
     Socket socket;
-    GamesManager games_manager;
     uint16_t session_id;
     std::list<std::unique_ptr<Session>> sessions;
     void remove_disconnected_sessions();

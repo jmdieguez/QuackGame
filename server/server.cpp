@@ -6,7 +6,6 @@
 
 Server::Server(const char* port):
         open(true),
-        handler(recv_queue),
         acceptor(port) {}
 
 Server::~Server() {}
