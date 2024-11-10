@@ -8,12 +8,20 @@ Command *InputHandler::get_command(SDL_Keycode key)
 {
     switch (key)
     {
+    case SDLK_w:
+        return &look_up;
     case SDLK_a:
-        return &left_command;
+        return &left;
     case SDLK_d:
-        return &right_command;
+        return &right;
     case SDLK_s:
-        return &bent_down_command;
+        return &bent_down;
+    case SDLK_t:
+        return &shoot;
+    case SDLK_g:
+        return &drop;
+    case SDLK_e:
+        return &grab;
     default:
         return nullptr;
     }

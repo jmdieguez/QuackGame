@@ -2,19 +2,26 @@
 #define INPUT_HANDLER_H
 
 #include <SDL_events.h>
-#include "moveleftcommand.h"
-#include "moverightcommand.h"
-#include "movebentdowncommand.h"
+#include "moveleft.h"
+#include "moveright.h"
+#include "movebentdown.h"
+#include "shoot.h"
+#include "drop.h"
+#include "grab.h"
+#include "lookingup.h"
 #include "../../../common/client_actions.h"
 
 class InputHandler
 {
 private:
     Queue<ClientActionType> &queue_sender;
-    MoveLeftCommand left_command;
-    MoveRightCommand right_command;
-    MoveBentDownCommand bent_down_command;
-
+    LookingUp look_up;
+    MoveLeft left;
+    MoveRight right;
+    MoveBentDown bent_down;
+    Shoot shoot;
+    Drop drop;
+    Grab grab;
     Command *get_command(SDL_Keycode key);
 
 public:

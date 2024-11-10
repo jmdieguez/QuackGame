@@ -9,6 +9,8 @@ class ClientProtocol
 {
 private:
     Socket &skt;
+    DuckStatus read_status();
+    ProjectileSnapshot read_projectile();
     void read_data(uint16_t &data);
     void recv(void* data, size_t size);
     void send_name(const std::vector<unsigned char>& data);

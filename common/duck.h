@@ -2,19 +2,23 @@
 #define COMMON_DUCK_H
 
 #include <iostream>
+#include <cstdint>
 
-struct DuckStatus {
+struct DuckStatus
+{
     bool shooting = false;
     bool jumping = false;
-    bool grounded = true;
-    bool looking_right = true;
+    bool bent_down = false;
+    bool grounded = false;
     bool looking_up = false;
-    bool has_chestplate = false;
+    bool looking_right = false;
     bool has_helmet = false;
+    bool has_chestplate = false;
     bool is_alive = true;
 };
 
-enum class DuckAction : uint16_t {
+enum class DuckAction : uint16_t
+{
     IDLE = 0,
     MOVING,
     FLAPPING,

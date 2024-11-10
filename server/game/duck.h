@@ -13,7 +13,8 @@
 #include "../../common/position.h"
 #include "../../common/direction.h"
 #include "../../common/snapshots.h"
-#include "gun.h"
+#include "../../common/size.h"
+#include "gun/gun.h"
 #include "map.h"
 
 class Duck
@@ -22,11 +23,18 @@ private:
     uint8_t id;
     Position position;
     DuckStatus status;
-    DuckAction action = DuckAction::IDLE;
-    std::shared_ptr<Gun> gun; // Para polimorfismo
+    DuckAction action;
+    Size size;
+    std::shared_ptr<Gun> gun;
     int y_velocity = 0;
+    bool block_shooting_command;
+
+    uint16_t get_gun_angle() const;
+    Size get_gun_size() const;
+    Position get_gun_position() const;
+
 public:
-    Duck(const uint8_t &i, const uint16_t &initial_x, const uint16_t &initial_y);
+    explicit Duck(const uint8_t &i, const uint16_t &initial_x, const uint16_t &initial_y);
     ~Duck();
 
     // Actions
@@ -34,20 +42,23 @@ public:
     void stop_moving();
     void look_up();
     void stop_looking_up();
-    void pickup_gun(std::shared_ptr<Gun> &gun_ptr);
     void drop_gun();
     void shoot();
+    GunType get_gun_type();
     void stop_shooting();
+    void drop_gun(std::vector<std::shared_ptr<Projectile>> &projectiles);
     void flap();
     void lay();
     void jump();
-    bool receive_shot(); // true if duck dies after receiving the shot
+    void stand_up();
+    void set_receive_shot();
+    bool is_in_range(Position &position_item);
 
     // Get current duck snapshot
     DuckSnapshot get_status();
 
     // Simulate an iteration
-    void step(Map &map);
+    void step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles);
 };
 
 #endif // SERVER_DUCK_H

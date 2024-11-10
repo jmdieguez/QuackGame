@@ -7,20 +7,24 @@
 #include "../common/socket.h"
 #include <vector>
 
-class ServerProtocol {
+class ServerProtocol
+{
 private:
-    Socket& skt;
-    void send_data(const uint16_t& data);
-    void send_duck_status(const DuckStatus& status);
-    void send_duck(const DuckSnapshot& duck);
-    void send_position(const PositionSnapshot& pos);
+    Socket &skt;
+    void send_data(const uint16_t &data);
+    void send_duck_status(const DuckStatus &status);
+    void send_duck(const DuckSnapshot &duck);
+    void send_gun(const GunNoEquippedSnapshot &gun);
+    void send_map_component(const MapComponent &component);
+    void send_projectile(const ProjectileSnapshot &projectile);
+    void send_box(const BoxSnapshot &box);
     void send_name(const std::vector<unsigned char>&);
 public:
-    explicit ServerProtocol(Socket&);
+    explicit ServerProtocol(Socket &);
     ActionMessage read_action();
     ActionLobby read_lobby();
     void send_snapshot(const Snapshot& snapshot);
     void send_lobby_info(const LobbyMessage&);
 };
 
-#endif  // SERVER_PROTOCOL_H
+#endif // SERVER_PROTOCOL_H

@@ -1,13 +1,13 @@
-target_sources(quack_game_common
+target_sources(quack_game_server
     PRIVATE
     # .cpp files
     game.cpp
     duck.cpp
     PUBLIC
     # .h files
-    gun.h
     duck.h
     game.h
     map.h
-    shoot_event.h
-    )
+)
+
+add_subdirectory(gun/)

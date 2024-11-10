@@ -23,5 +23,10 @@ target_sources(quack_game_common
     client_actions.h
     server_message.h
     duck.h
+    texturesize.h
     map.h
+    projectiletype.h
+    projectiledirection.h
+    tiles.h
+    size.h
 )

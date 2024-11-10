@@ -52,9 +52,7 @@ target_include_directories(quack_game_common PUBLIC .)
 
 # Install libSDL2pp (for client or editor)
 if(TALLER_CLIENT OR TALLER_EDITOR)
-    set(SDL2PP_WITH_IMAGE YES)
-    set(SDL2PP_WITH_TTF YES)
-    add_subdirectory(SDL2pp)
+    add_subdirectory(ui/)
     # find_package(SDL2 REQUIRED)
     # find_package(SDL2_image REQUIRED)
     target_include_directories(quack_game_common PUBLIC ${SDL2_INCLUDE_DIRS})
@@ -90,9 +88,11 @@ if(TALLER_CLIENT)
     set_project_warnings(quack_game_client ${TALLER_MAKE_WARNINGS_AS_ERRORS} FALSE)
 
     target_link_libraries(quack_game_client
-            quack_game_common
-            SDL2pp::SDL2pp
-            ${SDL2_LIBRARIES}
+        quack_game_common
+        yaml-cpp::yaml-cpp
+        ui_lib
+        # SDL2::SDL2
+        # SDL2_image::SDL2_image
             Qt5::Core
             Qt5::Widgets
     )
@@ -125,11 +125,10 @@ if(TALLER_EDITOR)
     # Link with SDL2 and its modules
     target_link_libraries(quack_game_editor
         quack_game_common
-        SDL2pp::SDL2pp
-        ${SDL2_LIBRARIES}
         # SDL2::SDL2
         # SDL2_image::SDL2_image
         yaml-cpp::yaml-cpp
+        ui_lib
     )
 endif()
 

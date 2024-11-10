@@ -1,7 +1,0 @@
-n_tiles_x: 16
-n_tiles_y: 16
-tileset: 0
-items:
-  - x: 4
-    y: 5
-    type: 3

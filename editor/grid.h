@@ -9,11 +9,9 @@ using namespace SDL2pp;
 
 class Grid {
 public:
-    const int gridWidth = 16 ;
+    const int gridWidth = 32 ;
     const int gridHeight = 16;
-    const int w_width = 1920;
-    const int w_height = 1080;
-    const int x = (w_width - (gridWidth * TILE_SIZE)) / 2;
+    const int x = 50;
     const int y = 50;
 
     Grid() {}
