@@ -7,8 +7,12 @@
 #define MAX_DISTANCE 20
 #define TIME_TO_SHOOT 20
 #define TIME_TO_REALOAD 5
-#define WIDTH 20
-#define HEIGHT 10
+#define GUN_WIDTH 20
+#define GUN_HEIGHT 10
+
+#define DUCK_WITH_GUN_Y_DIRECTION 11
+#define DUCK_WITH_GUN_RIGHT_DIRECTION 10
+#define DUCK_WITH_GUN_LEFT_DIRECTION 0
 
 /***************************************************************************
                               PRIVATE METHODS
@@ -23,7 +27,7 @@ void Sniper::reset()
 /***************************************************************************
                               PUBLIC METHODS
 ****************************************************************************/
-Sniper::Sniper(const uint16_t &pos_x, const uint16_t &pos_y) : Gun(GunType::Sniper, Position(pos_x, pos_y), Size(WIDTH, HEIGHT)), GunAmmo(MAX_AMMO),
+Sniper::Sniper(const uint16_t &pos_x, const uint16_t &pos_y) : Gun(GunType::Sniper, Position(pos_x, pos_y), Size(GUN_WIDTH, GUN_HEIGHT)), GunAmmo(MAX_AMMO),
                                                                time_to_reaload(TIME_TO_REALOAD), time_to_shoot(TIME_TO_SHOOT), need_reload(false), block_shoot(false)
 {
 }
@@ -63,6 +67,15 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Sni
     time_to_reaload = TIME_TO_REALOAD;
     std::pair<std::vector<std::shared_ptr<Projectile>>, Position> result(projectiles, duck_position);
     return std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>>(result);
+}
+
+Position Sniper::get_position_in_duck(const uint16_t &height_duck, const Position &duck, const bool &looking_right)
+{
+    (void)looking_right;
+    (void)height_duck;
+    uint16_t pos_x = duck.x + (looking_right ? DUCK_WITH_GUN_RIGHT_DIRECTION : DUCK_WITH_GUN_LEFT_DIRECTION);
+    uint16_t pos_y = duck.y + DUCK_WITH_GUN_Y_DIRECTION;
+    return Position(pos_x, pos_y);
 }
 
 bool Sniper::is_block_shoot() const

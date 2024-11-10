@@ -12,14 +12,19 @@
 #define VALUE_DISPERSION 1
 #define VALUE_MORE_DISPERSION 2
 #define BACK 3
-#define WIDTH 20
-#define HEIGHT 10
+
+#define GUN_WIDTH 25
+#define GUN_HEIGHT 10
+
+#define DUCK_WITH_GUN_Y_DIRECTION 15
+#define DUCK_WITH_GUN_RIGHT_DIRECTION 10
+#define DUCK_WITH_GUN_LEFT_DIRECTION 0
 
 /***************************************************************************
                               PUBLIC METHODS
 ****************************************************************************/
 
-AK::AK(const uint16_t &pos_x, const uint16_t &pos_y) : Gun(GunType::AK, Position(pos_x, pos_y), Size(WIDTH, HEIGHT)), GunAmmo(MAX_AMMO), time_shooting(TIME_SHOOTING), delay_shooting(DELAY_SHOOTING)
+AK::AK(const uint16_t &pos_x, const uint16_t &pos_y) : Gun(GunType::AK, Position(pos_x, pos_y), Size(GUN_WIDTH, GUN_HEIGHT)), GunAmmo(MAX_AMMO), time_shooting(TIME_SHOOTING), delay_shooting(DELAY_SHOOTING)
 {
 }
 
@@ -49,6 +54,15 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> AK:
     time_shooting--;
     std::pair<std::vector<std::shared_ptr<Projectile>>, Position> result(projectiles, new_position);
     return std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>>(result);
+}
+
+Position AK::get_position_in_duck(const uint16_t &height_duck, const Position &duck, const bool &looking_right)
+{
+    (void)height_duck;
+    (void)looking_right;
+    uint16_t pos_x = duck.x + (looking_right ? DUCK_WITH_GUN_RIGHT_DIRECTION : DUCK_WITH_GUN_LEFT_DIRECTION);
+    uint16_t pos_y = duck.y + DUCK_WITH_GUN_Y_DIRECTION;
+    return Position(pos_x, pos_y);
 }
 
 void AK::check_reset()

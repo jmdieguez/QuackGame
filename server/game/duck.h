@@ -28,7 +28,9 @@ private:
     std::shared_ptr<Gun> gun;
     int y_velocity = 0;
     bool block_shooting_command;
+
     Size get_gun_size();
+    Position get_gun_position();
 
 public:
     explicit Duck(const uint8_t &i, const uint16_t &initial_x, const uint16_t &initial_y);

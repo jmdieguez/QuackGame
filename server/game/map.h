@@ -26,7 +26,7 @@ public:
     std::map<Component, std::pair<uint8_t, uint8_t>> dimensions;
 
     MapConfig(const std::string &filename)
-    {   
+    {
         YAML::Node root = YAML::LoadFile(filename);
 
         uint16_t n_tiles_x = root["n_tiles_x"].as<uint16_t>();
@@ -63,7 +63,7 @@ public:
     }
 
     void initiate_components_dimensions()
-    {   
+    {
         YAML::Node root = YAML::LoadFile(DIMENSIONS_FILE);
         for (const auto &dim : root["components"])
         {
@@ -74,7 +74,8 @@ public:
         }
     }
 
-    void change_pixels(const bool &ocuppied, const int &x, const int &y, const int &w, const int &h) {
+    void change_pixels(const bool &ocuppied, const int &x, const int &y, const int &w, const int &h)
+    {
         int start_x = x * TILE_SIZE;
         int start_y = y * TILE_SIZE;
         for (int i = 0; i < w; i++)
@@ -96,7 +97,7 @@ public:
             change_pixels(true, component.x, component.y, component_dimensions.first, component_dimensions.second);
         }
 
-        for (const auto& box : boxes)
+        for (const auto &box : boxes)
         {
             change_pixels(true, box.x, box.y, TILE_SIZE, TILE_SIZE);
         }
@@ -110,15 +111,17 @@ private:
     uint16_t gun_id;
     std::map<uint8_t, std::shared_ptr<Gun>> guns;
     std::map<Position, Box> boxes;
+
 public:
     Map(const std::string &map_file) : cfg(map_file),
                                        gun_id(0)
     {
         // Eliminar una vez que se tengan los spawns de las armas
-        guns.emplace(gun_id, std::make_shared<Sniper>(290, 480));
+        guns.emplace(gun_id, std::make_shared<Shotgun>(290, 320));
         gun_id++;
 
-        for (const auto &position : cfg.boxes) {
+        for (const auto &position : cfg.boxes)
+        {
             boxes.emplace(position, Box::BOX_4_HP);
         }
     }
@@ -135,7 +138,8 @@ public:
         return guns_snapshots;
     }
 
-    MapSnapshot get_status() const {
+    MapSnapshot get_status() const
+    {
         std::vector<BoxSnapshot> box_snapshots;
         for (auto &[position, box] : boxes)
         {

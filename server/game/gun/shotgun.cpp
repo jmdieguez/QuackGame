@@ -8,8 +8,14 @@
 #define MIN_DISTANCE 7
 #define MAX_DISTANCE 9
 #define TIME_TO_SHOOT 20
-#define WIDTH 20
-#define HEIGHT 10
+
+#define GUN_WIDTH 25
+#define GUN_HEIGHT 10
+
+#define DUCK_WITH_GUN_Y_DIRECTION 15
+#define DUCK_WITH_GUN_RIGHT_DIRECTION 8
+#define DUCK_WITH_GUN_LEFT_DIRECTION 0
+
 /***************************************************************************
                               PRIVATE METHODS
 ****************************************************************************/
@@ -24,7 +30,7 @@ void Shotgun::reset()
                               PUBLIC METHODS
 ****************************************************************************/
 
-Shotgun::Shotgun(const uint16_t &pos_x, const uint16_t &pos_y) : Gun(GunType::Shotgun, Position(pos_x, pos_y), Size(WIDTH, HEIGHT)), GunAmmo(MAX_AMMO),
+Shotgun::Shotgun(const uint16_t &pos_x, const uint16_t &pos_y) : Gun(GunType::Shotgun, Position(pos_x, pos_y), Size(GUN_WIDTH, GUN_HEIGHT)), GunAmmo(MAX_AMMO),
                                                                  time_to_shoot(TIME_TO_SHOOT),
                                                                  need_reload(false), block_shoot(false)
 {
@@ -64,6 +70,15 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Sho
     std::pair<std::vector<std::shared_ptr<Projectile>>, Position> result(projectiles, duck_position);
     return std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>>(result);
 }
+Position Shotgun::get_position_in_duck(const uint16_t &height_duck, const Position &duck, const bool &looking_right)
+{
+    (void)height_duck;
+    (void)looking_right;
+    uint16_t pos_x = duck.x + (looking_right ? DUCK_WITH_GUN_RIGHT_DIRECTION : DUCK_WITH_GUN_LEFT_DIRECTION);
+    uint16_t pos_y = duck.y + DUCK_WITH_GUN_Y_DIRECTION;
+    return Position(pos_x, pos_y);
+}
+
 bool Shotgun::is_block_shoot() const
 {
     return block_shoot;

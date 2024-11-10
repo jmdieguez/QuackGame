@@ -7,7 +7,6 @@
 #include <memory>
 
 #include "../../../common/snapshots.h"
-#include "../../../common/texturesize.h"
 #include "../../../common/projectiletype.h"
 #include "../../../common/position.h"
 #include "../../../common/size.h"
@@ -45,7 +44,7 @@ public:
 
     bool can_take_this_gun(const Position &duck_position) const
     {
-        return ((duck_position.x - GUN_WIDTH) == position.x || (duck_position.x + GUN_WIDTH) == position.x) && duck_position.y == position.y;
+        return ((duck_position.x - size.width) == position.x || (duck_position.x + size.width) == position.x) && duck_position.y == position.y;
     }
 
     Size get_size()
@@ -62,6 +61,8 @@ public:
     {
         return type;
     }
+
+    virtual Position get_position_in_duck(const uint16_t &height_duck, const Position &duck, const bool &looking_right) = 0;
 
     virtual std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> shoot(bool &looking_right, bool &looking_up, const Position &duck_position) = 0;
 };

@@ -146,8 +146,7 @@ void Game::render_weapon(DuckSnapshot &duck)
     int src_x = POS_INIT_X_GUN, src_y = POS_INIT_Y_GUN;
     SDL_RendererFlip flip = duck.status.looking_right ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
     SDL_Rect src_rect = {src_x, src_y, SRC_GUN_WIDTH, SRC_GUN_HEIGHT};
-    uint16_t dst_rect_x = duck.position.x + (duck.status.looking_right ? DUCK_WITH_GUN_RIGHT_DIRECTION : DUCK_WITH_GUN_LEFT_DIRECTION);
-    SDL_Rect dst_rect = {dst_rect_x, duck.position.y + DUCK_WITH_GUN_Y_DIRECTION, duck.size_gun.width, duck.size_gun.height};
+    SDL_Rect dst_rect = {duck.position_gun.x, duck.position_gun.y, duck.size_gun.width, duck.size_gun.height};
     SDL_RenderCopyEx(renderer.Get(), texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);
 }
 
