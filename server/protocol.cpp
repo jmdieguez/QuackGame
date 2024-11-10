@@ -37,6 +37,8 @@ void ServerProtocol::send_duck(const DuckSnapshot &duck)
     send_data(duck.position.x);
     send_data(duck.position.y);
     send_data(static_cast<uint16_t>(duck.current_action));
+    send_data(static_cast<uint16_t>(duck.size_duck.width));
+    send_data(static_cast<uint16_t>(duck.size_duck.height));
     send_data(static_cast<uint16_t>(duck.gun));
     send_data(static_cast<uint16_t>(duck.size_gun.width));
     send_data(static_cast<uint16_t>(duck.size_gun.height));

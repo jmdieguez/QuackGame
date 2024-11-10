@@ -43,16 +43,18 @@ public:
     uint16_t id;
     Position position;
     DuckAction current_action;
+    Size size_duck;
     GunType gun;
     Size size_gun;
     DuckStatus status;
 
-    explicit DuckSnapshot(const uint16_t &i, const Position &p, const DuckAction &action, const GunType &gun, const Size &size, const DuckStatus &status) : id(i),
-                                                                                                                                                            position(std::move(p)),
-                                                                                                                                                            current_action(action),
-                                                                                                                                                            gun(gun),
-                                                                                                                                                            size_gun(size),
-                                                                                                                                                            status(status) {}
+    explicit DuckSnapshot(const uint16_t &i, const Position &p, const DuckAction &action, const Size &size_duck, const GunType &gun, const Size &size_gun, const DuckStatus &status) : id(i),
+                                                                                                                                                                                       position(std::move(p)),
+                                                                                                                                                                                       current_action(action),
+                                                                                                                                                                                       size_duck(size_duck),
+                                                                                                                                                                                       gun(gun),
+                                                                                                                                                                                       size_gun(size_gun),
+                                                                                                                                                                                       status(status) {}
 };
 
 class ExplosionSnapshot

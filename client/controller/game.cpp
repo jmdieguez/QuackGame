@@ -115,7 +115,7 @@ void Game::render_duck(DuckSnapshot &duck, int frame_ticks)
     int src_x = POS_INIT_X_IMAGE, src_y = POS_INIT_Y_IMAGE;
     set_xy(duck, frame_ticks, src_x, src_y);
     SDL_Rect src_rect = {src_x, src_y, SRC_DUCK_WIDTH, SRC_DUCK_HEIGHT};
-    SDL_Rect dst_rect = {duck.position.x, duck.position.y, DUCK_WIDTH, DUCK_HEIGHT};
+    SDL_Rect dst_rect = {duck.position.x, duck.position.y, duck.size_duck.width, duck.size_duck.height};
     SDL_RendererFlip flip = duck.status.looking_right ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
     SDL_RenderCopyEx(renderer.Get(), duck_texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);
 }

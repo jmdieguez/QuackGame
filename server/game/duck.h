@@ -13,6 +13,7 @@
 #include "../../common/position.h"
 #include "../../common/direction.h"
 #include "../../common/snapshots.h"
+#include "../../common/size.h"
 #include "gun/gun.h"
 #include "map.h"
 
@@ -23,6 +24,7 @@ private:
     Position position;
     DuckStatus status;
     DuckAction action;
+    Size size;
     std::shared_ptr<Gun> gun;
     int y_velocity = 0;
     bool block_shooting_command;

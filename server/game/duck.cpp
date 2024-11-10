@@ -1,7 +1,12 @@
 #include "duck.h"
 #include <optional>
 
-Duck::Duck(const uint8_t &i, const uint16_t &initial_x, const uint16_t &initial_y) : id(i), position(initial_x, initial_y), action(DuckAction::IDLE), gun(nullptr), block_shooting_command(false) {}
+#define DUCK_WIDTH 32
+#define DUCK_HEIGHT 32
+
+Duck::Duck(const uint8_t &i, const uint16_t &initial_x, const uint16_t &initial_y) : id(i), position(initial_x, initial_y),
+                                                                                     action(DuckAction::IDLE), size(DUCK_WIDTH, DUCK_HEIGHT),
+                                                                                     gun(nullptr), block_shooting_command(false) {}
 
 Duck::~Duck() {}
 
@@ -267,10 +272,10 @@ bool Duck::is_in_range(Position &position_item)
 DuckSnapshot Duck::get_status()
 {
     GunType gun_type = get_gun_type();
-    Size size = get_gun_size();
+    Size gun_size = get_gun_size();
     return DuckSnapshot(id,
                         position,
-                        action, gun_type, size, status);
+                        action, size, gun_type, gun_size, status);
     //  100,
     //  status,
     // gun_snapshot);
