@@ -1,13 +1,16 @@
 #include "gun.h"
 #include "gunammo.h"
-#include "dispersion.h"
+#include "dispersion/dispersionmedium.h"
+#include "dispersion/dispersionlow.h"
 #include "moveback.h"
 
-class AK : public Gun, public GunAmmo, protected Dispersion, protected MoveBack
+class AK : public Gun, public GunAmmo, protected MoveBack
 {
 private:
     uint8_t time_shooting;
     uint8_t delay_shooting;
+
+    bool random();
 
 public:
     explicit AK(const uint16_t &pos_x, const uint16_t &pos_y);

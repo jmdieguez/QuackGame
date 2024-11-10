@@ -1,3 +1,5 @@
+#include <cstdlib>
+#include <ctime>
 #include "magnum.h"
 #include "defminvalue.h"
 #include "projectile/projectilegun.h"
@@ -16,6 +18,16 @@
 #define DUCK_WITH_GUN_LEFT_DIRECTION 0
 
 /***************************************************************************
+                              PRIVATE METHODS
+****************************************************************************/
+
+bool Magnum::random()
+{
+    std::srand(std::time(nullptr));
+    return std::rand() % 2 == 0;
+}
+
+/***************************************************************************
                               PUBLIC METHODS
 ****************************************************************************/
 
@@ -27,14 +39,14 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Mag
 {
     if (!have_ammo())
         return std::nullopt;
-    std::pair<int, int> directions = get_directions(looking_right, looking_up);
+    std::pair<int, int> direction = get_direction(looking_right, looking_up);
     reduce_ammo();
-    apply_dispersion(directions, DISPERSION_VALUE);
-    uint16_t adjusted_pos_x = duck_position.x + (directions.first == 1 ? MIN_VALUE_RIGHT_DIRECTION_POS_X : MIN_VALUE_LEFT_DIRECTION_POS_X);
+    std::shared_ptr<Dispersion> dispersion = std::make_shared<DispersionLow>(random());
+    uint16_t adjusted_pos_x = duck_position.x + (direction.first == 1 ? MIN_VALUE_RIGHT_DIRECTION_POS_X : MIN_VALUE_LEFT_DIRECTION_POS_X);
     Position projectile_position(adjusted_pos_x, duck_position.y);
     std::vector<std::shared_ptr<Projectile>> projectiles;
     ProjectileType type = ProjectileType::CowboyBullet;
-    projectiles.push_back(std::make_shared<ProjectileGun>(type, projectile_position, directions, VELOCITY, MAX_DISTANCE));
+    projectiles.push_back(std::make_shared<ProjectileGun>(type, projectile_position, direction, VELOCITY, MAX_DISTANCE, dispersion));
     Position new_position = move_back(duck_position, looking_right, BACK);
     std::pair<std::vector<std::shared_ptr<Projectile>>, Position> result(projectiles, new_position);
     return std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>>(result);

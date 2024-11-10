@@ -21,11 +21,10 @@ target_sources(quack_game_server
     ak.h
     pewpewlaser.h
     grenade.h
-    dispersion.h
     defminvalue.h
     moveback.h
     gunammo.h
-
 )
 
 add_subdirectory(projectile/)
+add_subdirectory(dispersion/)

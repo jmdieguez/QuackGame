@@ -26,20 +26,21 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Pew
 {
     if (!have_ammo())
         return std::nullopt;
-    std::pair<int, int> directions = get_directions(looking_right, looking_up);
-    auto directions_shotgun = apply_dispersion_pew_pew_laser(directions);
+    std::pair<int, int> direction = get_direction(looking_right, looking_up);
     reduce_ammo();
     std::vector<std::shared_ptr<Projectile>> projectiles;
-    for (auto dir : directions_shotgun)
-    {
-        uint16_t adjusted_pos_x = duck_position.x + (dir.first == 1 ? MIN_VALUE_RIGHT_DIRECTION_POS_X : MIN_VALUE_LEFT_DIRECTION_POS_X);
-        Position projectile_position(adjusted_pos_x, duck_position.y);
-        uint8_t distance = (dir.first == 1 && dir.second == 0) || (dir.first == -1 && dir.second == 0) ? MAX_DISTANCE : MIN_DISTANCE;
-        ProjectileType type = ProjectileType::CowboyBullet;
-        projectiles.push_back(std::make_shared<ProjectileGun>(type, projectile_position, dir, VELOCITY, distance));
-    }
-    std::pair<std::vector<std::shared_ptr<Projectile>>, Position> result(projectiles, duck_position);
-    return std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>>(result);
+    uint16_t adjusted_pos_x = duck_position.x + (direction.first == 1 ? MIN_VALUE_RIGHT_DIRECTION_POS_X : MIN_VALUE_LEFT_DIRECTION_POS_X);
+    Position projectile_position(adjusted_pos_x, duck_position.y);
+
+    std::vector<std::shared_ptr<Dispersion>> dispersions = {
+        nullptr,
+        std::make_shared<DispersionHigh>(true),
+        std::make_shared<DispersionHigh>()};
+
+    for (auto &dispersion : dispersions)
+        projectiles.push_back(std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, projectile_position, direction, VELOCITY, MAX_DISTANCE, dispersion));
+
+    return std::make_optional(std::make_pair(projectiles, duck_position));
 }
 
 Position PewPewLaser::get_position_in_duck(const uint16_t &height_duck, const Position &duck, const bool &looking_right)

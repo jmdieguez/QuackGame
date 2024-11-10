@@ -54,21 +54,26 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Sho
         return std::nullopt;
     }
     reduce_ammo();
-    std::pair<int, int> directions = get_directions(looking_right, looking_up);
-    auto directions_shotgun = apply_dispersion_shotgun(directions);
+    std::pair<int, int> direction = get_direction(looking_right, looking_up);
     std::vector<std::shared_ptr<Projectile>> projectiles;
-    for (auto dir : directions_shotgun)
-    {
-        uint16_t adjusted_pos_x = duck_position.x + (dir.first == 1 ? MIN_VALUE_RIGHT_DIRECTION_POS_X : MIN_VALUE_LEFT_DIRECTION_POS_X);
-        Position projectile_position(adjusted_pos_x, duck_position.y);
-        uint8_t distance = (dir.first == 1 && dir.second == 0) || (dir.first == -1 && dir.second == 0) ? MAX_DISTANCE : MIN_DISTANCE;
-        ProjectileType type = ProjectileType::CowboyBullet;
-        projectiles.push_back(std::make_shared<ProjectileGun>(type, projectile_position, dir, VELOCITY, distance));
-    }
+
+    uint16_t adjusted_pos_x = duck_position.x + (direction.first == 1 ? MIN_VALUE_RIGHT_DIRECTION_POS_X : MIN_VALUE_LEFT_DIRECTION_POS_X);
+    Position projectile_position(adjusted_pos_x, duck_position.y);
+
+    std::vector<std::shared_ptr<Dispersion>> dispersions = {
+        std::make_shared<DispersionLow>(true),
+        std::make_shared<DispersionLow>(),
+        std::make_shared<DispersionMedium>(),
+        std::make_shared<DispersionMedium>(true),
+        std::make_shared<DispersionHigh>(),
+        std::make_shared<DispersionHigh>(true)};
+
+    for (auto &dispersion : dispersions)
+        projectiles.push_back(std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, projectile_position, direction, VELOCITY, MAX_DISTANCE, dispersion));
+
     need_reload = true;
     block_shoot = true;
-    std::pair<std::vector<std::shared_ptr<Projectile>>, Position> result(projectiles, duck_position);
-    return std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>>(result);
+    return std::make_optional(std::make_pair(projectiles, duck_position));
 }
 Position Shotgun::get_position_in_duck(const uint16_t &height_duck, const Position &duck, const bool &looking_right)
 {

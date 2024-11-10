@@ -1,9 +1,11 @@
 
 #include "gun.h"
 #include "gunammo.h"
-#include "dispersion.h"
+#include "dispersion/dispersionlow.h"
+#include "dispersion/dispersionmedium.h"
+#include "dispersion/dispersionhigh.h"
 
-class Shotgun : public Gun, public GunAmmo, protected Dispersion
+class Shotgun : public Gun, public GunAmmo
 {
 private:
     uint8_t time_to_shoot;

@@ -1,8 +1,8 @@
 #include "gun.h"
 #include "gunammo.h"
-#include "dispersion.h"
+#include "dispersion/dispersionhigh.h"
 
-class PewPewLaser : public Gun, public GunAmmo, protected Dispersion
+class PewPewLaser : public Gun, public GunAmmo
 {
 private:
 public:

@@ -25,7 +25,7 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Cow
 {
     if (!have_ammo())
         return std::nullopt;
-    std::pair<int, int> directions = get_directions(looking_right, looking_up);
+    std::pair<int, int> directions = get_direction(looking_right, looking_up);
     reduce_ammo();
     uint16_t adjusted_pos_x = duck_position.x + (directions.first == 1 ? MIN_VALUE_RIGHT_DIRECTION_POS_X : MIN_VALUE_LEFT_DIRECTION_POS_X);
     Position projectile_position(adjusted_pos_x, duck_position.y);
