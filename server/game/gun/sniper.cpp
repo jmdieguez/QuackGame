@@ -55,13 +55,13 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Sni
         time_to_shoot--;
         return std::nullopt;
     }
-    std::pair<int, int> directions = get_direction(looking_right, looking_up);
+    auto direction = get_direction(looking_right, looking_up);
     reduce_ammo();
-    uint16_t adjusted_pos_x = duck_position.x + (directions.first == 1 ? MIN_VALUE_RIGHT_DIRECTION_POS_X : MIN_VALUE_LEFT_DIRECTION_POS_X);
+    uint16_t adjusted_pos_x = duck_position.x + (direction.first == 1 ? MIN_VALUE_RIGHT_DIRECTION_POS_X : MIN_VALUE_LEFT_DIRECTION_POS_X);
     Position projectile_position(adjusted_pos_x, duck_position.y);
     std::vector<std::shared_ptr<Projectile>> projectiles;
     ProjectileType type = ProjectileType::CowboyBullet;
-    projectiles.push_back(std::make_shared<ProjectileGun>(type, projectile_position, directions, VELOCITY, MAX_DISTANCE));
+    projectiles.push_back(std::make_shared<ProjectileGun>(type, projectile_position, direction, VELOCITY, MAX_DISTANCE));
     need_reload = true;
     block_shoot = true;
     time_to_reaload = TIME_TO_REALOAD;

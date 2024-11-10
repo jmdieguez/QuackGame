@@ -54,7 +54,7 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Sho
         return std::nullopt;
     }
     reduce_ammo();
-    std::pair<int, int> direction = get_direction(looking_right, looking_up);
+    auto direction = get_direction(looking_right, looking_up);
     std::vector<std::shared_ptr<Projectile>> projectiles;
 
     uint16_t adjusted_pos_x = duck_position.x + (direction.first == 1 ? MIN_VALUE_RIGHT_DIRECTION_POS_X : MIN_VALUE_LEFT_DIRECTION_POS_X);
@@ -75,6 +75,7 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Sho
     block_shoot = true;
     return std::make_optional(std::make_pair(projectiles, duck_position));
 }
+
 Position Shotgun::get_position_in_duck(const uint16_t &height_duck, const Position &duck, const bool &looking_right)
 {
     (void)height_duck;
