@@ -93,7 +93,16 @@ void Game::set_xy(DuckSnapshot &duck, int frame_ticks, int &src_x, int &src_y)
 
     if (!duck.status.is_alive)
         src_y += DUCK_HEIGHT * 2;
-
+    else if (duck.status.falling)
+    {
+        src_x += DUCK_WIDTH * 3;
+        src_y += DUCK_HEIGHT;
+    }
+    else if (duck.status.start_jumping)
+    {
+        src_x += DUCK_WIDTH;
+        src_y += DUCK_HEIGHT;
+    }
     else if (duck.status.bent_down)
         src_y += DUCK_HEIGHT * 2;
     else if (duck.current_action == DuckAction::MOVING)

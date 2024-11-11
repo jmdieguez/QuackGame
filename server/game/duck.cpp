@@ -6,7 +6,8 @@
 
 Duck::Duck(const uint8_t &i, const uint16_t &initial_x, const uint16_t &initial_y) : id(i), position(initial_x, initial_y),
                                                                                      action(DuckAction::IDLE), size(DUCK_WIDTH, DUCK_HEIGHT),
-                                                                                     gun(nullptr), block_shooting_command(false) {}
+                                                                                     gun(nullptr), y_velocity(Y_VELOCITY_INITIAL),
+                                                                                     block_shooting_command(false) {}
 
 Duck::~Duck() {}
 
@@ -159,21 +160,27 @@ void Duck::step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles)
     Position below_left(position.x, position.y + TILE_SIZE);
     Position below_right(position.x + TILE_SIZE - 1, position.y + TILE_SIZE);
     status.grounded = map.has_something_in(below_left) || map.has_something_in(below_right);
-
+    status.falling = false;
     if (status.grounded)
     {
         if (status.jumping)
         {
             y_velocity = Y_VELOCITY_ON_JUMP; // take a big impulse at the start
             status.jumping = false;
+            status.falling = false;
+            status.start_jumping = true;
         }
         else
         {
             y_velocity = Y_VELOCITY_INITIAL;
+            status.start_jumping = false;
         }
     }
     else
     {
+        if (y_velocity < 0)
+            status.falling = true;
+
         if (status.flapping && y_velocity < 0)
         {
             y_velocity = -2;

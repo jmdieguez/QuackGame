@@ -26,7 +26,7 @@ private:
     DuckAction action;
     Size size;
     std::shared_ptr<Gun> gun;
-    int y_velocity = 0;
+    int y_velocity;
     bool block_shooting_command;
 
     uint16_t get_gun_angle() const;

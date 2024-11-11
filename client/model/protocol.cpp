@@ -10,6 +10,10 @@ DuckStatus ClientProtocol::read_status()
     read_data(shooting);
     uint16_t jumping;
     read_data(jumping);
+    uint16_t start_jumping;
+    read_data(start_jumping);
+    uint16_t falling;
+    read_data(falling);
     uint16_t flapping;
     read_data(flapping);
     uint16_t bent_down;
@@ -26,7 +30,7 @@ DuckStatus ClientProtocol::read_status()
     read_data(has_chestplate);
     uint16_t is_alive;
     read_data(is_alive);
-    DuckStatus duck_status = {!!shooting, !!jumping, !!flapping, !!bent_down, !!grounded, !!looking_up, !!looking_right, !!has_helmet, !!has_chestplate, !!is_alive};
+    DuckStatus duck_status = {!!shooting, !!jumping, !!start_jumping, !!falling, !!flapping, !!bent_down, !!grounded, !!looking_up, !!looking_right, !!has_helmet, !!has_chestplate, !!is_alive};
     return duck_status;
 }
 
