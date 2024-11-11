@@ -174,7 +174,7 @@ void Duck::step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles)
     }
     else
     {
-        if (status.flapping)
+        if (status.flapping && y_velocity < 0)
         {
             y_velocity = -2;
             status.flapping = false;
