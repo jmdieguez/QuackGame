@@ -157,6 +157,16 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
         Position pos(x, y);
         snapshot.map.boxes.push_back(BoxSnapshot(pos, static_cast<Box>(box_status)));
     }
+
+    uint16_t gun_spawns;
+    read_data(gun_spawns);
+    for (uint16_t i = 0; i < gun_spawns; i++)
+    {
+        uint16_t x, y;
+        read_data(x);
+        read_data(y);
+        snapshot.map.gun_spawns.push_back(Position(x,y));
+    }
 }
 
 void ClientProtocol::read_data(uint16_t &data)

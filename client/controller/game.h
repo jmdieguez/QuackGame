@@ -39,6 +39,7 @@ private:
     SDL2pp::Renderer &renderer;
     SDL2pp::Texture &duck_texture;
     SDL2pp::Texture &get_duck_texture();
+    SDL2pp::Texture &get_spawn_texture();
     SDL2pp::Texture &get_gun_texture(GunType gun);
     SDL2pp::Texture &get_box_texture();
     SDL2pp::Texture &get_projectile_texture(ProjectileType projectile);
@@ -59,7 +60,7 @@ private:
     void render_component_in_map(MapComponent &component, uint16_t &style);
     void render_projectile(ProjectileSnapshot &projectile);
     void render_box_in_map(BoxSnapshot &box);
-    void render_spawn_in_map();
+    void render_spawn_in_map(Position &p);
     void update_renderer(int current_step);
     void handle_event(SDL_Event &event);
     void step(unsigned int current_step);

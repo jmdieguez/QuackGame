@@ -124,4 +124,10 @@ void ServerProtocol::send_snapshot(const Snapshot &snapshot)
     send_data(boxes_length);
     for (const BoxSnapshot &box : snapshot.map.boxes)
         send_box(box);
+
+    send_data(snapshot.map.gun_spawns.size());
+    for (const Position &position : snapshot.map.gun_spawns) {
+        send_data(position.x);
+        send_data(position.y);
+    }
 }

@@ -50,6 +50,13 @@ SDL2pp::Texture &Game::get_gun_texture(GunType gun)
     return texture_created.get()->get_texture();
 }
 
+SDL2pp::Texture &Game::get_spawn_texture()
+{
+    TextureStorage &storage = TextureStorage::get_instance();
+    std::shared_ptr<Texture> texture_created = storage.get_texture(renderer, TextureFigure::Spawn_T);
+    return texture_created.get()->get_texture();
+}
+
 SDL2pp::Texture &Game::get_box_texture()
 {
     TextureStorage &storage = TextureStorage::get_instance();
@@ -212,23 +219,35 @@ void Game::render_box_in_map(BoxSnapshot &box)
     }
 }
 
+void Game::render_spawn_in_map(Position &p)
+{
+    SDL2pp::Texture &texture = get_spawn_texture();
+    int width = texture.GetWidth();
+    int height = texture.GetHeight();
+    SDL_Rect src_rect = {0, 0, width, height};
+    int x = (p.x * TILE_SIZE) + ((TILE_SIZE - width) / 2);
+    int y = (p.y * TILE_SIZE) + (TILE_SIZE - height);
+    SDL_Rect dst_rect = {x, y, width, height};
+    renderer.Copy(texture, src_rect, dst_rect);
+}
+
 void Game::set_renderer(int frame_ticks)
 {
     Snapshot snapshot;
     if (!queue_receiver.try_pop(snapshot))
         return;
+    for (MapComponent &component : snapshot.map.components)
+        render_component_in_map(component, snapshot.map.style);
+    for (BoxSnapshot &box : snapshot.map.boxes)
+        render_box_in_map(box);
+    for (Position &position : snapshot.map.gun_spawns)
+        render_spawn_in_map(position);
     for (DuckSnapshot &duck : snapshot.ducks)
         render_duck_with_gun(duck, frame_ticks);
     for (GunNoEquippedSnapshot &gun : snapshot.guns)
         render_weapon_in_map(gun);
     for (ProjectileSnapshot &projectile : snapshot.projectiles)
         render_projectile(projectile);
-    for (MapComponent &component : snapshot.map.components)
-        render_component_in_map(component, snapshot.map.style);
-    for (BoxSnapshot &box : snapshot.map.boxes)
-    {
-        render_box_in_map(box);
-    }
 }
 
 void Game::step(unsigned int current_step)
