@@ -14,6 +14,7 @@ private:
     bool is_shooting;
     bool is_droping;
     bool is_grabing;
+    bool is_jumping;
     Queue<ClientActionType> &queue_sender;
 
 public:
@@ -32,6 +33,8 @@ public:
     bool is_droping_pressed();
     void set_grabing_active(bool value);
     bool is_grabing_pressed();
+    bool is_jumping_pressed();
+    void set_jumping_active(bool value);
     void push_message(ClientActionType action);
     ~GameContext();
 };

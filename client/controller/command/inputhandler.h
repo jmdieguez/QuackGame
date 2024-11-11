@@ -9,6 +9,7 @@
 #include "drop.h"
 #include "grab.h"
 #include "lookingup.h"
+#include "jump.h"
 #include "../../../common/client_actions.h"
 
 class InputHandler
@@ -22,6 +23,7 @@ private:
     Shoot shoot;
     Drop drop;
     Grab grab;
+    Jump jump;
     Command *get_command(SDL_Keycode key);
 
 public:

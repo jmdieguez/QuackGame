@@ -22,6 +22,8 @@ Command *InputHandler::get_command(SDL_Keycode key)
         return &drop;
     case SDLK_e:
         return &grab;
+    case SDLK_SPACE:
+        return &jump;
     default:
         return nullptr;
     }
