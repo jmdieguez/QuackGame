@@ -2,9 +2,10 @@
 
 #include "../common/liberror.h"
 #include "protocol.h"
+#include "games_manager.h"
 
-Sender::Sender(Socket& skt, const uint16_t &id, Queue<Snapshot>& queue, Queue<LobbyMessage>& l, std::atomic<bool>& playing):
-    session_id(id), protocol(skt), out_queue(queue), lobby_queue(l), is_playing(playing) {}
+Sender::Sender(Socket& skt, const uint16_t &id, GamesManager& game_manager, std::atomic<bool>& playing):
+    session_id(id), protocol(skt), out_queue(1000), manager(game_manager), is_playing(playing) {}
 
 void Sender::run()
 {
@@ -12,13 +13,16 @@ void Sender::run()
     {
         while (!closed && _keep_running)
         {
-            if (!is_playing) {
-                LobbyMessage lobby = lobby_queue.pop();
-                protocol.send_lobby_info(lobby);
-            } else {
+             if (!is_playing) {
+                ActionLobby action = protocol.read_lobby();
+                receiver_queue = manager.handle_lobby(action, session_id, out_queue, protocol);
+                if (receiver_queue != nullptr) {
+                    is_playing = true;
+                }
+             } else {
                 Snapshot message = out_queue.pop();
                 protocol.send_snapshot(message);
-            }
+             }
         }
     }
     catch (LibError &e)
@@ -36,5 +40,6 @@ void Sender::send(const Snapshot &snapshot)
 }
 
 void Sender::stop() { out_queue.close(); }
+
 
 Sender::~Sender() {}

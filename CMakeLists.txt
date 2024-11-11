@@ -93,8 +93,8 @@ if(TALLER_CLIENT)
         ui_lib
         # SDL2::SDL2
         # SDL2_image::SDL2_image
-            Qt5::Core
-            Qt5::Widgets
+        Qt5::Core
+        Qt5::Widgets
     )
 endif()
 

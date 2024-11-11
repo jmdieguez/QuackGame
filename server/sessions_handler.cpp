@@ -4,7 +4,7 @@
 #include <utility>
 #include "../common/liberror.h"
 
-
+SessionsHandler::SessionsHandler() {}
 void SessionsHandler::add(Queue<Snapshot>& queue, uint16_t id) {
     std::unique_lock<std::mutex> lck(mtx);
     clients_queues.push_back(std::make_pair(std::ref(queue), id));

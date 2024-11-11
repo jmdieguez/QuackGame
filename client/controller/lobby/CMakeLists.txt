@@ -1,13 +1,12 @@
 target_sources(quack_game_client
     PRIVATE
     # .cpp files
-    game.cpp
-
+        main_window.cpp
+        lobby.cpp
 
     PUBLIC
     # .h files
-    game.h 
-)
+        main_window.h
+        lobby.h
 
-add_subdirectory(command/)
-add_subdirectory(lobby/)
+)

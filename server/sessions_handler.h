@@ -5,7 +5,6 @@
 #include <mutex>
 #include <vector>
 
-#include "../common/server_message.h"
 #include "../common/queue.h"
 #include "../common/socket.h"
 #include "session.h"

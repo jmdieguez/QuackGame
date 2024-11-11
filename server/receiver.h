@@ -9,21 +9,18 @@
 #include "protocol.h"
 #include "games_manager.h"
 #include "../common/snapshots.h"
-class GamesManager;
 
 class Receiver : public Thread {
 private:
     uint16_t session_id;
     Socket& client;                                    // Socket compartido con Sender
     Queue<Snapshot>& sender_queue;
-    Queue<LobbyMessage>& lobby_queue;
     Queue<ClientCommand>* game_queue;
     ServerProtocol protocol;
-    GamesManager& game_manager;
     bool closed;
     std::atomic<bool>& is_playing;
 public:
-    Receiver(Socket& skt, const uint16_t &id, GamesManager&, Queue<Snapshot>&, Queue<LobbyMessage>&, std::atomic<bool>&);
+    Receiver(Socket& skt, const uint16_t &id, Queue<Snapshot>&, std::atomic<bool>&);
     ~Receiver();
     void run() override;
 };

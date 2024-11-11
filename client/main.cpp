@@ -2,8 +2,10 @@
 #include "controller/game.h"
 #include "model/resource/texturefactory.h"
 #include "model/protocol.h"
+#include "controller/lobby/lobby.h"
+#include "controller/lobby/main_window.h"
+#include <QApplication>
 #define OK 0
-#define ERROR 1
 #define HOST 1
 #define PORT 2
 #define MIN_ARGS 3
@@ -21,8 +23,13 @@ int main(int argc, const char *argv[])
         Socket socket(host, port);
         ClientProtocol protocol(socket);
 
-        Game game(host, port);
-        game.run();
+        Lobby lobby(protocol);
+        QApplication app(argc,  const_cast<char**>(argv));
+        MainWindow w(&lobby);
+        w.show();
+        app.exec();
+       // Game game(host, port);
+       //    game.run();
 
         return OK;
     }

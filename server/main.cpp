@@ -1,7 +1,6 @@
 #include "server.h"
 
 // Uso: ./server <puerto>
-
 #define PORT 1
 #define SERVER_N_ARGS 2
 
