@@ -23,7 +23,6 @@ private:
     uint8_t id;
     Position position;
     DuckStatus status;
-    DuckAction action;
     Size size;
     std::shared_ptr<Gun> gun;
     int y_velocity;
@@ -47,7 +46,6 @@ public:
     GunType get_gun_type();
     void stop_shooting();
     void drop_gun(std::vector<std::shared_ptr<Projectile>> &projectiles);
-    void flap();
     void lay();
     void jump();
     void stand_up();

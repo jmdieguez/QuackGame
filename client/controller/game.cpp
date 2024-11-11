@@ -105,7 +105,7 @@ void Game::set_xy(DuckSnapshot &duck, int frame_ticks, int &src_x, int &src_y)
     }
     else if (duck.status.bent_down)
         src_y += DUCK_HEIGHT * 2;
-    else if (duck.current_action == DuckAction::MOVING)
+    else if (duck.status.mooving)
     {
         int run_phase = (frame_ticks / 4) % 5 + 1;
         src_x = SRC_DUCK_WIDTH * run_phase;

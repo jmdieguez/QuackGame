@@ -5,7 +5,7 @@
 #define DUCK_HEIGHT 32
 
 Duck::Duck(const uint8_t &i, const uint16_t &initial_x, const uint16_t &initial_y) : id(i), position(initial_x, initial_y),
-                                                                                     action(DuckAction::IDLE), size(DUCK_WIDTH, DUCK_HEIGHT),
+                                                                                     size(DUCK_WIDTH, DUCK_HEIGHT),
                                                                                      gun(nullptr), y_velocity(Y_VELOCITY_INITIAL),
                                                                                      block_shooting_command(false) {}
 
@@ -16,17 +16,21 @@ void Duck::move(Direction direction)
     switch (direction)
     {
     case Direction::RIGHT:
-        action = DuckAction::MOVING;
+        status.mooving = true;
         status.looking_right = true;
         break;
     case Direction::LEFT:
-        action = DuckAction::MOVING;
+        status.mooving = true;
         status.looking_right = false;
         break;
     default:
-        action = DuckAction::IDLE;
         break;
     }
+}
+
+void Duck::stop_moving()
+{
+    status.mooving = false;
 }
 
 void Duck::look_up()
@@ -59,8 +63,6 @@ Position Duck::get_gun_position() const
     return gun == nullptr ? Position(0, 0) : gun->get_position_in_duck(size.height, position, status.looking_right, status.looking_up);
 }
 
-void Duck::stop_moving() { action = DuckAction::IDLE; }
-
 void Duck::drop_gun()
 {
     stop_shooting();
@@ -91,17 +93,10 @@ void Duck::stop_shooting()
         ((AK *)gun.get())->check_reset();
 }
 
-void Duck::flap()
-{
-    action = DuckAction::FLAPPING;
-    status.shooting = false;
-}
-
 void Duck::jump()
 {
     if (status.grounded)
     {
-        action = DuckAction::JUMPING;
         status.jumping = true;
         return;
     }
@@ -111,18 +106,16 @@ void Duck::jump()
 void Duck::stand_up()
 {
     status.bent_down = false;
-    action = DuckAction::IDLE;
 }
 
 void Duck::lay()
 {
     status.bent_down = true;
-    action = DuckAction::LAYING;
 }
 
 void Duck::step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles)
 {
-    if (action == DuckAction::MOVING)
+    if (status.mooving)
     {
         std::function<int(int, int)> operation = status.looking_right ? [](int a, int b)
         { return a + b; }                                             : // if looking right, increment x
@@ -309,7 +302,7 @@ DuckSnapshot Duck::get_status()
     uint16_t gun_angle = get_gun_angle();
     return DuckSnapshot(id,
                         position,
-                        action, size, gun_type, gun_size, gun_position, gun_angle, status);
+                        size, gun_type, gun_size, gun_position, gun_angle, status);
     //  100,
     //  status,
     // gun_snapshot);

@@ -30,10 +30,6 @@ void Game::process(ClientCommand &command)
             duck.stop_moving();
             break;
 
-        case ClientActionType::FLAP:
-            duck.flap();
-            break;
-
         case ClientActionType::JUMP:
             duck.jump();
             break;
