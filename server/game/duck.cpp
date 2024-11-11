@@ -4,10 +4,11 @@
 #define DUCK_WIDTH 32
 #define DUCK_HEIGHT 32
 
-Duck::Duck(const uint8_t &i, const uint16_t &initial_x, const uint16_t &initial_y) : id(i), position(initial_x, initial_y),
-                                                                                     size(DUCK_WIDTH, DUCK_HEIGHT),
-                                                                                     gun(nullptr), y_velocity(Y_VELOCITY_INITIAL),
-                                                                                     block_shooting_command(false) {}
+Duck::Duck(const uint8_t &i, const Position &p) : id(i),
+                                                  position(p),
+                                                  size(DUCK_WIDTH, DUCK_HEIGHT),
+                                                  gun(nullptr), y_velocity(Y_VELOCITY_INITIAL),
+                                                  block_shooting_command(false) {}
 
 Duck::~Duck() {}
 

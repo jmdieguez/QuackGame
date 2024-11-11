@@ -40,7 +40,14 @@ void SessionsHandler::remove_all_sessions()
 void SessionsHandler::broadcast(const Snapshot &msg)
 {
     std::lock_guard<std::mutex> lock(mtx);
-
     for (auto &session : sessions)
         session->send(msg);
+}
+
+std::vector<uint16_t> SessionsHandler::get_ids() {
+    std::lock_guard<std::mutex> lock(mtx);
+    std::vector<uint16_t> ids;
+    for (auto &session : sessions)
+        ids.push_back(session->id);
+    return ids;
 }

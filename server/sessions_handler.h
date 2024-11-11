@@ -25,6 +25,7 @@ public:
     void add(Socket& client);
     void remove_closed_sessions();
     void remove_all_sessions();
+    std::vector<uint16_t> get_ids();
 };
 
 #endif  // SERVER_SESSIONS_HANDLER_H

@@ -15,8 +15,11 @@
 class Game
 {
 private:
+    int current_players = 0;
+    int required_players = 2;
     Map map;
     std::map<uint8_t, Duck> ducks;
+    std::vector<Position> spawns;
     std::vector<std::shared_ptr<Projectile>> projectiles;
     std::vector<Explosion> explosions;
 
@@ -26,9 +29,10 @@ private:
     void remove_projectiles();
 
 public:
-    explicit Game(const std::string &map_file);
+    Game(const std::string &map_file);
     void process(ClientCommand &command);
     void step();
+    bool started = false;
     Snapshot get_status();
     ~Game() {}
 };

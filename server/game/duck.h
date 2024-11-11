@@ -33,7 +33,7 @@ private:
     Position get_gun_position() const;
 
 public:
-    explicit Duck(const uint8_t &i, const uint16_t &initial_x, const uint16_t &initial_y);
+    explicit Duck(const uint8_t &i, const Position &p);
     ~Duck();
 
     // Actions

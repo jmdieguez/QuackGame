@@ -1,14 +1,17 @@
 #include "game.h"
 #include "gun/projectile/projectilegrenade.h"
 
-Game::Game(const std::string &map_file) : map(map_file)
-{
-}
+Game::Game(const std::string &map_file) : map(map_file), spawns(map.calculate_spawns(required_players)) {}
 
 void Game::process(ClientCommand &command)
-{
-    try
-    {
+{   
+    if (!started && command.message.type == ClientActionType::JOIN_GAME) {
+        Position p = spawns[current_players++];
+        ducks.emplace(command.player_id, Duck(command.player_id, p));
+        if (current_players == required_players) {
+            started = true;
+        }
+    } else {
         Duck &duck = ducks.at(command.player_id);
         if (!duck.get_status().status.is_alive)
             return;
@@ -64,24 +67,20 @@ void Game::process(ClientCommand &command)
         default:
             break;
         }
-    }
-    catch (const std::out_of_range &e)
-    {
-        ducks.emplace(command.player_id, Duck(command.player_id, 256, 250));
-    }
-}
-
-void Game::verify_hit_ducks()
-{
-    for (auto &[id, duck] : ducks)
-        for (std::shared_ptr<Projectile> &p : projectiles)
-        {
-            Position current_position = p->get_position();
-            if (!duck.is_in_range(current_position))
-                continue;
-            duck.set_receive_shot();
-            p->destroy();
         }
+    }
+
+    void Game::verify_hit_ducks()
+    {
+        for (auto &[id, duck] : ducks)
+            for (std::shared_ptr<Projectile> &p : projectiles)
+            {
+                Position current_position = p->get_position();
+                if (!duck.is_in_range(current_position))
+                    continue;
+                duck.set_receive_shot();
+                p->destroy();
+            }
 }
 
 void Game::move_grenade(std::shared_ptr<Projectile> &p)

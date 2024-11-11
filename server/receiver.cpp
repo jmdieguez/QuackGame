@@ -3,7 +3,7 @@
 #include "../common/liberror.h"
 #include "client_command.h"
 
-Receiver::Receiver(Socket &skt, const std::shared_ptr<Queue<ClientCommand>> &recv_q, uint16_t &id) : session_id(id), client(skt), recv_queue(recv_q), protocol(skt), closed(false) {}
+Receiver::Receiver(Socket &skt, const std::shared_ptr<Queue<ClientCommand>> &recv_q, const uint16_t &id) : session_id(id), client(skt), recv_queue(recv_q), protocol(skt), closed(false) {}
 
 Receiver::~Receiver() {}
 
