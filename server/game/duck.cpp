@@ -1,6 +1,9 @@
 #include "duck.h"
 #include <optional>
 
+#define DUCK_HITBOX_X 16
+#define DUCK_HITBOX_Y 24
+
 #define DUCK_WIDTH 32
 #define DUCK_HEIGHT 32
 
@@ -127,7 +130,7 @@ void Duck::step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles)
         while (i <= X_VELOCITY)
         {
             Position new_position(operation(position.x, 1), position.y);
-            Position end_hitbox(new_position.x + TILE_SIZE - 1, new_position.y + TILE_SIZE - 1);
+            Position end_hitbox(new_position.x + DUCK_HITBOX_X - 1, new_position.y + DUCK_HITBOX_Y - 1);
             if (map.validate_coordinate(new_position) && map.validate_coordinate(end_hitbox))
             {
                 for (auto &[id, gun] : map.get_guns())
@@ -151,8 +154,8 @@ void Duck::step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles)
         }
     }
 
-    Position below_left(position.x, position.y + TILE_SIZE);
-    Position below_right(position.x + TILE_SIZE - 1, position.y + TILE_SIZE);
+    Position below_left(position.x, position.y + DUCK_HITBOX_Y);
+    Position below_right(position.x + DUCK_HITBOX_X - 1, position.y + DUCK_HITBOX_Y);
     status.grounded = map.has_something_in(below_left) || map.has_something_in(below_right);
     status.falling = false;
     if (status.grounded)
@@ -196,7 +199,7 @@ void Duck::step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles)
         while (i <= abs_y_velocity)
         {
             Position new_position(position.x, operation(position.y, 1));
-            Position end_hitbox(new_position.x + TILE_SIZE - 1, new_position.y + TILE_SIZE - 1); // El duck ocupa 32x32
+            Position end_hitbox(new_position.x + DUCK_HITBOX_X - 1, new_position.y + DUCK_HITBOX_Y - 1); // El duck ocupa 18x24
             if (map.validate_coordinate(new_position) && map.validate_coordinate(end_hitbox))
             {
                 position = new_position;
@@ -299,10 +302,12 @@ DuckSnapshot Duck::get_status()
 {
     GunType gun_type = get_gun_type();
     Size gun_size = get_gun_size();
+    Position aux(position.x - 8, position.y - 8);
     Position gun_position = get_gun_position();
+    Position aux_gun(gun_position.x - 8, gun_position.y - 8);
     uint16_t gun_angle = get_gun_angle();
     return DuckSnapshot(id,
-                        position,
+                        aux,
                         size, gun_type, gun_size, gun_position, gun_angle, status);
     //  100,
     //  status,
