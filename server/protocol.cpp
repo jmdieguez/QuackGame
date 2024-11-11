@@ -71,6 +71,7 @@ void ServerProtocol::send_duck_status(const DuckStatus &status)
 {
     send_data(static_cast<uint16_t>(status.shooting));
     send_data(static_cast<uint16_t>(status.jumping));
+    send_data(static_cast<uint16_t>(status.flapping));
     send_data(static_cast<uint16_t>(status.bent_down));
     send_data(static_cast<uint16_t>(status.grounded));
     send_data(static_cast<uint16_t>(status.looking_up));

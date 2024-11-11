@@ -102,7 +102,9 @@ void Duck::jump()
     {
         action = DuckAction::JUMPING;
         status.jumping = true;
+        return;
     }
+    status.flapping = true;
 }
 
 void Duck::stand_up()
@@ -172,6 +174,13 @@ void Duck::step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles)
     }
     else
     {
+        if (status.flapping)
+        {
+            y_velocity = -2;
+            status.flapping = false;
+            return;
+        }
+        status.flapping = false;
         y_velocity -= 1;
     }
 
