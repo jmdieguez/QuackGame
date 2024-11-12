@@ -5,7 +5,7 @@
 #include "defminvalue.h"
 #include "projectile/projectilegun.h"
 
-#define VELOCITY 15
+#define VELOCITY 20
 #define MAX_AMMO 30
 #define MAX_DISTANCE 13
 #define TIME_SHOOTING 60
@@ -29,6 +29,7 @@
 #define LOOKING_UP_RIGHT_OFFSET_X 0
 #define LOOKING_UP_LEFT_OFFSET_X 18
 
+#define SPECIAL_OFFSET_SHOOT_AK 6
 #define SPECIAL_OFFSET_X_AK 5
 
 /***************************************************************************
@@ -67,7 +68,7 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> AK:
         dispersion = std::make_shared<DispersionLow>(random());
     if (time_shooting < START_MORE_DISPERSION)
         dispersion = std::make_shared<DispersionMedium>(random());
-    uint16_t adjusted_pos_x = duck_position.x + (looking_up ? (looking_right ? LOOKING_UP_RIGHT_OFFSET_X : LOOKING_UP_LEFT_OFFSET_X) : GUN_WIDTH * direction.first);
+    uint16_t adjusted_pos_x = duck_position.x + (looking_up ? (looking_right ? LOOKING_UP_RIGHT_OFFSET_X : LOOKING_UP_LEFT_OFFSET_X) : (GUN_WIDTH + SPECIAL_OFFSET_SHOOT_AK) * direction.first);
     uint16_t adjusted_pos_y = duck_position.y + (looking_up ? -GUN_WIDTH : (VERTICAL_RIGHT + SPECIAL_OFFSET_X_AK));
     Position projectile_position(adjusted_pos_x, adjusted_pos_y);
     std::vector<std::shared_ptr<Projectile>> projectiles;

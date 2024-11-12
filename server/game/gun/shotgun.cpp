@@ -3,7 +3,7 @@
 #include "projectile/projectilegun.h"
 
 #define VELOCITY 10
-#define MAX_AMMO 10
+#define MAX_AMMO 2
 #define MAX_SHOT 6
 #define MIN_DISTANCE 7
 #define MAX_DISTANCE 9
