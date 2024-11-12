@@ -24,7 +24,7 @@ public:
     Gameloop(const uint16_t& id, const uint16_t& creator_id);
     void run() override;
     void step(unsigned int current_step);
-    void add_new_player(const uint16_t&, Queue<Snapshot>&, Queue<ClientCommand>*);
+    Queue<ClientCommand>* add_new_player(const uint16_t&, Queue<Snapshot>&);
     void start_game(const uint16_t&);
     const std::string& get_name();
     void game_state(std::atomic<bool>&);

@@ -34,9 +34,9 @@ void Gameloop::start_game(const uint16_t& id) {
     }
 }
 
-void Gameloop::add_new_player(const uint16_t& id, Queue<Snapshot>& sender_queue, Queue<ClientCommand>* queue) {
+Queue<ClientCommand>* Gameloop::add_new_player(const uint16_t& id, Queue<Snapshot>& sender_queue) {
     handler.add(sender_queue, id);
-    queue = &game_queue;
+    return  &game_queue;
 }
 
 const std::string& Gameloop::get_name() {

@@ -1,22 +1,28 @@
 
 
 #include "monitor_games.h"
-
-void MonitorGames::create_game(const uint16_t &creator_id, Queue<Snapshot>& queue, Queue<ClientCommand>* game_queue) {
-    std::lock_guard<std::mutex> lock(mtx);
-    auto newGame = std::make_shared<Gameloop>(id_counter, creator_id);
-    newGame->add_new_player(creator_id, queue, game_queue);
-    games[id_counter] = newGame;
-    id_counter++;
+MonitorGames::MonitorGames() {
 }
 
-void MonitorGames::add_player(const uint16_t& game_id, const uint16_t &creator_id, Queue<Snapshot>& queue, Queue<ClientCommand>* game_queue) {
+Queue<ClientCommand>* MonitorGames::create_game(const uint16_t &creator_id, Queue<Snapshot>& queue) {
     std::lock_guard<std::mutex> lock(mtx);
+    Queue<ClientCommand>* game_queue = nullptr;
+    auto newGame = std::make_shared<Gameloop>(id_counter, creator_id);
+    game_queue = newGame->add_new_player(creator_id, queue);
+    games[id_counter] = newGame;
+    id_counter++;
+    return game_queue;
+}
+
+Queue<ClientCommand>* MonitorGames::add_player(const uint16_t& game_id, const uint16_t &creator_id, Queue<Snapshot>& queue) {
+    std::lock_guard<std::mutex> lock(mtx);
+    Queue<ClientCommand>* game_queue = nullptr;
     auto it = games.find(game_id);
     if (it != games.end()) {
-        it->second->add_new_player(creator_id, queue, game_queue);
+        game_queue = it->second->add_new_player(creator_id, queue);
         player_to_game[creator_id] = game_id;
     }
+    return game_queue;
 }
 
 void MonitorGames::start_game(const uint16_t& game_id, const uint16_t &creator_id) {
@@ -27,7 +33,6 @@ void MonitorGames::start_game(const uint16_t& game_id, const uint16_t &creator_i
     }
 }
 
-
 void MonitorGames::list_games(ServerProtocol& protocol) {
     std::lock_guard<std::mutex> lock(mtx);
     Queue<LobbyMessage> queue;
@@ -37,7 +42,6 @@ void MonitorGames::list_games(ServerProtocol& protocol) {
             protocol.send_lobby_info(LobbyMessage(name, id));
         }
     }
-
 }
 
 bool MonitorGames::is_game_started(const uint16_t& session_id) {

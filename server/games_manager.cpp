@@ -1,4 +1,4 @@
-#include "monitor_games.h"
+
 
 #include "games_manager.h"
 GamesManager::GamesManager(): monitor(MonitorGames()) {}
@@ -7,10 +7,10 @@ Queue<ClientCommand>* GamesManager::handle_lobby(const ActionLobby& action, cons
     Queue<ClientCommand>* game_queue = nullptr;
     switch (action.type) {
         case ClientActionType::CREATE_GAME:
-            monitor.create_game(session_id, sender, game_queue);
+            game_queue = monitor.create_game(session_id, sender);
             break;
         case ClientActionType::JOIN_GAME:
-            monitor.add_player(action.game_id, session_id, sender, game_queue);
+            game_queue = monitor.add_player(action.game_id, session_id, sender);
             break;
         case ClientActionType::GAME_LIST:
             monitor.list_games(protocol);

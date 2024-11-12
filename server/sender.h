@@ -7,8 +7,8 @@
 #include "../common/snapshots.h"
 #include "../common/lobby_messages.h"
 #include "protocol.h"
+#include "games_manager.h"
 
-class GamesManager;
 class Sender : public Thread {
 private:
     uint16_t session_id;

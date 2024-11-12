@@ -6,9 +6,8 @@
 #include <vector>
 
 #include "../common/queue.h"
-#include "../common/socket.h"
-#include "session.h"
 #include "client_command.h"
+#include "../common/snapshots.h"
 
 class SessionsHandler {
 private:

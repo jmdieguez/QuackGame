@@ -10,7 +10,7 @@
 #include "receiver.h"
 #include "sender.h"
 #include "games_manager.h"
-class GamesManager;
+
 class Session
 {
 private:

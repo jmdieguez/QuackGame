@@ -10,7 +10,6 @@ class Server
 {
 private:
     bool open;
-    std::shared_ptr<Queue<ClientCommand>> recv_queue;
     Acceptor acceptor;
 
 public:
