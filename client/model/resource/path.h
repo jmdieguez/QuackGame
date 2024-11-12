@@ -15,5 +15,5 @@
 #define BOX_PATH "/var/quackgame/box.png"
 #define CHESTPLATE_PATH "/var/quackgame/armor/chestplate.png"
 #define HELMET_PATH "/var/quackgame/armor/helmet.png"
-
+#define BACKGROUND_PATH "/var/quackgame/forest.png"
 #endif // PATH_H

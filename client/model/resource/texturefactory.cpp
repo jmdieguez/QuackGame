@@ -35,6 +35,8 @@ std::string TextureFactory::get_path(TextureFigure figure)
         return HELMET_PATH;
     else if (TextureFigure::Chestplate == figure)
         return CHESTPLATE_PATH;
+    else if (TextureFigure::Background == figure)
+        return BACKGROUND_PATH;
     return DUCK_PATH;
 }
 

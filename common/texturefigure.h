@@ -16,7 +16,8 @@ enum TextureFigure
     Box_T,
     Spawn_T,
     Helmet,
-    Chestplate
+    Chestplate,
+    Background
 };
 
 #endif // TEXTURE_FIGURE_GAME_H

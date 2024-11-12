@@ -1,7 +1,5 @@
 #include "SDLWindow.h"
 
-#define DEFAULT_WINDOW_WIDTH 1280
-#define DEFAULT_WINDOW_HEIGHT 720
 #define WINDOW_TITTLE "Quack Game"
 
 SDLWindow::SDLWindow()

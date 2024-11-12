@@ -4,8 +4,12 @@ NAME="quackgame"
 BIN_DIR="/usr/bin"
 ASSETS_DIR="/var/$NAME"
 CONFIG_DIR="/etc/$NAME"
+RED='\033[0;31m'
 GREEN='\033[0;32m'
 RESET='\033[0m'
+
+set -e # Finalizar ante error
+trap 'echo -e "${RED}Error: La instalación ha fallado en la línea $LINENO.${RESET}"; exit 1' ERR
 
 # 1. Descargar e instalar dependencias
 echo -e "${GREEN}Instalando dependencias...${RESET}"

@@ -8,9 +8,6 @@
 #define MAX_MESSAGES_QUEUE_RECEIVER 100000
 #define MAX_MESSAGES_QUEUE_SENDER 100000
 
-#define DEFAULT_WINDOW_WIDTH 480
-#define DEFAULT_WINDOW_HEIGHT 640
-
 #define SRC_DUCK_WIDTH 32
 #define SRC_DUCK_HEIGHT 32
 #define POS_INIT_X_IMAGE 1
@@ -68,6 +65,13 @@ SDL2pp::Texture &Game::get_projectile_texture(ProjectileType projectile)
 {
     TextureStorage &storage = TextureStorage::get_instance();
     std::shared_ptr<Texture> texture_created = storage.get_texture(renderer, projectile);
+    return texture_created.get()->get_texture();
+}
+
+SDL2pp::Texture &Game::get_background_texture()
+{
+    TextureStorage &storage = TextureStorage::get_instance();
+    std::shared_ptr<Texture> texture_created = storage.get_texture(renderer, TextureFigure::Background);
     return texture_created.get()->get_texture();
 }
 
@@ -231,8 +235,16 @@ void Game::render_spawn_in_map(Position &p)
     renderer.Copy(texture, src_rect, dst_rect);
 }
 
+void Game::render_background()
+{   
+    SDL_Rect src = { 0, 0, background_texture.GetWidth(), background_texture.GetHeight() };
+    SDL_Rect dst = {0, 0, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT};
+    renderer.Copy(background_texture, src, dst);
+}
+
 void Game::set_renderer(int frame_ticks)
-{
+{   
+    render_background();
     Snapshot snapshot;
     if (!queue_receiver.try_pop(snapshot))
         return;
@@ -271,6 +283,7 @@ Game::Game(const char *host, const char *port)
       game_context(queue_sender),
       socket(host, port),
       renderer(window.get_renderer()),
+      background_texture(get_background_texture()),
       duck_texture(get_duck_texture()),
       all_tilesets_texture(std::make_shared<SDL2pp::Texture>(renderer, TILESETS))
 {
