@@ -46,9 +46,12 @@ public:
             uint16_t x = itemNode["x"].as<uint16_t>();
             uint16_t y = itemNode["y"].as<uint16_t>();
             Spawn type = itemNode["type"].as<Spawn>();
-            if (type == Spawn::GUN_SPAWN) {
+            if (type == Spawn::GUN_SPAWN)
+            {
                 gun_spawns.push_back(Position(x, y));
-            } else if (type == Spawn::DUCK_SPAWN) {
+            }
+            else if (type == Spawn::DUCK_SPAWN)
+            {
                 duck_spawns.push_back(Position(x, y));
             }
         }
@@ -122,7 +125,7 @@ public:
                                        gun_id(0)
     {
         // Eliminar una vez que se tengan los spawns de las armas
-        guns.emplace(gun_id, std::make_shared<CowboyPistol>(290, 320));
+        guns.emplace(gun_id, std::make_shared<AK>(290, 320));
         gun_id++;
 
         for (const auto &position : cfg.boxes)
@@ -174,10 +177,12 @@ public:
         guns.erase(id);
     }
 
-    std::vector<Position> calculate_spawns(const int &n_players) {
+    std::vector<Position> calculate_spawns(const int &n_players)
+    {
         std::vector<Position> spawns;
 
-        for (int n = 0; n < n_players; n++) {
+        for (int n = 0; n < n_players; n++)
+        {
             Position p = cfg.duck_spawns[n % cfg.duck_spawns.size()]; // Expressed as (row, file) of tiles
             Position p_as_pixels(p.x * TILE_SIZE, p.y * TILE_SIZE);
             spawns.push_back(p_as_pixels);

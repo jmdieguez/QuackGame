@@ -13,12 +13,15 @@
 #define GUN_WIDTH 20
 #define GUN_HEIGHT 10
 
-#define HORIZONTAL_Y 13
+#define HORIZONTAL_Y 3
 #define HORIZONTAL_RIGHT 10
-#define HORIZONTAL_LEFT 0
+#define HORIZONTAL_LEFT -14
 
-#define VERTICAL_RIGHT 0
-#define VERTICAL_LEFT 12
+#define VERTICAL_RIGHT -10
+#define VERTICAL_LEFT 6
+
+#define LOOKING_UP_RIGHT_OFFSET_X 0
+#define LOOKING_UP_LEFT_OFFSET_X 18
 
 /***************************************************************************
                               PRIVATE METHODS
@@ -46,8 +49,9 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Mag
     reduce_ammo();
     auto direction = get_direction(looking_right, looking_up);
     std::shared_ptr<Dispersion> dispersion = std::make_shared<DispersionLow>(random());
-    uint16_t adjusted_pos_x = duck_position.x + (direction.first == 1 ? MIN_VALUE_RIGHT_DIRECTION_POS_X : MIN_VALUE_LEFT_DIRECTION_POS_X);
-    Position projectile_position(adjusted_pos_x, duck_position.y);
+    uint16_t adjusted_pos_x = duck_position.x + (looking_up ? (looking_right ? LOOKING_UP_RIGHT_OFFSET_X : LOOKING_UP_LEFT_OFFSET_X) : GUN_WIDTH * direction.first);
+    uint16_t adjusted_pos_y = duck_position.y + (looking_up ? -GUN_WIDTH : VERTICAL_RIGHT);
+    Position projectile_position(adjusted_pos_x, adjusted_pos_y);
     std::vector<std::shared_ptr<Projectile>> projectiles = {
         std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, projectile_position, direction, VELOCITY, MAX_DISTANCE, dispersion)};
     Position new_position = move_back(duck_position, looking_right, BACK);
