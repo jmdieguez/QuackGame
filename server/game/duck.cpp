@@ -7,9 +7,7 @@
 #define DUCK_WIDTH 32
 #define DUCK_HEIGHT 32
 
-Duck::Duck(const uint8_t &i, const Position &p) : id(i),
-                                                  position(p),
-                                                  size(DUCK_WIDTH, DUCK_HEIGHT),
+Duck::Duck(const uint8_t &i, const Position &p) : Hitbox(p, Size(DUCK_WIDTH, DUCK_HEIGHT)), id(i),
                                                   gun(nullptr), y_velocity(Y_VELOCITY_INITIAL),
                                                   block_shooting_command(false) {}
 

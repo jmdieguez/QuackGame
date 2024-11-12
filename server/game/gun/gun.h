@@ -5,28 +5,25 @@
 #include <vector>
 #include <optional>
 #include <memory>
+#include "../../../common/snapshots.h"
+#include "../../../common/projectiletype.h"
+#include "../../../common/position.h"
+#include "../../../common/size.h"
+#include "../hitbox.h"
+#include "projectile/projectile.h"
 
 #define ANGLE_LOOK_UP 90
 #define ANGLE_LOOK_UP_REVERSE 270
 #define ANGLE_DEFAULT 0
 
-#include "../../../common/snapshots.h"
-#include "../../../common/projectiletype.h"
-#include "../../../common/position.h"
-#include "../../../common/size.h"
-#include "projectile/projectile.h"
-
-class Gun
+class Gun : public Hitbox
 {
 private:
     GunType type;
     bool is_equipped;
-    Size size;
     uint16_t angle;
 
 protected:
-    Position position;
-
     std::pair<int, int> get_direction(bool looking_right, bool looking_up)
     {
         int direction_x = looking_right ? 1 : -1;
@@ -37,7 +34,7 @@ protected:
     }
 
 public:
-    explicit Gun(GunType type, Position p, Size size) : type(type), is_equipped(false), size(size), angle(ANGLE_DEFAULT), position(p) {}
+    explicit Gun(GunType type, Position p, Size size) : Hitbox(p, size), type(type), is_equipped(false), angle(ANGLE_DEFAULT) {}
 
     virtual ~Gun() = default;
 

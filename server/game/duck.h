@@ -10,24 +10,20 @@
 #include <utility>
 
 #include "../../common/duck.h"
-#include "../../common/position.h"
 #include "../../common/direction.h"
 #include "../../common/snapshots.h"
-#include "../../common/size.h"
 #include "gun/gun.h"
 #include "map.h"
+#include "hitbox.h"
 
-class Duck
+class Duck : public Hitbox
 {
 private:
     uint8_t id;
-    Position position;
     DuckStatus status;
-    Size size;
     std::shared_ptr<Gun> gun;
     int y_velocity;
     bool block_shooting_command;
-
     uint16_t get_gun_angle() const;
     Size get_gun_size() const;
     Position get_gun_position() const;
