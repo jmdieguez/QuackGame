@@ -68,6 +68,10 @@ void Game::process(ClientCommand &command)
         case ClientActionType::DROP:
             duck.get_gun_type() == GunType::Grenade ? duck.drop_gun(projectiles) : duck.drop_gun();
             break;
+
+        case ClientActionType::GRAB:
+            duck.grab(map);
+            break;
         default:
             break;
         }
@@ -79,8 +83,8 @@ void Game::verify_hit_ducks()
     for (auto &[id, duck] : ducks)
         for (std::shared_ptr<Projectile> &p : projectiles)
         {
-            Position current_position = p->get_position();
-            if (!duck.is_in_range(current_position))
+            Hitbox proctile_hitbox = p->get_hitbox();
+            if (!duck.intersects(proctile_hitbox))
                 continue;
             duck.set_receive_shot();
             p->destroy();

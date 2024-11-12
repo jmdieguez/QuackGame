@@ -46,7 +46,7 @@ public:
     void jump();
     void stand_up();
     void set_receive_shot();
-    bool is_in_range(Position &position_item);
+    void grab(Map &map);
 
     // Get current duck snapshot
     DuckSnapshot get_status();

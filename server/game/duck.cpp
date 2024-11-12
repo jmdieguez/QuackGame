@@ -123,7 +123,6 @@ void Duck::step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles)
         { return a + b; }                                             : // if looking right, increment x
                                                      [](int a, int b)
         { return a - b; }; // if looking, decrease x
-        std::optional<uint16_t> gun_id_to_erase;
         int i = 1;
         while (i <= X_VELOCITY)
         {
@@ -131,17 +130,6 @@ void Duck::step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles)
             Position end_hitbox(new_position.x + DUCK_HITBOX_X - 1, new_position.y + DUCK_HITBOX_Y - 1);
             if (map.validate_coordinate(new_position) && map.validate_coordinate(end_hitbox))
             {
-                for (auto &[id, gun] : map.get_guns())
-                {
-                    if (gun.get()->can_take_this_gun(new_position))
-                    {
-                        this->gun = gun;
-                        gun_id_to_erase = id;
-                        break;
-                    }
-                }
-                if (gun_id_to_erase.has_value())
-                    map.remove_gun(gun_id_to_erase.value());
                 position = new_position;
                 i++;
             }
@@ -289,11 +277,19 @@ void Duck::set_receive_shot()
         status.is_alive = false;
 }
 
-bool Duck::is_in_range(Position &position_item)
+void Duck::grab(Map &map)
 {
-    uint16_t half_tile_size = TILE_SIZE / 2;
-    return position_item.x >= position.x && position_item.x < position.x + half_tile_size &&
-           position_item.y >= position.y && position_item.y < position.y + TILE_SIZE;
+    std::optional<uint8_t> id_to_erase;
+    for (auto &[id, gun] : map.get_guns())
+    {
+        Hitbox gun_hitbox = gun->get_hitbox();
+        if (!intersects(gun_hitbox))
+            continue;
+        id_to_erase = id;
+        this->gun = gun;
+    }
+    if (id_to_erase.has_value())
+        map.get_guns().erase(id_to_erase.value());
 }
 
 DuckSnapshot Duck::get_status()
