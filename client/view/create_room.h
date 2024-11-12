@@ -20,9 +20,9 @@ QT_BEGIN_NAMESPACE
 class Ui_create_room
 {
 public:
-    QLineEdit *lineEdit;
-    QPushButton *pushButton;
-    QPushButton *pushButton_2;
+    QLineEdit *textBoxName;
+    QPushButton *createButton;
+    QPushButton *backButton;
 
     void setupUi(QWidget *create_room)
     {
@@ -32,22 +32,22 @@ public:
         QFont font;
         font.setPointSize(10);
         create_room->setFont(font);
-        lineEdit = new QLineEdit(create_room);
-        lineEdit->setObjectName(QString::fromUtf8("lineEdit"));
-        lineEdit->setGeometry(QRect(230, 80, 221, 41));
+        textBoxName = new QLineEdit(create_room);
+        textBoxName->setObjectName(QString::fromUtf8("textBoxName"));
+        textBoxName->setGeometry(QRect(230, 80, 221, 41));
         QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(lineEdit->sizePolicy().hasHeightForWidth());
-        lineEdit->setSizePolicy(sizePolicy);
+        sizePolicy.setHeightForWidth(textBoxName->sizePolicy().hasHeightForWidth());
+        textBoxName->setSizePolicy(sizePolicy);
         QFont font1;
         font1.setPointSize(12);
-        lineEdit->setFont(font1);
-        lineEdit->setStyleSheet(QString::fromUtf8(""));
-        pushButton = new QPushButton(create_room);
-        pushButton->setObjectName(QString::fromUtf8("pushButton"));
-        pushButton->setGeometry(QRect(250, 190, 181, 41));
-        pushButton->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+        textBoxName->setFont(font1);
+        textBoxName->setStyleSheet(QString::fromUtf8(""));
+        createButton = new QPushButton(create_room);
+        createButton->setObjectName(QString::fromUtf8("createButton"));
+        createButton->setGeometry(QRect(250, 160, 181, 41));
+        createButton->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "                          background-color: #4C9F70; \n"
 "                          color: white; \n"
 "                          font-size: 16px; \n"
@@ -62,10 +62,10 @@ public:
 "QPushButton:hover {\n"
 "                          background-color: #3E7F58;\n"
 "}"));
-        pushButton_2 = new QPushButton(create_room);
-        pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
-        pushButton_2->setGeometry(QRect(250, 250, 181, 41));
-        pushButton_2->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+        backButton = new QPushButton(create_room);
+        backButton->setObjectName(QString::fromUtf8("backButton"));
+        backButton->setGeometry(QRect(250, 210, 181, 41));
+        backButton->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "                          background-color: #4C9F70; \n"
 "                          color: white; \n"
 "                          font-size: 16px; \n"
@@ -89,16 +89,16 @@ public:
     void retranslateUi(QWidget *create_room)
     {
         create_room->setWindowTitle(QCoreApplication::translate("create_room", "Form", nullptr));
-        lineEdit->setText(QString());
-        lineEdit->setPlaceholderText(QCoreApplication::translate("create_room", "Enter a name", nullptr));
-        pushButton->setText(QCoreApplication::translate("create_room", "Create", nullptr));
-        pushButton_2->setText(QCoreApplication::translate("create_room", "Back", nullptr));
+        textBoxName->setText(QString());
+        textBoxName->setPlaceholderText(QCoreApplication::translate("create_room", "Enter a name", nullptr));
+        createButton->setText(QCoreApplication::translate("create_room", "Create", nullptr));
+        backButton->setText(QCoreApplication::translate("create_room", "Back", nullptr));
     } // retranslateUi
 
 };
 
 namespace Ui {
-    class CreateRoom: public Ui_create_room {};
+    class create_room: public Ui_create_room {};
 } // namespace Ui
 
 QT_END_NAMESPACE

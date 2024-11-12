@@ -2,9 +2,9 @@
 #include "controller/game.h"
 #include "model/resource/texturefactory.h"
 #include "model/protocol.h"
-#include "controller/lobby/lobby.h"
-#include "controller/lobby/main_window.h"
+#include "view/main_window.h"
 #include <QApplication>
+
 #define OK 0
 #define HOST 1
 #define PORT 2
@@ -12,26 +12,29 @@
 
 int main(int argc, const char *argv[])
 {
-
     if (argc != MIN_ARGS)
         return ERROR;
 
     try
     {
-        const char *host = argv[HOST];
-        const char *port = argv[PORT];
-        Socket socket(host, port);
-        ClientProtocol protocol(socket);
+        // Create QApplication with the const_cast to remove the const qualifier from argv
+        QApplication app(argc, const_cast<char**>(argv)); // Cast const char** to char**
 
-        Lobby lobby(protocol);
-        QApplication app(argc,  const_cast<char**>(argv));
-        MainWindow w(&lobby);
+      // const char *host = argv[HOST];
+      // const char *port = argv[PORT];
+
+  //      Lobby lobby;
+//
+        // Create MainWindow after QApplication
+        MainWindow w;
         w.show();
-        app.exec();
-       // Game game(host, port);
-       //    game.run();
 
-        return OK;
+        // Enter Qt event loop
+        return app.exec();  // Start event loop
+
+        // Game game(host, port); // Game logic can be executed later, if needed.
+        // game.run();
+
     }
     catch (const std::exception &err)
     {
