@@ -23,7 +23,7 @@
 
 #include <SDL2pp/SDL2pp.hh>
 
-#define TILESETS "./var/quackgame/tiles.png"
+#define TILESETS "/var/quackgame/tiles.png"
 
 class Game
 {
