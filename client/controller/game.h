@@ -19,17 +19,18 @@
 #include "./command/gamecontext.h"
 #include "./command/inputhandler.h"
 #include "../model/protocol.h"
-#include "../view/SDLWindow.h"
+#include "../view/SDLInitializer.h"
 #include "../common/tiles.h"
 #include "../ui/tileset.h"
 #include "cheats/cheatstorage.h"
+#include "../model/resource/sound/soundstorage.h"
 
 #define TILESETS "/var/quackgame/tiles.png"
 
 class Game
 {
 private:
-    SDLWindow window;
+    SDLInitializer initializer;
     std::atomic<bool> keep_running;
     CheatStorage cheat_storage;
     ConstantRateLoop constant_rate_loop;
@@ -39,6 +40,7 @@ private:
     GameContext game_context;
     Socket socket;
     SDL2pp::Renderer &renderer;
+    SDL2pp::Mixer &mixer;
     SDL2pp::Texture &background_texture;
     SDL2pp::Texture &duck_texture;
     SDL2pp::Texture &get_background_texture();
@@ -48,6 +50,7 @@ private:
     SDL2pp::Texture &get_box_texture();
     SDL2pp::Texture &get_projectile_texture(ProjectileType projectile);
     SDL2pp::Texture &get_texture(TextureFigure figure);
+    SDL2pp::Chunk &get_chunk(SoundType type);
 
     std::shared_ptr<SDL2pp::Texture> all_tilesets_texture;
     std::map<uint8_t, std::unique_ptr<Tileset>> tilesets;
@@ -68,6 +71,7 @@ private:
     void render_spawn_in_map(Position &p);
     void update_renderer(int current_step);
     void handle_event(SDL_Event &event);
+    void play_sound(SoundSnapshot &sound_snapshot);
     void step(unsigned int current_step);
 
 public:

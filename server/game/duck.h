@@ -12,6 +12,7 @@
 #include "../../common/duck.h"
 #include "../../common/direction.h"
 #include "../../common/snapshots.h"
+#include "../../common/soundtype.h"
 #include "gun/gun.h"
 #include "map.h"
 #include "hitbox.h"
@@ -52,7 +53,7 @@ public:
     DuckSnapshot get_status();
 
     // Simulate an iteration
-    void step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles);
+    void step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles, std::vector<SoundType> &sounds);
 };
 
 #endif // SERVER_DUCK_H

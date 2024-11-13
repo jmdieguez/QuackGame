@@ -82,6 +82,13 @@ SDL2pp::Texture &Game::get_texture(TextureFigure figure)
     return texture_created.get()->get_texture();
 }
 
+SDL2pp::Chunk &Game::get_chunk(SoundType type)
+{
+    SoundStorage &storage = SoundStorage::get_instance();
+    std::shared_ptr<Sound> sound_created = storage.get_sound(type);
+    return sound_created.get()->get_Sound();
+}
+
 void Game::handle_event(SDL_Event &event)
 {
     if (event.type == SDL_QUIT || event.key.keysym.sym == SDLK_END)
@@ -242,6 +249,14 @@ void Game::render_background()
     renderer.Copy(background_texture, src, dst);
 }
 
+void Game::play_sound(SoundSnapshot &sound_snapshot)
+{
+    SDL2pp::Chunk &sound = get_chunk(sound_snapshot.sound);
+    sound.SetVolume(1);
+    // if (!mixer.IsChannelPlaying(-1))
+    mixer.PlayChannel(-1, sound);
+}
+
 void Game::set_renderer(int frame_ticks)
 {
     render_background();
@@ -260,6 +275,8 @@ void Game::set_renderer(int frame_ticks)
         render_weapon_in_map(gun);
     for (ProjectileSnapshot &projectile : snapshot.projectiles)
         render_projectile(projectile);
+    for (SoundSnapshot &sound_snapshot : snapshot.sounds)
+        play_sound(sound_snapshot);
 }
 
 void Game::step(unsigned int current_step)
@@ -282,7 +299,8 @@ Game::Game(const char *host, const char *port)
       input(queue_sender),
       game_context(queue_sender),
       socket(host, port),
-      renderer(window.get_renderer()),
+      renderer(initializer.get_renderer()),
+      mixer(initializer.get_mixer()),
       background_texture(get_background_texture()),
       duck_texture(get_duck_texture()),
       all_tilesets_texture(std::make_shared<SDL2pp::Texture>(renderer, TILESETS))

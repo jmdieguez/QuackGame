@@ -157,7 +157,7 @@ void Game::remove_projectiles()
             it = projectiles.erase(it);
             continue;
         }
-        ++it;
+        it++;
     }
 }
 
@@ -167,7 +167,7 @@ void Game::step()
     moves_projectiles(map);
     verify_hit_ducks();
     for (auto &[id, duck] : ducks)
-        duck.step(map, projectiles);
+        duck.step(map, projectiles, sounds);
     map.move_guns();
 }
 
@@ -176,10 +176,14 @@ Snapshot Game::get_status()
     MapSnapshot map_snapshot = map.get_status();
     std::vector<GunNoEquippedSnapshot> guns_snapshots = map.get_guns_snapshots();
     std::vector<DuckSnapshot> duck_snapshots;
+    std::vector<SoundSnapshot> sound_snapshots;
     for (auto &[id, duck] : ducks)
         duck_snapshots.push_back(duck.get_status());
     std::vector<ProjectileSnapshot> projectile_snapshots;
     for (auto &projectile : projectiles)
         projectile_snapshots.push_back(projectile->get_status());
-    return Snapshot(std::move(duck_snapshots), std::move(guns_snapshots), std::move(projectile_snapshots), map_snapshot);
+    for (auto &sound : sounds)
+        sound_snapshots.push_back(SoundSnapshot(sound));
+    sounds.clear();
+    return Snapshot(std::move(duck_snapshots), std::move(guns_snapshots), std::move(projectile_snapshots), std::move(sound_snapshots), map_snapshot);
 }

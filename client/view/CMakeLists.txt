@@ -1,9 +1,9 @@
 target_sources(quack_game_client
     PRIVATE
     # .cpp files
-    SDLWindow.cpp
+    SDLInitializer.cpp
 
     PUBLIC
     # .h files
-    SDLWindow.h
+    SDLInitializer.h
 )

@@ -13,6 +13,7 @@
 #include "duck.h"
 #include "gun_type.h"
 #include "projectiletype.h"
+#include "soundtype.h"
 #include "position.h"
 #include "projectiledirection.h"
 #include "size.h"
@@ -60,6 +61,13 @@ public:
                                                                                                                                                                                                                       status(status)
     {
     }
+};
+
+class SoundSnapshot
+{
+public:
+    SoundType sound;
+    explicit SoundSnapshot(const SoundType &sound) : sound(sound) {}
 };
 
 class ExplosionSnapshot
@@ -117,13 +125,15 @@ public:
     std::vector<DuckSnapshot> ducks;
     std::vector<GunNoEquippedSnapshot> guns;
     std::vector<ProjectileSnapshot> projectiles;
+    std::vector<SoundSnapshot> sounds;
     MapSnapshot map;
 
-    Snapshot() : ducks({}), guns({}), projectiles({}) {}
+    Snapshot() : ducks({}), guns({}), projectiles({}), sounds({}) {}
     Snapshot(std::vector<DuckSnapshot> &&d_s,
              std::vector<GunNoEquippedSnapshot> &&g_s,
              std::vector<ProjectileSnapshot> &&p,
-             MapSnapshot &map_snapshot) : ducks(d_s), guns(g_s), projectiles(p), map(map_snapshot) {}
+             std::vector<SoundSnapshot> &&s,
+             MapSnapshot &map_snapshot) : ducks(d_s), guns(g_s), projectiles(p), sounds(s), map(map_snapshot) {}
 };
 
 #endif // SNAPSHOTS_H

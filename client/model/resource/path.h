@@ -16,4 +16,6 @@
 #define CHESTPLATE_PATH "/var/quackgame/armor/chestplate.png"
 #define HELMET_PATH "/var/quackgame/armor/helmet.png"
 #define BACKGROUND_PATH "/var/quackgame/forest.png"
+
+#define SHOOT_SOUND_PATH "/var/quackgame/sound/shoot.mp3"
 #endif // PATH_H

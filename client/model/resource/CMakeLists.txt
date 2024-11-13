@@ -12,3 +12,5 @@ target_sources(quack_game_client
     texturefactory.h
     texturestorage.h
 )
+
+add_subdirectory(sound/)

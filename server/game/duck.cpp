@@ -126,7 +126,7 @@ void Duck::lay()
     status.bent_down = true;
 }
 
-void Duck::step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles)
+void Duck::step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles, std::vector<SoundType> &sounds)
 {
     if (status.mooving)
     {
@@ -267,7 +267,11 @@ void Duck::step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles)
             }
         }
         for (std::shared_ptr<Projectile> p : shot_projectile)
+        {
             projectiles.push_back(p);
+            sounds.push_back(SoundType::SHOOT);
+        }
+
         if (gun->get_type() == GunType::Shotgun && !(((Shotgun *)gun.get())->is_block_shoot()))
             return;
         if (gun->get_type() == GunType::Sniper && !(((Sniper *)gun.get())->is_block_shoot()))

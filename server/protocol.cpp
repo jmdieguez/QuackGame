@@ -112,6 +112,11 @@ void ServerProtocol::send_snapshot(const Snapshot &snapshot)
     for (const ProjectileSnapshot &projectile : snapshot.projectiles)
         send_projectile(projectile);
 
+    const uint16_t sound_lenght = static_cast<uint16_t>(snapshot.sounds.size());
+    send_data(sound_lenght);
+    for (SoundSnapshot sound_snapshot : snapshot.sounds)
+        send_data(static_cast<uint16_t>(sound_snapshot.sound));
+
     send_data(snapshot.map.style);
     send_data(snapshot.map.size_x);
     send_data(snapshot.map.size_y);
@@ -126,7 +131,8 @@ void ServerProtocol::send_snapshot(const Snapshot &snapshot)
         send_box(box);
 
     send_data(snapshot.map.gun_spawns.size());
-    for (const Position &position : snapshot.map.gun_spawns) {
+    for (const Position &position : snapshot.map.gun_spawns)
+    {
         send_data(position.x);
         send_data(position.y);
     }

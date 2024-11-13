@@ -6,6 +6,7 @@
 
 #include "../client_command.h"
 #include "../../common/snapshots.h"
+#include "../../common/soundtype.h"
 #include "gun/gun.h"
 #include "gun/cowboypistol.h"
 #include "gun/explosion.h"
@@ -21,6 +22,7 @@ private:
     std::map<uint8_t, Duck> ducks;
     std::vector<Position> spawns;
     std::vector<std::shared_ptr<Projectile>> projectiles;
+    std::vector<SoundType> sounds;
     std::vector<Explosion> explosions;
 
     void verify_hit_ducks();

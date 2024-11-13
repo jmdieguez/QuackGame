@@ -125,6 +125,16 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
         snapshot.projectiles.emplace_back(projectile);
     }
 
+    uint16_t sound_lenght;
+    read_data(sound_lenght);
+    for (uint16_t i = 0; i < sound_lenght; i++)
+    {
+        uint16_t sound_type;
+        read_data(sound_type);
+        SoundType type_value = static_cast<SoundType>(sound_type);
+        snapshot.sounds.emplace_back(type_value);
+    }
+
     uint16_t style, size_x, size_y, components_length;
     read_data(style);
     read_data(size_x);
@@ -165,7 +175,7 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
         uint16_t x, y;
         read_data(x);
         read_data(y);
-        snapshot.map.gun_spawns.push_back(Position(x,y));
+        snapshot.map.gun_spawns.push_back(Position(x, y));
     }
 }
 
