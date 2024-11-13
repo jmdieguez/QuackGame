@@ -36,7 +36,8 @@ void Shotgun::reset()
                               PUBLIC METHODS
 ****************************************************************************/
 
-Shotgun::Shotgun(const uint16_t &pos_x, const uint16_t &pos_y) : Gun(GunType::Shotgun, Position(pos_x, pos_y), Size(GUN_WIDTH, GUN_HEIGHT)), GunAmmo(MAX_AMMO),
+Shotgun::Shotgun(const uint16_t &id, const Position &position) : Gun(id, GunType::Shotgun, Position(position), Size(GUN_WIDTH, GUN_HEIGHT), TextureFigure::ShotgunFigure),
+                                                                 GunAmmo(MAX_AMMO),
                                                                  position_gun(HORIZONTAL_Y, HORIZONTAL_RIGHT, HORIZONTAL_LEFT, VERTICAL_RIGHT, VERTICAL_LEFT),
                                                                  time_to_shoot(TIME_TO_SHOOT),
                                                                  need_reload(false), block_shoot(false)

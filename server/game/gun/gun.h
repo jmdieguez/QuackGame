@@ -9,6 +9,7 @@
 #include "../../../common/projectiletype.h"
 #include "../../../common/position.h"
 #include "../../../common/size.h"
+#include "../../../common/texturefigure.h"
 #include "../hitbox.h"
 #include "projectile/projectile.h"
 
@@ -19,9 +20,11 @@
 class Gun : public Hitbox
 {
 private:
+    uint16_t id;
     GunType type;
     bool is_equipped;
     uint16_t angle;
+    TextureFigure texture;
 
 protected:
     std::pair<int, int> get_direction(bool looking_right, bool looking_up)
@@ -34,7 +37,9 @@ protected:
     }
 
 public:
-    explicit Gun(GunType type, Position p, Size size) : Hitbox(p, size), type(type), is_equipped(false), angle(ANGLE_DEFAULT) {}
+    explicit Gun(const uint16_t &id, const GunType &type, const Position &p, const Size &size, const TextureFigure &texture) : Hitbox(p, size), id(id),
+                                                                                                                               type(type), is_equipped(false),
+                                                                                                                               angle(ANGLE_DEFAULT), texture(texture) {}
 
     virtual ~Gun() = default;
 
@@ -68,9 +73,24 @@ public:
         return ANGLE_LOOK_UP;
     }
 
+    uint16_t get_id()
+    {
+        return id;
+    }
+
     Size get_size()
     {
         return size;
+    }
+
+    void move()
+    {
+        position.y++;
+    }
+
+    void cancel_move()
+    {
+        position.y--;
     }
 
     GunNoEquippedSnapshot get_status()

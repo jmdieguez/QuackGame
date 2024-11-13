@@ -65,9 +65,9 @@ Position Duck::get_gun_position() const
     return gun == nullptr ? Position(0, 0) : gun->get_position_in_duck(size.height, position, status.looking_right, status.looking_up);
 }
 
-void Duck::drop_gun()
+void Duck::drop_gun(Map &map)
 {
-    stop_shooting();
+    (void)map;
     gun = nullptr;
 }
 

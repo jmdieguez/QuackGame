@@ -37,7 +37,7 @@ public:
     void stop_moving();
     void look_up();
     void stop_looking_up();
-    void drop_gun();
+    void drop_gun(Map &map);
     void shoot();
     GunType get_gun_type();
     void stop_shooting();

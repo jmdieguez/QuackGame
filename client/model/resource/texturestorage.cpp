@@ -7,22 +7,22 @@
 TextureFigure TextureStorage::gun_type_to_texture(GunType gun)
 {
     if (GunType::CowboyPistol == gun)
-        return TextureFigure::CowboyPistol;
+        return TextureFigure::CowboyPistolFigure;
     else if (GunType::Magnum == gun)
-        return TextureFigure::Magnum;
+        return TextureFigure::MagnumFigure;
     else if (GunType::DuelingPistol == gun)
-        return TextureFigure::DuelingPistol;
+        return TextureFigure::DuelingPistolFigure;
     else if (GunType::Shotgun == gun)
-        return TextureFigure::Shotgun;
+        return TextureFigure::ShotgunFigure;
     else if (GunType::Sniper == gun)
-        return TextureFigure::Sniper;
+        return TextureFigure::SniperFigure;
     else if (GunType::AK == gun)
-        return TextureFigure::AK;
+        return TextureFigure::AKFigure;
     else if (GunType::PewPewLaser == gun)
-        return TextureFigure::PewPewLaser;
+        return TextureFigure::PewPewLaserFigure;
     else if (GunType::Grenade == gun)
-        return TextureFigure::Grenade;
-    return TextureFigure::CowboyPistol;
+        return TextureFigure::GrenadeFigure;
+    return TextureFigure::CowboyPistolFigure;
 }
 
 TextureFigure TextureStorage::projectile_type_to_texture(ProjectileType projectile)
@@ -30,7 +30,7 @@ TextureFigure TextureStorage::projectile_type_to_texture(ProjectileType projecti
     if (ProjectileType::CowboyBullet == projectile)
         return TextureFigure::CowboyBullet;
     if (ProjectileType::Grenade == projectile)
-        return TextureFigure::Grenade;
+        return TextureFigure::GrenadeFigure;
     return TextureFigure::CowboyBullet;
 }
 

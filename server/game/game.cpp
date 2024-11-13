@@ -66,7 +66,7 @@ void Game::process(ClientCommand &command)
             break;
 
         case ClientActionType::DROP:
-            duck.get_gun_type() == GunType::Grenade ? duck.drop_gun(projectiles) : duck.drop_gun();
+            duck.get_gun_type() == GunType::Grenade ? duck.drop_gun(projectiles) : duck.drop_gun(map);
             break;
 
         case ClientActionType::GRAB:
@@ -164,6 +164,7 @@ void Game::step()
     verify_hit_ducks();
     for (auto &[id, duck] : ducks)
         duck.step(map, projectiles);
+    map.move_guns();
 }
 
 Snapshot Game::get_status()

@@ -23,7 +23,8 @@
                               PUBLIC METHODS
 ****************************************************************************/
 
-CowboyPistol::CowboyPistol(const uint16_t &pos_x, const uint16_t &pos_y) : Gun(GunType::CowboyPistol, Position(pos_x, pos_y), Size(GUN_WIDTH, GUN_HEIGHT)), GunAmmo(MAX_AMMO),
+CowboyPistol::CowboyPistol(const uint16_t &id, const Position &position) : Gun(id, GunType::CowboyPistol, Position(position), Size(GUN_WIDTH, GUN_HEIGHT), TextureFigure::CowboyPistolFigure),
+                                                                           GunAmmo(MAX_AMMO),
                                                                            position_gun(HORIZONTAL_Y, HORIZONTAL_RIGHT, HORIZONTAL_LEFT, VERTICAL_RIGHT, VERTICAL_LEFT)
 {
 }

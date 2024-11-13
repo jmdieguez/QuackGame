@@ -36,7 +36,8 @@ bool DuelingPistol::random()
                               PUBLIC METHODS
 ****************************************************************************/
 
-DuelingPistol::DuelingPistol(const uint16_t &pos_x, const uint16_t &pos_y) : Gun(GunType::DuelingPistol, Position(pos_x, pos_y), Size(GUN_WIDTH, GUN_HEIGHT)), GunAmmo(MAX_AMMO),
+DuelingPistol::DuelingPistol(const uint16_t &id, const Position &position) : Gun(id, GunType::DuelingPistol, Position(position), Size(GUN_WIDTH, GUN_HEIGHT), TextureFigure::DuelingPistolFigure),
+                                                                             GunAmmo(MAX_AMMO),
                                                                              position_gun(HORIZONTAL_Y, HORIZONTAL_RIGHT, HORIZONTAL_LEFT, VERTICAL_RIGHT, VERTICAL_LEFT)
 {
 }

@@ -125,13 +125,11 @@ public:
                                        gun_id(0)
     {
         // Eliminar una vez que se tengan los spawns de las armas
-        guns.emplace(gun_id, std::make_shared<AK>(290, 320));
+        guns.emplace(gun_id, std::make_shared<AK>(gun_id, Position(290, 320)));
         gun_id++;
 
         for (const auto &position : cfg.boxes)
-        {
             boxes.emplace(position, Box::BOX_4_HP);
-        }
     }
 
     std::vector<GunNoEquippedSnapshot> get_guns_snapshots()
@@ -144,6 +142,40 @@ public:
             guns_snapshots.push_back(gun.get()->get_status());
         }
         return guns_snapshots;
+    }
+
+    void add_gun(std::shared_ptr<Gun> gun)
+    {
+        guns.emplace(gun->get_id(), gun);
+    }
+
+    bool is_hitbox_valid(const Hitbox &hitbox) const
+    {
+        Position pos = hitbox.get_position();
+        Size size = hitbox.get_size();
+        for (int x = pos.x; x < pos.x + size.width; ++x)
+        {
+            for (int y = pos.y; y < pos.y + size.height; ++y)
+            {
+                Position p(x, y);
+                if (!validate_coordinate(p))
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    void move_guns()
+    {
+        for (auto &[id, gun] : guns)
+        {
+            gun->move();
+            Hitbox hitbox = gun->get_hitbox();
+            if (is_hitbox_valid(hitbox))
+                continue;
+            gun->cancel_move();
+        }
     }
 
     MapSnapshot get_status() const

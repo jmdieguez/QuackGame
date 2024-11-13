@@ -26,7 +26,8 @@
                               PUBLIC METHODS
 ****************************************************************************/
 
-PewPewLaser::PewPewLaser(const uint16_t &pos_x, const uint16_t &pos_y) : Gun(GunType::PewPewLaser, Position(pos_x, pos_y), Size(GUN_WIDTH, GUN_HEIGHT)), GunAmmo(MAX_AMMO),
+PewPewLaser::PewPewLaser(const uint16_t &id, const Position &position) : Gun(id, GunType::PewPewLaser, Position(position), Size(GUN_WIDTH, GUN_HEIGHT), TextureFigure::PewPewLaserFigure),
+                                                                         GunAmmo(MAX_AMMO),
                                                                          position_gun(HORIZONTAL_Y, HORIZONTAL_RIGHT, HORIZONTAL_LEFT, VERTICAL_RIGHT, VERTICAL_LEFT)
 {
 }
