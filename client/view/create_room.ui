@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>create_room</class>
- <widget class="QWidget" name="create_room">
+ <class>CreateRoom</class>
+ <widget class="QWidget" name="CreateRoom">
   <property name="geometry">
    <rect>
     <x>0</x>

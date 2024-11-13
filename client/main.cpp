@@ -3,6 +3,7 @@
 #include "model/resource/texturefactory.h"
 #include "model/protocol.h"
 #include "view/main_window.h"
+#include "model/lobby/lobby.h"
 #include <QApplication>
 
 #define OK 0
@@ -20,13 +21,13 @@ int main(int argc, const char *argv[])
         // Create QApplication with the const_cast to remove the const qualifier from argv
         QApplication app(argc, const_cast<char**>(argv)); // Cast const char** to char**
 
-      // const char *host = argv[HOST];
-      // const char *port = argv[PORT];
+        const char *host = argv[HOST];
+        const char *port = argv[PORT];
+        Socket skt(host, port);
+        ClientProtocol protocol(skt);
+        Lobby lobby(protocol);
 
-  //      Lobby lobby;
-//
-        // Create MainWindow after QApplication
-        MainWindow w;
+        MainWindow w(&lobby);
         w.show();
 
         // Enter Qt event loop

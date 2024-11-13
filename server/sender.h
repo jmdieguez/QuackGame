@@ -1,13 +1,16 @@
-#ifndef SENDER_H
-#define SENDER_H
+#ifndef SERVER_SENDER_H
+#define SERVER_SENDER_H
 
+
+
+#include <memory>
 #include "../common/queue.h"
 #include "../common/socket.h"
 #include "../common/thread.h"
-#include "../common/snapshots.h"
-#include "../common/lobby_messages.h"
+#include "client_command.h"
 #include "protocol.h"
 #include "games_manager.h"
+#include "../common/snapshots.h"
 
 class Sender : public Thread {
 private:
@@ -15,15 +18,15 @@ private:
     ServerProtocol protocol;
     bool closed = false;
     Queue<Snapshot> out_queue;
-    Queue<ClientCommand>* receiver_queue;
     GamesManager& manager;
-    std::atomic<bool>& is_playing;
+    std::atomic<bool> is_playing;
 public:
-    explicit Sender(Socket& skt, const uint16_t &id, GamesManager&, std::atomic<bool>&);
+    explicit Sender(Socket& skt, const uint16_t &id, GamesManager&);
     ~Sender();
     void run() override;
     void stop() override;
     void send(const Snapshot &snapshot);
+    void ver_algo();
 };
 
-#endif  // SENDER_H
+#endif  // SERVER_SENDER_H

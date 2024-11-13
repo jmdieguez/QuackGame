@@ -5,11 +5,12 @@ target_sources(quack_game_client
     main_window.ui
     create_room.ui
     main_window.cpp
-    lobby.cpp
+        create_room.cpp
+
 
     PUBLIC
     # .h files
     SDLWindow.h
     main_window.h
-    lobby.h
+    create_room.h
 )

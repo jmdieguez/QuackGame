@@ -204,7 +204,9 @@ void ClientProtocol::send_create_game(const std::string& name) {
     uint16_t length = static_cast<uint16_t>(name.size());
     uint16_t nameLength = htons(length);
     skt.sendall(&nameLength , sizeof(nameLength), &was_closed);
-
+    if (was_closed) {
+        throw LibError(errno, "Error al intentar enviar datos del servidor");
+    }
     std::vector<unsigned char> nameBytes(nameLength);
     send_name(nameBytes);
 
@@ -215,5 +217,17 @@ void ClientProtocol::send_name(const std::vector<unsigned char>& data) {
     skt.sendall(data.data(), data.size(), &was_closed);
     if (was_closed) {
         throw LibError(errno, "Error al intentar enviar datos a cliente");
+    }
+}
+
+void ClientProtocol::send_join_game(const uint16_t& id) {
+    bool was_closed = false;
+    send_action(ClientActionType::JOIN_GAME, was_closed);
+    if (was_closed) {
+        throw LibError(errno, "Error al intentar enviar datos a cliente");
+    }
+    skt.sendall(&id, sizeof(uint16_t), &was_closed);
+    if (was_closed) {
+        throw LibError(errno, "Error al intentar enviar datos del servidor");
     }
 }

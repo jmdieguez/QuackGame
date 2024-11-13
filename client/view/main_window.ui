@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>677</width>
-    <height>466</height>
+    <width>681</width>
+    <height>499</height>
    </rect>
   </property>
   <property name="font">
@@ -45,7 +45,7 @@ QPushButton:hover {
 }</string>
    </property>
    <property name="text">
-    <string>Create</string>
+    <string>Create new game</string>
    </property>
   </widget>
   <widget class="QPushButton" name="exitButton">
@@ -105,7 +105,7 @@ QPushButton:hover {
 }</string>
    </property>
    <property name="text">
-    <string>Join</string>
+    <string>Join room</string>
    </property>
   </widget>
  </widget>

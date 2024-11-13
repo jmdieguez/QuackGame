@@ -13,3 +13,4 @@ target_sources(quack_game_client
 )
 
 add_subdirectory(resource/)
+add_subdirectory(lobby/)

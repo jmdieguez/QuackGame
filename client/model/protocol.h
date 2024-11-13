@@ -20,6 +20,7 @@ public:
     void send_action(const ClientActionType &, bool &);
     void get_game_list(uint16_t& game_id, std::string& name);
     void send_create_game(const std::string&);
+    void send_join_game(const uint16_t& id);
 };
 
 #endif // PROTOCOL_H
