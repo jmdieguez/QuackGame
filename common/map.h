@@ -9,14 +9,16 @@
 
 #include "defs.h"
 
-#define DIMENSIONS_FILE "/etc/quack_game/dimensions.yaml"
+#define DIMENSIONS_FILE "config/dimensions.yaml"
 
-enum class Spawn : uint16_t {
+enum class Spawn : uint16_t
+{
     GUN_SPAWN = 1,
     DUCK_SPAWN
 };
 
-enum class Box : uint16_t {
+enum class Box : uint16_t
+{
     BOX_4_HP = 0,
     BOX_3_HP,
     BOX_2_HP,
@@ -37,7 +39,8 @@ enum class Component : uint16_t
 
 namespace YAML
 {
-    template <> struct convert<Component>
+    template <>
+    struct convert<Component>
     {
         static Node encode(const Component &rhs)
         {
@@ -82,7 +85,8 @@ namespace YAML
         }
     };
 
-    template <> struct convert<Spawn>
+    template <>
+    struct convert<Spawn>
     {
         static Node encode(const Spawn &rhs)
         {

@@ -139,23 +139,24 @@ public:
         {
             if (gun.get()->has_been_equipped())
                 continue;
-            guns_snapshots.push_back(gun.get()->get_status());
+            guns_snapshots.push_back(gun->get_status());
         }
         return guns_snapshots;
     }
 
     void add_gun(std::shared_ptr<Gun> gun)
     {
-        guns.emplace(gun->get_id(), gun);
+        guns.insert({gun->get_id(), gun});
     }
 
     bool is_hitbox_valid(const Hitbox &hitbox) const
     {
+
         Position pos = hitbox.get_position();
         Size size = hitbox.get_size();
-        for (int x = pos.x; x < pos.x + size.width; ++x)
+        for (uint16_t x = pos.x; x < pos.x + size.width; x++)
         {
-            for (int y = pos.y; y < pos.y + size.height; ++y)
+            for (uint16_t y = pos.y; y < pos.y + size.height; y++)
             {
                 Position p(x, y);
                 if (!validate_coordinate(p))
@@ -170,9 +171,13 @@ public:
     {
         for (auto &[id, gun] : guns)
         {
+            if (!gun->is_necessary_move())
+                continue;
             gun->move();
-            Hitbox hitbox = gun->get_hitbox();
-            if (is_hitbox_valid(hitbox))
+            Position new_position = gun->get_position();
+            Size size_gun = gun->get_size();
+            Position end_hitbox(new_position.x + size_gun.width, new_position.y + (size_gun.height * 2) + 7);
+            if (validate_coordinate(new_position) && validate_coordinate(end_hitbox))
                 continue;
             gun->cancel_move();
         }

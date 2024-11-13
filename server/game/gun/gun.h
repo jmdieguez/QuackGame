@@ -23,6 +23,7 @@ private:
     uint16_t id;
     GunType type;
     bool is_equipped;
+    bool is_grounded;
     uint16_t angle;
     TextureFigure texture;
 
@@ -38,14 +39,21 @@ protected:
 
 public:
     explicit Gun(const uint16_t &id, const GunType &type, const Position &p, const Size &size, const TextureFigure &texture) : Hitbox(p, size), id(id),
-                                                                                                                               type(type), is_equipped(false),
-                                                                                                                               angle(ANGLE_DEFAULT), texture(texture) {}
+                                                                                                                               type(type), is_equipped(false), is_grounded(false),
+                                                                                                                               angle(ANGLE_DEFAULT),
+                                                                                                                               texture(texture) {}
 
     virtual ~Gun() = default;
 
     void equipped() { is_equipped = true; }
 
-    void dropped() { is_equipped = false; }
+    void dropped(const Position duck)
+    {
+        is_grounded = false;
+        is_equipped = false;
+        position.x = duck.x;
+        position.y = duck.y - size.height;
+    }
 
     bool has_been_equipped() { return is_equipped; }
 
@@ -57,6 +65,11 @@ public:
     void reverse_look_up()
     {
         angle = ANGLE_DEFAULT;
+    }
+
+    bool is_necessary_move()
+    {
+        return !is_grounded;
     }
 
     bool can_take_this_gun(const Position &duck_position) const
@@ -85,11 +98,14 @@ public:
 
     void move()
     {
+        if (is_grounded)
+            return;
         position.y++;
     }
 
     void cancel_move()
     {
+        is_grounded = true;
         position.y--;
     }
 

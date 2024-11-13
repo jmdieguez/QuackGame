@@ -67,7 +67,11 @@ Position Duck::get_gun_position() const
 
 void Duck::drop_gun(Map &map)
 {
-    (void)map;
+    if (!gun)
+        return;
+    Position pos = get_gun_position();
+    gun->dropped(pos);
+    map.add_gun(gun);
     gun = nullptr;
 }
 
@@ -81,10 +85,17 @@ void Duck::drop_gun(std::vector<std::shared_ptr<Projectile>> &projectiles)
     gun = nullptr;
 }
 
-void Duck::shoot() { status.shooting = true; }
+void Duck::shoot()
+{
+    if (gun == nullptr)
+        return;
+    status.shooting = true;
+}
 
 void Duck::stop_shooting()
 {
+    if (gun == nullptr)
+        return;
     status.shooting = false;
     block_shooting_command = false;
     if (gun->get_type() == GunType::Shotgun)
