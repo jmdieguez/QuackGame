@@ -40,8 +40,13 @@ ActionLobby ServerProtocol::read_lobby()
             throw LibError(errno, "Error al intentar enviar datos a cliente");
         }
         game_id = ntohs(game_id);
+        return ActionLobby(action, game_id);
+    } else if (action == ClientActionType::CREATE_GAME) {
+        std::string name = "";
+        read_name(name);
+        return ActionLobby(action, 0, name);
     }
-    return ActionLobby(action, game_id);
+    return ActionLobby(action);
 }
 
 void ServerProtocol::send_data(const uint16_t &data)
@@ -163,4 +168,21 @@ void ServerProtocol::send_name(const std::vector<unsigned char>& data) {
     if (was_closed) {
         throw LibError(errno, "Error al intentar enviar datos a cliente");
     }
+}
+
+void ServerProtocol::read_name(std::string& name) {
+    bool was_closed = false;
+    uint16_t nameLength;
+    skt.recvall(reinterpret_cast<char*>(&nameLength), sizeof(nameLength), &was_closed);
+    if (was_closed) {
+        throw LibError(errno, "Error al intentar leer datos a cliente");
+    }
+
+    uint16_t length = ntohs(nameLength);
+    std::vector<char> nameBuffer(length);
+    skt.recvall(nameBuffer.data(), length, &was_closed);
+    if (was_closed) {
+        throw LibError(errno, "Error al intentar leer datos a cliente");
+    }
+    name.assign(nameBuffer.begin(), nameBuffer.end());
 }

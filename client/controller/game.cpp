@@ -233,7 +233,7 @@ void Game::step(unsigned int current_step)
                               PUBLIC METHODS
 ****************************************************************************/
 
-Game::Game(const char *host, const char *port)
+Game::Game(Socket skt)
     : keep_running(true),
       constant_rate_loop(keep_running, [this](unsigned int step)
                          { this->step(step); }),
@@ -241,7 +241,7 @@ Game::Game(const char *host, const char *port)
       queue_sender(MAX_MESSAGES_QUEUE_SENDER),
       input(queue_sender),
       game_context(queue_sender),
-      socket(host, port),
+      socket(std::move(skt)),
       renderer(window.get_renderer()),
       duck_texture(get_duck_texture()),
       all_tilesets_texture(std::make_shared<SDL2pp::Texture>(renderer, TILESETS))

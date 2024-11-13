@@ -18,8 +18,7 @@ int main(int argc, const char *argv[])
 
     try
     {
-        // Create QApplication with the const_cast to remove the const qualifier from argv
-        QApplication app(argc, const_cast<char**>(argv)); // Cast const char** to char**
+        QApplication app(argc, const_cast<char**>(argv));
 
         const char *host = argv[HOST];
         const char *port = argv[PORT];
@@ -30,11 +29,10 @@ int main(int argc, const char *argv[])
         MainWindow w(&lobby);
         w.show();
 
-        // Enter Qt event loop
-        return app.exec();  // Start event loop
+        app.exec();
 
-        // Game game(host, port); // Game logic can be executed later, if needed.
-        // game.run();
+        Game game(std::move(skt));
+        game.run();
 
     }
     catch (const std::exception &err)

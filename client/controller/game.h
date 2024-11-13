@@ -65,7 +65,7 @@ private:
     void step(unsigned int current_step);
 
 public:
-    Game(const char *host, const char *port);
+    Game(Socket);
     void run();
     ~Game();
 };

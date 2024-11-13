@@ -20,7 +20,7 @@ private:
     uint16_t id_counter = 0;
 public:
     MonitorGames();
-    Queue<ClientCommand>* create_game(const uint16_t &creator_id, Queue<Snapshot>&);
+    Queue<ClientCommand>* create_game(const uint16_t &creator_id, const std::string&, Queue<Snapshot>&);
     Queue<ClientCommand>* add_player(const uint16_t&, const uint16_t &, Queue<Snapshot>&);
     void start_game(const uint16_t&, const uint16_t &);
     void list_games(ServerProtocol& protocol);

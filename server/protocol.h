@@ -19,6 +19,7 @@ private:
     void send_projectile(const ProjectileSnapshot &projectile);
     void send_box(const BoxSnapshot &box);
     void send_name(const std::vector<unsigned char>&);
+    void read_name(std::string& name);
 public:
     explicit ServerProtocol(Socket &);
     ActionMessage read_action();

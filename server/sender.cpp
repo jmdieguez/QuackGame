@@ -4,7 +4,8 @@
 #include "protocol.h"
 
 Sender::Sender(Socket& skt, const uint16_t &id, GamesManager& game_manager):
-    session_id(id), protocol(skt), out_queue(1000), manager(game_manager), is_playing(false) {}
+    session_id(id), protocol(skt), out_queue(1000), manager(game_manager), is_playing(false),
+    receiver(skt, id, out_queue, is_playing) {}
 
 void Sender::run()
 {
@@ -17,6 +18,7 @@ void Sender::run()
                 receiver_queue = manager.handle_lobby(action, session_id, out_queue, protocol);
                 if (receiver_queue != nullptr) {
                     is_playing = true;
+                    start_receiver();
                 }
              } else {
                 Snapshot message = out_queue.pop();
@@ -31,6 +33,11 @@ void Sender::run()
     {
     }
     _is_alive = false;
+}
+
+void Sender::start_receiver() {
+   receiver.add_game_queue(receiver_queue);
+   receiver.start();
 }
 
 void Sender::send(const Snapshot &snapshot)

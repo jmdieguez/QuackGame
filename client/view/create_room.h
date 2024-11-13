@@ -1,35 +1,34 @@
-
 #ifndef CREATE_ROOM_H
 #define CREATE_ROOM_H
 
-
-#include <QWidget>
-#include <QLineEdit>
-#include <QPushButton>
-
+#include <QDialog>
 #include "../model/lobby/lobby.h"
 
+QT_BEGIN_NAMESPACE
 namespace Ui {
     class CreateRoom;
 }
+QT_END_NAMESPACE
 
-class CreateRoom : public QWidget
+class CreateRoom : public QDialog
 {
     Q_OBJECT
 
 public:
-    CreateRoom(Lobby *lobby, QWidget *parent = nullptr);
+    explicit CreateRoom(Lobby* lobby, QWidget *parent = nullptr);
     ~CreateRoom();
 
+    signals:
+        void goBack();
+        void roomCreated();
+
     private slots:
-        void onCreateButtonClicked();
         void onBackButtonClicked();
+        void onCreateRoomButtonClicked();
 
 private:
     Ui::CreateRoom *ui;
     Lobby* lobby;
-    QLineEdit *textBoxName;
-    QPushButton *createButton;
 };
 
 #endif // CREATE_ROOM_H

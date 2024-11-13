@@ -7,7 +7,7 @@ Queue<ClientCommand>* GamesManager::handle_lobby(const ActionLobby& action, cons
     Queue<ClientCommand>* game_queue = nullptr;
     switch (action.type) {
         case ClientActionType::CREATE_GAME:
-            game_queue = monitor.create_game(session_id, sender);
+            game_queue = monitor.create_game(session_id, action.game_name, sender);
             break;
         case ClientActionType::JOIN_GAME:
             game_queue = monitor.add_player(action.game_id, session_id, sender);

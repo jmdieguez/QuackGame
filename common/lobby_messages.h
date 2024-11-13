@@ -23,8 +23,8 @@ public:
     uint16_t game_id;
     std::string game_name;
 
-    ActionLobby(const ClientActionType &t, const uint16_t& game_id = 0)
-        : type(t), game_id(game_id), game_name("") {}
+    ActionLobby(const ClientActionType &t, const uint16_t& game_id = 0, const std::string& name = "")
+        : type(t), game_id(game_id), game_name(name) {}
 
     ActionLobby() : type(ClientActionType::UNDEFINED), game_id(0), game_name("") {}
 

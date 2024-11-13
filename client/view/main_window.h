@@ -6,6 +6,7 @@
 #include "create_room.h"
 #include "../model/lobby/lobby.h"
 
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
     class MainWindow;
@@ -22,6 +23,7 @@ private slots:
     void onCreateButtonClicked();
     void onExitButtonClicked();
     void onJoinButtonClicked();
+    void onBackToMainWindow();
 
 private:
     Ui::MainWindow *ui;

@@ -21,7 +21,7 @@ private:
     Game game;
     SessionsHandler handler;
 public:
-    Gameloop(const uint16_t& id, const uint16_t& creator_id);
+    Gameloop(const uint16_t& id, const std::string&, const uint16_t& creator_id);
     void run() override;
     void step(unsigned int current_step);
     Queue<ClientCommand>* add_new_player(const uint16_t&, Queue<Snapshot>&);

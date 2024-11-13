@@ -4,10 +4,11 @@
 MonitorGames::MonitorGames() {
 }
 
-Queue<ClientCommand>* MonitorGames::create_game(const uint16_t &creator_id, Queue<Snapshot>& queue) {
+Queue<ClientCommand>* MonitorGames::create_game(const uint16_t &creator_id, const std::string& name, Queue<Snapshot>& queue) {
+  // TODO: Chequear que no existe una partida con mismo nombre
     std::lock_guard<std::mutex> lock(mtx);
     Queue<ClientCommand>* game_queue = nullptr;
-    auto newGame = std::make_shared<Gameloop>(id_counter, creator_id);
+    auto newGame = std::make_shared<Gameloop>(id_counter, name, creator_id);
     game_queue = newGame->add_new_player(creator_id, queue);
     games[id_counter] = newGame;
     id_counter++;

@@ -11,8 +11,9 @@ private:
 public:
     explicit Lobby(ClientProtocol&);
     ~Lobby();
-    void createRoom(const std::string&);
-    void joinRoom(const uint16_t&);
+    void create_room(const std::string&);
+    void join_room(const uint16_t&);
+    bool start_game();
 };
 
 #endif // LOBBY_H

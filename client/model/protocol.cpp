@@ -231,3 +231,15 @@ void ClientProtocol::send_join_game(const uint16_t& id) {
         throw LibError(errno, "Error al intentar enviar datos del servidor");
     }
 }
+
+void ClientProtocol::send_start_game() {
+    bool was_closed = false;
+    send_action(ClientActionType::START_GAME, was_closed);
+    if (was_closed) {
+        throw LibError(errno, "Error al intentar enviar datos del servidor");
+    }
+}
+
+
+
+
