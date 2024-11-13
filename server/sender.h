@@ -18,6 +18,7 @@ private:
     ServerProtocol protocol;
     bool closed = false;
     Queue<Snapshot> out_queue;
+    Queue<ClientCommand>* receiver_queue;
     GamesManager& manager;
     std::atomic<bool> is_playing;
 public:

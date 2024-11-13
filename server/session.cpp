@@ -3,8 +3,8 @@
 #include <utility>
 
 Session::Session(const uint16_t& id, Socket client, GamesManager& game_manager):
-    id(id), finished(false), socket(std::move(client)), is_playing(false),
-    sender(socket, id, game_manager, is_playing) {}
+    id(id), finished(false), socket(std::move(client)),
+    sender(socket, id, game_manager) {}
 
 Session::~Session() {}
 

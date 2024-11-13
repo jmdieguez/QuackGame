@@ -17,7 +17,6 @@ private:
     uint16_t id;
     bool finished;
     Socket socket;
-    std::atomic<bool> is_playing;
     Sender sender;
     void check_close_socket();
 

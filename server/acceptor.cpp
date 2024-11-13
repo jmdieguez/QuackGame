@@ -26,8 +26,8 @@ void Acceptor::run()
         {
             Socket peer = socket.accept();
             auto client = std::make_unique<Session>(session_id, std::move(peer), manager);
-            sessions.push_back(std::move(client));
             client->run();
+            sessions.push_back(std::move(client));
             session_id++;
             remove_disconnected_sessions();
         }

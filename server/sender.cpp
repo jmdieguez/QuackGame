@@ -3,8 +3,8 @@
 #include "../common/liberror.h"
 #include "protocol.h"
 
-Sender::Sender(Socket& skt, const uint16_t &id, GamesManager& game_manager, std::atomic<bool>& playing):
-    session_id(id), protocol(skt), out_queue(1000), manager(game_manager), is_playing(playing) {}
+Sender::Sender(Socket& skt, const uint16_t &id, GamesManager& game_manager):
+    session_id(id), protocol(skt), out_queue(1000), manager(game_manager), is_playing(false) {}
 
 void Sender::run()
 {
