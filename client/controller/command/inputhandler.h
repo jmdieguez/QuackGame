@@ -10,6 +10,7 @@
 #include "grab.h"
 #include "lookingup.h"
 #include "jump.h"
+#include "../cheats/cheatstorage.h"
 #include "../../../common/client_actions.h"
 
 class InputHandler
@@ -28,7 +29,7 @@ private:
 
 public:
     InputHandler(Queue<ClientActionType> &queue_sender);
-    void execute_command(SDL_Event &event, GameContext &game_context);
+    void execute_command(SDL_Event &event, GameContext &game_context, CheatStorage &cheats);
     void undo_command(SDL_Event &event, GameContext &game_context);
     ~InputHandler();
 };

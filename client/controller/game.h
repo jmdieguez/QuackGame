@@ -1,6 +1,13 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <utility>
+#include <vector>
+#include <cstdint>
+#include <atomic>
+#include <iostream>
+#include <SDL2pp/SDL2pp.hh>
+
 #include "../../common/constant_rate_loop.h"
 #include "../../common/queue.h"
 #include "../../common/socket.h"
@@ -15,13 +22,7 @@
 #include "../view/SDLWindow.h"
 #include "../common/tiles.h"
 #include "../ui/tileset.h"
-#include <utility>
-#include <vector>
-#include <cstdint>
-#include <atomic>
-#include <iostream>
-
-#include <SDL2pp/SDL2pp.hh>
+#include "cheats/cheatstorage.h"
 
 #define TILESETS "/var/quackgame/tiles.png"
 
@@ -30,6 +31,7 @@ class Game
 private:
     SDLWindow window;
     std::atomic<bool> keep_running;
+    CheatStorage cheat_storage;
     ConstantRateLoop constant_rate_loop;
     Queue<Snapshot> queue_receiver;
     Queue<ClientActionType> queue_sender;

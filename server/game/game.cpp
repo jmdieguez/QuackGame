@@ -72,6 +72,10 @@ void Game::process(ClientCommand &command)
         case ClientActionType::GRAB:
             duck.grab(map);
             break;
+
+        case ClientActionType::SPAWN_AK:
+            map.add_new_gun_ak(duck.get_position());
+            break;
         default:
             break;
         }

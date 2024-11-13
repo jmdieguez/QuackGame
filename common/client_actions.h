@@ -26,6 +26,8 @@ enum class ClientActionType : uint16_t
     STOP_LOOKING_UP,
     DROP,
     GRAB,
+
+    SPAWN_AK
 };
 
 class ActionMessage

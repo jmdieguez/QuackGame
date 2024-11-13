@@ -6,6 +6,8 @@
 
 Command *InputHandler::get_command(SDL_Keycode key)
 {
+
+    std::string keyName = SDL_GetKeyName(key);
     switch (key)
     {
     case SDLK_w:
@@ -37,9 +39,13 @@ InputHandler::InputHandler(Queue<ClientActionType> &queue_sender) : queue_sender
 {
 }
 
-void InputHandler::execute_command(SDL_Event &event, GameContext &game_context)
+void InputHandler::execute_command(SDL_Event &event, GameContext &game_context, CheatStorage &cheats)
 {
-    Command *command = get_command(event.key.keysym.sym);
+    SDL_Keycode key = event.key.keysym.sym;
+    std::string key_name = SDL_GetKeyName(key);
+    cheats.add_input(key_name);
+    cheats.active_cheat(queue_sender);
+    Command *command = get_command(key);
     if (!command)
         return;
     command->execute(game_context);

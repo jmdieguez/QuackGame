@@ -124,9 +124,6 @@ public:
     Map(const std::string &map_file) : cfg(map_file),
                                        gun_id(0)
     {
-        // Eliminar una vez que se tengan los spawns de las armas
-        guns.emplace(gun_id, std::make_shared<AK>(gun_id, Position(290, 320)));
-        gun_id++;
 
         for (const auto &position : cfg.boxes)
             boxes.emplace(position, Box::BOX_4_HP);
@@ -147,6 +144,12 @@ public:
     void add_gun(std::shared_ptr<Gun> gun)
     {
         guns.insert({gun->get_id(), gun});
+    }
+
+    void add_new_gun_ak(const Position &position_gun)
+    {
+        guns.emplace(gun_id, std::make_shared<AK>(gun_id, Position(position_gun.x, position_gun.y - 10)));
+        gun_id++;
     }
 
     bool is_hitbox_valid(const Hitbox &hitbox) const

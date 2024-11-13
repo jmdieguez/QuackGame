@@ -87,7 +87,7 @@ void Game::handle_event(SDL_Event &event)
     if (event.type == SDL_QUIT || event.key.keysym.sym == SDLK_END)
         keep_running = false;
     else if (event.type == SDL_KEYDOWN)
-        input.execute_command(event, game_context);
+        input.execute_command(event, game_context, cheat_storage);
     else if (event.type == SDL_KEYUP)
         input.undo_command(event, game_context);
 }
@@ -236,14 +236,14 @@ void Game::render_spawn_in_map(Position &p)
 }
 
 void Game::render_background()
-{   
-    SDL_Rect src = { 0, 0, background_texture.GetWidth(), background_texture.GetHeight() };
+{
+    SDL_Rect src = {0, 0, background_texture.GetWidth(), background_texture.GetHeight()};
     SDL_Rect dst = {0, 0, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT};
     renderer.Copy(background_texture, src, dst);
 }
 
 void Game::set_renderer(int frame_ticks)
-{   
+{
     render_background();
     Snapshot snapshot;
     if (!queue_receiver.try_pop(snapshot))
