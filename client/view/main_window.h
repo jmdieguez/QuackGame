@@ -4,8 +4,8 @@
 
 #include <QMainWindow>
 #include "create_room.h"
+#include "game_list.h"
 #include "../model/lobby/lobby.h"
-
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -24,11 +24,13 @@ private slots:
     void onExitButtonClicked();
     void onJoinButtonClicked();
     void onBackToMainWindow();
+    void onGameListClosed();
 
 private:
     Ui::MainWindow *ui;
     Lobby* lobby;
     CreateRoom* create_room;
+    GameList*  gameListWindow;
 };
 
 #endif // MAIN_WINDOW_H

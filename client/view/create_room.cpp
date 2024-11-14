@@ -24,5 +24,6 @@ void CreateRoom::onBackButtonClicked()
 void CreateRoom::onCreateRoomButtonClicked() {
     QString roomName = ui->textBoxName->text();
     lobby->create_room(roomName.toStdString());
+    lobby->start_game();
     QApplication::closeAllWindows();
 }

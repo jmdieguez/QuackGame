@@ -4,6 +4,8 @@
 #include "../../common/snapshots.h"
 #include "../../common/socket.h"
 #include "../../common/client_actions.h"
+#include "../../common/lobby_messages.h"
+#include <memory>
 
 class ClientProtocol
 {
@@ -22,6 +24,8 @@ public:
     void send_create_game(const std::string&);
     void send_join_game(const uint16_t& id);
     void send_start_game();
+    void read_list(std::map<uint16_t, std::string>& games);
+    void send_game_list();
 };
 
 #endif // PROTOCOL_H

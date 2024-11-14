@@ -10,7 +10,6 @@
 #include "../common/lobby_messages.h"
 #include "../common/queue.h"
 #include "gameloop.h"
-#include "protocol.h"
 
 class MonitorGames {
 private:
@@ -20,10 +19,10 @@ private:
     uint16_t id_counter = 0;
 public:
     MonitorGames();
-    Queue<ClientCommand>* create_game(const uint16_t &creator_id, const std::string&, Queue<Snapshot>&);
+    void create_game(const uint16_t &creator_id, const std::string&, Queue<Snapshot>&);
     Queue<ClientCommand>* add_player(const uint16_t&, const uint16_t &, Queue<Snapshot>&);
-    void start_game(const uint16_t&, const uint16_t &);
-    void list_games(ServerProtocol& protocol);
+    Queue<ClientCommand>* start_game(const uint16_t &);
+    void list_games(Queue<LobbyMessage>& queue, uint16_t& game_size);
     bool is_game_started(const uint16_t&);
 };
 

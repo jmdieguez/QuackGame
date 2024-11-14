@@ -10,7 +10,7 @@ MainWindow::MainWindow(Lobby* lobby, QWidget *parent)
 
     connect(ui->createButton, &QPushButton::clicked, this, &MainWindow::onCreateButtonClicked);
     connect(ui->exitButton, &QPushButton::clicked, this, &MainWindow::onExitButtonClicked);
-    connect(ui->JoinButton, &QPushButton::clicked, this, &MainWindow::onJoinButtonClicked);
+    connect(ui->joinButton, &QPushButton::clicked, this, &MainWindow::onJoinButtonClicked);
 }
 
 void MainWindow::onCreateButtonClicked()
@@ -36,10 +36,16 @@ void MainWindow::onExitButtonClicked()
 
 void MainWindow::onJoinButtonClicked()
 {
-  // TODO: aca va a estar asociado con GameLists
-    QMessageBox::information(this, "Join", "Join button was clicked.");
+    std::map<uint16_t, std::string> games;
+    lobby->get_game_list(games);
+    GameList* gameListWindow = new GameList(lobby);
+    gameListWindow->setGameList(games);
+    gameListWindow->show();
 }
-
+void MainWindow::onGameListClosed()
+{
+    this->show();
+}
 MainWindow::~MainWindow()
 {
     delete ui;

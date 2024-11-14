@@ -1,6 +1,10 @@
 
 #include "game_list.h"
 #include "ui_game_list.h"
+#include <iostream>
+#include <QStringList>
+#include <QDebug>
+#include <QCloseEvent>
 
 GameList::GameList(Lobby* lobby, QWidget *parent) :
     QWidget(parent),
@@ -8,10 +12,8 @@ GameList::GameList(Lobby* lobby, QWidget *parent) :
     lobby(lobby)
 {
     ui->setupUi(this);
+    connect(ui->listWidget, &QListWidget::itemClicked, this, &GameList::onItemClicked);
 
-    connect(ui->GameList, &QListWidget::itemClicked, this, &GameList::onGameClicked);
-    // TODO: implementar este metodo y separar las cosas, manejarlo por señales
-    loadGames(lobby->get_game_list());
 }
 
 GameList::~GameList()
@@ -19,19 +21,40 @@ GameList::~GameList()
     delete ui;
 }
 
-void GameList::loadGames(const QList<GameInfo> &games)
+void GameList::setGameList(const std::map<uint16_t, std::string>& games)
 {
-    ui->GameList->clear();
+    QStringList gameNames;
 
-    for (const GameInfo &game : games) {
-        QListWidgetItem *item = new QListWidgetItem(game.name);
-        item->setData(Qt::UserRole, game.id);
-        ui->GameList->addItem(item);
+    ui->listWidget->clear();
+    nameToIdMap.clear();
+
+    for (const auto& game : games) {
+        QString qName = QString::fromStdString(game.second);
+        gameNames.append(qName);
+
+        ui->listWidget->addItem(qName);
+
+        nameToIdMap[qName] = game.first;
     }
 }
 
-void GameList::onGameClicked(QListWidgetItem *item)
+void GameList::onItemClicked(QListWidgetItem* item)
 {
-    int gameId = item->data(Qt::UserRole).toInt();
-    emit joinGameRequested(gameId);
+    QString gameName = item->text();
+    if (nameToIdMap.count(gameName) > 0) {
+        uint16_t gameId = nameToIdMap[gameName];
+
+
+        lobby->join_room(gameId);
+        QApplication::closeAllWindows();
+    }
+}
+
+
+
+void GameList::closeEvent(QCloseEvent* event)
+{
+    emit closed();
+    event->accept();
+    delete ui;
 }

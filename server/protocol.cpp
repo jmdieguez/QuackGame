@@ -32,8 +32,9 @@ ActionLobby ServerProtocol::read_lobby()
         throw LibError(errno, "Error al intentar enviar datos a cliente");
     }
     action = static_cast<ClientActionType>(ntohs(info));
+
     uint16_t game_id = 0;
-    if (action == ClientActionType::START_GAME || action == ClientActionType::JOIN_GAME) {
+    if (action == ClientActionType::JOIN_GAME) {
         skt.recvall(&game_id, sizeof(game_id), &was_closed);
         if (was_closed)
         {
@@ -152,14 +153,21 @@ void ServerProtocol::send_snapshot(const Snapshot &snapshot)
         send_box(box);
 }
 
-void ServerProtocol::send_lobby_info(const LobbyMessage& lobby) {
-    send_data(lobby.game_id);
+void ServerProtocol::send_lobby_info(Queue<LobbyMessage>& queue, const uint16_t& size) {
 
-    uint16_t nameLength = static_cast<uint16_t>(lobby.name.length());
-    send_data(nameLength);
+    send_data(static_cast<uint16_t>(ClientActionType::GAME_LIST));
+    send_data(size);
+     for (uint16_t i = 0; i < size; i++) {
+         LobbyMessage lobby("", 0);
+         queue.try_pop(lobby);
+         send_data(lobby.game_id);
 
-    std::vector<unsigned char> nameBytes(lobby.name.begin(), lobby.name.end());
-    send_name(nameBytes);
+         uint16_t nameLength = static_cast<uint16_t>(lobby.name.length());
+         send_data(nameLength);
+
+         std::vector<unsigned char> nameBytes(lobby.name.begin(), lobby.name.end());
+         send_name(nameBytes);
+     }
 }
 
 void ServerProtocol::send_name(const std::vector<unsigned char>& data) {

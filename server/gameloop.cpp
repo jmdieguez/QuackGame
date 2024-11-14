@@ -28,15 +28,17 @@ void Gameloop::step([[maybe_unused]] unsigned int current_step)
     }
 }
 
-void Gameloop::start_game(const uint16_t& id) {
+Queue<ClientCommand>* Gameloop::start_game(const uint16_t& id) {
     if (id == creator_id) {
         this->start();
+        return  &game_queue;
     }
+    return nullptr;
 }
 
 Queue<ClientCommand>* Gameloop::add_new_player(const uint16_t& id, Queue<Snapshot>& sender_queue) {
     handler.add(sender_queue, id);
-    return  &game_queue;
+    return &game_queue;
 }
 
 const std::string& Gameloop::get_name() {

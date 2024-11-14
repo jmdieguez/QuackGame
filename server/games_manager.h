@@ -18,7 +18,7 @@ private:
 public:
     GamesManager();
     Queue<ClientCommand>* handle_lobby(const ActionLobby& action, const uint16_t& session_id,
-                                                Queue<Snapshot>& sender, ServerProtocol&);
+                                                Queue<Snapshot>& sender, Queue<LobbyMessage>& queue, uint16_t& game_size);
 };
 
 #endif //GAMES_MANAGER_H

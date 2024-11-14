@@ -5,6 +5,7 @@
 #include "../common/client_actions.h"
 #include "../common/lobby_messages.h"
 #include "../common/socket.h"
+#include "../common/queue.h"
 #include <vector>
 
 class ServerProtocol
@@ -25,7 +26,7 @@ public:
     ActionMessage read_action();
     ActionLobby read_lobby();
     void send_snapshot(const Snapshot& snapshot);
-    void send_lobby_info(const LobbyMessage&);
+    void send_lobby_info(Queue<LobbyMessage>&,  const uint16_t& );
 };
 
 #endif // SERVER_PROTOCOL_H

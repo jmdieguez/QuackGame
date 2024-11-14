@@ -13,7 +13,8 @@ public:
     ~Lobby();
     void create_room(const std::string&);
     void join_room(const uint16_t&);
-    bool start_game();
+    void start_game();
+    void get_game_list(std::map<uint16_t, std::string>& games);
 };
 
 #endif // LOBBY_H

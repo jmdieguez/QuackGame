@@ -25,7 +25,7 @@ public:
     void run() override;
     void step(unsigned int current_step);
     Queue<ClientCommand>* add_new_player(const uint16_t&, Queue<Snapshot>&);
-    void start_game(const uint16_t&);
+    Queue<ClientCommand>* start_game(const uint16_t&);
     const std::string& get_name();
     void game_state(std::atomic<bool>&);
 };
