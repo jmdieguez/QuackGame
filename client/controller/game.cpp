@@ -298,10 +298,10 @@ Game::Game(Socket skt)
       queue_sender(MAX_MESSAGES_QUEUE_SENDER),
       input(queue_sender),
       game_context(queue_sender),
+      socket(std::move(skt)),
       renderer(initializer.get_renderer()),
       mixer(initializer.get_mixer()),
       background_texture(get_background_texture()),
-      socket(std::move(skt)),
       duck_texture(get_duck_texture()),
       all_tilesets_texture(std::make_shared<SDL2pp::Texture>(renderer, TILESETS))
 {

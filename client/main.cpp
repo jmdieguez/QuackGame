@@ -29,10 +29,10 @@ int main(int argc, const char *argv[])
         MainWindow w(&lobby);
         w.show();
 
-        app.exec();
-
-        Game game(std::move(skt));
-        game.run();
+        if (app.exec() == SUCCESS) {
+            Game game(std::move(skt));
+            game.run();
+        }
 
     }
     catch (const std::exception &err)

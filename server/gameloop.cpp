@@ -14,16 +14,19 @@ void Gameloop::run()
 
 void Gameloop::step([[maybe_unused]] unsigned int current_step)
 {
-    try
-    {   
-        ClientCommand command;
-        game_queue.try_pop(command);
-        game.process(command);
-        game.step();
-        Snapshot snapshot = game.get_status();
-        handler.broadcast(snapshot);
-    } catch (ClosedQueue &e)
-    {}
+    if (game.started) {
+        try
+        {   
+            ClientCommand command;
+            while (game_queue.try_pop(command)) {
+                game.process(command);
+            }
+            game.step();
+            Snapshot snapshot = game.get_status();
+            handler.broadcast(snapshot);
+        } catch (ClosedQueue &e)
+        {}
+    }
 }
 
 Queue<ClientCommand>* Gameloop::start_game(const uint16_t& id) {
@@ -36,6 +39,7 @@ Queue<ClientCommand>* Gameloop::start_game(const uint16_t& id) {
 
 Queue<ClientCommand>* Gameloop::add_new_player(const uint16_t& id, Queue<Snapshot>& sender_queue) {
     handler.add(sender_queue, id);
+    game.add_player(id);
     return &game_queue;
 }
 

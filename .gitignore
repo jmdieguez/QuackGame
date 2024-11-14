@@ -2,6 +2,7 @@
 /build/
 /.vscode/
 /bin/
+/.idea/
 
 # Ignore CMake files
 

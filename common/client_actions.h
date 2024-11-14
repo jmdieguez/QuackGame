@@ -27,7 +27,7 @@ enum class ClientActionType : uint16_t
     DROP,
     GRAB,
     GAME_LIST,
-    START_GAME
+    START_GAME,
     SPAWN_AK
 };
 

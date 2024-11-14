@@ -3,19 +3,16 @@
 
 Game::Game(const std::string &map_file) : map(map_file), spawns(map.calculate_spawns(required_players)) {}
 
+void Game::add_player(const uint16_t &id) {
+    Position p = spawns[current_players++];
+    ducks.emplace(id, Duck(id, p));
+    if (current_players == required_players)
+        started = true;
+}
+
 void Game::process(ClientCommand &command)
-{
-    if (!started && command.message.type == ClientActionType::JOIN_GAME)
-    {
-        Position p = spawns[current_players++];
-        ducks.emplace(command.player_id, Duck(command.player_id, p));
-        if (current_players == required_players)
-        {
-            started = true;
-        }
-    }
-    else
-    {
+{   
+    try {
         Duck &duck = ducks.at(command.player_id);
         if (!duck.get_status().status.is_alive)
             return;
@@ -79,6 +76,9 @@ void Game::process(ClientCommand &command)
         default:
             break;
         }
+    }
+    catch (const std::out_of_range &e)
+    {
     }
 }
 

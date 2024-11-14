@@ -35,6 +35,7 @@ public:
     void process(ClientCommand &command);
     void step();
     bool started = false;
+    void add_player(const uint16_t &id);
     Snapshot get_status();
     ~Game() {}
 };
