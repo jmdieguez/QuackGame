@@ -15,8 +15,10 @@ private:
     ProjectileSnapshot read_projectile();
     void recv(void* data, size_t size);
     void send_name(const std::vector<unsigned char>& data);
-public:
     void read_data(uint16_t &data);
+    void read_data_float(float &data);
+
+public:
     explicit ClientProtocol(Socket &);
     void read_snapshot(Snapshot &);
     void send_action(const ClientActionType &, bool &);
