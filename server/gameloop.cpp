@@ -5,7 +5,7 @@
 Gameloop::Gameloop(const uint16_t& id, const std::string& name, const uint16_t& creator_id):
         game_id(id), creator_id(creator_id), name(name), started(false),
         constant_rate_loop(_keep_running, [this](unsigned int step) { this->step(step); }),
-        game_queue(10000), game("server/game/maps/map_00.yaml") {}
+        game_queue(1000000), game("server/game/maps/map_00.yaml") {}
 
 void Gameloop::run()
 {   
@@ -20,14 +20,13 @@ void Gameloop::step([[maybe_unused]] unsigned int current_step)
         while (game_queue.try_pop(command)) {
             game.process(command);
         
-        if (game.started) {
-            game.step();
-            Snapshot snapshot = game.get_status();
-            handler.broadcast(snapshot);
+            if (game.started) {
+                game.step();
+                Snapshot snapshot = game.get_status();
+                handler.broadcast(snapshot);
+            }
         }
-    }
-
-    catch (ClosedQueue &e)
+    } catch (ClosedQueue &e)
     {}
 }
 
