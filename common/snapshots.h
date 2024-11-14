@@ -9,6 +9,7 @@
 #include "duck.h"
 #include "gun_type.h"
 #include "projectiletype.h"
+#include "soundtype.h"
 #include "position.h"
 #include "projectiledirection.h"
 #include "size.h"
@@ -39,7 +40,6 @@ class DuckSnapshot
 public:
     uint16_t id;
     Position position;
-    DuckAction current_action;
     Size size_duck;
     GunType gun;
     Size size_gun;
@@ -47,15 +47,23 @@ public:
     uint16_t angle_gun;
     DuckStatus status;
 
-    explicit DuckSnapshot(const uint16_t &i, const Position &p, const DuckAction &action, const Size &size_duck, const GunType &gun, const Size &size_gun, const Position &position_gun, const uint16_t &angle_gun, const DuckStatus &status) : id(i),
-                                                                                                                                                                                                                                                position(std::move(p)),
-                                                                                                                                                                                                                                                current_action(action),
-                                                                                                                                                                                                                                                size_duck(size_duck),
-                                                                                                                                                                                                                                                gun(gun),
-                                                                                                                                                                                                                                                size_gun(size_gun),
-                                                                                                                                                                                                                                                position_gun(position_gun),
-                                                                                                                                                                                                                                                angle_gun(angle_gun),
-                                                                                                                                                                                                                                                status(status) {}
+    explicit DuckSnapshot(const uint16_t &i, const Position &p, const Size &size_duck, const GunType &gun, const Size &size_gun, const Position &position_gun, const uint16_t &angle_gun, const DuckStatus &status) : id(i),
+                                                                                                                                                                                                                      position(std::move(p)),
+                                                                                                                                                                                                                      size_duck(size_duck),
+                                                                                                                                                                                                                      gun(gun),
+                                                                                                                                                                                                                      size_gun(size_gun),
+                                                                                                                                                                                                                      position_gun(position_gun),
+                                                                                                                                                                                                                      angle_gun(angle_gun),
+                                                                                                                                                                                                                      status(status)
+    {
+    }
+};
+
+class SoundSnapshot
+{
+public:
+    SoundType sound;
+    explicit SoundSnapshot(const SoundType &sound) : sound(sound) {}
 };
 
 class ExplosionSnapshot
@@ -113,13 +121,15 @@ public:
     std::vector<DuckSnapshot> ducks;
     std::vector<GunNoEquippedSnapshot> guns;
     std::vector<ProjectileSnapshot> projectiles;
+    std::vector<SoundSnapshot> sounds;
     MapSnapshot map;
 
-    Snapshot() : ducks({}), guns({}), projectiles({}) {}
+    Snapshot() : ducks({}), guns({}), projectiles({}), sounds({}) {}
     Snapshot(std::vector<DuckSnapshot> &&d_s,
              std::vector<GunNoEquippedSnapshot> &&g_s,
              std::vector<ProjectileSnapshot> &&p,
-             MapSnapshot &map_snapshot) : ducks(d_s), guns(g_s), projectiles(p), map(map_snapshot) {}
+             std::vector<SoundSnapshot> &&s,
+             MapSnapshot &map_snapshot) : ducks(d_s), guns(g_s), projectiles(p), sounds(s), map(map_snapshot) {}
 };
 
 #endif // SNAPSHOTS_H

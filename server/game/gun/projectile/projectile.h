@@ -9,8 +9,9 @@
 #include "../../../../common/defs.h"
 #include "../../../../common/position.h"
 #include "../../../../common/snapshots.h"
+#include "../../hitbox.h"
 
-class Projectile
+class Projectile : public Hitbox
 {
 private:
     ProjectileType type;
@@ -18,13 +19,12 @@ private:
 
 protected:
     uint8_t velocity;
-    Position position;
     std::pair<int, int> direction;
     bool finish;
 
 public:
     Projectile(const ProjectileType &t, const Position &p, const std::pair<int, int> &d, uint8_t velocity)
-        : type(t), velocity(velocity), position(p), direction(d), finish(false)
+        : Hitbox(p, Size(8, 8)), type(t), velocity(velocity), direction(d), finish(false)
     {
         if (direction.second > 0)
             type_direction = ProjectileDirection::Up;

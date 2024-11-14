@@ -21,7 +21,8 @@ public:
     uint16_t size_y;
     std::vector<MapComponent> components;
     std::vector<Position> boxes;
-    std::map<Position, Spawn> spawns;
+    std::vector<Position> duck_spawns;
+    std::vector<Position> gun_spawns;
     std::vector<bool> bit_map; // true: wall/ground. false: empty space
     std::map<Component, std::pair<uint8_t, uint8_t>> dimensions;
 
@@ -45,7 +46,14 @@ public:
             uint16_t x = itemNode["x"].as<uint16_t>();
             uint16_t y = itemNode["y"].as<uint16_t>();
             Spawn type = itemNode["type"].as<Spawn>();
-            spawns.emplace(Position(x, y), type);
+            if (type == Spawn::GUN_SPAWN)
+            {
+                gun_spawns.push_back(Position(x, y));
+            }
+            else if (type == Spawn::DUCK_SPAWN)
+            {
+                duck_spawns.push_back(Position(x, y));
+            }
         }
 
         for (const auto &itemNode : root["boxes"])
@@ -116,14 +124,9 @@ public:
     Map(const std::string &map_file) : cfg(map_file),
                                        gun_id(0)
     {
-        // Eliminar una vez que se tengan los spawns de las armas
-        guns.emplace(gun_id, std::make_shared<CowboyPistol>(290, 320));
-        gun_id++;
 
         for (const auto &position : cfg.boxes)
-        {
             boxes.emplace(position, Box::BOX_4_HP);
-        }
     }
 
     std::vector<GunNoEquippedSnapshot> get_guns_snapshots()
@@ -133,9 +136,54 @@ public:
         {
             if (gun.get()->has_been_equipped())
                 continue;
-            guns_snapshots.push_back(gun.get()->get_status());
+            guns_snapshots.push_back(gun->get_status());
         }
         return guns_snapshots;
+    }
+
+    void add_gun(std::shared_ptr<Gun> gun)
+    {
+        guns.insert({gun->get_id(), gun});
+    }
+
+    void add_new_gun_ak(const Position &position_gun)
+    {
+        guns.emplace(gun_id, std::make_shared<AK>(gun_id, Position(position_gun.x, position_gun.y - 10)));
+        gun_id++;
+    }
+
+    bool is_hitbox_valid(const Hitbox &hitbox) const
+    {
+
+        Position pos = hitbox.get_position();
+        Size size = hitbox.get_size();
+        for (uint16_t x = pos.x; x < pos.x + size.width; x++)
+        {
+            for (uint16_t y = pos.y; y < pos.y + size.height; y++)
+            {
+                Position p(x, y);
+                if (!validate_coordinate(p))
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    void move_guns()
+    {
+        for (auto &[id, gun] : guns)
+        {
+            if (!gun->is_necessary_move())
+                continue;
+            gun->move();
+            Position new_position = gun->get_position();
+            Size size_gun = gun->get_size();
+            Position end_hitbox(new_position.x + size_gun.width, new_position.y + (size_gun.height * 2) + 7);
+            if (validate_coordinate(new_position) && validate_coordinate(end_hitbox))
+                continue;
+            gun->cancel_move();
+        }
     }
 
     MapSnapshot get_status() const
@@ -146,15 +194,7 @@ public:
             box_snapshots.push_back(BoxSnapshot(position, box));
         }
 
-        std::vector<Position> gun_spawns;
-        for (auto &[position, spawn] : cfg.spawns)
-        {
-            if (spawn == Spawn::GUN_SPAWN)
-            {
-                gun_spawns.push_back(position);
-            }
-        }
-        return MapSnapshot(cfg.style, cfg.size_x, cfg.size_y, cfg.components, box_snapshots, gun_spawns);
+        return MapSnapshot(cfg.style, cfg.size_x, cfg.size_y, cfg.components, box_snapshots, cfg.gun_spawns);
     }
 
     bool validate_coordinate(Position &p) const
@@ -175,6 +215,20 @@ public:
     void remove_gun(uint16_t id)
     {
         guns.erase(id);
+    }
+
+    std::vector<Position> calculate_spawns(const int &n_players)
+    {
+        std::vector<Position> spawns;
+
+        for (int n = 0; n < n_players; n++)
+        {
+            Position p = cfg.duck_spawns[n % cfg.duck_spawns.size()]; // Expressed as (row, file) of tiles
+            Position p_as_pixels(p.x * TILE_SIZE, p.y * TILE_SIZE);
+            spawns.push_back(p_as_pixels);
+        }
+
+        return spawns;
     }
 
     ~Map() {}

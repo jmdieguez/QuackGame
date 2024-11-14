@@ -7,15 +7,19 @@
 #define MAX_DISTANCE 20
 #define TIME_TO_SHOOT 20
 #define TIME_TO_REALOAD 5
+
 #define GUN_WIDTH 20
 #define GUN_HEIGHT 10
 
-#define HORIZONTAL_Y 11
-#define HORIZONTAL_RIGHT 10
-#define HORIZONTAL_LEFT 0
+#define HORIZONTAL_Y 3
+#define HORIZONTAL_RIGHT 6
+#define HORIZONTAL_LEFT -10
 
-#define VERTICAL_RIGHT 0
-#define VERTICAL_LEFT 12
+#define VERTICAL_RIGHT -10
+#define VERTICAL_LEFT 6
+
+#define LOOKING_UP_RIGHT_OFFSET_X 0
+#define LOOKING_UP_LEFT_OFFSET_X 18
 
 /***************************************************************************
                               PRIVATE METHODS
@@ -30,7 +34,8 @@ void Sniper::reset()
 /***************************************************************************
                               PUBLIC METHODS
 ****************************************************************************/
-Sniper::Sniper(const uint16_t &pos_x, const uint16_t &pos_y) : Gun(GunType::Sniper, Position(pos_x, pos_y), Size(GUN_WIDTH, GUN_HEIGHT)), GunAmmo(MAX_AMMO),
+Sniper::Sniper(const uint16_t &id, const Position &position) : Gun(id, GunType::Sniper, Position(position), Size(GUN_WIDTH, GUN_HEIGHT), TextureFigure::SniperFigure),
+                                                               GunAmmo(MAX_AMMO),
                                                                position_gun(HORIZONTAL_Y, HORIZONTAL_RIGHT, HORIZONTAL_LEFT, VERTICAL_RIGHT, VERTICAL_LEFT),
                                                                time_to_reaload(TIME_TO_REALOAD), time_to_shoot(TIME_TO_SHOOT), need_reload(false), block_shoot(false)
 {
@@ -61,8 +66,9 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Sni
     }
     auto direction = get_direction(looking_right, looking_up);
     reduce_ammo();
-    uint16_t adjusted_pos_x = duck_position.x + (direction.first == 1 ? MIN_VALUE_RIGHT_DIRECTION_POS_X : MIN_VALUE_LEFT_DIRECTION_POS_X);
-    Position projectile_position(adjusted_pos_x, duck_position.y);
+    uint16_t adjusted_pos_x = duck_position.x + (looking_up ? (looking_right ? LOOKING_UP_RIGHT_OFFSET_X : LOOKING_UP_LEFT_OFFSET_X) : GUN_WIDTH * direction.first);
+    uint16_t adjusted_pos_y = duck_position.y + (looking_up ? -GUN_WIDTH : VERTICAL_RIGHT);
+    Position projectile_position(adjusted_pos_x, adjusted_pos_y);
     std::vector<std::shared_ptr<Projectile>> projectiles;
     ProjectileType type = ProjectileType::CowboyBullet;
     projectiles.push_back(std::make_shared<ProjectileGun>(type, projectile_position, direction, VELOCITY, MAX_DISTANCE));

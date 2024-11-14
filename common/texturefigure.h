@@ -4,19 +4,20 @@
 enum TextureFigure
 {
     DUCK = 0,
-    CowboyPistol,
+    CowboyPistolFigure,
     CowboyBullet,
-    Magnum,
-    DuelingPistol,
-    Shotgun,
-    Sniper,
-    AK,
-    PewPewLaser,
-    Grenade,
+    MagnumFigure,
+    DuelingPistolFigure,
+    ShotgunFigure,
+    SniperFigure,
+    AKFigure,
+    PewPewLaserFigure,
+    GrenadeFigure,
     Box_T,
     Spawn_T,
     Helmet,
-    Chestplate
+    Chestplate,
+    Background
 };
 
 #endif // TEXTURE_FIGURE_GAME_H

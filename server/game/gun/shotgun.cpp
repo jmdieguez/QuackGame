@@ -12,12 +12,15 @@
 #define GUN_WIDTH 25
 #define GUN_HEIGHT 10
 
-#define HORIZONTAL_Y 15
-#define HORIZONTAL_RIGHT 8
-#define HORIZONTAL_LEFT 0
+#define HORIZONTAL_Y 5
+#define HORIZONTAL_RIGHT 5
+#define HORIZONTAL_LEFT -14
 
-#define VERTICAL_RIGHT -1
-#define VERTICAL_LEFT 8
+#define VERTICAL_RIGHT -12
+#define VERTICAL_LEFT 3
+
+#define LOOKING_UP_RIGHT_OFFSET_X 0
+#define LOOKING_UP_LEFT_OFFSET_X 18
 
 /***************************************************************************
                               PRIVATE METHODS
@@ -33,7 +36,8 @@ void Shotgun::reset()
                               PUBLIC METHODS
 ****************************************************************************/
 
-Shotgun::Shotgun(const uint16_t &pos_x, const uint16_t &pos_y) : Gun(GunType::Shotgun, Position(pos_x, pos_y), Size(GUN_WIDTH, GUN_HEIGHT)), GunAmmo(MAX_AMMO),
+Shotgun::Shotgun(const uint16_t &id, const Position &position) : Gun(id, GunType::Shotgun, Position(position), Size(GUN_WIDTH, GUN_HEIGHT), TextureFigure::ShotgunFigure),
+                                                                 GunAmmo(MAX_AMMO),
                                                                  position_gun(HORIZONTAL_Y, HORIZONTAL_RIGHT, HORIZONTAL_LEFT, VERTICAL_RIGHT, VERTICAL_LEFT),
                                                                  time_to_shoot(TIME_TO_SHOOT),
                                                                  need_reload(false), block_shoot(false)
@@ -61,8 +65,9 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Sho
     auto direction = get_direction(looking_right, looking_up);
     std::vector<std::shared_ptr<Projectile>> projectiles;
 
-    uint16_t adjusted_pos_x = duck_position.x + (direction.first == 1 ? MIN_VALUE_RIGHT_DIRECTION_POS_X : MIN_VALUE_LEFT_DIRECTION_POS_X);
-    Position projectile_position(adjusted_pos_x, duck_position.y);
+    uint16_t adjusted_pos_x = duck_position.x + (looking_up ? (looking_right ? LOOKING_UP_RIGHT_OFFSET_X : LOOKING_UP_LEFT_OFFSET_X) : GUN_WIDTH * direction.first);
+    uint16_t adjusted_pos_y = duck_position.y + (looking_up ? -GUN_WIDTH : VERTICAL_RIGHT);
+    Position projectile_position(adjusted_pos_x, adjusted_pos_y);
 
     std::vector<std::shared_ptr<Dispersion>> dispersions = {
         std::make_shared<DispersionLow>(true),

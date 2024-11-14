@@ -5,7 +5,7 @@
 #include "defminvalue.h"
 #include "projectile/projectilegun.h"
 
-#define VELOCITY 15
+#define VELOCITY 20
 #define MAX_AMMO 30
 #define MAX_DISTANCE 13
 #define TIME_SHOOTING 60
@@ -19,12 +19,18 @@
 #define GUN_WIDTH 25
 #define GUN_HEIGHT 10
 
-#define HORIZONTAL_Y 15
-#define HORIZONTAL_RIGHT 10
-#define HORIZONTAL_LEFT 0
+#define HORIZONTAL_Y 5
+#define HORIZONTAL_RIGHT 5
+#define HORIZONTAL_LEFT -14
 
-#define VERTICAL_RIGHT -2
-#define VERTICAL_LEFT 8
+#define VERTICAL_RIGHT -12
+#define VERTICAL_LEFT 3
+
+#define LOOKING_UP_RIGHT_OFFSET_X 0
+#define LOOKING_UP_LEFT_OFFSET_X 18
+
+#define SPECIAL_OFFSET_SHOOT_AK 6
+#define SPECIAL_OFFSET_X_AK 5
 
 /***************************************************************************
                               PRIVATE METHODS
@@ -40,7 +46,8 @@ bool AK::random()
                               PUBLIC METHODS
 ****************************************************************************/
 
-AK::AK(const uint16_t &pos_x, const uint16_t &pos_y) : Gun(GunType::AK, Position(pos_x, pos_y), Size(GUN_WIDTH, GUN_HEIGHT)), GunAmmo(MAX_AMMO),
+AK::AK(const uint16_t &id, const Position &position) : Gun(id, GunType::AK, Position(position), Size(GUN_WIDTH, GUN_HEIGHT), TextureFigure::AKFigure),
+                                                       GunAmmo(MAX_AMMO),
                                                        position_gun(HORIZONTAL_Y, HORIZONTAL_RIGHT, HORIZONTAL_LEFT, VERTICAL_RIGHT, VERTICAL_LEFT),
                                                        time_shooting(TIME_SHOOTING), delay_shooting(DELAY_SHOOTING)
 {
@@ -62,8 +69,9 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> AK:
         dispersion = std::make_shared<DispersionLow>(random());
     if (time_shooting < START_MORE_DISPERSION)
         dispersion = std::make_shared<DispersionMedium>(random());
-    uint16_t adjusted_pos_x = duck_position.x + (direction.first > 0 ? MIN_VALUE_RIGHT_DIRECTION_POS_X : MIN_VALUE_LEFT_DIRECTION_POS_X);
-    Position projectile_position(adjusted_pos_x, duck_position.y);
+    uint16_t adjusted_pos_x = duck_position.x + (looking_up ? (looking_right ? LOOKING_UP_RIGHT_OFFSET_X : LOOKING_UP_LEFT_OFFSET_X) : (GUN_WIDTH + SPECIAL_OFFSET_SHOOT_AK) * direction.first);
+    uint16_t adjusted_pos_y = duck_position.y + (looking_up ? -GUN_WIDTH : (VERTICAL_RIGHT + SPECIAL_OFFSET_X_AK));
+    Position projectile_position(adjusted_pos_x, adjusted_pos_y);
     std::vector<std::shared_ptr<Projectile>> projectiles;
     projectiles.push_back(std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, projectile_position, direction, VELOCITY, MAX_DISTANCE, dispersion));
     Position new_position = move_back(duck_position, looking_right, BACK);

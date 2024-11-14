@@ -1,6 +1,13 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <utility>
+#include <vector>
+#include <cstdint>
+#include <atomic>
+#include <iostream>
+#include <SDL2pp/SDL2pp.hh>
+
 #include "../../common/constant_rate_loop.h"
 #include "../../common/queue.h"
 #include "../../common/socket.h"
@@ -12,24 +19,20 @@
 #include "./command/gamecontext.h"
 #include "./command/inputhandler.h"
 #include "../model/protocol.h"
-#include "../view/SDLWindow.h"
+#include "../view/SDLInitializer.h"
 #include "../common/tiles.h"
 #include "../ui/tileset.h"
-#include <utility>
-#include <vector>
-#include <cstdint>
-#include <atomic>
-#include <iostream>
+#include "cheats/cheatstorage.h"
+#include "../model/resource/sound/soundstorage.h"
 
-#include <SDL2pp/SDL2pp.hh>
-
-#define TILESETS "./var/quackgame/tiles.png"
+#define TILESETS "/var/quackgame/tiles.png"
 
 class Game
 {
 private:
-    SDLWindow window;
+    SDLInitializer initializer;
     std::atomic<bool> keep_running;
+    CheatStorage cheat_storage;
     ConstantRateLoop constant_rate_loop;
     Queue<Snapshot> queue_receiver;
     Queue<ClientActionType> queue_sender;
@@ -37,12 +40,17 @@ private:
     GameContext game_context;
     Socket socket;
     SDL2pp::Renderer &renderer;
+    SDL2pp::Mixer &mixer;
+    SDL2pp::Texture &background_texture;
     SDL2pp::Texture &duck_texture;
+    SDL2pp::Texture &get_background_texture();
     SDL2pp::Texture &get_duck_texture();
+    SDL2pp::Texture &get_spawn_texture();
     SDL2pp::Texture &get_gun_texture(GunType gun);
     SDL2pp::Texture &get_box_texture();
     SDL2pp::Texture &get_projectile_texture(ProjectileType projectile);
     SDL2pp::Texture &get_texture(TextureFigure figure);
+    SDL2pp::Chunk &get_chunk(SoundType type);
 
     std::shared_ptr<SDL2pp::Texture> all_tilesets_texture;
     std::map<uint8_t, std::unique_ptr<Tileset>> tilesets;
@@ -51,6 +59,7 @@ private:
     void get_and_execute_events();
     void set_xy(DuckSnapshot &duck, int frame_ticks, int &src_x, int &src_y);
     void set_renderer(int current_step);
+    void render_background();
     void render_duck_with_gun(DuckSnapshot &duck, int frame_ticks);
     void render_duck(DuckSnapshot &duck, int frame_ticks);
     void render_helmet_chestplate(DuckSnapshot &duck);
@@ -59,9 +68,10 @@ private:
     void render_component_in_map(MapComponent &component, uint16_t &style);
     void render_projectile(ProjectileSnapshot &projectile);
     void render_box_in_map(BoxSnapshot &box);
-    void render_spawn_in_map();
+    void render_spawn_in_map(Position &p);
     void update_renderer(int current_step);
     void handle_event(SDL_Event &event);
+    void play_sound(SoundSnapshot &sound_snapshot);
     void step(unsigned int current_step);
 
 public:

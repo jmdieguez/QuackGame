@@ -8,9 +8,6 @@
 #define MAX_MESSAGES_QUEUE_RECEIVER 100000
 #define MAX_MESSAGES_QUEUE_SENDER 100000
 
-#define DEFAULT_WINDOW_WIDTH 480
-#define DEFAULT_WINDOW_HEIGHT 640
-
 #define SRC_DUCK_WIDTH 32
 #define SRC_DUCK_HEIGHT 32
 #define POS_INIT_X_IMAGE 1
@@ -50,6 +47,13 @@ SDL2pp::Texture &Game::get_gun_texture(GunType gun)
     return texture_created.get()->get_texture();
 }
 
+SDL2pp::Texture &Game::get_spawn_texture()
+{
+    TextureStorage &storage = TextureStorage::get_instance();
+    std::shared_ptr<Texture> texture_created = storage.get_texture(renderer, TextureFigure::Spawn_T);
+    return texture_created.get()->get_texture();
+}
+
 SDL2pp::Texture &Game::get_box_texture()
 {
     TextureStorage &storage = TextureStorage::get_instance();
@@ -64,6 +68,13 @@ SDL2pp::Texture &Game::get_projectile_texture(ProjectileType projectile)
     return texture_created.get()->get_texture();
 }
 
+SDL2pp::Texture &Game::get_background_texture()
+{
+    TextureStorage &storage = TextureStorage::get_instance();
+    std::shared_ptr<Texture> texture_created = storage.get_texture(renderer, TextureFigure::Background);
+    return texture_created.get()->get_texture();
+}
+
 SDL2pp::Texture &Game::get_texture(TextureFigure figure)
 {
     TextureStorage &storage = TextureStorage::get_instance();
@@ -71,12 +82,19 @@ SDL2pp::Texture &Game::get_texture(TextureFigure figure)
     return texture_created.get()->get_texture();
 }
 
+SDL2pp::Chunk &Game::get_chunk(SoundType type)
+{
+    SoundStorage &storage = SoundStorage::get_instance();
+    std::shared_ptr<Sound> sound_created = storage.get_sound(type);
+    return sound_created.get()->get_Sound();
+}
+
 void Game::handle_event(SDL_Event &event)
 {
     if (event.type == SDL_QUIT || event.key.keysym.sym == SDLK_END)
         keep_running = false;
     else if (event.type == SDL_KEYDOWN)
-        input.execute_command(event, game_context);
+        input.execute_command(event, game_context, cheat_storage);
     else if (event.type == SDL_KEYUP)
         input.undo_command(event, game_context);
 }
@@ -93,10 +111,19 @@ void Game::set_xy(DuckSnapshot &duck, int frame_ticks, int &src_x, int &src_y)
 
     if (!duck.status.is_alive)
         src_y += DUCK_HEIGHT * 2;
-
+    else if (duck.status.falling)
+    {
+        src_x += DUCK_WIDTH * 3;
+        src_y += DUCK_HEIGHT;
+    }
+    else if (duck.status.start_jumping)
+    {
+        src_x += DUCK_WIDTH;
+        src_y += DUCK_HEIGHT;
+    }
     else if (duck.status.bent_down)
         src_y += DUCK_HEIGHT * 2;
-    else if (duck.current_action == DuckAction::MOVING)
+    else if (duck.status.mooving)
     {
         int run_phase = (frame_ticks / 4) % 5 + 1;
         src_x = SRC_DUCK_WIDTH * run_phase;
@@ -203,23 +230,53 @@ void Game::render_box_in_map(BoxSnapshot &box)
     }
 }
 
+void Game::render_spawn_in_map(Position &p)
+{
+    SDL2pp::Texture &texture = get_spawn_texture();
+    int width = texture.GetWidth();
+    int height = texture.GetHeight();
+    SDL_Rect src_rect = {0, 0, width, height};
+    int x = (p.x * TILE_SIZE) + ((TILE_SIZE - width) / 2);
+    int y = (p.y * TILE_SIZE) + (TILE_SIZE - height);
+    SDL_Rect dst_rect = {x, y, width, height};
+    renderer.Copy(texture, src_rect, dst_rect);
+}
+
+void Game::render_background()
+{
+    SDL_Rect src = {0, 0, background_texture.GetWidth(), background_texture.GetHeight()};
+    SDL_Rect dst = {0, 0, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT};
+    renderer.Copy(background_texture, src, dst);
+}
+
+void Game::play_sound(SoundSnapshot &sound_snapshot)
+{
+    SDL2pp::Chunk &sound = get_chunk(sound_snapshot.sound);
+    sound.SetVolume(1);
+    // if (!mixer.IsChannelPlaying(-1))
+    mixer.PlayChannel(-1, sound);
+}
+
 void Game::set_renderer(int frame_ticks)
 {
+    render_background();
     Snapshot snapshot;
     if (!queue_receiver.try_pop(snapshot))
         return;
+    for (MapComponent &component : snapshot.map.components)
+        render_component_in_map(component, snapshot.map.style);
+    for (BoxSnapshot &box : snapshot.map.boxes)
+        render_box_in_map(box);
+    for (Position &position : snapshot.map.gun_spawns)
+        render_spawn_in_map(position);
     for (DuckSnapshot &duck : snapshot.ducks)
         render_duck_with_gun(duck, frame_ticks);
     for (GunNoEquippedSnapshot &gun : snapshot.guns)
         render_weapon_in_map(gun);
     for (ProjectileSnapshot &projectile : snapshot.projectiles)
         render_projectile(projectile);
-    for (MapComponent &component : snapshot.map.components)
-        render_component_in_map(component, snapshot.map.style);
-    for (BoxSnapshot &box : snapshot.map.boxes)
-    {
-        render_box_in_map(box);
-    }
+    for (SoundSnapshot &sound_snapshot : snapshot.sounds)
+        play_sound(sound_snapshot);
 }
 
 void Game::step(unsigned int current_step)
@@ -241,8 +298,10 @@ Game::Game(Socket skt)
       queue_sender(MAX_MESSAGES_QUEUE_SENDER),
       input(queue_sender),
       game_context(queue_sender),
+      renderer(initializer.get_renderer()),
+      mixer(initializer.get_mixer()),
+      background_texture(get_background_texture()),
       socket(std::move(skt)),
-      renderer(window.get_renderer()),
       duck_texture(get_duck_texture()),
       all_tilesets_texture(std::make_shared<SDL2pp::Texture>(renderer, TILESETS))
 {

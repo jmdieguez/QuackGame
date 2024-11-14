@@ -9,23 +9,23 @@ std::string TextureFactory::get_path(TextureFigure figure)
 {
     if (TextureFigure::DUCK == figure)
         return DUCK_PATH;
-    else if (TextureFigure::CowboyPistol == figure)
+    else if (TextureFigure::CowboyPistolFigure == figure)
         return COWBOY_PISTOL_PATH;
-    else if (TextureFigure::Magnum == figure)
+    else if (TextureFigure::MagnumFigure == figure)
         return MAGNUM_PATH;
     else if (TextureFigure::CowboyBullet == figure)
         return COWBOY_BULLET_PATH;
-    else if (TextureFigure::DuelingPistol == figure)
+    else if (TextureFigure::DuelingPistolFigure == figure)
         return DUELING_PISTOL_PATH;
-    else if (TextureFigure::Shotgun == figure)
+    else if (TextureFigure::ShotgunFigure == figure)
         return SHOTGUN_PATH;
-    else if (TextureFigure::Sniper == figure)
+    else if (TextureFigure::SniperFigure == figure)
         return SNIPER_PATH;
-    else if (TextureFigure::AK == figure)
+    else if (TextureFigure::AKFigure == figure)
         return AK_PATH;
-    else if (TextureFigure::PewPewLaser == figure)
+    else if (TextureFigure::PewPewLaserFigure == figure)
         return PEW_PEW_LASER_PATH;
-    else if (TextureFigure::Grenade == figure)
+    else if (TextureFigure::GrenadeFigure == figure)
         return GRENADE_PATH;
     else if (TextureFigure::Box_T == figure)
         return BOX_PATH;
@@ -35,6 +35,8 @@ std::string TextureFactory::get_path(TextureFigure figure)
         return HELMET_PATH;
     else if (TextureFigure::Chestplate == figure)
         return CHESTPLATE_PATH;
+    else if (TextureFigure::Background == figure)
+        return BACKGROUND_PATH;
     return DUCK_PATH;
 }
 

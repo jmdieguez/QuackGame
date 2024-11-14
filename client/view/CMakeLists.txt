@@ -1,7 +1,7 @@
 target_sources(quack_game_client
     PRIVATE
     # .cpp files
-    SDLWindow.cpp
+    SDLInitializer.cpp
     main_window.ui
     create_room.ui
     game_list.ui
@@ -12,8 +12,8 @@ target_sources(quack_game_client
 
     PUBLIC
     # .h files
-    SDLWindow.h
-    main_window.h
+    SDLInitializer.h
     create_room.h
+    main_window.h
     game_list.h
 )

@@ -8,7 +8,8 @@ Sender::Sender(Socket &skt, Queue<ClientActionType> &queue) : protocol(skt), que
 void Sender::run()
 {
     try
-    {
+    {   
+        protocol.send_action(ClientActionType::JOIN_GAME, closed);
         while (!closed && _keep_running)
         {
             ClientActionType action = queue_sender.pop();

@@ -5,11 +5,20 @@
 #include "../../common/map.h"
 
 DuckStatus ClientProtocol::read_status()
+
 {
+    uint16_t mooving;
+    read_data(mooving);
     uint16_t shooting;
     read_data(shooting);
     uint16_t jumping;
     read_data(jumping);
+    uint16_t start_jumping;
+    read_data(start_jumping);
+    uint16_t falling;
+    read_data(falling);
+    uint16_t flapping;
+    read_data(flapping);
     uint16_t bent_down;
     read_data(bent_down);
     uint16_t grounded;
@@ -24,7 +33,7 @@ DuckStatus ClientProtocol::read_status()
     read_data(has_chestplate);
     uint16_t is_alive;
     read_data(is_alive);
-    DuckStatus duck_status = {!!shooting, !!jumping, !!bent_down, !!grounded, !!looking_up, !!looking_right, !!has_helmet, !!has_chestplate, !!is_alive};
+    DuckStatus duck_status = {!!mooving, !!shooting, !!jumping, !!start_jumping, !!falling, !!flapping, !!bent_down, !!grounded, !!looking_up, !!looking_right, !!has_helmet, !!has_chestplate, !!is_alive};
     return duck_status;
 }
 
@@ -60,8 +69,6 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
         read_data(x);
         uint16_t y;
         read_data(y);
-        uint16_t current_action;
-        read_data(current_action);
         uint16_t duck_width;
         read_data(duck_width);
         uint16_t duck_height;
@@ -80,12 +87,11 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
         read_data(gun_angle);
         DuckStatus duck_status = read_status();
         Position p(x, y);
-        DuckAction action_value = static_cast<DuckAction>(current_action);
         Size duck_size(duck_width, duck_height);
         GunType gun_value = static_cast<GunType>(current_gun);
         Size gun_size(gun_width, gun_height);
         Position gun_position(gun_x, gun_y);
-        DuckSnapshot duck(id, p, action_value, duck_size, gun_value, gun_size, gun_position, gun_angle, duck_status);
+        DuckSnapshot duck(id, p, duck_size, gun_value, gun_size, gun_position, gun_angle, duck_status);
         snapshot.ducks.emplace_back(duck);
     }
     uint16_t guns_length;
@@ -119,6 +125,16 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
         snapshot.projectiles.emplace_back(projectile);
     }
 
+    uint16_t sound_lenght;
+    read_data(sound_lenght);
+    for (uint16_t i = 0; i < sound_lenght; i++)
+    {
+        uint16_t sound_type;
+        read_data(sound_type);
+        SoundType type_value = static_cast<SoundType>(sound_type);
+        snapshot.sounds.emplace_back(type_value);
+    }
+
     uint16_t style, size_x, size_y, components_length;
     read_data(style);
     read_data(size_x);
@@ -150,6 +166,16 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
         read_data(box_status);
         Position pos(x, y);
         snapshot.map.boxes.push_back(BoxSnapshot(pos, static_cast<Box>(box_status)));
+    }
+
+    uint16_t gun_spawns;
+    read_data(gun_spawns);
+    for (uint16_t i = 0; i < gun_spawns; i++)
+    {
+        uint16_t x, y;
+        read_data(x);
+        read_data(y);
+        snapshot.map.gun_spawns.push_back(Position(x, y));
     }
 }
 

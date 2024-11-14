@@ -66,7 +66,6 @@ void ServerProtocol::send_duck(const DuckSnapshot &duck)
     send_data(duck.id);
     send_data(duck.position.x);
     send_data(duck.position.y);
-    send_data(static_cast<uint16_t>(duck.current_action));
     send_data(static_cast<uint16_t>(duck.size_duck.width));
     send_data(static_cast<uint16_t>(duck.size_duck.height));
     send_data(static_cast<uint16_t>(duck.gun));
@@ -99,8 +98,12 @@ void ServerProtocol::send_projectile(const ProjectileSnapshot &projectile)
 
 void ServerProtocol::send_duck_status(const DuckStatus &status)
 {
+    send_data(static_cast<uint16_t>(status.mooving));
     send_data(static_cast<uint16_t>(status.shooting));
     send_data(static_cast<uint16_t>(status.jumping));
+    send_data(static_cast<uint16_t>(status.start_jumping));
+    send_data(static_cast<uint16_t>(status.falling));
+    send_data(static_cast<uint16_t>(status.flapping));
     send_data(static_cast<uint16_t>(status.bent_down));
     send_data(static_cast<uint16_t>(status.grounded));
     send_data(static_cast<uint16_t>(status.looking_up));
@@ -139,6 +142,11 @@ void ServerProtocol::send_snapshot(const Snapshot &snapshot)
     for (const ProjectileSnapshot &projectile : snapshot.projectiles)
         send_projectile(projectile);
 
+    const uint16_t sound_lenght = static_cast<uint16_t>(snapshot.sounds.size());
+    send_data(sound_lenght);
+    for (SoundSnapshot sound_snapshot : snapshot.sounds)
+        send_data(static_cast<uint16_t>(sound_snapshot.sound));
+
     send_data(snapshot.map.style);
     send_data(snapshot.map.size_x);
     send_data(snapshot.map.size_y);
@@ -151,6 +159,13 @@ void ServerProtocol::send_snapshot(const Snapshot &snapshot)
     send_data(boxes_length);
     for (const BoxSnapshot &box : snapshot.map.boxes)
         send_box(box);
+
+    send_data(snapshot.map.gun_spawns.size());
+    for (const Position &position : snapshot.map.gun_spawns)
+    {
+        send_data(position.x);
+        send_data(position.y);
+    }
 }
 
 void ServerProtocol::send_lobby_info(Queue<LobbyMessage>& queue, const uint16_t& size) {

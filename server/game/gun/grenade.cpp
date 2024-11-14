@@ -9,18 +9,21 @@
 #define GUN_WIDTH 15
 #define GUN_HEIGHT 15
 
-#define HORIZONTAL_Y 13
-#define HORIZONTAL_RIGHT 0
-#define HORIZONTAL_LEFT 17
+#define HORIZONTAL_Y 3
+#define HORIZONTAL_RIGHT -10
+#define HORIZONTAL_LEFT 10
 
-#define VERTICAL_RIGHT 0
-#define VERTICAL_LEFT 8
+#define VERTICAL_RIGHT -10
+#define VERTICAL_LEFT 6
+
+#define LOOKING_UP_RIGHT_OFFSET_X 0
+#define LOOKING_UP_LEFT_OFFSET_X 18
 
 /***************************************************************************
                               PUBLIC METHODS
 ****************************************************************************/
 
-Grenade::Grenade(const uint16_t &pos_x, const uint16_t &pos_y) : Gun(GunType::Grenade, Position(pos_x, pos_y), Size(GUN_WIDTH, GUN_HEIGHT)), GunAmmo(MAX_AMMO),
+Grenade::Grenade(const uint16_t &id, const Position &position) : Gun(id, GunType::Grenade, Position(position), Size(GUN_WIDTH, GUN_HEIGHT), TextureFigure::GrenadeFigure), GunAmmo(MAX_AMMO),
                                                                  position_gun(HORIZONTAL_Y, HORIZONTAL_RIGHT, HORIZONTAL_LEFT, VERTICAL_RIGHT, VERTICAL_LEFT),
                                                                  start_explosion_state(false), time_explosion(TIME_EXPLOSION) {}
 

@@ -10,16 +10,16 @@ MoveRight::MoveRight()
 
 void MoveRight::execute(GameContext &game_context)
 {
-    if (game_context.is_right_direction_pressed() || game_context.is_bent_down_pressed())
+    if (game_context.right_direction || game_context.is_bent_down)
         return;
-    game_context.set_right_direction_active(true);
+    game_context.right_direction = true;
     game_context.push_message(ClientActionType::MOVE_RIGHT);
 }
 
 void MoveRight::undo(GameContext &game_context)
 {
-    game_context.set_right_direction_active(false);
-    if (game_context.is_left_direction_pressed())
+    game_context.right_direction = false;
+    if (game_context.left_direction)
         return;
     game_context.push_message(ClientActionType::STOP_MOVING_RIGHT);
 }

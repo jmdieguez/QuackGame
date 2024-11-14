@@ -5,28 +5,29 @@
 #include <vector>
 #include <optional>
 #include <memory>
+#include "../../../common/snapshots.h"
+#include "../../../common/projectiletype.h"
+#include "../../../common/position.h"
+#include "../../../common/size.h"
+#include "../../../common/texturefigure.h"
+#include "../hitbox.h"
+#include "projectile/projectile.h"
 
 #define ANGLE_LOOK_UP 90
 #define ANGLE_LOOK_UP_REVERSE 270
 #define ANGLE_DEFAULT 0
 
-#include "../../../common/snapshots.h"
-#include "../../../common/projectiletype.h"
-#include "../../../common/position.h"
-#include "../../../common/size.h"
-#include "projectile/projectile.h"
-
-class Gun
+class Gun : public Hitbox
 {
 private:
+    uint16_t id;
     GunType type;
     bool is_equipped;
-    Size size;
+    bool is_grounded;
     uint16_t angle;
+    TextureFigure texture;
 
 protected:
-    Position position;
-
     std::pair<int, int> get_direction(bool looking_right, bool looking_up)
     {
         int direction_x = looking_right ? 1 : -1;
@@ -37,13 +38,22 @@ protected:
     }
 
 public:
-    explicit Gun(GunType type, Position p, Size size) : type(type), is_equipped(false), size(size), angle(ANGLE_DEFAULT), position(p) {}
+    explicit Gun(const uint16_t &id, const GunType &type, const Position &p, const Size &size, const TextureFigure &texture) : Hitbox(p, size), id(id),
+                                                                                                                               type(type), is_equipped(false), is_grounded(false),
+                                                                                                                               angle(ANGLE_DEFAULT),
+                                                                                                                               texture(texture) {}
 
     virtual ~Gun() = default;
 
     void equipped() { is_equipped = true; }
 
-    void dropped() { is_equipped = false; }
+    void dropped(const Position duck)
+    {
+        is_grounded = false;
+        is_equipped = false;
+        position.x = duck.x;
+        position.y = duck.y - size.height;
+    }
 
     bool has_been_equipped() { return is_equipped; }
 
@@ -55,6 +65,11 @@ public:
     void reverse_look_up()
     {
         angle = ANGLE_DEFAULT;
+    }
+
+    bool is_necessary_move()
+    {
+        return !is_grounded;
     }
 
     bool can_take_this_gun(const Position &duck_position) const
@@ -71,9 +86,27 @@ public:
         return ANGLE_LOOK_UP;
     }
 
+    uint16_t get_id()
+    {
+        return id;
+    }
+
     Size get_size()
     {
         return size;
+    }
+
+    void move()
+    {
+        if (is_grounded)
+            return;
+        position.y++;
+    }
+
+    void cancel_move()
+    {
+        is_grounded = true;
+        position.y--;
     }
 
     GunNoEquippedSnapshot get_status()
