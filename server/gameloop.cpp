@@ -17,15 +17,11 @@ void Gameloop::step([[maybe_unused]] unsigned int current_step)
     try
     {   
         ClientCommand command;
-        while (game_queue.try_pop(command)) {
-            game.process(command);
-        
-            if (game.started) {
-                game.step();
-                Snapshot snapshot = game.get_status();
-                handler.broadcast(snapshot);
-            }
-        }
+        game_queue.try_pop(command);
+        game.process(command);
+        game.step();
+        Snapshot snapshot = game.get_status();
+        handler.broadcast(snapshot);
     } catch (ClosedQueue &e)
     {}
 }
