@@ -10,12 +10,14 @@ class ServerProtocol
 private:
     Socket &skt;
     void send_data(const uint16_t &data);
+    void send_data_float(const float &data);
     void send_duck_status(const DuckStatus &status);
     void send_duck(const DuckSnapshot &duck);
     void send_gun(const GunNoEquippedSnapshot &gun);
     void send_map_component(const MapComponent &component);
     void send_projectile(const ProjectileSnapshot &projectile);
     void send_box(const BoxSnapshot &box);
+
 public:
     explicit ServerProtocol(Socket &);
     ActionMessage read_action();

@@ -2,6 +2,7 @@
 #include "protocol.h"
 #include "../common/liberror.h"
 #include <arpa/inet.h>
+#include <cstring>
 
 ServerProtocol::ServerProtocol(Socket &socket) : skt(socket) {}
 
@@ -28,6 +29,21 @@ void ServerProtocol::send_data(const uint16_t &data)
     if (was_closed)
     {
         throw LibError(errno, "Error al intentar enviar datos a cliente");
+    }
+}
+
+void ServerProtocol::send_data_float(const float &data)
+{
+    bool was_closed = false;
+    uint32_t info;
+
+    std::memcpy(&info, &data, sizeof(float));
+    info = htonl(info);
+
+    skt.sendall(&info, sizeof(uint32_t), &was_closed);
+    if (was_closed)
+    {
+        throw LibError(errno, "Error al intentar enviar datos al cliente");
     }
 }
 
@@ -136,4 +152,5 @@ void ServerProtocol::send_snapshot(const Snapshot &snapshot)
         send_data(position.x);
         send_data(position.y);
     }
+    send_data_float(51.371f);
 }

@@ -1,5 +1,6 @@
 #include "protocol.h"
 #include <arpa/inet.h>
+#include <cstring>
 #include "../../common/liberror.h"
 #include "../../common/snapshots.h"
 #include "../../common/map.h"
@@ -177,6 +178,9 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
         read_data(y);
         snapshot.map.gun_spawns.push_back(Position(x, y));
     }
+    float numero;
+    read_data_float(numero);
+    std::cout << "El numero recibido es: " << numero << std::endl;
 }
 
 void ClientProtocol::read_data(uint16_t &data)
@@ -189,6 +193,21 @@ void ClientProtocol::read_data(uint16_t &data)
         throw LibError(errno, "Error al intentar enviar datos a cliente");
     }
     data = ntohs(data_received);
+}
+
+void ClientProtocol::read_data_float(float &data)
+{
+    bool was_closed = false;
+    uint32_t data_received = 0;
+
+    skt.recvall(&data_received, sizeof(uint32_t), &was_closed);
+    if (was_closed)
+    {
+        throw LibError(errno, "Error al intentar recibir datos del cliente");
+    }
+
+    data_received = ntohl(data_received);
+    std::memcpy(&data, &data_received, sizeof(float));
 }
 
 void ClientProtocol::send_action(const ClientActionType &action, bool &was_closed)
