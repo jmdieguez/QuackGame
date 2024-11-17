@@ -32,28 +32,6 @@
 /***************************************************************************
                               PRIVATE METHODS
 ****************************************************************************/
-
-SDL2pp::Texture &Game::get_spawn_texture()
-{
-    TextureStorage &storage = TextureStorage::get_instance();
-    std::shared_ptr<Texture> texture_created = storage.get_texture(renderer, TextureFigure::Spawn_T);
-    return texture_created.get()->get_texture();
-}
-
-SDL2pp::Texture &Game::get_box_texture()
-{
-    TextureStorage &storage = TextureStorage::get_instance();
-    std::shared_ptr<Texture> texture_created = storage.get_texture(renderer, TextureFigure::Box_T);
-    return texture_created.get()->get_texture();
-}
-
-SDL2pp::Texture &Game::get_background_texture()
-{
-    TextureStorage &storage = TextureStorage::get_instance();
-    std::shared_ptr<Texture> texture_created = storage.get_texture(renderer, TextureFigure::Background);
-    return texture_created.get()->get_texture();
-}
-
 SDL2pp::Texture &Game::get_texture(TextureFigure figure)
 {
     TextureStorage &storage = TextureStorage::get_instance();
@@ -118,6 +96,7 @@ void Game::update_renderer(int frame_ticks)
 
 void Game::render_duck(DuckSnapshot &duck, int frame_ticks)
 {
+    SDL2pp::Texture &duck_texture = get_texture(TextureFigure::DUCK);
     int src_x = POS_INIT_X_IMAGE, src_y = POS_INIT_Y_IMAGE;
     set_xy(duck, frame_ticks, src_x, src_y);
     SDL_Rect src_rect = {src_x, src_y, SRC_DUCK_WIDTH, SRC_DUCK_HEIGHT};
@@ -201,7 +180,7 @@ void Game::render_box_in_map(BoxSnapshot &box)
 {
     if (box.status != Box::NONE)
     {
-        SDL2pp::Texture &texture = get_box_texture();
+        SDL2pp::Texture &texture = get_texture(TextureFigure::Box_T);
         int x = static_cast<int>(box.status) * texture.GetHeight();
         SDL_Rect src_rect = {x, 0, texture.GetHeight(), texture.GetHeight()};
         SDL_Rect dst_rect = {box.pos.x * TILE_SIZE, box.pos.y * TILE_SIZE, TILE_SIZE, TILE_SIZE};
@@ -211,7 +190,7 @@ void Game::render_box_in_map(BoxSnapshot &box)
 
 void Game::render_spawn_in_map(Position &p)
 {
-    SDL2pp::Texture &texture = get_spawn_texture();
+    SDL2pp::Texture &texture = get_texture(TextureFigure::Spawn_T);
     int width = texture.GetWidth();
     int height = texture.GetHeight();
     SDL_Rect src_rect = {0, 0, width, height};
@@ -223,6 +202,7 @@ void Game::render_spawn_in_map(Position &p)
 
 void Game::render_background()
 {
+    SDL2pp::Texture &background_texture = get_texture(TextureFigure::Background);
     SDL_Rect src = {0, 0, background_texture.GetWidth(), background_texture.GetHeight()};
     SDL_Rect dst = {0, 0, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT};
     renderer.Copy(background_texture, src, dst);
@@ -279,8 +259,6 @@ Game::Game(Socket skt)
       socket(std::move(skt)),
       renderer(initializer.get_renderer()),
       mixer(initializer.get_mixer()),
-      background_texture(get_background_texture()),
-      duck_texture(get_texture(TextureFigure::DUCK)),
       all_tilesets_texture(std::make_shared<SDL2pp::Texture>(renderer, TILESETS))
 {
     YAML::Node root = YAML::LoadFile(DIMENSIONS_FILE);

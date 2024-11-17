@@ -41,11 +41,6 @@ private:
     Socket socket;
     SDL2pp::Renderer &renderer;
     SDL2pp::Mixer &mixer;
-    SDL2pp::Texture &background_texture;
-    SDL2pp::Texture &duck_texture;
-    SDL2pp::Texture &get_background_texture();
-    SDL2pp::Texture &get_spawn_texture();
-    SDL2pp::Texture &get_box_texture();
     SDL2pp::Texture &get_texture(TextureFigure figure);
     SDL2pp::Chunk &get_chunk(SoundType type);
 
