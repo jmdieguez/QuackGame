@@ -13,15 +13,17 @@
 #include "position.h"
 #include "projectiledirection.h"
 #include "size.h"
+#include "texturefigure.h"
 
 class GunNoEquippedSnapshot
 {
 public:
-    GunType type;
+    TextureFigure texture;
     Position position;
     Size size;
     uint16_t angle;
-    explicit GunNoEquippedSnapshot(const GunType &t, const Position &p, const Size &s, const uint16_t &angle) : type(t), position(p), size(s), angle(angle) {}
+    explicit GunNoEquippedSnapshot(const TextureFigure &t, const Position &p, const Size &s, const uint16_t &angle) : texture(t), position(p),
+                                                                                                                      size(s), angle(angle) {}
 };
 
 class ProjectileSnapshot
@@ -30,9 +32,12 @@ public:
     uint16_t pos_x;
     uint16_t pos_y;
     ProjectileType type;
+    TextureFigure texture;
     ProjectileDirection type_direction;
     bool finish;
-    explicit ProjectileSnapshot(uint16_t x, uint16_t y, ProjectileType type, ProjectileDirection type_direction, bool finish) : pos_x(x), pos_y(y), type(type), type_direction(type_direction), finish(finish) {}
+    explicit ProjectileSnapshot(const uint16_t &x, const uint16_t &y, const ProjectileType &type, const TextureFigure &texture, const ProjectileDirection &type_direction, bool finish) : pos_x(x), pos_y(y),
+                                                                                                                                                                                          type(type), texture(texture), type_direction(type_direction),
+                                                                                                                                                                                          finish(finish) {}
 };
 
 class DuckSnapshot
@@ -41,20 +46,22 @@ public:
     uint16_t id;
     Position position;
     Size size_duck;
-    GunType gun;
+    GunType type_gun;
+    TextureFigure texture_gun;
     Size size_gun;
     Position position_gun;
     uint16_t angle_gun;
     DuckStatus status;
 
-    explicit DuckSnapshot(const uint16_t &i, const Position &p, const Size &size_duck, const GunType &gun, const Size &size_gun, const Position &position_gun, const uint16_t &angle_gun, const DuckStatus &status) : id(i),
-                                                                                                                                                                                                                      position(std::move(p)),
-                                                                                                                                                                                                                      size_duck(size_duck),
-                                                                                                                                                                                                                      gun(gun),
-                                                                                                                                                                                                                      size_gun(size_gun),
-                                                                                                                                                                                                                      position_gun(position_gun),
-                                                                                                                                                                                                                      angle_gun(angle_gun),
-                                                                                                                                                                                                                      status(status)
+    explicit DuckSnapshot(const uint16_t &i, const Position &p, const Size &size_duck, const GunType &type_gun, const TextureFigure &texture_gun, const Size &size_gun, const Position &position_gun, const uint16_t &angle_gun, const DuckStatus &status) : id(i),
+                                                                                                                                                                                                                                                             position(std::move(p)),
+                                                                                                                                                                                                                                                             size_duck(size_duck),
+                                                                                                                                                                                                                                                             type_gun(type_gun),
+                                                                                                                                                                                                                                                             texture_gun(texture_gun),
+                                                                                                                                                                                                                                                             size_gun(size_gun),
+                                                                                                                                                                                                                                                             position_gun(position_gun),
+                                                                                                                                                                                                                                                             angle_gun(angle_gun),
+                                                                                                                                                                                                                                                             status(status)
     {
     }
 };

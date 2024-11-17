@@ -8,7 +8,7 @@
                               PUBLIC METHODS
 ****************************************************************************/
 
-ProjectileGrenade::ProjectileGrenade(const ProjectileType &t, const Position &p, const std::pair<int, int> &d, uint8_t velocity) : Projectile(t, p, d, velocity),
+ProjectileGrenade::ProjectileGrenade(const ProjectileType &t, const Position &p, const std::pair<int, int> &d, uint8_t velocity) : Projectile(t, TextureFigure::GrenadeFigure, p, d, velocity),
                                                                                                                                    time_to_explosion(TIME_TO_EXPLOSION),
                                                                                                                                    time_fire(TIME_FIRE), change_direction(false) {}
 

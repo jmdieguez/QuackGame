@@ -42,6 +42,8 @@ ProjectileSnapshot ClientProtocol::read_projectile()
 {
     uint16_t type;
     read_data(type);
+    uint16_t texture;
+    read_data(texture);
     uint16_t type_direction;
     read_data(type_direction);
     uint16_t pos_x;
@@ -51,8 +53,9 @@ ProjectileSnapshot ClientProtocol::read_projectile()
     uint16_t finish;
     read_data(finish);
     ProjectileType type_value = static_cast<ProjectileType>(type);
+    TextureFigure texture_value = static_cast<TextureFigure>(texture);
     ProjectileDirection type_direction_value = static_cast<ProjectileDirection>(type_direction);
-    ProjectileSnapshot projectile(pos_x, pos_y, type_value, type_direction_value, !!finish);
+    ProjectileSnapshot projectile(pos_x, pos_y, type_value, texture_value, type_direction_value, !!finish);
     return projectile;
 }
 
@@ -74,8 +77,10 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
         read_data(duck_width);
         uint16_t duck_height;
         read_data(duck_height);
-        uint16_t current_gun;
-        read_data(current_gun);
+        uint16_t type_gun;
+        read_data(type_gun);
+        uint16_t texture_gun;
+        read_data(texture_gun);
         uint16_t gun_width;
         read_data(gun_width);
         uint16_t gun_height;
@@ -89,10 +94,11 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
         DuckStatus duck_status = read_status();
         Position p(x, y);
         Size duck_size(duck_width, duck_height);
-        GunType gun_value = static_cast<GunType>(current_gun);
+        GunType type_gun_value = static_cast<GunType>(type_gun);
+        TextureFigure texture_gun_value = static_cast<TextureFigure>(texture_gun);
         Size gun_size(gun_width, gun_height);
         Position gun_position(gun_x, gun_y);
-        DuckSnapshot duck(id, p, duck_size, gun_value, gun_size, gun_position, gun_angle, duck_status);
+        DuckSnapshot duck(id, p, duck_size, type_gun_value, texture_gun_value, gun_size, gun_position, gun_angle, duck_status);
         snapshot.ducks.emplace_back(duck);
     }
     uint16_t guns_length;
@@ -100,20 +106,20 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
 
     for (uint16_t i = 0; i < guns_length; i++)
     {
-        uint16_t type;
-        read_data(type);
+        uint16_t texture;
+        read_data(texture);
         uint16_t x;
         read_data(x);
         uint16_t y;
         read_data(y);
-        GunType type_value = static_cast<GunType>(type);
+        TextureFigure texture_value = static_cast<TextureFigure>(texture);
         uint16_t weigth;
         read_data(weigth);
         uint16_t height;
         read_data(height);
         uint16_t angle;
         read_data(angle);
-        GunNoEquippedSnapshot gun(type_value, Position(x, y), Size(weigth, height), angle);
+        GunNoEquippedSnapshot gun(texture_value, Position(x, y), Size(weigth, height), angle);
         snapshot.guns.emplace_back(gun);
     }
 

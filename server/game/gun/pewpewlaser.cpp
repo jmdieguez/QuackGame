@@ -48,7 +48,7 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Pew
         std::make_shared<DispersionHigh>()};
 
     for (auto &dispersion : dispersions)
-        projectiles.push_back(std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, projectile_position, direction, VELOCITY, MAX_DISTANCE, dispersion));
+        projectiles.push_back(std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, TextureFigure::CowboyBullet, projectile_position, direction, VELOCITY, MAX_DISTANCE, dispersion));
 
     return std::make_optional(std::make_pair(projectiles, duck_position));
 }

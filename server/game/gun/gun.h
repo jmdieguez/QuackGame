@@ -111,12 +111,17 @@ public:
 
     GunNoEquippedSnapshot get_status()
     {
-        return GunNoEquippedSnapshot(type, position, size, angle);
+        return GunNoEquippedSnapshot(texture, position, size, angle);
     }
 
     GunType get_type()
     {
         return type;
+    }
+
+    TextureFigure get_texture()
+    {
+        return texture;
     }
 
     virtual Position get_position_in_duck(const uint16_t &height_duck, const Position &duck, const bool &looking_right, const bool &looking_up) = 0;

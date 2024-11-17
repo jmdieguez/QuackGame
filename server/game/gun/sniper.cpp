@@ -71,7 +71,7 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Sni
     Position projectile_position(adjusted_pos_x, adjusted_pos_y);
     std::vector<std::shared_ptr<Projectile>> projectiles;
     ProjectileType type = ProjectileType::CowboyBullet;
-    projectiles.push_back(std::make_shared<ProjectileGun>(type, projectile_position, direction, VELOCITY, MAX_DISTANCE));
+    projectiles.push_back(std::make_shared<ProjectileGun>(type, TextureFigure::CowboyBullet, projectile_position, direction, VELOCITY, MAX_DISTANCE));
     need_reload = true;
     block_shoot = true;
     time_to_reaload = TIME_TO_REALOAD;

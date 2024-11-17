@@ -33,20 +33,6 @@
                               PRIVATE METHODS
 ****************************************************************************/
 
-SDL2pp::Texture &Game::get_duck_texture()
-{
-    TextureStorage &storage = TextureStorage::get_instance();
-    std::shared_ptr<Texture> texture_created = storage.get_texture(renderer, TextureFigure::DUCK);
-    return texture_created.get()->get_texture();
-}
-
-SDL2pp::Texture &Game::get_gun_texture(GunType gun)
-{
-    TextureStorage &storage = TextureStorage::get_instance();
-    std::shared_ptr<Texture> texture_created = storage.get_texture(renderer, gun);
-    return texture_created.get()->get_texture();
-}
-
 SDL2pp::Texture &Game::get_spawn_texture()
 {
     TextureStorage &storage = TextureStorage::get_instance();
@@ -58,13 +44,6 @@ SDL2pp::Texture &Game::get_box_texture()
 {
     TextureStorage &storage = TextureStorage::get_instance();
     std::shared_ptr<Texture> texture_created = storage.get_texture(renderer, TextureFigure::Box_T);
-    return texture_created.get()->get_texture();
-}
-
-SDL2pp::Texture &Game::get_projectile_texture(ProjectileType projectile)
-{
-    TextureStorage &storage = TextureStorage::get_instance();
-    std::shared_ptr<Texture> texture_created = storage.get_texture(renderer, projectile);
     return texture_created.get()->get_texture();
 }
 
@@ -169,7 +148,7 @@ void Game::render_helmet_chestplate(DuckSnapshot &duck)
 }
 void Game::render_weapon(DuckSnapshot &duck)
 {
-    SDL2pp::Texture &texture = get_gun_texture(duck.gun);
+    SDL2pp::Texture &texture = get_texture(duck.texture_gun);
     int src_x = POS_INIT_X_GUN, src_y = POS_INIT_Y_GUN;
     SDL_RendererFlip flip = duck.status.looking_right ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
     SDL_Rect src_rect = {src_x, src_y, SRC_GUN_WIDTH, SRC_GUN_HEIGHT};
@@ -180,7 +159,7 @@ void Game::render_weapon(DuckSnapshot &duck)
 void Game::render_projectile(ProjectileSnapshot &projectile)
 {
 
-    SDL2pp::Texture &texture = get_projectile_texture(projectile.type);
+    SDL2pp::Texture &texture = get_texture(projectile.texture);
     int src_x = POS_INIT_X_PROJECTILE, src_y = POS_INIT_Y_PROJECTILE;
     bool looking_right = projectile.type_direction == ProjectileDirection::Right;
     SDL_RendererFlip flip = looking_right ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
@@ -192,7 +171,7 @@ void Game::render_projectile(ProjectileSnapshot &projectile)
 
 void Game::render_weapon_in_map(GunNoEquippedSnapshot &gun)
 {
-    SDL2pp::Texture &texture = get_gun_texture(gun.type);
+    SDL2pp::Texture &texture = get_texture(gun.texture);
     int src_x = POS_INIT_X_GUN, src_y = POS_INIT_Y_GUN;
     SDL_Rect src_rect = {src_x, src_y, SRC_GUN_WIDTH, SRC_GUN_HEIGHT};
     SDL_Rect dst_rect = {gun.position.x, gun.position.y + GUN_HEIGHT, gun.size.width, gun.size.height};
@@ -203,7 +182,7 @@ void Game::render_duck_with_gun(DuckSnapshot &duck, int frame_ticks)
 {
     render_duck(duck, frame_ticks);
     render_helmet_chestplate(duck);
-    if (duck.gun != GunType::None)
+    if (duck.type_gun != GunType::None)
         render_weapon(duck);
 }
 
@@ -253,7 +232,6 @@ void Game::play_sound(SoundSnapshot &sound_snapshot)
 {
     SDL2pp::Chunk &sound = get_chunk(sound_snapshot.sound);
     sound.SetVolume(1);
-    // if (!mixer.IsChannelPlaying(-1))
     mixer.PlayChannel(-1, sound);
 }
 
@@ -302,7 +280,7 @@ Game::Game(Socket skt)
       renderer(initializer.get_renderer()),
       mixer(initializer.get_mixer()),
       background_texture(get_background_texture()),
-      duck_texture(get_duck_texture()),
+      duck_texture(get_texture(TextureFigure::DUCK)),
       all_tilesets_texture(std::make_shared<SDL2pp::Texture>(renderer, TILESETS))
 {
     YAML::Node root = YAML::LoadFile(DIMENSIONS_FILE);

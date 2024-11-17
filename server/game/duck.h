@@ -38,9 +38,10 @@ public:
     void stop_moving();
     void look_up();
     void stop_looking_up();
+    GunType get_gun_type();
+    TextureFigure get_gun_texture();
     void drop_gun(Map &map);
     void shoot();
-    GunType get_gun_type();
     void stop_shooting();
     void drop_gun(std::vector<std::shared_ptr<Projectile>> &projectiles);
     void lay();

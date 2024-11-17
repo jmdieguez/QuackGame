@@ -35,7 +35,8 @@ ActionLobby ServerProtocol::read_lobby()
     action = static_cast<ClientActionType>(ntohs(info));
 
     uint16_t game_id = 0;
-    if (action == ClientActionType::JOIN_GAME) {
+    if (action == ClientActionType::JOIN_GAME)
+    {
         skt.recvall(&game_id, sizeof(game_id), &was_closed);
         if (was_closed)
         {
@@ -43,7 +44,9 @@ ActionLobby ServerProtocol::read_lobby()
         }
         game_id = ntohs(game_id);
         return ActionLobby(action, game_id);
-    } else if (action == ClientActionType::CREATE_GAME) {
+    }
+    else if (action == ClientActionType::CREATE_GAME)
+    {
         std::string name = "";
         read_name(name);
         return ActionLobby(action, 0, name);
@@ -84,7 +87,8 @@ void ServerProtocol::send_duck(const DuckSnapshot &duck)
     send_data(duck.position.y);
     send_data(static_cast<uint16_t>(duck.size_duck.width));
     send_data(static_cast<uint16_t>(duck.size_duck.height));
-    send_data(static_cast<uint16_t>(duck.gun));
+    send_data(static_cast<uint16_t>(duck.type_gun));
+    send_data(static_cast<uint16_t>(duck.texture_gun));
     send_data(static_cast<uint16_t>(duck.size_gun.width));
     send_data(static_cast<uint16_t>(duck.size_gun.height));
     send_data(static_cast<uint16_t>(duck.position_gun.x));
@@ -95,7 +99,7 @@ void ServerProtocol::send_duck(const DuckSnapshot &duck)
 
 void ServerProtocol::send_gun(const GunNoEquippedSnapshot &gun)
 {
-    send_data(static_cast<uint16_t>(gun.type));
+    send_data(static_cast<uint16_t>(gun.texture));
     send_data(static_cast<uint16_t>(gun.position.x));
     send_data(static_cast<uint16_t>(gun.position.y));
     send_data(static_cast<uint16_t>(gun.size.width));
@@ -106,6 +110,7 @@ void ServerProtocol::send_gun(const GunNoEquippedSnapshot &gun)
 void ServerProtocol::send_projectile(const ProjectileSnapshot &projectile)
 {
     send_data(static_cast<uint16_t>(projectile.type));
+    send_data(static_cast<uint16_t>(projectile.texture));
     send_data(static_cast<uint16_t>(projectile.type_direction));
     send_data(static_cast<uint16_t>(projectile.pos_x));
     send_data(static_cast<uint16_t>(projectile.pos_y));
@@ -185,43 +190,50 @@ void ServerProtocol::send_snapshot(const Snapshot &snapshot)
     send_data_float(51.371f);
 }
 
-void ServerProtocol::send_lobby_info(Queue<LobbyMessage>& queue, const uint16_t& size) {
+void ServerProtocol::send_lobby_info(Queue<LobbyMessage> &queue, const uint16_t &size)
+{
 
     send_data(static_cast<uint16_t>(ClientActionType::GAME_LIST));
     send_data(size);
-     for (uint16_t i = 0; i < size; i++) {
-         LobbyMessage lobby("", 0);
-         queue.try_pop(lobby);
-         send_data(lobby.game_id);
+    for (uint16_t i = 0; i < size; i++)
+    {
+        LobbyMessage lobby("", 0);
+        queue.try_pop(lobby);
+        send_data(lobby.game_id);
 
-         uint16_t nameLength = static_cast<uint16_t>(lobby.name.length());
-         send_data(nameLength);
+        uint16_t nameLength = static_cast<uint16_t>(lobby.name.length());
+        send_data(nameLength);
 
-         std::vector<unsigned char> nameBytes(lobby.name.begin(), lobby.name.end());
-         send_name(nameBytes);
-     }
+        std::vector<unsigned char> nameBytes(lobby.name.begin(), lobby.name.end());
+        send_name(nameBytes);
+    }
 }
 
-void ServerProtocol::send_name(const std::vector<unsigned char>& data) {
+void ServerProtocol::send_name(const std::vector<unsigned char> &data)
+{
     bool was_closed = false;
     skt.sendall(data.data(), data.size(), &was_closed);
-    if (was_closed) {
+    if (was_closed)
+    {
         throw LibError(errno, "Error al intentar enviar datos a cliente");
     }
 }
 
-void ServerProtocol::read_name(std::string& name) {
+void ServerProtocol::read_name(std::string &name)
+{
     bool was_closed = false;
     uint16_t nameLength;
-    skt.recvall(reinterpret_cast<char*>(&nameLength), sizeof(nameLength), &was_closed);
-    if (was_closed) {
+    skt.recvall(reinterpret_cast<char *>(&nameLength), sizeof(nameLength), &was_closed);
+    if (was_closed)
+    {
         throw LibError(errno, "Error al intentar leer datos a cliente");
     }
 
     uint16_t length = ntohs(nameLength);
     std::vector<char> nameBuffer(length);
     skt.recvall(nameBuffer.data(), length, &was_closed);
-    if (was_closed) {
+    if (was_closed)
+    {
         throw LibError(errno, "Error al intentar leer datos a cliente");
     }
     name.assign(nameBuffer.begin(), nameBuffer.end());

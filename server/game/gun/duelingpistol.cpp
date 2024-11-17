@@ -53,7 +53,7 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Due
     Position projectile_position(adjusted_pos_x, adjusted_pos_y);
     std::shared_ptr<Dispersion> dispersion = std::make_shared<DispersionMedium>(random());
     std::vector<std::shared_ptr<Projectile>> projectiles = {
-        std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, projectile_position, direction, VELOCITY, MAX_DISTANCE, dispersion)};
+        std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, TextureFigure::CowboyBullet, projectile_position, direction, VELOCITY, MAX_DISTANCE, dispersion)};
     return std::make_optional(std::make_pair(projectiles, duck_position));
 }
 

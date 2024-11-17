@@ -54,7 +54,7 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Mag
     uint16_t adjusted_pos_y = duck_position.y + (looking_up ? -GUN_WIDTH : VERTICAL_RIGHT);
     Position projectile_position(adjusted_pos_x, adjusted_pos_y);
     std::vector<std::shared_ptr<Projectile>> projectiles = {
-        std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, projectile_position, direction, VELOCITY, MAX_DISTANCE, dispersion)};
+        std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, TextureFigure::CowboyBullet, projectile_position, direction, VELOCITY, MAX_DISTANCE, dispersion)};
     Position new_position = move_back(duck_position, looking_right, BACK);
     return std::make_optional(std::make_pair(projectiles, new_position));
 }
