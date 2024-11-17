@@ -53,6 +53,10 @@ public:
     // Get current duck snapshot
     DuckSnapshot get_status();
 
+    bool is_alive() const {
+        return status.is_alive;
+    }
+
     // Simulate an iteration
     void step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles, std::vector<SoundType> &sounds);
 };

@@ -32,9 +32,10 @@ sudo cp build/quack_game_editor "$BIN_DIR"
 
 # 4. Copiar assets y archivos de configuración
 echo -e "${GREEN}Instalando binarios en $BIN_DIR, assets en $ASSETS_DIR y configuraciones en $CONFIG_DIR...${RESET}"
-sudo mkdir -p "$ASSETS_DIR" "$CONFIG_DIR"
+sudo mkdir -p "$ASSETS_DIR" "$CONFIG_DIR" "$CONFIG_DIR/maps"
 sudo cp -r assets/* "$ASSETS_DIR/"
 sudo cp -r config/* "$CONFIG_DIR/"
+sudo cp -r server/game/maps/* "$CONFIG_DIR/maps/"
 
 printf '%*s\n' "$(tput cols)" | tr ' ' '-'
 

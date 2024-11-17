@@ -16,22 +16,23 @@
 class Game
 {
 private:
-    int current_players = 0;
-    int required_players = 2;
-    Map map;
+    unsigned required_players = 2;
+    unsigned current_map = 0;
+    bool initialize = true;
+    std::vector<Map> maps;
+    std::vector<uint8_t> player_ids;
     std::map<uint8_t, Duck> ducks;
-    std::vector<Position> spawns;
     std::vector<std::shared_ptr<Projectile>> projectiles;
     std::vector<SoundType> sounds;
     std::vector<Explosion> explosions;
-
+    std::map<uint8_t, uint8_t> victories;
     void verify_hit_ducks();
     void move_grenade(std::shared_ptr<Projectile> &p);
-    void moves_projectiles(Map &map);
+    void move_projectiles();
     void remove_projectiles();
-
+    void spawn_players();
 public:
-    Game(const std::string &map_file);
+    Game();
     void process(ClientCommand &command);
     void step();
     bool started = false;

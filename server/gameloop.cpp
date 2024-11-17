@@ -5,7 +5,7 @@
 Gameloop::Gameloop(const uint16_t& id, const std::string& name, const uint16_t& creator_id):
         game_id(id), creator_id(creator_id), name(name), started(false),
         constant_rate_loop(_keep_running, [this](unsigned int step) { this->step(step); }),
-        game_queue(1000000), game("server/game/maps/map_00.yaml") {}
+        game_queue(10000) {}
 
 void Gameloop::run()
 {   

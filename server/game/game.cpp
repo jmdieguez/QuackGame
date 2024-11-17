@@ -1,13 +1,41 @@
 #include "game.h"
 #include "gun/projectile/projectilegrenade.h"
 
-Game::Game(const std::string &map_file) : map(map_file), spawns(map.calculate_spawns(required_players)) {}
+#include <filesystem>
+
+#define MAPS_PATH "/etc/quackgame/maps"
+
+namespace fs = std::filesystem;
+
+Game::Game() {
+    try {
+        for (const auto& entry : fs::directory_iterator(MAPS_PATH)) {
+            maps.push_back(Map(entry.path()));
+        }
+    } catch (const fs::filesystem_error& e) {
+        std::cerr << "Filesystem error: " << e.what() << std::endl;
+    }
+
+    return;
+}
 
 void Game::add_player(const uint16_t &id) {
-    Position p = spawns[current_players++];
-    ducks.emplace(id, Duck(id, p));
-    if (current_players == required_players)
+    player_ids.push_back(id);
+    victories.emplace(id, 0);
+
+    if (player_ids.size() == required_players)
         started = true;
+}
+
+void Game::spawn_players() {
+    std::vector<Position> spawns = maps[current_map].calculate_spawns(player_ids.size());
+    unsigned i = 0;
+    ducks.clear();
+    while (i < player_ids.size()) {
+        Position p = spawns[i];
+        uint8_t id = player_ids[i++];
+        ducks.emplace(id, Duck(id, p));
+    }
 }
 
 void Game::process(ClientCommand &command)
@@ -63,15 +91,15 @@ void Game::process(ClientCommand &command)
             break;
 
         case ClientActionType::DROP:
-            duck.get_gun_type() == GunType::Grenade ? duck.drop_gun(projectiles) : duck.drop_gun(map);
+            duck.get_gun_type() == GunType::Grenade ? duck.drop_gun(projectiles) : duck.drop_gun(maps[current_map]);
             break;
 
         case ClientActionType::GRAB:
-            duck.grab(map);
+            duck.grab(maps[current_map]);
             break;
 
         case ClientActionType::SPAWN_AK:
-            map.add_new_gun_ak(duck.get_position());
+            maps[current_map].add_new_gun_ak(duck.get_position());
             break;
         default:
             break;
@@ -107,19 +135,19 @@ void Game::move_grenade(std::shared_ptr<Projectile> &p)
         Position fragment_right(current_position.x + (5 * TILE_SIZE), current_position.y);
         Explosion explosion(current_position);
         explosions.push_back(explosion);
-        if (map.validate_coordinate(fragment_left))
+        if (maps[current_map].validate_coordinate(fragment_left))
         {
             Explosion explosion_left(fragment_left);
             explosions.push_back(explosion_left);
         }
-        if (map.validate_coordinate(fragment_right))
+        if (maps[current_map].validate_coordinate(fragment_right))
         {
             Explosion explosion_right(fragment_right);
             explosions.push_back(explosion_right);
         }
         return;
     }
-    if (map.validate_coordinate(current_position))
+    if (maps[current_map].validate_coordinate(current_position))
         return;
     if (grenade->is_change_direction_apply())
     {
@@ -130,7 +158,7 @@ void Game::move_grenade(std::shared_ptr<Projectile> &p)
     grenade->cancel_move();
 }
 
-void Game::moves_projectiles(Map &map)
+void Game::move_projectiles()
 {
     for (std::shared_ptr<Projectile> &p : projectiles)
     {
@@ -141,7 +169,7 @@ void Game::moves_projectiles(Map &map)
         }
         p->move();
         Position current_position = p->get_position();
-        if (map.validate_coordinate(current_position))
+        if (maps[current_map].validate_coordinate(current_position))
             continue;
         p->cancel_move();
         p->destroy();
@@ -162,19 +190,38 @@ void Game::remove_projectiles()
 }
 
 void Game::step()
-{
+{   
+    if (initialize) {
+        spawn_players();
+        initialize = false;
+    }
+
     remove_projectiles();
-    moves_projectiles(map);
+    move_projectiles();
     verify_hit_ducks();
-    for (auto &[id, duck] : ducks)
-        duck.step(map, projectiles, sounds);
-    map.move_guns();
+
+    std::vector<uint8_t> ducks_alive;
+    for (auto &[id, duck] : ducks) {
+        duck.step(maps[current_map], projectiles, sounds);
+        if (duck.is_alive()) {
+            ducks_alive.push_back(id);
+        }
+    }
+    maps[current_map].move_guns();
+
+    int n_ducks_alive = ducks_alive.size();
+    if (n_ducks_alive <= 1) {
+        initialize = true;
+        current_map = (current_map + 1) % maps.size();
+        if (n_ducks_alive == 1)
+            victories[ducks_alive[0]]++;
+    }
 }
 
 Snapshot Game::get_status()
 {
-    MapSnapshot map_snapshot = map.get_status();
-    std::vector<GunNoEquippedSnapshot> guns_snapshots = map.get_guns_snapshots();
+    MapSnapshot map_snapshot = maps[current_map].get_status();
+    std::vector<GunNoEquippedSnapshot> guns_snapshots = maps[current_map].get_guns_snapshots();
     std::vector<DuckSnapshot> duck_snapshots;
     std::vector<SoundSnapshot> sound_snapshots;
     for (auto &[id, duck] : ducks)
