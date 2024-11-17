@@ -209,26 +209,7 @@ int Game::calculate_winner(std::vector<uint8_t> possible_winners) {
     return winners[0];
 }
 
-void Game::step()
-{   
-    if (initialize) {
-        spawn_players();
-        initialize = false;
-    }
-
-    remove_projectiles();
-    move_projectiles();
-    verify_hit_ducks();
-
-    std::vector<uint8_t> ducks_alive;
-    for (auto &[id, duck] : ducks) {
-        duck.step(maps[current_map], projectiles, sounds);
-        if (duck.is_alive()) {
-            ducks_alive.push_back(id);
-        }
-    }
-    maps[current_map].move_guns();
-
+void Game::check_for_winner(const std::vector<uint8_t> &ducks_alive) {
     int n_ducks_alive = ducks_alive.size();
     if (n_ducks_alive <= 1) {
         initialize = true;
@@ -253,6 +234,29 @@ void Game::step()
             }
         }
     }
+}
+
+void Game::step()
+{   
+    if (initialize) {
+        spawn_players();
+        initialize = false;
+    }
+
+    remove_projectiles();
+    move_projectiles();
+    verify_hit_ducks();
+
+    std::vector<uint8_t> ducks_alive;
+    for (auto &[id, duck] : ducks) {
+        duck.step(maps[current_map], projectiles, sounds);
+        if (duck.is_alive()) {
+            ducks_alive.push_back(id);
+        }
+    }
+    maps[current_map].move_guns();
+
+    check_for_winner(ducks_alive);
 }
 
 Snapshot Game::get_status()
