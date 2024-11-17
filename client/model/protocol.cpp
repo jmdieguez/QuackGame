@@ -180,7 +180,6 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
     }
     float numero;
     read_data_float(numero);
-    std::cout << "El numero recibido es: " << numero << std::endl;
 }
 
 void ClientProtocol::read_data(uint16_t &data)
@@ -217,8 +216,8 @@ void ClientProtocol::send_action(const ClientActionType &action, bool &was_close
     skt.sendall(&data_converted, sizeof(data_converted), &was_closed);
 }
 
-
-void ClientProtocol::get_game_list(uint16_t& game_id, std::string& name) {
+void ClientProtocol::get_game_list(uint16_t &game_id, std::string &name)
+{
     uint16_t game_id_network_order;
     recv(&game_id_network_order, sizeof(game_id_network_order));
     game_id = ntohs(game_id_network_order);
@@ -232,25 +231,30 @@ void ClientProtocol::get_game_list(uint16_t& game_id, std::string& name) {
     name.assign(nameBytes.begin(), nameBytes.end());
 }
 
-void ClientProtocol::recv(void* data, size_t size) {
+void ClientProtocol::recv(void *data, size_t size)
+{
     bool was_closed = false;
     skt.recvall(data, size, &was_closed);
-    if (was_closed) {
+    if (was_closed)
+    {
         throw LibError(errno, "Error al intentar recibir datos del servidor");
     }
 }
 
-void ClientProtocol::send_create_game(const std::string& name) {
+void ClientProtocol::send_create_game(const std::string &name)
+{
     bool was_closed = false;
     send_action(ClientActionType::CREATE_GAME, was_closed);
-    if (was_closed) {
+    if (was_closed)
+    {
         throw LibError(errno, "Error al intentar enviar datos del servidor");
     }
 
     uint16_t length = static_cast<uint16_t>(name.size());
     uint16_t nameLength = htons(length);
     skt.sendall(&nameLength, sizeof(nameLength), &was_closed);
-    if (was_closed) {
+    if (was_closed)
+    {
         throw LibError(errno, "Error al intentar enviar datos del servidor");
     }
 
@@ -258,60 +262,71 @@ void ClientProtocol::send_create_game(const std::string& name) {
     send_name(nameBytes);
 }
 
-void ClientProtocol::send_name(const std::vector<unsigned char>& data) {
+void ClientProtocol::send_name(const std::vector<unsigned char> &data)
+{
     bool was_closed = false;
     skt.sendall(data.data(), data.size(), &was_closed);
-    if (was_closed) {
+    if (was_closed)
+    {
         throw LibError(errno, "Error al intentar enviar datos a cliente");
     }
 }
 
-void ClientProtocol::send_join_game(const uint16_t& id) {
+void ClientProtocol::send_join_game(const uint16_t &id)
+{
     bool was_closed = false;
     send_action(ClientActionType::JOIN_GAME, was_closed);
-    if (was_closed) {
+    if (was_closed)
+    {
         throw LibError(errno, "Error al intentar enviar datos a cliente");
     }
     skt.sendall(&id, sizeof(uint16_t), &was_closed);
-    if (was_closed) {
+    if (was_closed)
+    {
         throw LibError(errno, "Error al intentar enviar datos del servidor");
     }
 }
 
-void ClientProtocol::send_start_game() {
+void ClientProtocol::send_start_game()
+{
     bool was_closed = false;
     send_action(ClientActionType::START_GAME, was_closed);
-    if (was_closed) {
+    if (was_closed)
+    {
         throw LibError(errno, "Error al intentar enviar datos del servidor");
     }
 }
 
-
-void ClientProtocol::read_list(std::map<uint16_t, std::string>& games) {
+void ClientProtocol::read_list(std::map<uint16_t, std::string> &games)
+{
     uint16_t action;
     read_data(action);
-    if (action != static_cast<uint16_t>(ClientActionType::GAME_LIST)) {
+    if (action != static_cast<uint16_t>(ClientActionType::GAME_LIST))
+    {
         std::cerr << "Error: Tipo de acción no esperado" << std::endl;
         return;
     }
 
     uint16_t size;
     read_data(size);
-    for (uint16_t i = 0; i < size; i++) {
+    for (uint16_t i = 0; i < size; i++)
+    {
         uint16_t game_id;
         read_data(game_id);
 
         bool was_closed = false;
         uint16_t nameLength;
-        skt.recvall(reinterpret_cast<char*>(&nameLength), sizeof(nameLength), &was_closed);
-        if (was_closed) {
+        skt.recvall(reinterpret_cast<char *>(&nameLength), sizeof(nameLength), &was_closed);
+        if (was_closed)
+        {
             throw LibError(errno, "Error al intentar leer datos a cliente");
         }
 
         uint16_t length = ntohs(nameLength);
         std::vector<char> nameBuffer(length);
         skt.recvall(nameBuffer.data(), length, &was_closed);
-        if (was_closed) {
+        if (was_closed)
+        {
             throw LibError(errno, "Error al intentar leer datos a cliente");
         }
         std::string name;
@@ -320,14 +335,12 @@ void ClientProtocol::read_list(std::map<uint16_t, std::string>& games) {
     }
 }
 
-void ClientProtocol::send_game_list() {
+void ClientProtocol::send_game_list()
+{
     bool was_closed = false;
     send_action(ClientActionType::GAME_LIST, was_closed);
-    if (was_closed) {
+    if (was_closed)
+    {
         throw LibError(errno, "Error al intentar enviar datos a cliente");
     }
 }
-
-
-
-
