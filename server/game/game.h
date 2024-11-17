@@ -32,6 +32,7 @@ private:
     void move_projectiles();
     void remove_projectiles();
     void spawn_players();
+    int calculate_winner(std::vector<uint8_t> possible_winners);
 public:
     Game();
     void process(ClientCommand &command);

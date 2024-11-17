@@ -4,6 +4,7 @@
 #include <filesystem>
 
 #define MAPS_PATH "/etc/quackgame/maps"
+#define MIN_ROUNDS_WON 10
 
 namespace fs = std::filesystem;
 
@@ -189,6 +190,25 @@ void Game::remove_projectiles()
     }
 }
 
+int Game::calculate_winner(std::vector<uint8_t> possible_winners) {
+    int max_score = 0;
+    std::vector<uint8_t> winners;
+    for (const auto& id : possible_winners) {
+        int score = victories[id];
+        if (score > max_score) {
+            max_score = score;
+            winners = {id};
+        } else if (score == max_score) {
+            winners.push_back(id);
+        }
+    }
+
+    if (winners.size() > 1)
+        return -1; // Exception
+
+    return winners[0];
+}
+
 void Game::step()
 {   
     if (initialize) {
@@ -216,8 +236,17 @@ void Game::step()
         if (n_ducks_alive == 1) {
             ++victories[ducks_alive[0]];
             if (round % 5 == 0) { // Check if somebody won every five rounds
+                std::vector<uint8_t> possible_winners;
                 for (const auto& [id, n_victories] : victories) {
-                    if (n_victories == 5) {
+                    if (n_victories >= MIN_ROUNDS_WON) {
+                        possible_winners.push_back(id);
+                    }
+                }
+
+                if (possible_winners.size() > 0) {
+                    int winner = calculate_winner(possible_winners);
+
+                    if (winner != -1) {
                         ended = true;
                     }
                 }
