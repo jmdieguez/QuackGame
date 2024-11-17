@@ -18,6 +18,7 @@ class Game
 private:
     unsigned required_players = 2;
     unsigned current_map = 0;
+    unsigned round = 0;
     bool initialize = true;
     std::vector<Map> maps;
     std::vector<uint8_t> player_ids;
@@ -36,6 +37,7 @@ public:
     void process(ClientCommand &command);
     void step();
     bool started = false;
+    bool ended = false;
     void add_player(const uint16_t &id);
     Snapshot get_status();
     ~Game() {}

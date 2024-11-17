@@ -212,9 +212,17 @@ void Game::step()
     int n_ducks_alive = ducks_alive.size();
     if (n_ducks_alive <= 1) {
         initialize = true;
-        current_map = (current_map + 1) % maps.size();
-        if (n_ducks_alive == 1)
-            victories[ducks_alive[0]]++;
+        current_map = (++round) % maps.size();
+        if (n_ducks_alive == 1) {
+            ++victories[ducks_alive[0]];
+            if (round % 5 == 0) { // Check if somebody won every five rounds
+                for (const auto& [id, n_victories] : victories) {
+                    if (n_victories == 5) {
+                        ended = true;
+                    }
+                }
+            }
+        }
     }
 }
 

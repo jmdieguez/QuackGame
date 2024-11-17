@@ -15,6 +15,8 @@ void Gameloop::run()
 void Gameloop::step([[maybe_unused]] unsigned int current_step)
 {
     if (game.started) {
+        if (game.ended)
+            _keep_running = false;
         try
         {   
             ClientCommand command;
