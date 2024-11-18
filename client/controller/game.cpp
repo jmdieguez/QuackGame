@@ -133,7 +133,7 @@ void Game::play_sound(SoundSnapshot &sound_snapshot)
 
 void Game::set_renderer(int frame_ticks)
 {
-    render_background();
+    render_storage.get_scene().render();
     Snapshot snapshot;
     if (!queue_receiver.try_pop(snapshot))
         return;
@@ -144,7 +144,7 @@ void Game::set_renderer(int frame_ticks)
     for (Position &position : snapshot.map.gun_spawns)
         render_spawn_in_map(position);
     for (DuckSnapshot &duck_snapshot : snapshot.ducks)
-        duck.render(duck_snapshot, frame_ticks);
+        render_storage.get_duck().render(duck_snapshot, frame_ticks);
     for (GunNoEquippedSnapshot &gun : snapshot.guns)
         render_weapon_in_map(gun);
     for (ProjectileSnapshot &projectile : snapshot.projectiles)
@@ -175,7 +175,7 @@ Game::Game(Socket skt)
       socket(std::move(skt)),
       renderer(initializer.get_renderer()),
       mixer(initializer.get_mixer()),
-      duck(renderer),
+      render_storage(renderer),
       all_tilesets_texture(std::make_shared<SDL2pp::Texture>(renderer, TILESETS))
 {
     YAML::Node root = YAML::LoadFile(DIMENSIONS_FILE);

@@ -24,7 +24,7 @@
 #include "../ui/tileset.h"
 #include "cheats/cheatstorage.h"
 #include "../model/resource/sound/soundstorage.h"
-#include "render/duck.h"
+#include "render/renderstorage.h"
 
 #define TILESETS "/var/quackgame/tiles.png"
 
@@ -42,9 +42,8 @@ private:
     Socket socket;
     SDL2pp::Renderer &renderer;
     SDL2pp::Mixer &mixer;
-    Duck duck;
-    SDL2pp::Texture &
-    get_texture(TextureFigure figure);
+    RenderStorage render_storage;
+    SDL2pp::Texture &get_texture(TextureFigure figure);
     SDL2pp::Chunk &get_chunk(SoundType type);
 
     std::shared_ptr<SDL2pp::Texture> all_tilesets_texture;

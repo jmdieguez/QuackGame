@@ -2,10 +2,14 @@ target_sources(quack_game_client
     PRIVATE
     # .cpp files
     duck.cpp
-    textureloader.cpp
+    scene.cpp
+    renderer.cpp
+    renderstorage.cpp
 
     PUBLIC
     # .h files
     duck.h
-    textureloader.h 
+    scene.h
+    renderer.h 
+    renderstorage.h
 )

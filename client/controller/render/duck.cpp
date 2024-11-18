@@ -55,7 +55,7 @@ void Duck::render_helmet_chestplate(DuckSnapshot &duck)
     int src_x = POS_INIT_X_DUCK, src_y = POS_INIT_Y_DUCK;
     if (duck.status.has_chestplate)
     {
-        SDL2pp::Texture &chestplate_texture = get_texture(renderer, TextureFigure::Chestplate);
+        SDL2pp::Texture &chestplate_texture = get_texture(TextureFigure::Chestplate);
         SDL_Rect src_rect = {src_x, src_y, SRC_DUCK_WIDTH, SRC_DUCK_HEIGHT};
         SDL_Rect dst_rect = {duck.position.x + (duck.status.looking_right ? 3 : 8), duck.position.y + 15, CHESTPLATE_WIDTH, CHESTPLATE_HEIGHT};
         SDL_RendererFlip flip = duck.status.looking_right ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
@@ -63,7 +63,7 @@ void Duck::render_helmet_chestplate(DuckSnapshot &duck)
     }
     if (duck.status.has_helmet)
     {
-        SDL2pp::Texture &helmet = get_texture(renderer, TextureFigure::Helmet);
+        SDL2pp::Texture &helmet = get_texture(TextureFigure::Helmet);
         SDL_Rect src_rect = {src_x, src_y, SRC_DUCK_WIDTH, SRC_DUCK_HEIGHT};
         SDL_Rect dst_rect = {duck.position.x + (duck.status.looking_right ? 3 : 8), duck.position.y - 2, HELMET_WIDTH, HELMET_HEIGHT};
         SDL_RendererFlip flip = duck.status.looking_right ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
@@ -73,7 +73,7 @@ void Duck::render_helmet_chestplate(DuckSnapshot &duck)
 
 void Duck::render_duck(DuckSnapshot &duck, int frame_ticks)
 {
-    SDL2pp::Texture &duck_texture = get_texture(renderer, TextureFigure::DUCK);
+    SDL2pp::Texture &duck_texture = get_texture(TextureFigure::DUCK);
     int src_x = POS_INIT_X_DUCK, src_y = POS_INIT_Y_DUCK;
     set_xy(duck, frame_ticks, src_x, src_y);
     SDL_Rect src_rect = {src_x, src_y, SRC_DUCK_WIDTH, SRC_DUCK_HEIGHT};
@@ -84,7 +84,7 @@ void Duck::render_duck(DuckSnapshot &duck, int frame_ticks)
 
 void Duck::render_weapon(DuckSnapshot &duck)
 {
-    SDL2pp::Texture &texture = get_texture(renderer, duck.texture_gun);
+    SDL2pp::Texture &texture = get_texture(duck.texture_gun);
     int src_x = POS_INIT_X_GUN, src_y = POS_INIT_Y_GUN;
     SDL_RendererFlip flip = duck.status.looking_right ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
     SDL_Rect src_rect = {src_x, src_y, SRC_GUN_WIDTH, SRC_GUN_HEIGHT};
@@ -96,7 +96,7 @@ void Duck::render_weapon(DuckSnapshot &duck)
                               PUBLIC METHODS
 ****************************************************************************/
 
-Duck::Duck(SDL2pp::Renderer &renderer) : renderer(renderer) {}
+Duck::Duck(SDL2pp::Renderer &renderer) : Renderer(renderer) {}
 void Duck::render(DuckSnapshot &duck, int frame_ticks)
 {
     render_duck(duck, frame_ticks);

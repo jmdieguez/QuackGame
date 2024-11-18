@@ -1,21 +1,21 @@
-#include "textureloader.h"
+#include "renderer.h"
 #include "../../model/resource/texturestorage.h"
 
 /***************************************************************************
                               PUBLIC METHODS
 ****************************************************************************/
 
-TextureLoader::TextureLoader()
+Renderer::Renderer(SDL2pp::Renderer &renderer) : renderer(renderer)
 {
 }
 
-SDL2pp::Texture &TextureLoader::get_texture(SDL2pp::Renderer &renderer, TextureFigure figure)
+SDL2pp::Texture &Renderer::get_texture(TextureFigure figure)
 {
     TextureStorage &storage = TextureStorage::get_instance();
     std::shared_ptr<Texture> texture_created = storage.get_texture(renderer, figure);
     return texture_created.get()->get_texture();
 }
 
-TextureLoader::~TextureLoader()
+Renderer::~Renderer()
 {
 }
