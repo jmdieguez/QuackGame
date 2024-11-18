@@ -1,8 +1,5 @@
 #include "duck.h"
 
-#include "../../model/resource/texturestorage.h"
-#include "../../../common/texturefigure.h"
-
 #define DUCK_HEIGHT 32
 #define DUCK_WIDTH 32
 #define SRC_DUCK_WIDTH 32

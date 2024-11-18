@@ -1,7 +1,6 @@
 #ifndef DUCK_CLIENT_H
 #define DUCK_CLIENT_H
 
-#include <SDL2pp/SDL2pp.hh>
 #include "../../../common/snapshots.h"
 #include "renderer.h"
 

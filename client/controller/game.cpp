@@ -59,19 +59,6 @@ void Game::update_renderer(int frame_ticks)
     renderer.Present();
 }
 
-void Game::render_projectile(ProjectileSnapshot &projectile)
-{
-
-    SDL2pp::Texture &texture = get_texture(projectile.texture);
-    int src_x = POS_INIT_X_PROJECTILE, src_y = POS_INIT_Y_PROJECTILE;
-    bool looking_right = projectile.type_direction == ProjectileDirection::Right;
-    SDL_RendererFlip flip = looking_right ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
-    SDL_Rect src_rect = {src_x, src_y, SRC_PROJECTILE_WIDTH, SRC_PROJECTILE_HEIGHT};
-    uint16_t dst_rect_x = projectile.pos_x + (looking_right ? HORIZONTAL_RIGHT : HORIZONTAL_LEFT);
-    SDL_Rect dst_rect = {dst_rect_x, projectile.pos_y + HORIZONTAL_Y, PROJECTILE_WIDTH, PROJECTILE_HEIGHT};
-    SDL_RenderCopyEx(renderer.Get(), texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);
-}
-
 void Game::render_component_in_map(MapComponent &component, uint16_t &style)
 {
     std::unique_ptr<Tileset> &tileset = tilesets[style];
@@ -119,7 +106,7 @@ void Game::set_renderer(int frame_ticks)
     for (GunNoEquippedSnapshot &gun : snapshot.guns)
         render_storage.get_item().render(gun);
     for (ProjectileSnapshot &projectile : snapshot.projectiles)
-        render_projectile(projectile);
+        render_storage.get_projectile_drawer().render(projectile);
     for (SoundSnapshot &sound_snapshot : snapshot.sounds)
         play_sound(sound_snapshot);
 }

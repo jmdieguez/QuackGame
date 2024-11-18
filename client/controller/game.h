@@ -53,8 +53,6 @@ private:
     void get_and_execute_events();
     void set_renderer(int current_step);
     void render_component_in_map(MapComponent &component, uint16_t &style);
-    void render_projectile(ProjectileSnapshot &projectile);
-    void render_box_in_map(BoxSnapshot &box);
     void render_spawn_in_map(Position &p);
     void update_renderer(int current_step);
     void handle_event(SDL_Event &event);

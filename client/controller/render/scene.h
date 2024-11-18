@@ -1,4 +1,6 @@
-#include <SDL2pp/SDL2pp.hh>
+#ifndef SCENE_H
+#define SCENE_H
+
 #include "renderer.h"
 #include "../../../common/snapshots.h"
 
@@ -10,3 +12,5 @@ public:
     void render();
     ~Scene();
 };
+
+#endif // SCENE_H
