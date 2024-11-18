@@ -39,6 +39,7 @@ void Acceptor::remove_disconnected_sessions() {
     for (auto it = sessions.begin(); it != sessions.end(); ) {
         auto session = it->second;
         if (!session || !session->is_alive()) {
+            session->join();
             it = sessions.erase(it);
         } else {
             ++it;
