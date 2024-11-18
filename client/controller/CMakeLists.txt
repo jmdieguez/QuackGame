@@ -11,3 +11,4 @@ target_sources(quack_game_client
 
 add_subdirectory(command/)
 add_subdirectory(cheats/)
+add_subdirectory(render/)
