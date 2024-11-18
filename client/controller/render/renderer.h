@@ -11,7 +11,7 @@ protected:
     SDL2pp::Renderer &renderer;
 
 public:
-    Renderer(SDL2pp::Renderer &renderer);
+    explicit Renderer(SDL2pp::Renderer &renderer);
     SDL2pp::Texture &get_texture(TextureFigure figure);
     ~Renderer();
 };

@@ -83,18 +83,6 @@ void Game::render_component_in_map(MapComponent &component, uint16_t &style)
     renderer.Copy(*texture, src_rect, dst_rect);
 }
 
-void Game::render_box_in_map(BoxSnapshot &box)
-{
-    if (box.status != Box::NONE)
-    {
-        SDL2pp::Texture &texture = get_texture(TextureFigure::Box_T);
-        int x = static_cast<int>(box.status) * texture.GetHeight();
-        SDL_Rect src_rect = {x, 0, texture.GetHeight(), texture.GetHeight()};
-        SDL_Rect dst_rect = {box.pos.x * TILE_SIZE, box.pos.y * TILE_SIZE, TILE_SIZE, TILE_SIZE};
-        renderer.Copy(texture, src_rect, dst_rect);
-    }
-}
-
 void Game::render_spawn_in_map(Position &p)
 {
     SDL2pp::Texture &texture = get_texture(TextureFigure::Spawn_T);
@@ -123,7 +111,7 @@ void Game::set_renderer(int frame_ticks)
     for (MapComponent &component : snapshot.map.components)
         render_component_in_map(component, snapshot.map.style);
     for (BoxSnapshot &box : snapshot.map.boxes)
-        render_box_in_map(box);
+        render_storage.get_box_item().render(box);
     for (Position &position : snapshot.map.gun_spawns)
         render_spawn_in_map(position);
     for (DuckSnapshot &duck_snapshot : snapshot.ducks)

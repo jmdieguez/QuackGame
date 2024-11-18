@@ -4,7 +4,7 @@
                               PUBLIC METHODS
 ****************************************************************************/
 
-RenderStorage::RenderStorage(SDL2pp::Renderer &renderer) : duck(renderer), scene(renderer), item(renderer)
+RenderStorage::RenderStorage(SDL2pp::Renderer &renderer) : duck(renderer), scene(renderer), item(renderer), box_item(renderer)
 {
 }
 
@@ -21,6 +21,11 @@ Scene &RenderStorage::get_scene()
 Item &RenderStorage::get_item()
 {
     return item;
+}
+
+BoxItem &RenderStorage::get_box_item()
+{
+    return box_item;
 }
 
 RenderStorage::~RenderStorage()
