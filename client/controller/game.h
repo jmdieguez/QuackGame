@@ -17,26 +17,21 @@
 #include "../../common/client_actions.h"
 #include "../../common/texturefigure.h"
 #include "./command/gamecontext.h"
-#include "./command/inputhandler.h"
 #include "../model/protocol.h"
 #include "../view/SDLInitializer.h"
 #include "../common/tiles.h"
 #include "../ui/tileset.h"
-#include "cheats/cheatstorage.h"
 #include "../model/resource/sound/soundstorage.h"
 #include "render/renderstorage.h"
+#include "session/sessioncontroller.h"
 
 class Game
 {
 private:
     SDLInitializer initializer;
     std::atomic<bool> keep_running;
-    CheatStorage cheat_storage;
     ConstantRateLoop constant_rate_loop;
-    Queue<Snapshot> queue_receiver;
-    Queue<ClientActionType> queue_sender;
-    InputHandler input;
-    GameContext game_context;
+    SessionController session;
     Socket socket;
     SDL2pp::Renderer &renderer;
     SDL2pp::Mixer &mixer;

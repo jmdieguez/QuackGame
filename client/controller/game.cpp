@@ -5,9 +5,6 @@
 #include "../common/texturefigure.h"
 #include "../common/texturesize.h"
 
-#define MAX_MESSAGES_QUEUE_RECEIVER 100000
-#define MAX_MESSAGES_QUEUE_SENDER 100000
-
 /***************************************************************************
                               PRIVATE METHODS
 ****************************************************************************/
@@ -23,9 +20,9 @@ void Game::handle_event(SDL_Event &event)
     if (event.type == SDL_QUIT || event.key.keysym.sym == SDLK_END)
         keep_running = false;
     else if (event.type == SDL_KEYDOWN)
-        input.execute_command(event, game_context, cheat_storage);
+        session.process_input(event);
     else if (event.type == SDL_KEYUP)
-        input.undo_command(event, game_context);
+        session.revert_command(event);
 }
 
 void Game::get_and_execute_events()
@@ -53,7 +50,7 @@ void Game::set_renderer(int frame_ticks)
 {
     render_storage.get_scene().render();
     Snapshot snapshot;
-    if (!queue_receiver.try_pop(snapshot))
+    if (!session.get_queue_receiver().try_pop(snapshot))
         return;
     for (MapComponent &component : snapshot.map.components)
         render_storage.get_map_drawer().render_component(component, snapshot.map.style);
@@ -86,10 +83,6 @@ Game::Game(Socket skt)
     : keep_running(true),
       constant_rate_loop(keep_running, [this](unsigned int step)
                          { this->step(step); }),
-      queue_receiver(MAX_MESSAGES_QUEUE_RECEIVER),
-      queue_sender(MAX_MESSAGES_QUEUE_SENDER),
-      input(queue_sender),
-      game_context(queue_sender),
       socket(std::move(skt)),
       renderer(initializer.get_renderer()),
       mixer(initializer.get_mixer()),
@@ -99,8 +92,8 @@ Game::Game(Socket skt)
 
 void Game::run()
 {
-    Receiver receiver(socket, queue_receiver);
-    Sender sender(socket, queue_sender);
+    Receiver receiver(socket, session.get_queue_receiver());
+    Sender sender(socket, session.get_queue_sender());
     receiver.start();
     sender.start();
     constant_rate_loop.execute();
