@@ -6,6 +6,7 @@ target_sources(quack_game_client
     item.cpp
     projectiledrawer.cpp
     boxitem.cpp
+    mapdrawer.cpp
     renderer.cpp
     renderstorage.cpp
 
@@ -16,6 +17,7 @@ target_sources(quack_game_client
     item.h
     projectiledrawer.h
     boxitem.h
+    mapdrawer.h
     renderer.h 
     renderstorage.h
 )

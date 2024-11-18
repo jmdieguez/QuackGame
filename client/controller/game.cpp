@@ -8,26 +8,9 @@
 #define MAX_MESSAGES_QUEUE_RECEIVER 100000
 #define MAX_MESSAGES_QUEUE_SENDER 100000
 
-#define POS_INIT_X_GUN 0
-#define POS_INIT_Y_GUN 0
-#define SRC_GUN_WIDTH 300
-#define SRC_GUN_HEIGHT 300
-
-#define POS_INIT_X_PROJECTILE 0
-#define POS_INIT_Y_PROJECTILE 0
-#define SRC_PROJECTILE_WIDTH 60
-#define SRC_PROJECTILE_HEIGHT 60
-
 /***************************************************************************
                               PRIVATE METHODS
 ****************************************************************************/
-SDL2pp::Texture &Game::get_texture(TextureFigure figure)
-{
-    TextureStorage &storage = TextureStorage::get_instance();
-    std::shared_ptr<Texture> texture_created = storage.get_texture(renderer, figure);
-    return texture_created.get()->get_texture();
-}
-
 SDL2pp::Chunk &Game::get_chunk(SoundType type)
 {
     SoundStorage &storage = SoundStorage::get_instance();
@@ -59,29 +42,6 @@ void Game::update_renderer(int frame_ticks)
     renderer.Present();
 }
 
-void Game::render_component_in_map(MapComponent &component, uint16_t &style)
-{
-    std::unique_ptr<Tileset> &tileset = tilesets[style];
-    std::shared_ptr<SDL2pp::Texture> &texture = tileset->textures[component.type];
-    uint8_t dim_x = dimensions[component.type].first;
-    uint8_t dim_y = dimensions[component.type].second;
-    SDL_Rect src_rect = {0, 0, dim_x, dim_y};
-    SDL_Rect dst_rect = {component.x * TILE_SIZE, component.y * TILE_SIZE, dim_x, dim_y};
-    renderer.Copy(*texture, src_rect, dst_rect);
-}
-
-void Game::render_spawn_in_map(Position &p)
-{
-    SDL2pp::Texture &texture = get_texture(TextureFigure::Spawn_T);
-    int width = texture.GetWidth();
-    int height = texture.GetHeight();
-    SDL_Rect src_rect = {0, 0, width, height};
-    int x = (p.x * TILE_SIZE) + ((TILE_SIZE - width) / 2);
-    int y = (p.y * TILE_SIZE) + (TILE_SIZE - height);
-    SDL_Rect dst_rect = {x, y, width, height};
-    renderer.Copy(texture, src_rect, dst_rect);
-}
-
 void Game::play_sound(SoundSnapshot &sound_snapshot)
 {
     SDL2pp::Chunk &sound = get_chunk(sound_snapshot.sound);
@@ -96,11 +56,11 @@ void Game::set_renderer(int frame_ticks)
     if (!queue_receiver.try_pop(snapshot))
         return;
     for (MapComponent &component : snapshot.map.components)
-        render_component_in_map(component, snapshot.map.style);
+        render_storage.get_map_drawer().render_component(component, snapshot.map.style);
     for (BoxSnapshot &box : snapshot.map.boxes)
         render_storage.get_box_item().render(box);
     for (Position &position : snapshot.map.gun_spawns)
-        render_spawn_in_map(position);
+        render_storage.get_map_drawer().render_spawn_in_map(position);
     for (DuckSnapshot &duck_snapshot : snapshot.ducks)
         render_storage.get_duck().render(duck_snapshot, frame_ticks);
     for (GunNoEquippedSnapshot &gun : snapshot.guns)
@@ -133,22 +93,8 @@ Game::Game(Socket skt)
       socket(std::move(skt)),
       renderer(initializer.get_renderer()),
       mixer(initializer.get_mixer()),
-      render_storage(renderer),
-      all_tilesets_texture(std::make_shared<SDL2pp::Texture>(renderer, TILESETS))
+      render_storage(renderer)
 {
-    YAML::Node root = YAML::LoadFile(DIMENSIONS_FILE);
-    for (const auto &dim : root["components"])
-    {
-        Component type = dim["type"].as<Component>();
-        uint16_t dim_x = dim["dim_x"].as<uint16_t>(); // n tiles
-        uint16_t dim_y = dim["dim_y"].as<uint16_t>();
-        dimensions.emplace(type, std::make_pair(dim_x * TILE_SIZE, dim_y * TILE_SIZE));
-    }
-
-    int n_tilesets = 5;
-
-    for (uint8_t i = 0; i < n_tilesets; i++)
-        tilesets.emplace(i, std::make_unique<Tileset>(i, renderer, all_tilesets_texture));
 }
 
 void Game::run()

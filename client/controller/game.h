@@ -26,8 +26,6 @@
 #include "../model/resource/sound/soundstorage.h"
 #include "render/renderstorage.h"
 
-#define TILESETS "/var/quackgame/tiles.png"
-
 class Game
 {
 private:
@@ -43,17 +41,10 @@ private:
     SDL2pp::Renderer &renderer;
     SDL2pp::Mixer &mixer;
     RenderStorage render_storage;
-    SDL2pp::Texture &get_texture(TextureFigure figure);
     SDL2pp::Chunk &get_chunk(SoundType type);
-
-    std::shared_ptr<SDL2pp::Texture> all_tilesets_texture;
-    std::map<uint8_t, std::unique_ptr<Tileset>> tilesets;
-    std::map<Component, std::pair<uint8_t, uint8_t>> dimensions;
 
     void get_and_execute_events();
     void set_renderer(int current_step);
-    void render_component_in_map(MapComponent &component, uint16_t &style);
-    void render_spawn_in_map(Position &p);
     void update_renderer(int current_step);
     void handle_event(SDL_Event &event);
     void play_sound(SoundSnapshot &sound_snapshot);

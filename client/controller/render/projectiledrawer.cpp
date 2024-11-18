@@ -11,6 +11,10 @@
 #define HORIZONTAL_RIGHT 10
 #define HORIZONTAL_LEFT -5
 
+/***************************************************************************
+                              PUBLIC METHODS
+****************************************************************************/
+
 ProjectileDrawer::ProjectileDrawer(SDL2pp::Renderer &renderer) : Renderer(renderer)
 {
 }

@@ -1,8 +1,8 @@
 #ifndef DUCK_CLIENT_H
 #define DUCK_CLIENT_H
 
-#include "../../../common/snapshots.h"
 #include "renderer.h"
+#include "../../../common/snapshots.h"
 
 class Duck : protected Renderer
 {
