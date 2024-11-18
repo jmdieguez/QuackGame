@@ -7,9 +7,9 @@
 enum class ClientActionType : uint16_t
 {
     UNDEFINED = 0,
-    CREATE_GAME,  // Enums are assigned consecutive values by default
-    JOIN_GAME,    // this number 3
-    SEND_MESSAGE, // 4
+    CREATE_GAME,
+    JOIN_GAME,
+    SEND_MESSAGE,
     MOVE_RIGHT,
     MOVE_LEFT,
     JUMP,

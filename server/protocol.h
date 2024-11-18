@@ -27,7 +27,7 @@ public:
     ActionMessage read_action();
     ActionLobby read_lobby();
     void send_snapshot(const Snapshot& snapshot);
-    void send_lobby_info(Queue<LobbyMessage>&,  const uint16_t& );
+    void send_lobby_info(const std::vector<LobbyMessage> &lobby_info);
 };
 
 #endif // SERVER_PROTOCOL_H

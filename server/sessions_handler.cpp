@@ -1,40 +1,50 @@
 #include "sessions_handler.h"
+
 #include <algorithm>
 #include <sstream>
 #include <utility>
 #include "../common/liberror.h"
 
-SessionsHandler::SessionsHandler() {}
-void SessionsHandler::add(Queue<Snapshot>& queue, uint16_t id) {
-    std::unique_lock<std::mutex> lck(mtx);
-    clients_queues.push_back(std::make_pair(std::ref(queue), id));
-}
-
-void SessionsHandler::broadcast(const Snapshot& message) {
-    std::unique_lock<std::mutex> lck(mtx);
-    if (clients_queues.size() == 0) {
-        return;
-    } else {
-        for (auto& pair: clients_queues) {
-            Queue<Snapshot>& queue = pair.first;
-            try {
-                queue.try_push(message);
-            } catch (const ClosedQueue&) {}
-        }
-    }
-}
-
-void SessionsHandler::remove_client(const uint16_t& id) {
-    std::unique_lock<std::mutex> lck(mtx);
-    auto it = clients_queues.begin();
-    while (it != clients_queues.end()) {
-        uint8_t idQueue = it->second;
-        if (idQueue == id) {
-            it = clients_queues.erase(it);
-        } else {
-            ++it;
-        }
-    }
-}
+SessionsHandler::SessionsHandler(const std::shared_ptr<Queue<ClientCommand>> &recv_q) : recv_queue(recv_q) {}
 
 SessionsHandler::~SessionsHandler() {}
+
+void SessionsHandler::add(Socket &client, const uint16_t &id)
+{
+    std::lock_guard<std::mutex> lock(mtx);
+    std::shared_ptr<Session> session = std::make_shared<Session>(client, recv_queue, id);
+    session->run();
+    sessions.emplace_back(session);
+}
+
+void SessionsHandler::remove_closed_sessions()
+{
+    std::lock_guard<std::mutex> lock(mtx);
+    sessions.erase(std::remove_if(sessions.begin(), sessions.end(),
+                                  [](const std::shared_ptr<Session> &session)
+                                  {
+                                      return session == nullptr || session->has_finished();
+                                  }),
+                   sessions.end());
+}
+
+void SessionsHandler::remove_all_sessions()
+{
+    std::lock_guard<std::mutex> lock(mtx);
+    recv_queue->close();
+    for (auto &session : sessions) {
+        session->stop();
+    }
+}
+
+void SessionsHandler::broadcast(const Snapshot &msg)
+{
+    std::lock_guard<std::mutex> lock(mtx);
+    for (auto &session : sessions)
+        session->send(msg);
+}
+
+bool SessionsHandler::has_clients() {
+    std::lock_guard<std::mutex> lock(mtx);
+    return (sessions.size() > 0); 
+}

@@ -1,64 +1,70 @@
-
-
 #include "monitor_games.h"
 MonitorGames::MonitorGames()
 {
 }
 
-void MonitorGames::create_game(const uint16_t &creator_id, const std::string &name, Queue<Snapshot> &queue)
+uint16_t MonitorGames::create_game(const uint16_t &creator_id, const std::string &name)
 {
     // TODO: Chequear que no existe una partida con mismo nombre
     std::lock_guard<std::mutex> lock(mtx);
-    auto newGame = std::make_shared<Gameloop>(id_counter, name, creator_id);
-    newGame->add_new_player(creator_id, queue);
-    games[id_counter] = newGame;
-    player_to_game[creator_id] = id_counter;
-    id_counter++;
+    auto new_game = std::make_shared<Gameloop>(id_counter, name, creator_id);
+    games[id_counter] = new_game;
+
+    return id_counter++;
 }
 
-Queue<ClientCommand> *MonitorGames::add_player(const uint16_t &game_id, const uint16_t &creator_id, Queue<Snapshot> &queue)
+void MonitorGames::join_game(const uint16_t &player_id, const uint16_t &game_id, Socket &skt)
 {
     std::lock_guard<std::mutex> lock(mtx);
-    Queue<ClientCommand> *game_q = nullptr;
     auto it = games.find(game_id);
     if (it != games.end())
     {
-        game_q = it->second->add_new_player(creator_id, queue);
-        player_to_game[creator_id] = game_id;
+        it->second->add_new_player(skt, player_id);
     }
-    return game_q;
 }
 
-Queue<ClientCommand> *MonitorGames::start_game(const uint16_t &creator_id)
+std::vector<LobbyMessage> MonitorGames::list_games()
 {
     std::lock_guard<std::mutex> lock(mtx);
-
-    auto playerIt = player_to_game.find(creator_id);
-    if (playerIt == player_to_game.end())
+    std::vector<LobbyMessage> messages;
+    for (const auto& [id, game] : games)
     {
-        return nullptr;
+        messages.push_back(LobbyMessage(game->get_name(), id));
     }
 
-    uint16_t game_id = playerIt->second;
-
-    auto gameIt = games.find(game_id);
-    if (gameIt != games.end())
-    {
-        return gameIt->second->start_game(creator_id);
-    }
-    return nullptr;
+    return messages;
 }
 
-void MonitorGames::list_games(Queue<LobbyMessage> &queue, uint16_t &game_size)
+void MonitorGames::start_game(const uint16_t &creator_id, const int &game_id, Socket &skt)
 {
     std::lock_guard<std::mutex> lock(mtx);
-    game_size = games.size();
-    for (const auto &[id, gameloop_ptr] : games)
-    {
-        if (gameloop_ptr)
-        {
-            std::string name = gameloop_ptr->get_name();
-            queue.push(LobbyMessage(name, id));
+    auto game = games.find(game_id);
+    if (game != games.end())
+    {   
+        game->second->add_new_player(skt, creator_id);
+        game->second->start_game(creator_id);
+    }
+}
+
+void MonitorGames::remove_finished_matches() {
+    std::lock_guard<std::mutex> lock(mtx);
+    for (auto it = games.begin(); it != games.end(); ) {
+        auto game = it->second;
+        if (!game || !game->is_alive()) {
+            game->join();
+            it = games.erase(it);
+        } else {
+            ++it;
         }
+    }
+}
+
+void MonitorGames::remove_all_matches() {
+    std::lock_guard<std::mutex> lock(mtx);
+
+    for (const auto& [id, game] : games)
+    {
+        game->stop();
+        game->join();
     }
 }

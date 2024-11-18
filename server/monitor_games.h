@@ -1,4 +1,3 @@
-
 #ifndef MONITOR_GAMES_H
 #define MONITOR_GAMES_H
 #include "client_command.h"
@@ -15,16 +14,17 @@ class MonitorGames {
 private:
     std::mutex mtx;
     std::map<uint16_t, std::shared_ptr<Gameloop>> games;
-    std::map<uint16_t, uint16_t> player_to_game;
     uint16_t id_counter = 0;
 public:
     MonitorGames();
-    void create_game(const uint16_t &creator_id, const std::string&, Queue<Snapshot>&);
-    Queue<ClientCommand>* add_player(const uint16_t&, const uint16_t &, Queue<Snapshot>&);
-    Queue<ClientCommand>* start_game(const uint16_t &);
-    void list_games(Queue<LobbyMessage>& queue, uint16_t& game_size);
-    bool is_game_started(const uint16_t&);
+
+    uint16_t create_game(const uint16_t &creator_id, const std::string &name);
+    void join_game(const uint16_t &player_id, const uint16_t &game_id, Socket &skt);
+    std::vector<LobbyMessage> list_games();
+    void start_game(const uint16_t &creator_id, const int &game_id, Socket &skt);
+    void remove_finished_matches();
+    void remove_all_matches();
 };
 
 
-#endif //MONITOR_GAMES_H
+#endif // MONITOR_GAMES_H

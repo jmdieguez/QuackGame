@@ -17,15 +17,17 @@ private:
     std::string name;
     bool started;
     ConstantRateLoop constant_rate_loop;
-    Queue<ClientCommand> game_queue;
+    std::shared_ptr<Queue<ClientCommand>> recv_queue;
     Game game;
     SessionsHandler handler;
 public:
     Gameloop(const uint16_t& id, const std::string&, const uint16_t& creator_id);
+    ~Gameloop() {}
     void run() override;
+    void stop() override;
     void step(unsigned int current_step);
-    Queue<ClientCommand>* add_new_player(const uint16_t&, Queue<Snapshot>&);
-    Queue<ClientCommand>* start_game(const uint16_t&);
+    void add_new_player(Socket &skt, const uint16_t& id);
+    void start_game(const uint16_t& game_id);
     const std::string& get_name();
     void game_state(std::atomic<bool>&);
 };

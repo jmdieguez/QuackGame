@@ -190,22 +190,17 @@ void ServerProtocol::send_snapshot(const Snapshot &snapshot)
     send_data_float(51.371f);
 }
 
-void ServerProtocol::send_lobby_info(Queue<LobbyMessage> &queue, const uint16_t &size)
+void ServerProtocol::send_lobby_info(const std::vector<LobbyMessage> &lobby_info)
 {
 
     send_data(static_cast<uint16_t>(ClientActionType::GAME_LIST));
+    uint16_t size = lobby_info.size();
     send_data(size);
-    for (uint16_t i = 0; i < size; i++)
-    {
-        LobbyMessage lobby("", 0);
-        queue.try_pop(lobby);
-        send_data(lobby.game_id);
 
-        uint16_t nameLength = static_cast<uint16_t>(lobby.name.length());
-        send_data(nameLength);
-
-        std::vector<unsigned char> nameBytes(lobby.name.begin(), lobby.name.end());
-        send_name(nameBytes);
+    for (const auto& msg : lobby_info) {
+        send_data(msg.game_id);
+        send_data(msg.name.length());
+        send_name(std::vector<unsigned char>(msg.name.begin(), msg.name.end()));
     }
 }
 

@@ -3,8 +3,8 @@
 #include "../common/liberror.h"
 #include "client_command.h"
 
-Receiver::Receiver(Socket &skt, const uint16_t &id, Queue<Snapshot>& queue,  std::atomic<bool>& playing):
-    session_id(id), client(skt), sender_queue(queue), game_queue(nullptr), protocol(skt), closed(false), is_playing(playing) {}
+Receiver::Receiver(Socket &skt, const std::shared_ptr<Queue<ClientCommand>> &recv_q, const uint16_t &id)
+    : session_id(id), client(skt), recv_queue(recv_q), protocol(skt), closed(false) {}
 
 Receiver::~Receiver() {}
 
@@ -12,12 +12,13 @@ void Receiver::run()
 {
     try
     {
-        while (!closed && _keep_running && game_queue != nullptr)
+        while (!closed && _keep_running)
         {
-            if (!closed) {
-                ActionMessage message = protocol.read_action();
+            ActionMessage message = protocol.read_action();
+            if (!closed)
+            {
                 ClientCommand command(session_id, message);
-                game_queue->push(command);
+                recv_queue->push(command);
             }
         }
     }
@@ -28,8 +29,4 @@ void Receiver::run()
     {
     }
     _is_alive = false;
-}
-
-void Receiver::add_game_queue(Queue<ClientCommand>* queue) {
-  game_queue = queue;
 }

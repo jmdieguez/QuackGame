@@ -1,7 +1,5 @@
 #include "acceptor.h"
-
 #include <memory>
-#include "games_manager.h"
 #include "../common/liberror.h"
 
 Acceptor::Acceptor(const char *port) :
@@ -15,21 +13,21 @@ void Acceptor::stop()
     socket.shutdown(2);
     socket.close();
     remove_all_sessions();
+    matches.remove_all_matches();
 }
 
 void Acceptor::run()
 {
     try
     {
-        GamesManager manager;
         while (_keep_running.load())
         {
             Socket peer = socket.accept();
             uint16_t id = session_id++;
-            auto client = std::make_unique<Session>(std::move(peer), id, manager);
-            client->run();
-            sessions.push_back(std::move(client));
+            sessions.emplace(id, std::make_shared<LobbySession>(id, peer, matches));
+            sessions.at(id)->start();
             remove_disconnected_sessions();
+            matches.remove_finished_matches();
         }
     }
     catch (LibError &e)
@@ -38,14 +36,22 @@ void Acceptor::run()
 }
 
 void Acceptor::remove_disconnected_sessions() {
-    sessions.remove_if([this](const std::unique_ptr<Session>& session) {
-        return session == nullptr || session->has_finished();
-    });
+    for (auto it = sessions.begin(); it != sessions.end(); ) {
+        auto session = it->second;
+        if (!session || !session->is_alive()) {
+            it = sessions.erase(it);
+        } else {
+            ++it;
+        }
+    }
 }
 
 void Acceptor::remove_all_sessions() {
-    for (auto& session: sessions) {
-        session->stop();
+    for (auto& [id, session] : sessions) {
+        if (session->is_alive()) {
+            session->stop();
+        }
+        session->join();
     }
     sessions.clear();
 }

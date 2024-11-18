@@ -2,7 +2,6 @@ target_sources(quack_game_server
         PRIVATE
         # .cpp files
         monitor_games.cpp
-        games_manager.cpp
         gameloop.cpp
         main.cpp
         server.cpp
@@ -12,11 +11,11 @@ target_sources(quack_game_server
         sender.cpp
         session.cpp
         sessions_handler.cpp
-
+        lobby_session.cpp
+        
         PUBLIC
         # .h files
         monitor_games.h
-        games_manager.h
         gameloop.h
         acceptor.h
         server.h
@@ -25,6 +24,7 @@ target_sources(quack_game_server
         sender.h
         session.h
         sessions_handler.h
+        lobby_session.h
 )
 
 add_subdirectory(game/)
