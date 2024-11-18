@@ -1,8 +1,8 @@
 #ifndef GAME_CONTEXT_H
 #define GAME_CONTEXT_H
 
-#include "../common/queue.h"
-#include "../common/client_actions.h"
+#include "../../common/queue.h"
+#include "../../common/client_actions.h"
 
 class GameContext
 {

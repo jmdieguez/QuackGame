@@ -1,10 +1,9 @@
 #ifndef SESSION_CONTROLLER_H
 #define SESSION_CONTROLLER_H
 
-#include "cheatstorage.h"
-
-#include "../command/inputhandler.h"
-#include "../command/gamecontext.h"
+#include "cheat/cheatstorage.h"
+#include "command/inputhandler.h"
+#include "command/gamecontext.h"
 #include "../../../common/queue.h"
 #include "../../../common/snapshots.h"
 

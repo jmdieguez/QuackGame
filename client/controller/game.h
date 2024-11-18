@@ -16,7 +16,6 @@
 #include "../../common/map.h"
 #include "../../common/client_actions.h"
 #include "../../common/texturefigure.h"
-#include "./command/gamecontext.h"
 #include "../model/protocol.h"
 #include "../view/SDLInitializer.h"
 #include "../common/tiles.h"
