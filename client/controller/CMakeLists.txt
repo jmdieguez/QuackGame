@@ -3,11 +3,10 @@ target_sources(quack_game_client
     # .cpp files
     game.cpp
 
-
     PUBLIC
     # .h files
     game.h 
 )
-
-add_subdirectory(command/)
-add_subdirectory(cheats/)
+add_subdirectory(render/)
+add_subdirectory(session/)
+add_subdirectory(music/)

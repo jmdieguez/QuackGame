@@ -5,8 +5,8 @@
 #include <string>
 #include <map>
 #include <cctype>
-#include "../../../common/client_actions.h"
-#include "../../../common/queue.h"
+#include "../../../../common/client_actions.h"
+#include "../../../../common/queue.h"
 
 class CheatStorage
 {

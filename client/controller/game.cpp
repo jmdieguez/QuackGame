@@ -1,59 +1,17 @@
 #include "game.h"
-#include "../model/receiver.h"
-#include "../model/sender.h"
-#include "../model/resource/texturestorage.h"
-#include "../common/texturefigure.h"
-#include "../common/texturesize.h"
-
-#define MAX_MESSAGES_QUEUE_RECEIVER 100000
-#define MAX_MESSAGES_QUEUE_SENDER 100000
-
-#define SRC_DUCK_WIDTH 32
-#define SRC_DUCK_HEIGHT 32
-#define POS_INIT_X_IMAGE 1
-#define POS_INIT_Y_IMAGE 8
-
-#define POS_INIT_X_GUN 0
-#define POS_INIT_Y_GUN 0
-#define SRC_GUN_WIDTH 300
-#define SRC_GUN_HEIGHT 300
-
-#define POS_INIT_X_PROJECTILE 0
-#define POS_INIT_Y_PROJECTILE 0
-#define SRC_PROJECTILE_WIDTH 60
-#define SRC_PROJECTILE_HEIGHT 60
-
-#define CHESTPLATE_WIDTH 20
-#define CHESTPLATE_HEIGHT 15
-
-#define HELMET_WIDTH 20
-#define HELMET_HEIGHT 20
 
 /***************************************************************************
                               PRIVATE METHODS
 ****************************************************************************/
-SDL2pp::Texture &Game::get_texture(TextureFigure figure)
-{
-    TextureStorage &storage = TextureStorage::get_instance();
-    std::shared_ptr<Texture> texture_created = storage.get_texture(renderer, figure);
-    return texture_created.get()->get_texture();
-}
-
-SDL2pp::Chunk &Game::get_chunk(SoundType type)
-{
-    SoundStorage &storage = SoundStorage::get_instance();
-    std::shared_ptr<Sound> sound_created = storage.get_sound(type);
-    return sound_created.get()->get_Sound();
-}
 
 void Game::handle_event(SDL_Event &event)
 {
     if (event.type == SDL_QUIT || event.key.keysym.sym == SDLK_END)
         keep_running = false;
     else if (event.type == SDL_KEYDOWN)
-        input.execute_command(event, game_context, cheat_storage);
+        session.process_input(event);
     else if (event.type == SDL_KEYUP)
-        input.undo_command(event, game_context);
+        session.revert_command(event);
 }
 
 void Game::get_and_execute_events()
@@ -63,186 +21,41 @@ void Game::get_and_execute_events()
         handle_event(event);
 }
 
-void Game::set_xy(DuckSnapshot &duck, int frame_ticks, int &src_x, int &src_y)
-{
-
-    if (!duck.status.is_alive)
-        src_y += DUCK_HEIGHT * 2;
-    else if (duck.status.falling)
-    {
-        src_x += DUCK_WIDTH * 3;
-        src_y += DUCK_HEIGHT;
-    }
-    else if (duck.status.start_jumping)
-    {
-        src_x += DUCK_WIDTH;
-        src_y += DUCK_HEIGHT;
-    }
-    else if (duck.status.bent_down)
-        src_y += DUCK_HEIGHT * 2;
-    else if (duck.status.mooving)
-    {
-        int run_phase = (frame_ticks / 4) % 5 + 1;
-        src_x = SRC_DUCK_WIDTH * run_phase;
-    }
-}
-
 void Game::update_renderer(int frame_ticks)
 {
-    renderer.Clear();
+    initializer.get_renderer().Clear();
     set_renderer(frame_ticks);
-    renderer.Present();
-}
-
-void Game::render_duck(DuckSnapshot &duck, int frame_ticks)
-{
-    SDL2pp::Texture &duck_texture = get_texture(TextureFigure::DUCK);
-    int src_x = POS_INIT_X_IMAGE, src_y = POS_INIT_Y_IMAGE;
-    set_xy(duck, frame_ticks, src_x, src_y);
-    SDL_Rect src_rect = {src_x, src_y, SRC_DUCK_WIDTH, SRC_DUCK_HEIGHT};
-    SDL_Rect dst_rect = {duck.position.x, duck.position.y, duck.size_duck.width, duck.size_duck.height};
-    SDL_RendererFlip flip = duck.status.looking_right ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
-    SDL_RenderCopyEx(renderer.Get(), duck_texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);
-}
-
-void Game::render_helmet_chestplate(DuckSnapshot &duck)
-{
-    int src_x = POS_INIT_X_IMAGE, src_y = POS_INIT_Y_IMAGE;
-    if (duck.status.has_chestplate)
-    {
-        SDL2pp::Texture &chestplate_texture = get_texture(TextureFigure::Chestplate);
-        SDL_Rect src_rect = {src_x, src_y, SRC_DUCK_WIDTH, SRC_DUCK_HEIGHT};
-        SDL_Rect dst_rect = {duck.position.x + (duck.status.looking_right ? 3 : 8), duck.position.y + 15, CHESTPLATE_WIDTH, CHESTPLATE_HEIGHT};
-        SDL_RendererFlip flip = duck.status.looking_right ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
-        SDL_RenderCopyEx(renderer.Get(), chestplate_texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);
-    }
-    if (duck.status.has_helmet)
-    {
-        SDL2pp::Texture &helmet = get_texture(TextureFigure::Helmet);
-        SDL_Rect src_rect = {src_x, src_y, SRC_DUCK_WIDTH, SRC_DUCK_HEIGHT};
-        SDL_Rect dst_rect = {duck.position.x + (duck.status.looking_right ? 3 : 8), duck.position.y - 2, HELMET_WIDTH, HELMET_HEIGHT};
-        SDL_RendererFlip flip = duck.status.looking_right ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
-        SDL_RenderCopyEx(renderer.Get(), helmet.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);
-    }
-}
-void Game::render_weapon(DuckSnapshot &duck)
-{
-    SDL2pp::Texture &texture = get_texture(duck.texture_gun);
-    int src_x = POS_INIT_X_GUN, src_y = POS_INIT_Y_GUN;
-    SDL_RendererFlip flip = duck.status.looking_right ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
-    SDL_Rect src_rect = {src_x, src_y, SRC_GUN_WIDTH, SRC_GUN_HEIGHT};
-    SDL_Rect dst_rect = {duck.position_gun.x, duck.position_gun.y, duck.size_gun.width, duck.size_gun.height};
-    SDL_RenderCopyEx(renderer.Get(), texture.Get(), &src_rect, &dst_rect, duck.angle_gun, nullptr, flip);
-}
-
-void Game::render_projectile(ProjectileSnapshot &projectile)
-{
-
-    SDL2pp::Texture &texture = get_texture(projectile.texture);
-    int src_x = POS_INIT_X_PROJECTILE, src_y = POS_INIT_Y_PROJECTILE;
-    bool looking_right = projectile.type_direction == ProjectileDirection::Right;
-    SDL_RendererFlip flip = looking_right ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
-    SDL_Rect src_rect = {src_x, src_y, SRC_PROJECTILE_WIDTH, SRC_PROJECTILE_HEIGHT};
-    uint16_t dst_rect_x = projectile.pos_x + (looking_right ? HORIZONTAL_RIGHT : HORIZONTAL_LEFT);
-    SDL_Rect dst_rect = {dst_rect_x, projectile.pos_y + HORIZONTAL_Y, PROJECTILE_WIDTH, PROJECTILE_HEIGHT};
-    SDL_RenderCopyEx(renderer.Get(), texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);
-}
-
-void Game::render_weapon_in_map(GunNoEquippedSnapshot &gun)
-{
-    SDL2pp::Texture &texture = get_texture(gun.texture);
-    int src_x = POS_INIT_X_GUN, src_y = POS_INIT_Y_GUN;
-    SDL_Rect src_rect = {src_x, src_y, SRC_GUN_WIDTH, SRC_GUN_HEIGHT};
-    SDL_Rect dst_rect = {gun.position.x, gun.position.y + GUN_HEIGHT, gun.size.width, gun.size.height};
-    SDL_RenderCopyEx(renderer.Get(), texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, SDL_FLIP_NONE);
-}
-
-void Game::render_duck_with_gun(DuckSnapshot &duck, int frame_ticks)
-{
-    render_duck(duck, frame_ticks);
-    render_helmet_chestplate(duck);
-    if (duck.type_gun != GunType::None)
-        render_weapon(duck);
-}
-
-void Game::render_component_in_map(MapComponent &component, uint16_t &style)
-{
-    std::unique_ptr<Tileset> &tileset = tilesets[style];
-    std::shared_ptr<SDL2pp::Texture> &texture = tileset->textures[component.type];
-    uint8_t dim_x = dimensions[component.type].first;
-    uint8_t dim_y = dimensions[component.type].second;
-    SDL_Rect src_rect = {0, 0, dim_x, dim_y};
-    SDL_Rect dst_rect = {component.x * TILE_SIZE, component.y * TILE_SIZE, dim_x, dim_y};
-    renderer.Copy(*texture, src_rect, dst_rect);
-}
-
-void Game::render_box_in_map(BoxSnapshot &box)
-{
-    if (box.status != Box::NONE)
-    {
-        SDL2pp::Texture &texture = get_texture(TextureFigure::Box_T);
-        int x = static_cast<int>(box.status) * texture.GetHeight();
-        SDL_Rect src_rect = {x, 0, texture.GetHeight(), texture.GetHeight()};
-        SDL_Rect dst_rect = {box.pos.x * TILE_SIZE, box.pos.y * TILE_SIZE, TILE_SIZE, TILE_SIZE};
-        renderer.Copy(texture, src_rect, dst_rect);
-    }
-}
-
-void Game::render_spawn_in_map(Position &p)
-{
-    SDL2pp::Texture &texture = get_texture(TextureFigure::Spawn_T);
-    int width = texture.GetWidth();
-    int height = texture.GetHeight();
-    SDL_Rect src_rect = {0, 0, width, height};
-    int x = (p.x * TILE_SIZE) + ((TILE_SIZE - width) / 2);
-    int y = (p.y * TILE_SIZE) + (TILE_SIZE - height);
-    SDL_Rect dst_rect = {x, y, width, height};
-    renderer.Copy(texture, src_rect, dst_rect);
-}
-
-void Game::render_background()
-{
-    SDL2pp::Texture &background_texture = get_texture(TextureFigure::Background);
-    SDL_Rect src = {0, 0, background_texture.GetWidth(), background_texture.GetHeight()};
-    SDL_Rect dst = {0, 0, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT};
-    renderer.Copy(background_texture, src, dst);
-
-    if (!started) {
-        loading_screen.render();
-    }
-}
-
-void Game::play_sound(SoundSnapshot &sound_snapshot)
-{
-    SDL2pp::Chunk &sound = get_chunk(sound_snapshot.sound);
-    sound.SetVolume(1);
-    mixer.PlayChannel(-1, sound);
+    initializer.get_renderer().Present();
 }
 
 void Game::set_renderer(int frame_ticks)
 {
-    render_background();
+    render_storage.get_scene().render();
     Snapshot snapshot;
-    if (!queue_receiver.try_pop(snapshot))
+    
+    if (!session.get_queue_receiver().try_pop(snapshot)) {
+        if (!started)
+            loading_screen.render();
         return;
+    }
     else
         started = true;
 
     if (started) {
         for (MapComponent &component : snapshot.map.components)
-            render_component_in_map(component, snapshot.map.style);
+            render_storage.get_map_drawer().render_component(component, snapshot.map.style);
         for (BoxSnapshot &box : snapshot.map.boxes)
-            render_box_in_map(box);
+            render_storage.get_box_item().render(box);
         for (Position &position : snapshot.map.gun_spawns)
-            render_spawn_in_map(position);
-        for (DuckSnapshot &duck : snapshot.ducks)
-            render_duck_with_gun(duck, frame_ticks);
+            render_storage.get_map_drawer().render_spawn_in_map(position);
+        for (DuckSnapshot &duck_snapshot : snapshot.ducks)
+            render_storage.get_duck().render(duck_snapshot, frame_ticks);
         for (GunNoEquippedSnapshot &gun : snapshot.guns)
-            render_weapon_in_map(gun);
+            render_storage.get_item().render(gun);
         for (ProjectileSnapshot &projectile : snapshot.projectiles)
-            render_projectile(projectile);
+            render_storage.get_projectile_drawer().render(projectile);
         for (SoundSnapshot &sound_snapshot : snapshot.sounds)
-            play_sound(sound_snapshot);
+            music_box.play_sound(sound_snapshot);
     }
 }
 
@@ -261,36 +74,18 @@ Game::Game(Socket skt)
     : keep_running(true),
       constant_rate_loop(keep_running, [this](unsigned int step)
                          { this->step(step); }),
-      queue_receiver(MAX_MESSAGES_QUEUE_RECEIVER),
-      queue_sender(MAX_MESSAGES_QUEUE_SENDER),
-      input(queue_sender),
-      game_context(queue_sender),
-      socket(std::move(skt)),
-      renderer(initializer.get_renderer()),
-      mixer(initializer.get_mixer()),
-      all_tilesets_texture(std::make_shared<SDL2pp::Texture>(renderer, TILESETS)),
       font(FONT_PATH, 32),
-      loading_screen(renderer, font)
+      loading_screen(initializer.get_renderer(), font),
+      music_box(initializer.get_mixer()),
+      render_storage(initializer.get_renderer()),
+      socket(std::move(skt))
 {
-    YAML::Node root = YAML::LoadFile(DIMENSIONS_FILE);
-    for (const auto &dim : root["components"])
-    {
-        Component type = dim["type"].as<Component>();
-        uint16_t dim_x = dim["dim_x"].as<uint16_t>(); // n tiles
-        uint16_t dim_y = dim["dim_y"].as<uint16_t>();
-        dimensions.emplace(type, std::make_pair(dim_x * TILE_SIZE, dim_y * TILE_SIZE));
-    }
-
-    int n_tilesets = 5;
-
-    for (uint8_t i = 0; i < n_tilesets; i++)
-        tilesets.emplace(i, std::make_unique<Tileset>(i, renderer, all_tilesets_texture));
 }
 
 void Game::run()
 {
-    Receiver receiver(socket, queue_receiver);
-    Sender sender(socket, queue_sender);
+    Receiver receiver(socket, session.get_queue_receiver());
+    Sender sender(socket, session.get_queue_sender());
     receiver.start();
     sender.start();
     constant_rate_loop.execute();

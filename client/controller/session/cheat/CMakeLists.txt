@@ -6,5 +6,4 @@ target_sources(quack_game_client
     PUBLIC
     # .h files
     cheatstorage.h
-
 )

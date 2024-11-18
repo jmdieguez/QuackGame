@@ -10,8 +10,8 @@
 #include "grab.h"
 #include "lookingup.h"
 #include "jump.h"
-#include "../cheats/cheatstorage.h"
-#include "../../../common/client_actions.h"
+#include "../cheat/cheatstorage.h"
+#include "../../../../common/client_actions.h"
 
 class InputHandler
 {

@@ -9,11 +9,11 @@ target_sources(quack_game_client
     create_room.cpp
     game_list.cpp
 
-
     PUBLIC
     # .h files
     SDLInitializer.h
     create_room.h
     main_window.h
     game_list.h
+    loading_screen.h
 )
