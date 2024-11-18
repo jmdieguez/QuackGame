@@ -1,19 +1,8 @@
 #include "game.h"
-#include "../model/receiver.h"
-#include "../model/sender.h"
-#include "../model/resource/texturestorage.h"
-#include "../common/texturefigure.h"
-#include "../common/texturesize.h"
 
 /***************************************************************************
                               PRIVATE METHODS
 ****************************************************************************/
-SDL2pp::Chunk &Game::get_chunk(SoundType type)
-{
-    SoundStorage &storage = SoundStorage::get_instance();
-    std::shared_ptr<Sound> sound_created = storage.get_sound(type);
-    return sound_created.get()->get_Sound();
-}
 
 void Game::handle_event(SDL_Event &event)
 {
@@ -34,18 +23,10 @@ void Game::get_and_execute_events()
 
 void Game::update_renderer(int frame_ticks)
 {
-    renderer.Clear();
+    initializer.get_renderer().Clear();
     set_renderer(frame_ticks);
-    renderer.Present();
+    initializer.get_renderer().Present();
 }
-
-void Game::play_sound(SoundSnapshot &sound_snapshot)
-{
-    SDL2pp::Chunk &sound = get_chunk(sound_snapshot.sound);
-    sound.SetVolume(1);
-    mixer.PlayChannel(-1, sound);
-}
-
 void Game::set_renderer(int frame_ticks)
 {
     render_storage.get_scene().render();
@@ -65,7 +46,7 @@ void Game::set_renderer(int frame_ticks)
     for (ProjectileSnapshot &projectile : snapshot.projectiles)
         render_storage.get_projectile_drawer().render(projectile);
     for (SoundSnapshot &sound_snapshot : snapshot.sounds)
-        play_sound(sound_snapshot);
+        music_box.play_sound(sound_snapshot);
 }
 
 void Game::step(unsigned int current_step)
@@ -83,10 +64,9 @@ Game::Game(Socket skt)
     : keep_running(true),
       constant_rate_loop(keep_running, [this](unsigned int step)
                          { this->step(step); }),
-      socket(std::move(skt)),
-      renderer(initializer.get_renderer()),
-      mixer(initializer.get_mixer()),
-      render_storage(renderer)
+      music_box(initializer.get_mixer()),
+      render_storage(initializer.get_renderer()),
+      socket(std::move(skt))
 {
 }
 
