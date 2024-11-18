@@ -2,8 +2,7 @@
 #include <yaml-cpp/yaml.h>
 #include <fstream>
 
-#define BLUE SDL_Color{100, 100, 255, 255}
-#define WHITE SDL_Color{255, 255, 255, 255}
+#include "../ui/defs.h"
 
 void Editor::draw_tiles() {
     for (auto& [coord, tile] : tiles.tiles_map) {

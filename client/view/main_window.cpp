@@ -2,6 +2,9 @@
 #include "ui_main_window.h"
 #include <QMessageBox>
 #include <QPushButton>
+#include <QIcon>
+
+#define ICON_PATH "/var/quackgame/logo.png"
 
 MainWindow::MainWindow(Lobby* lobby, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), lobby(lobby)
@@ -11,6 +14,9 @@ MainWindow::MainWindow(Lobby* lobby, QWidget *parent)
     connect(ui->createButton, &QPushButton::clicked, this, &MainWindow::onCreateButtonClicked);
     connect(ui->exitButton, &QPushButton::clicked, this, &MainWindow::onExitButtonClicked);
     connect(ui->joinButton, &QPushButton::clicked, this, &MainWindow::onJoinButtonClicked);
+
+    QIcon icon(ICON_PATH);
+    setWindowIcon(icon);
 }
 
 void MainWindow::onCreateButtonClicked()

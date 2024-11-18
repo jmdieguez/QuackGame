@@ -3,13 +3,13 @@
 
 #include <SDL2pp/SDL2pp.hh>
 
-#define FONT_PATH "var/quackgame/04B_30.TTF"
+#include "../ui/defs.h"
 
 using namespace SDL2pp;
 
 class Button {
 protected:
-    SDL_Color textColor = SDL_Color{255, 255, 255, 255};
+    SDL_Color textColor = WHITE;
     Font font;
     Renderer &renderer;
     Texture textTexture;

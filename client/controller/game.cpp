@@ -206,6 +206,10 @@ void Game::render_background()
     SDL_Rect src = {0, 0, background_texture.GetWidth(), background_texture.GetHeight()};
     SDL_Rect dst = {0, 0, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT};
     renderer.Copy(background_texture, src, dst);
+
+    if (!started) {
+        loading_screen.render();
+    }
 }
 
 void Game::play_sound(SoundSnapshot &sound_snapshot)
@@ -221,20 +225,25 @@ void Game::set_renderer(int frame_ticks)
     Snapshot snapshot;
     if (!queue_receiver.try_pop(snapshot))
         return;
-    for (MapComponent &component : snapshot.map.components)
-        render_component_in_map(component, snapshot.map.style);
-    for (BoxSnapshot &box : snapshot.map.boxes)
-        render_box_in_map(box);
-    for (Position &position : snapshot.map.gun_spawns)
-        render_spawn_in_map(position);
-    for (DuckSnapshot &duck : snapshot.ducks)
-        render_duck_with_gun(duck, frame_ticks);
-    for (GunNoEquippedSnapshot &gun : snapshot.guns)
-        render_weapon_in_map(gun);
-    for (ProjectileSnapshot &projectile : snapshot.projectiles)
-        render_projectile(projectile);
-    for (SoundSnapshot &sound_snapshot : snapshot.sounds)
-        play_sound(sound_snapshot);
+    else
+        started = true;
+
+    if (started) {
+        for (MapComponent &component : snapshot.map.components)
+            render_component_in_map(component, snapshot.map.style);
+        for (BoxSnapshot &box : snapshot.map.boxes)
+            render_box_in_map(box);
+        for (Position &position : snapshot.map.gun_spawns)
+            render_spawn_in_map(position);
+        for (DuckSnapshot &duck : snapshot.ducks)
+            render_duck_with_gun(duck, frame_ticks);
+        for (GunNoEquippedSnapshot &gun : snapshot.guns)
+            render_weapon_in_map(gun);
+        for (ProjectileSnapshot &projectile : snapshot.projectiles)
+            render_projectile(projectile);
+        for (SoundSnapshot &sound_snapshot : snapshot.sounds)
+            play_sound(sound_snapshot);
+    }
 }
 
 void Game::step(unsigned int current_step)
@@ -259,7 +268,9 @@ Game::Game(Socket skt)
       socket(std::move(skt)),
       renderer(initializer.get_renderer()),
       mixer(initializer.get_mixer()),
-      all_tilesets_texture(std::make_shared<SDL2pp::Texture>(renderer, TILESETS))
+      all_tilesets_texture(std::make_shared<SDL2pp::Texture>(renderer, TILESETS)),
+      font(FONT_PATH, 32),
+      loading_screen(renderer, font)
 {
     YAML::Node root = YAML::LoadFile(DIMENSIONS_FILE);
     for (const auto &dim : root["components"])

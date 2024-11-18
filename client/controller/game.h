@@ -24,7 +24,7 @@
 #include "../ui/tileset.h"
 #include "cheats/cheatstorage.h"
 #include "../model/resource/sound/soundstorage.h"
-
+#include "../view/loading_screen.h"
 #define TILESETS "/var/quackgame/tiles.png"
 
 class Game
@@ -43,11 +43,12 @@ private:
     SDL2pp::Mixer &mixer;
     SDL2pp::Texture &get_texture(TextureFigure figure);
     SDL2pp::Chunk &get_chunk(SoundType type);
-
     std::shared_ptr<SDL2pp::Texture> all_tilesets_texture;
     std::map<uint8_t, std::unique_ptr<Tileset>> tilesets;
     std::map<Component, std::pair<uint8_t, uint8_t>> dimensions;
-
+    SDL2pp::Font font;
+    LoadingScreen loading_screen;
+    bool started = false;
     void get_and_execute_events();
     void set_xy(DuckSnapshot &duck, int frame_ticks, int &src_x, int &src_y);
     void set_renderer(int current_step);

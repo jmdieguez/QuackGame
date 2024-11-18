@@ -1,7 +1,6 @@
 #ifndef MAIN_WINDOW_H
 #define MAIN_WINDOW_H
 
-
 #include <QMainWindow>
 #include "create_room.h"
 #include "game_list.h"
