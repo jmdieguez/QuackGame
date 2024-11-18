@@ -72,15 +72,6 @@ void Game::render_projectile(ProjectileSnapshot &projectile)
     SDL_RenderCopyEx(renderer.Get(), texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);
 }
 
-void Game::render_weapon_in_map(GunNoEquippedSnapshot &gun)
-{
-    SDL2pp::Texture &texture = get_texture(gun.texture);
-    int src_x = POS_INIT_X_GUN, src_y = POS_INIT_Y_GUN;
-    SDL_Rect src_rect = {src_x, src_y, SRC_GUN_WIDTH, SRC_GUN_HEIGHT};
-    SDL_Rect dst_rect = {gun.position.x, gun.position.y + GUN_HEIGHT, gun.size.width, gun.size.height};
-    SDL_RenderCopyEx(renderer.Get(), texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, SDL_FLIP_NONE);
-}
-
 void Game::render_component_in_map(MapComponent &component, uint16_t &style)
 {
     std::unique_ptr<Tileset> &tileset = tilesets[style];
@@ -116,14 +107,6 @@ void Game::render_spawn_in_map(Position &p)
     renderer.Copy(texture, src_rect, dst_rect);
 }
 
-void Game::render_background()
-{
-    SDL2pp::Texture &background_texture = get_texture(TextureFigure::Background);
-    SDL_Rect src = {0, 0, background_texture.GetWidth(), background_texture.GetHeight()};
-    SDL_Rect dst = {0, 0, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT};
-    renderer.Copy(background_texture, src, dst);
-}
-
 void Game::play_sound(SoundSnapshot &sound_snapshot)
 {
     SDL2pp::Chunk &sound = get_chunk(sound_snapshot.sound);
@@ -146,7 +129,7 @@ void Game::set_renderer(int frame_ticks)
     for (DuckSnapshot &duck_snapshot : snapshot.ducks)
         render_storage.get_duck().render(duck_snapshot, frame_ticks);
     for (GunNoEquippedSnapshot &gun : snapshot.guns)
-        render_weapon_in_map(gun);
+        render_storage.get_item().render(gun);
     for (ProjectileSnapshot &projectile : snapshot.projectiles)
         render_projectile(projectile);
     for (SoundSnapshot &sound_snapshot : snapshot.sounds)

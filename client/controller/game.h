@@ -52,8 +52,6 @@ private:
 
     void get_and_execute_events();
     void set_renderer(int current_step);
-    void render_background();
-    void render_weapon_in_map(GunNoEquippedSnapshot &gun);
     void render_component_in_map(MapComponent &component, uint16_t &style);
     void render_projectile(ProjectileSnapshot &projectile);
     void render_box_in_map(BoxSnapshot &box);

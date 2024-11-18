@@ -7,12 +7,11 @@
 #define DUCK_WIDTH 32
 #define SRC_DUCK_WIDTH 32
 #define SRC_DUCK_HEIGHT 32
-
 #define POS_INIT_X_DUCK 1
 #define POS_INIT_Y_DUCK 8
+
 #define SRC_GUN_WIDTH 300
 #define SRC_GUN_HEIGHT 300
-
 #define POS_INIT_X_GUN 0
 #define POS_INIT_Y_GUN 0
 

@@ -3,6 +3,7 @@ target_sources(quack_game_client
     # .cpp files
     duck.cpp
     scene.cpp
+    item.cpp
     renderer.cpp
     renderstorage.cpp
 
@@ -10,6 +11,7 @@ target_sources(quack_game_client
     # .h files
     duck.h
     scene.h
+    item.h
     renderer.h 
     renderstorage.h
 )
