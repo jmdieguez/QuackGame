@@ -62,6 +62,11 @@ void GunController::pick_up(Map &map, DuckStatus &status, const std::function<bo
     status.gun_grab = false;
 }
 
+void GunController::drop_grenade(std::vector<std::shared_ptr<Projectile>> &projectiles)
+{
+    (void)projectiles;
+}
+
 void GunController::fire(DuckStatus &status, Position &position, Map &map,
                          std::vector<std::shared_ptr<Projectile>> &projectiles,
                          std::vector<SoundType> &sounds)

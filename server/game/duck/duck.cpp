@@ -53,12 +53,6 @@ void Duck::drop_gun()
     status.gun_drop = true;
 }
 
-void Duck::drop_gun(std::vector<std::shared_ptr<Projectile>> &projectiles)
-{
-    (void)projectiles;
-    // TODO usar para la granada
-}
-
 void Duck::shoot()
 {
     if (gun == nullptr)
@@ -116,7 +110,7 @@ void Duck::step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles,
                 { return intersects(a); });
 
     if (status.gun_drop)
-        discard_gun(map, position, size, status);
+        gun->get_type() == GunType::Grenade ? drop_grenade(projectiles) : discard_gun(map, position, size, status);
 
     if (status.shooting && !block_shooting_command && gun != nullptr)
         fire(status, position, map, projectiles, sounds);
@@ -130,6 +124,11 @@ void Duck::set_receive_shot()
         status.has_helmet = false;
     else
         status.is_alive = false;
+}
+
+bool Duck::is_alive() const
+{
+    return status.is_alive;
 }
 
 DuckSnapshot Duck::get_status()
