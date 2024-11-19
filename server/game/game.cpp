@@ -98,7 +98,7 @@ void Game::process(ClientCommand &command)
             break;
 
         case ClientActionType::DROP:
-            duck.get_gun_type() == GunType::Grenade ? duck.drop_gun(projectiles) : duck.drop_gun(maps[current_map]);
+            duck.get_gun_type() == GunType::Grenade ? duck.drop_gun(projectiles) : duck.drop_gun();
             break;
 
         case ClientActionType::GRAB:

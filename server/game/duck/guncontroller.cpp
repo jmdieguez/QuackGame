@@ -39,12 +39,11 @@ Position GunController::get_gun_position(Position &position, Size &size, DuckSta
 
 void GunController::discard_gun(Map &map, Position &position, Size &size, DuckStatus &status)
 {
-    if (!gun)
-        return;
     Position pos = get_gun_position(position, size, status);
     gun->dropped(pos);
     map.add_gun(gun);
     gun = nullptr;
+    status.gun_drop = false;
 }
 
 void GunController::pick_up(Map &map, const std::function<bool(const Hitbox &)> &func)

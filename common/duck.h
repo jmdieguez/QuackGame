@@ -19,6 +19,7 @@ struct DuckStatus
     bool has_helmet = false;
     bool has_chestplate = false;
     bool is_alive = true;
+    bool gun_drop = false;
 };
 
 #endif // COMMON_DUCK_H

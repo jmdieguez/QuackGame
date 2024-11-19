@@ -35,7 +35,7 @@ public:
     void stop_moving();
     void look_up();
     void stop_looking_up();
-    void drop_gun(Map &map);
+    void drop_gun();
     void shoot();
     void stop_shooting();
     void drop_gun(std::vector<std::shared_ptr<Projectile>> &projectiles);

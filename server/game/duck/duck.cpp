@@ -46,9 +46,11 @@ void Duck::stop_looking_up()
     status.looking_up = false;
 }
 
-void Duck::drop_gun(Map &map)
+void Duck::drop_gun()
 {
-    discard_gun(map, position, size, status);
+    if (!gun)
+        return;
+    status.gun_drop = true;
 }
 
 void Duck::drop_gun(std::vector<std::shared_ptr<Projectile>> &projectiles)
@@ -107,6 +109,9 @@ void Duck::step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles,
 
     if (!status.shooting && !block_shooting_command && gun != nullptr)
         finish_shooting();
+
+    if (status.gun_drop)
+        discard_gun(map, position, size, status);
 
     if (status.shooting && !block_shooting_command && gun != nullptr)
         fire(status, position, map, projectiles, sounds);

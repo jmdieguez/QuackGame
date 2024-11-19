@@ -132,6 +132,7 @@ void ServerProtocol::send_duck_status(const DuckStatus &status)
     send_data(static_cast<uint16_t>(status.has_helmet));
     send_data(static_cast<uint16_t>(status.has_chestplate));
     send_data(static_cast<uint16_t>(status.is_alive));
+    send_data(static_cast<uint16_t>(status.gun_drop));
 }
 
 void ServerProtocol::send_map_component(const MapComponent &component)
@@ -197,7 +198,8 @@ void ServerProtocol::send_lobby_info(const std::vector<LobbyMessage> &lobby_info
     uint16_t size = lobby_info.size();
     send_data(size);
 
-    for (const auto& msg : lobby_info) {
+    for (const auto &msg : lobby_info)
+    {
         send_data(msg.game_id);
         send_data(msg.name.length());
         send_name(std::vector<unsigned char>(msg.name.begin(), msg.name.end()));
