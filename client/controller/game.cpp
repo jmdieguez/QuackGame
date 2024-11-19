@@ -32,8 +32,9 @@ void Game::set_renderer(int frame_ticks)
 {
     render_storage.get_scene().render();
     Snapshot snapshot;
-    
-    if (!session.get_queue_receiver().try_pop(snapshot)) {
+
+    if (!session.get_queue_receiver().try_pop(snapshot))
+    {
         if (!started)
             loading_screen.render();
         return;
@@ -41,7 +42,8 @@ void Game::set_renderer(int frame_ticks)
     else
         started = true;
 
-    if (started) {
+    if (started)
+    {
         for (MapComponent &component : snapshot.map.components)
             render_storage.get_map_drawer().render_component(component, snapshot.map.style);
         for (BoxSnapshot &box : snapshot.map.boxes)
@@ -54,8 +56,8 @@ void Game::set_renderer(int frame_ticks)
             render_storage.get_item().render(gun);
         for (ProjectileSnapshot &projectile : snapshot.projectiles)
             render_storage.get_projectile_drawer().render(projectile);
-        for (SoundSnapshot &sound_snapshot : snapshot.sounds)
-            music_box.play_sound(sound_snapshot);
+        // for (SoundSnapshot &sound_snapshot : snapshot.sounds)
+        //     music_box.play_sound(sound_snapshot);
     }
 }
 

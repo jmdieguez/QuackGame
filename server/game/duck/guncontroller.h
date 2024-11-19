@@ -24,7 +24,7 @@ public:
     uint16_t get_gun_angle(DuckStatus &status) const;
     Size get_gun_size() const;
 
-    void finish_shooting(DuckStatus &status);
+    void finish_shooting();
     Position get_gun_position(Position &position, Size &size, DuckStatus &status) const;
     void discard_gun(Map &map, Position &position, Size &size, DuckStatus &status);
     void pick_up(Map &map, const std::function<bool(const Hitbox &)> &func);

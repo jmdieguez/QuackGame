@@ -22,12 +22,8 @@ Size GunController::get_gun_size() const
     return gun == nullptr ? Size(0, 0) : gun->get_size();
 }
 
-void GunController::finish_shooting(DuckStatus &status)
+void GunController::finish_shooting()
 {
-    if (gun == nullptr)
-        return;
-    status.shooting = false;
-    block_shooting_command = false;
     if (gun->get_type() == GunType::Shotgun)
         ((Shotgun *)gun.get())->check_reset();
     if (gun->get_type() == GunType::Sniper)

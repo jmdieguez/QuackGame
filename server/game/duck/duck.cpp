@@ -66,7 +66,10 @@ void Duck::shoot()
 
 void Duck::stop_shooting()
 {
-    finish_shooting(status);
+    if (gun == nullptr)
+        return;
+    status.shooting = false;
+    block_shooting_command = false;
 }
 
 void Duck::jump()
@@ -101,6 +104,9 @@ void Duck::step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles,
 
     if (y_velocity != Y_VELOCITY_INITIAL)
         move_vertical(position, map, y_velocity);
+
+    if (!status.shooting && !block_shooting_command && gun != nullptr)
+        finish_shooting();
 
     if (status.shooting && !block_shooting_command && gun != nullptr)
         fire(status, position, map, projectiles, sounds);
