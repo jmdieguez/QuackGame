@@ -98,28 +98,7 @@ void Duck::lay()
 void Duck::step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles, std::vector<SoundType> &sounds)
 {
     if (status.mooving)
-    {
-        std::function<int(int, int)> operation = status.looking_right ? [](int a, int b)
-        { return a + b; }                                             : // if looking right, increment x
-                                                     [](int a, int b)
-        { return a - b; }; // if looking, decrease x
-        int i = 1;
-        while (i <= X_VELOCITY)
-        {
-            Position new_position(operation(position.x, 1), position.y);
-            Position end_hitbox(new_position.x + DUCK_HITBOX_X - 1, new_position.y + DUCK_HITBOX_Y - 1);
-            if (map.validate_coordinate(new_position) && map.validate_coordinate(end_hitbox))
-            {
-                position = new_position;
-                i++;
-            }
-            else
-            {
-                break;
-            }
-        }
-    }
-
+        move_horizontal(position, status, map);
     Position below_left(position.x, position.y + DUCK_HITBOX_Y);
     Position below_right(position.x + DUCK_HITBOX_X - 1, position.y + DUCK_HITBOX_Y);
     status.grounded = map.has_something_in(below_left) || map.has_something_in(below_right);

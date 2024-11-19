@@ -9,6 +9,7 @@
 #include <memory>
 #include <utility>
 
+#include "movecontroller.h"
 #include "guncontroller.h"
 #include "../gun/gun.h"
 #include "../map.h"
@@ -18,7 +19,7 @@
 #include "../../../common/snapshots.h"
 #include "../../../common/soundtype.h"
 
-class Duck : public Hitbox, public GunController
+class Duck : public Hitbox, public GunController, public MoveController
 {
 private:
     uint8_t id;
