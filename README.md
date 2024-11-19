@@ -1,55 +1,40 @@
-# Ejemplo de CMAKE para el TP Final
+<div style="text-align: center;">
+    <h1>Quack Game</h1>
+    <p> Remake de Duck Game
+    </p>
+  <img src="assets/logo.png" alt="QuackGame logo" style="width: 300px;">
+</div>
 
-**Importante:** el primer commit de este repositorio tiene el setup
-básico para el TP Final que incluye la instalación de la lib
-`libSDL2pp` (el wrapper de C++).
 
-El resto de los commits son a modo de ejemplo de como se pueden
-agregar mas código fuente al proyecto.
-
-Este ejemplo **no** incluye instalarse la librería `SDL2` ni tampoco
-instala otras librerías que puedan ser necesarias ni tampoco un
-instalador (aunque **si** incluye Google Tests)
-
-**Se deben agregar las librerias necesarias y el instalador.**
-
-También el ejemplo usa una estructura de carpetas muy simple:
+# Instalación
 
 ```
-client/
-server/
-editor/
-common/
+    git clone git@github.com:jmdieguez/QuackGame.git
+    cd QuackGame
+    ./install.sh
 ```
 
-Bien se puede mejorar (cambiando el cmakefile) agregando mas
-sub-carpetas.
+# Controles
 
-Asi tambien **deben** ser cambiados los *targets* del cmake (`taller_client`,
-`taller_server`, ...) por nombres mas acordes al TP que se este
-haciendo.
+* Apuntar hacia arriba: W
+* Agacharse: S
+* Moverse a la izquierda: A
+* Moverse hacia la derecha: D
+* Saltar: Espacio
+* Agarrar un arma del suelo: E
+* Disparar: T
 
-Tambien, por default solo se compila una version *debug* sin
-optimizar. Si se quiere compilar binarios optimizados
-(lo que cmake llama *release*) se puede, solo hay modificar
-cmake.
+# Cheats
 
-Aprender del ejemplo para saber como extenderlo!
+* Escribir 'ak' para spawnear una AK-47
+* Escribir 'sh' para spawnear una Shotgun
 
-**Importante:** este repositorio **no** incluye pre-commits hooks,
-ni scripts adicionales (como correr valgrind).
+# Créditos
 
-**Eso esta a cargo de los estudiantes,** tal como fue mostrado
-en los tps individuales, recaps y hands-on.
+Realizado por
 
-# Dependencias
+* Trinidad Bucciarelli
 
-sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libsdl2-mixer-dev
+* José Manuel Dieguez
 
-git clone https://github.com/jbeder/yaml-cpp.git
-cd yaml-cpp
-mkdir build
-cd build
-cmake ..
-make
-sudo make install
+* Matias Rueda
