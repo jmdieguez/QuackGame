@@ -24,9 +24,9 @@ public:
         void goBack();
 
     private slots:
-        void onStartuttonClicked();
+        void onStartButtonClicked();
         void closeAll();
-        void onRoomCreated();
+        // void onRoomCreated();
 
 private:
     Ui::StartGame *ui;

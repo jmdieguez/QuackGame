@@ -2,6 +2,7 @@
 #include <QPushButton>
 #include "ui_create_room.h"
 #include <QThread>
+#include "start_game.h"
 
 CreateRoom::CreateRoom(Lobby* lobby, QWidget *parent)
     : QDialog(parent), ui(new Ui::CreateRoom), lobby(lobby)
@@ -26,7 +27,12 @@ void CreateRoom::onBackButtonClicked()
 void CreateRoom::onCreateRoomButtonClicked() {
     QString roomName = ui->textBoxName->text();
     lobby->create_room(roomName.toStdString());
-    QThread::sleep(10);
-    lobby->start_game();
+
+    StartGame startDialog(lobby, nullptr);
+
+    if (startDialog.exec() == QDialog::Accepted) {
+        lobby->start_game();
+    }
+
     QApplication::closeAllWindows();
 }

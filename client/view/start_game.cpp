@@ -8,7 +8,7 @@ StartGame::StartGame(Lobby* lobby, QWidget *parent)
 {
     ui->setupUi(this);
 
-    connect(ui->startButton, &QPushButton::clicked, this, &StartGame::onStartuttonClicked);
+    connect(ui->startButton, &QPushButton::clicked, this, &StartGame::onStartButtonClicked);
 }
 
 StartGame::~StartGame()
@@ -16,16 +16,14 @@ StartGame::~StartGame()
     delete ui;
 }
 
-void StartGame::onStartuttonClicked()
+void StartGame::onStartButtonClicked()
 {
   // Añadir chequeo de que haya al menos 2 jugadores
-    bool result = lobby->start_game();
-    if (result) {
-        closeAll();
-    }
+    lobby->start_game();
+    closeAll();
 }
 
 
-void StartGane::closeAll() {
+void StartGame::closeAll() {
     QApplication::closeAllWindows();
 }

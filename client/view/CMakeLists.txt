@@ -8,6 +8,7 @@ target_sources(quack_game_client
     main_window.cpp
     create_room.cpp
     game_list.cpp
+    start_game.cpp
 
     PUBLIC
     # .h files
@@ -16,4 +17,5 @@ target_sources(quack_game_client
     main_window.h
     game_list.h
     loading_screen.h
+    start_game.h
 )
