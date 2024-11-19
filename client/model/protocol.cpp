@@ -286,7 +286,8 @@ void ClientProtocol::send_join_game(const uint16_t &id)
     {
         throw LibError(errno, "Error al intentar enviar datos a cliente");
     }
-    skt.sendall(&id, sizeof(uint16_t), &was_closed);
+    uint16_t id_converted = htons(id);
+    skt.sendall(&id_converted, sizeof(uint16_t), &was_closed);
     if (was_closed)
     {
         throw LibError(errno, "Error al intentar enviar datos del servidor");
@@ -315,11 +316,11 @@ void ClientProtocol::read_list(std::map<uint16_t, std::string> &games)
 
     uint16_t size;
     read_data(size);
+
     for (uint16_t i = 0; i < size; i++)
     {
         uint16_t game_id;
         read_data(game_id);
-
         bool was_closed = false;
         uint16_t nameLength;
         skt.recvall(reinterpret_cast<char *>(&nameLength), sizeof(nameLength), &was_closed);

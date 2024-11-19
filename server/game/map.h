@@ -197,14 +197,21 @@ public:
         return MapSnapshot(cfg.style, cfg.size_x, cfg.size_y, cfg.components, box_snapshots, cfg.gun_spawns);
     }
 
+    bool in_range(Position &p) const {
+        return (p.x < cfg.size_x) && (p.y < cfg.size_y);
+    }
+
     bool validate_coordinate(Position &p) const
-    {
-        return (p.x < cfg.size_x) && (p.y < cfg.size_y) && !has_something_in(p);
+    {   
+        return !has_something_in(p);
     }
 
     bool has_something_in(Position &p) const
-    {
-        return cfg.bit_map[p.x + (p.y * cfg.size_x)];
+    {   
+        if (in_range(p)) {
+            return cfg.bit_map[p.x + (p.y * cfg.size_x)];
+        } 
+        return false;
     }
 
     std::map<uint8_t, std::shared_ptr<Gun>> &get_guns()

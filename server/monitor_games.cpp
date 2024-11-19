@@ -4,12 +4,11 @@ MonitorGames::MonitorGames()
 }
 
 uint16_t MonitorGames::create_game(const uint16_t &creator_id, const std::string &name)
-{
+{   
     // TODO: Chequear que no existe una partida con mismo nombre
     std::lock_guard<std::mutex> lock(mtx);
     auto new_game = std::make_shared<Gameloop>(id_counter, name, creator_id);
     games[id_counter] = new_game;
-
     return id_counter++;
 }
 
@@ -31,7 +30,6 @@ std::vector<LobbyMessage> MonitorGames::list_games()
     {
         messages.push_back(LobbyMessage(game->get_name(), id));
     }
-
     return messages;
 }
 
@@ -48,10 +46,11 @@ void MonitorGames::start_game(const uint16_t &creator_id, const int &game_id, So
 
 void MonitorGames::remove_finished_matches() {
     std::lock_guard<std::mutex> lock(mtx);
+
     for (auto it = games.begin(); it != games.end(); ) {
         auto game = it->second;
-        if (!game || !game->is_alive()) {
-            game->join();
+        if (game == nullptr || game->has_finished()) {
+            if (game != nullptr) game->join();
             it = games.erase(it);
         } else {
             ++it;
@@ -61,7 +60,6 @@ void MonitorGames::remove_finished_matches() {
 
 void MonitorGames::remove_all_matches() {
     std::lock_guard<std::mutex> lock(mtx);
-
     for (const auto& [id, game] : games)
     {
         game->stop();

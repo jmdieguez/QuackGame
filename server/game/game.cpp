@@ -23,9 +23,6 @@ Game::Game() {
 void Game::add_player(const uint16_t &id) {
     player_ids.push_back(id);
     victories.emplace(id, 0);
-
-    if (player_ids.size() == required_players)
-        started = true;
 }
 
 void Game::spawn_players() {
@@ -216,7 +213,7 @@ void Game::check_for_winner(const std::vector<uint8_t> &ducks_alive) {
         current_map = (++round) % maps.size();
         if (n_ducks_alive == 1) {
             ++victories[ducks_alive[0]];
-            if (round % 5 == 0) { // Check if somebody won every five rounds
+            if ((round >= 5) && (round % 5 == 0)) { // Check if somebody won every five rounds
                 std::vector<uint8_t> possible_winners;
                 for (const auto& [id, n_victories] : victories) {
                     if (n_victories >= MIN_ROUNDS_WON) {

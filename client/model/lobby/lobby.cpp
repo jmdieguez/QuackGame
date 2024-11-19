@@ -18,7 +18,7 @@ void Lobby::start_game() {
    //  return action == 1;
 }
 
-void  Lobby::get_game_list(std::map<uint16_t, std::string>& games) {
+void Lobby::get_game_list(std::map<uint16_t, std::string>& games) {
     protocol.send_game_list();
     protocol.read_list(games);
 

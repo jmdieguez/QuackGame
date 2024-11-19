@@ -16,6 +16,7 @@ private:
     uint16_t creator_id;
     std::string name;
     bool started;
+    bool finished = false;
     ConstantRateLoop constant_rate_loop;
     std::shared_ptr<Queue<ClientCommand>> recv_queue;
     Game game;
@@ -30,6 +31,7 @@ public:
     void start_game(const uint16_t& game_id);
     const std::string& get_name();
     void game_state(std::atomic<bool>&);
+    bool has_finished() const { return finished; }
 };
 
 #endif // GAMELOOP_H

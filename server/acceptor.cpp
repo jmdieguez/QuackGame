@@ -27,7 +27,7 @@ void Acceptor::run()
             sessions.emplace(id, std::make_shared<LobbySession>(id, peer, matches));
             sessions.at(id)->start();
             remove_disconnected_sessions();
-            matches.remove_finished_matches();
+            // matches.remove_finished_matches();
         }
     }
     catch (LibError &e)
