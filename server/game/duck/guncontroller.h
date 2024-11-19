@@ -16,6 +16,25 @@ public:
     std::shared_ptr<Gun> gun;
     bool block_shooting_command;
 
+    GunType get_gun_type()
+    {
+        return gun == nullptr ? GunType::None : gun->get_type();
+    }
+
+    TextureFigure get_gun_texture()
+    {
+        return gun == nullptr ? TextureFigure::CowboyPistolFigure : gun->get_texture();
+    }
+
+    uint16_t get_gun_angle(DuckStatus &status) const
+    {
+        return gun == nullptr ? 0 : gun->get_angle(status.looking_right, status.looking_up);
+    }
+
+    Size get_gun_size() const
+    {
+        return gun == nullptr ? Size(0, 0) : gun->get_size();
+    }
     explicit GunController() : gun(nullptr), block_shooting_command(false) {};
 
     void stop_shooting(DuckStatus &status)

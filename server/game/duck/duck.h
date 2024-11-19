@@ -18,14 +18,12 @@
 #include "../../../common/snapshots.h"
 #include "../../../common/soundtype.h"
 
-class Duck : public Hitbox, protected GunController
+class Duck : public Hitbox, public GunController
 {
 private:
     uint8_t id;
     DuckStatus status;
     int y_velocity;
-    uint16_t get_gun_angle() const;
-    Size get_gun_size() const;
 
 public:
     explicit Duck(const uint8_t &i, const Position &p);
@@ -36,8 +34,6 @@ public:
     void stop_moving();
     void look_up();
     void stop_looking_up();
-    GunType get_gun_type();
-    TextureFigure get_gun_texture();
     void drop_gun(Map &map);
     void shoot();
     void stop_shooting();

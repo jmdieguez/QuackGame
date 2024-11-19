@@ -46,26 +46,6 @@ void Duck::stop_looking_up()
     status.looking_up = false;
 }
 
-GunType Duck::get_gun_type()
-{
-    return gun == nullptr ? GunType::None : gun->get_type();
-}
-
-TextureFigure Duck::get_gun_texture()
-{
-    return gun == nullptr ? TextureFigure::CowboyPistolFigure : gun->get_texture();
-}
-
-uint16_t Duck::get_gun_angle() const
-{
-    return gun == nullptr ? 0 : gun->get_angle(status.looking_right, status.looking_up);
-}
-
-Size Duck::get_gun_size() const
-{
-    return gun == nullptr ? Size(0, 0) : gun->get_size();
-}
-
 void Duck::drop_gun(Map &map)
 {
     GunController::drop_gun(map, position, size, status);
@@ -234,7 +214,7 @@ DuckSnapshot Duck::get_status()
     Position aux(position.x - 8, position.y - 8);
     Position gun_position = get_gun_position(position, size, status);
     Position aux_gun(gun_position.x - 8, gun_position.y - 8);
-    uint16_t gun_angle = get_gun_angle();
+    uint16_t gun_angle = get_gun_angle(status);
     return DuckSnapshot(id,
                         aux,
                         size, gun_type, gun_texture, gun_size, gun_position, gun_angle, status);
