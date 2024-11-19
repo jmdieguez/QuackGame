@@ -36,7 +36,9 @@ DuckStatus ClientProtocol::read_status()
     read_data(is_alive);
     uint16_t gun_drop;
     read_data(gun_drop);
-    DuckStatus duck_status = {!!mooving, !!shooting, !!jumping, !!start_jumping, !!falling, !!flapping, !!bent_down, !!grounded, !!looking_up, !!looking_right, !!has_helmet, !!has_chestplate, !!is_alive, !!gun_drop};
+    uint16_t gun_grab;
+    read_data(gun_grab);
+    DuckStatus duck_status = {!!mooving, !!shooting, !!jumping, !!start_jumping, !!falling, !!flapping, !!bent_down, !!grounded, !!looking_up, !!looking_right, !!has_helmet, !!has_chestplate, !!is_alive, !!gun_drop, !!gun_grab};
     return duck_status;
 }
 

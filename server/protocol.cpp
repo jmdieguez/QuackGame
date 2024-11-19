@@ -133,6 +133,7 @@ void ServerProtocol::send_duck_status(const DuckStatus &status)
     send_data(static_cast<uint16_t>(status.has_chestplate));
     send_data(static_cast<uint16_t>(status.is_alive));
     send_data(static_cast<uint16_t>(status.gun_drop));
+    send_data(static_cast<uint16_t>(status.gun_grab));
 }
 
 void ServerProtocol::send_map_component(const MapComponent &component)

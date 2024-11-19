@@ -102,7 +102,7 @@ void Game::process(ClientCommand &command)
             break;
 
         case ClientActionType::GRAB:
-            duck.grab(maps[current_map]);
+            duck.grab();
             break;
 
         case ClientActionType::SPAWN_AK:

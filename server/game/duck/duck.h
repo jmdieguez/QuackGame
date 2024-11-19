@@ -43,7 +43,7 @@ public:
     void jump();
     void stand_up();
     void set_receive_shot();
-    void grab(Map &map);
+    void grab();
 
     // Get current duck snapshot
     DuckSnapshot get_status();

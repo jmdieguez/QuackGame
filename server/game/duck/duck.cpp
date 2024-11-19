@@ -84,10 +84,11 @@ void Duck::stand_up()
     status.bent_down = false;
 }
 
-void Duck::grab(Map &map)
+void Duck::grab()
 {
-    pick_up(map, [this](const Hitbox &a)
-            { return intersects(a); });
+    if (gun != nullptr)
+        return;
+    status.gun_grab = true;
 }
 
 void Duck::lay()
@@ -109,6 +110,10 @@ void Duck::step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles,
 
     if (!status.shooting && !block_shooting_command && gun != nullptr)
         finish_shooting();
+
+    if (status.gun_grab)
+        pick_up(map, status, [this](const Hitbox &a)
+                { return intersects(a); });
 
     if (status.gun_drop)
         discard_gun(map, position, size, status);

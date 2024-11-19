@@ -46,7 +46,7 @@ void GunController::discard_gun(Map &map, Position &position, Size &size, DuckSt
     status.gun_drop = false;
 }
 
-void GunController::pick_up(Map &map, const std::function<bool(const Hitbox &)> &func)
+void GunController::pick_up(Map &map, DuckStatus &status, const std::function<bool(const Hitbox &)> &func)
 {
     std::optional<uint8_t> id_to_erase;
     for (auto &[id, gun] : map.get_guns())
@@ -59,6 +59,7 @@ void GunController::pick_up(Map &map, const std::function<bool(const Hitbox &)> 
     }
     if (id_to_erase.has_value())
         map.get_guns().erase(id_to_erase.value());
+    status.gun_grab = false;
 }
 
 void GunController::fire(DuckStatus &status, Position &position, Map &map,
