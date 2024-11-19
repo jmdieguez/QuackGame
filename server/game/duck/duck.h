@@ -9,22 +9,21 @@
 #include <memory>
 #include <utility>
 
-#include "../../common/duck.h"
-#include "../../common/direction.h"
-#include "../../common/snapshots.h"
-#include "../../common/soundtype.h"
-#include "gun/gun.h"
-#include "map.h"
-#include "hitbox.h"
+#include "guncontroller.h"
+#include "../gun/gun.h"
+#include "../map.h"
+#include "../hitbox.h"
+#include "../../../common/duck.h"
+#include "../../../common/direction.h"
+#include "../../../common/snapshots.h"
+#include "../../../common/soundtype.h"
 
-class Duck : public Hitbox
+class Duck : public Hitbox, protected GunController
 {
 private:
     uint8_t id;
     DuckStatus status;
-    std::shared_ptr<Gun> gun;
     int y_velocity;
-    bool block_shooting_command;
     uint16_t get_gun_angle() const;
     Size get_gun_size() const;
     Position get_gun_position() const;
@@ -53,7 +52,8 @@ public:
     // Get current duck snapshot
     DuckSnapshot get_status();
 
-    bool is_alive() const {
+    bool is_alive() const
+    {
         return status.is_alive;
     }
 
