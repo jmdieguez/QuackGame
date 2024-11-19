@@ -1,5 +1,5 @@
 #include "texturefactory.h"
-#include "path.h"
+#include "../path.h"
 
 /***************************************************************************
                               PRIVATE METHODS

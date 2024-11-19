@@ -1,5 +1,5 @@
 #include "renderer.h"
-#include "../../model/resource/texturestorage.h"
+#include "../../model/resource/texture/texturestorage.h"
 
 /***************************************************************************
                               PUBLIC METHODS

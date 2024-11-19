@@ -1,6 +1,5 @@
 #include <iostream>
 #include "controller/game.h"
-#include "model/resource/texturefactory.h"
 #include "model/protocol.h"
 #include "view/main_window.h"
 #include "model/lobby/lobby.h"
@@ -18,7 +17,7 @@ int main(int argc, const char *argv[])
 
     try
     {
-        QApplication app(argc, const_cast<char**>(argv));
+        QApplication app(argc, const_cast<char **>(argv));
 
         const char *host = argv[HOST];
         const char *port = argv[PORT];
@@ -29,11 +28,11 @@ int main(int argc, const char *argv[])
         MainWindow w(&lobby);
         w.show();
 
-        if (app.exec() == SUCCESS) {
+        if (app.exec() == SUCCESS)
+        {
             Game game(std::move(skt));
             game.run();
         }
-
     }
     catch (const std::exception &err)
     {
