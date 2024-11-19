@@ -48,7 +48,7 @@ void Duck::stop_looking_up()
 
 void Duck::drop_gun(Map &map)
 {
-    GunController::drop_gun(map, position, size, status);
+    discard_gun(map, position, size, status);
 }
 
 void Duck::drop_gun(std::vector<std::shared_ptr<Projectile>> &projectiles)
@@ -66,17 +66,12 @@ void Duck::shoot()
 
 void Duck::stop_shooting()
 {
-    GunController::stop_shooting(status);
+    finish_shooting(status);
 }
 
 void Duck::jump()
 {
-    if (status.grounded)
-    {
-        status.jumping = true;
-        return;
-    }
-    status.flapping = true;
+    status.grounded ? status.jumping = true : status.flapping = true;
 }
 
 void Duck::stand_up()
@@ -86,8 +81,8 @@ void Duck::stand_up()
 
 void Duck::grab(Map &map)
 {
-    GunController::grab(map, [this](const Hitbox &a)
-                        { return intersects(a); });
+    pick_up(map, [this](const Hitbox &a)
+            { return intersects(a); });
 }
 
 void Duck::lay()
@@ -101,16 +96,14 @@ void Duck::step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles,
         move_horizontal(position, status, map);
 
     collision_detector(position, status, map);
-    if (status.grounded)
-        update_jump_status(status, y_velocity);
-    else
-        update_in_the_air_status(status, y_velocity);
+    status.grounded ? update_jump_status(status, y_velocity)
+                    : update_in_the_air_status(status, y_velocity);
 
     if (y_velocity != Y_VELOCITY_INITIAL)
         move_vertical(position, map, y_velocity);
 
     if (status.shooting && !block_shooting_command && gun != nullptr)
-        GunController::shoot(status, position, map, projectiles, sounds);
+        fire(status, position, map, projectiles, sounds);
 }
 // true if duck dies after receiving the shot
 void Duck::set_receive_shot()
@@ -135,7 +128,4 @@ DuckSnapshot Duck::get_status()
     return DuckSnapshot(id,
                         aux,
                         size, gun_type, gun_texture, gun_size, gun_position, gun_angle, status);
-    //  100,
-    //  status,
-    // gun_snapshot);
 }

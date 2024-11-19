@@ -22,7 +22,7 @@ Size GunController::get_gun_size() const
     return gun == nullptr ? Size(0, 0) : gun->get_size();
 }
 
-void GunController::stop_shooting(DuckStatus &status)
+void GunController::finish_shooting(DuckStatus &status)
 {
     if (gun == nullptr)
         return;
@@ -41,7 +41,7 @@ Position GunController::get_gun_position(Position &position, Size &size, DuckSta
     return gun == nullptr ? Position(0, 0) : gun->get_position_in_duck(size.height, position, status.looking_right, status.looking_up);
 }
 
-void GunController::drop_gun(Map &map, Position &position, Size &size, DuckStatus &status)
+void GunController::discard_gun(Map &map, Position &position, Size &size, DuckStatus &status)
 {
     if (!gun)
         return;
@@ -51,7 +51,7 @@ void GunController::drop_gun(Map &map, Position &position, Size &size, DuckStatu
     gun = nullptr;
 }
 
-void GunController::grab(Map &map, const std::function<bool(const Hitbox &)> &func)
+void GunController::pick_up(Map &map, const std::function<bool(const Hitbox &)> &func)
 {
     std::optional<uint8_t> id_to_erase;
     for (auto &[id, gun] : map.get_guns())
@@ -66,9 +66,9 @@ void GunController::grab(Map &map, const std::function<bool(const Hitbox &)> &fu
         map.get_guns().erase(id_to_erase.value());
 }
 
-void GunController::shoot(DuckStatus &status, Position &position, Map &map,
-                          std::vector<std::shared_ptr<Projectile>> &projectiles,
-                          std::vector<SoundType> &sounds)
+void GunController::fire(DuckStatus &status, Position &position, Map &map,
+                         std::vector<std::shared_ptr<Projectile>> &projectiles,
+                         std::vector<SoundType> &sounds)
 {
     auto result = gun->shoot(status.looking_right, status.looking_up, position);
     if (!result.has_value())

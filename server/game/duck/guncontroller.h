@@ -24,13 +24,13 @@ public:
     uint16_t get_gun_angle(DuckStatus &status) const;
     Size get_gun_size() const;
 
-    void stop_shooting(DuckStatus &status);
+    void finish_shooting(DuckStatus &status);
     Position get_gun_position(Position &position, Size &size, DuckStatus &status) const;
-    void drop_gun(Map &map, Position &position, Size &size, DuckStatus &status);
-    void grab(Map &map, const std::function<bool(const Hitbox &)> &func);
-    void shoot(DuckStatus &status, Position &position, Map &map,
-               std::vector<std::shared_ptr<Projectile>> &projectiles,
-               std::vector<SoundType> &sounds);
+    void discard_gun(Map &map, Position &position, Size &size, DuckStatus &status);
+    void pick_up(Map &map, const std::function<bool(const Hitbox &)> &func);
+    void fire(DuckStatus &status, Position &position, Map &map,
+              std::vector<std::shared_ptr<Projectile>> &projectiles,
+              std::vector<SoundType> &sounds);
 
     ~GunController();
 };
