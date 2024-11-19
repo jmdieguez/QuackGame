@@ -84,6 +84,12 @@ void Duck::stand_up()
     status.bent_down = false;
 }
 
+void Duck::grab(Map &map)
+{
+    GunController::grab(map, [this](const Hitbox &a)
+                        { return intersects(a); });
+}
+
 void Duck::lay()
 {
     status.bent_down = true;
@@ -185,12 +191,6 @@ void Duck::set_receive_shot()
         status.has_helmet = false;
     else
         status.is_alive = false;
-}
-
-void Duck::grab(Map &map)
-{
-    GunController::grab(map, [this](const Hitbox &a)
-                        { return intersects(a); });
 }
 
 DuckSnapshot Duck::get_status()
