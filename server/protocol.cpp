@@ -189,7 +189,6 @@ void ServerProtocol::send_snapshot(const Snapshot &snapshot)
         send_data(position.x);
         send_data(position.y);
     }
-    send_data_float(51.371f);
 }
 
 void ServerProtocol::send_lobby_info(const std::vector<LobbyMessage> &lobby_info)

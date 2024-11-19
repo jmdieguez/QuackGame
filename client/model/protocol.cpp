@@ -188,8 +188,6 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
         read_data(y);
         snapshot.map.gun_spawns.push_back(Position(x, y));
     }
-    float numero;
-    read_data_float(numero);
 }
 
 void ClientProtocol::read_data(uint16_t &data)
