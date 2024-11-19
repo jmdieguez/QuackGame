@@ -8,28 +8,36 @@
 
 namespace fs = std::filesystem;
 
-Game::Game() {
-    try {
-        for (const auto& entry : fs::directory_iterator(MAPS_PATH)) {
+Game::Game()
+{
+    try
+    {
+        for (const auto &entry : fs::directory_iterator(MAPS_PATH))
+        {
             maps.push_back(Map(entry.path()));
         }
-    } catch (const fs::filesystem_error& e) {
+    }
+    catch (const fs::filesystem_error &e)
+    {
         std::cerr << "Filesystem error: " << e.what() << std::endl;
     }
 
     return;
 }
 
-void Game::add_player(const uint16_t &id) {
+void Game::add_player(const uint16_t &id)
+{
     player_ids.push_back(id);
     victories.emplace(id, 0);
 }
 
-void Game::spawn_players() {
+void Game::spawn_players()
+{
     std::vector<Position> spawns = maps[current_map].calculate_spawns(player_ids.size());
     unsigned i = 0;
     ducks.clear();
-    while (i < player_ids.size()) {
+    while (i < player_ids.size())
+    {
         Position p = spawns[i];
         uint8_t id = player_ids[i++];
         ducks.emplace(id, Duck(id, p));
@@ -37,8 +45,9 @@ void Game::spawn_players() {
 }
 
 void Game::process(ClientCommand &command)
-{   
-    try {
+{
+    try
+    {
         Duck &duck = ducks.at(command.player_id);
         if (!duck.get_status().status.is_alive)
             return;
@@ -98,6 +107,10 @@ void Game::process(ClientCommand &command)
 
         case ClientActionType::SPAWN_AK:
             maps[current_map].add_new_gun_ak(duck.get_position());
+            break;
+
+        case ClientActionType::SPAWN_SHOTGUN:
+            maps[current_map].add_new_shotgun(duck.get_position());
             break;
         default:
             break;
@@ -187,15 +200,20 @@ void Game::remove_projectiles()
     }
 }
 
-int Game::calculate_winner(std::vector<uint8_t> possible_winners) {
+int Game::calculate_winner(std::vector<uint8_t> possible_winners)
+{
     int max_score = 0;
     std::vector<uint8_t> winners;
-    for (const auto& id : possible_winners) {
+    for (const auto &id : possible_winners)
+    {
         int score = victories[id];
-        if (score > max_score) {
+        if (score > max_score)
+        {
             max_score = score;
             winners = {id};
-        } else if (score == max_score) {
+        }
+        else if (score == max_score)
+        {
             winners.push_back(id);
         }
     }
@@ -206,25 +224,33 @@ int Game::calculate_winner(std::vector<uint8_t> possible_winners) {
     return winners[0];
 }
 
-void Game::check_for_winner(const std::vector<uint8_t> &ducks_alive) {
+void Game::check_for_winner(const std::vector<uint8_t> &ducks_alive)
+{
     int n_ducks_alive = ducks_alive.size();
-    if (n_ducks_alive <= 1) {
+    if (n_ducks_alive <= 1)
+    {
         initialize = true;
         current_map = (++round) % maps.size();
-        if (n_ducks_alive == 1) {
+        if (n_ducks_alive == 1)
+        {
             ++victories[ducks_alive[0]];
-            if ((round >= 5) && (round % 5 == 0)) { // Check if somebody won every five rounds
+            if ((round >= 5) && (round % 5 == 0))
+            { // Check if somebody won every five rounds
                 std::vector<uint8_t> possible_winners;
-                for (const auto& [id, n_victories] : victories) {
-                    if (n_victories >= MIN_ROUNDS_WON) {
+                for (const auto &[id, n_victories] : victories)
+                {
+                    if (n_victories >= MIN_ROUNDS_WON)
+                    {
                         possible_winners.push_back(id);
                     }
                 }
 
-                if (possible_winners.size() > 0) {
+                if (possible_winners.size() > 0)
+                {
                     int winner = calculate_winner(possible_winners);
 
-                    if (winner != -1) {
+                    if (winner != -1)
+                    {
                         ended = true;
                     }
                 }
@@ -234,8 +260,9 @@ void Game::check_for_winner(const std::vector<uint8_t> &ducks_alive) {
 }
 
 void Game::step()
-{   
-    if (initialize) {
+{
+    if (initialize)
+    {
         spawn_players();
         initialize = false;
     }
@@ -245,9 +272,11 @@ void Game::step()
     verify_hit_ducks();
 
     std::vector<uint8_t> ducks_alive;
-    for (auto &[id, duck] : ducks) {
+    for (auto &[id, duck] : ducks)
+    {
         duck.step(maps[current_map], projectiles, sounds);
-        if (duck.is_alive()) {
+        if (duck.is_alive())
+        {
             ducks_alive.push_back(id);
         }
     }

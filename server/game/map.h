@@ -152,6 +152,12 @@ public:
         gun_id++;
     }
 
+    void add_new_shotgun(const Position &position_gun)
+    {
+        guns.emplace(gun_id, std::make_shared<Shotgun>(gun_id, Position(position_gun.x, position_gun.y - 10)));
+        gun_id++;
+    }
+
     bool is_hitbox_valid(const Hitbox &hitbox) const
     {
 
@@ -197,20 +203,22 @@ public:
         return MapSnapshot(cfg.style, cfg.size_x, cfg.size_y, cfg.components, box_snapshots, cfg.gun_spawns);
     }
 
-    bool in_range(Position &p) const {
+    bool in_range(Position &p) const
+    {
         return (p.x < cfg.size_x) && (p.y < cfg.size_y);
     }
 
     bool validate_coordinate(Position &p) const
-    {   
+    {
         return !has_something_in(p);
     }
 
     bool has_something_in(Position &p) const
-    {   
-        if (in_range(p)) {
+    {
+        if (in_range(p))
+        {
             return cfg.bit_map[p.x + (p.y * cfg.size_x)];
-        } 
+        }
         return false;
     }
 

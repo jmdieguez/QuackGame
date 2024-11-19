@@ -28,7 +28,8 @@ enum class ClientActionType : uint16_t
     GRAB,
     GAME_LIST,
     START_GAME,
-    SPAWN_AK
+    SPAWN_AK,
+    SPAWN_SHOTGUN
 };
 
 class ActionMessage
