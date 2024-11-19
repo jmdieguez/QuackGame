@@ -3,6 +3,7 @@
 #include <functional>
 
 #include "../map.h"
+#include "../hitbox.h"
 #include "../gun/gun.h"
 #include "../gun/ak.h"
 #include "../gun/shotgun.h"
@@ -64,6 +65,21 @@ public:
         gun->dropped(pos);
         map.add_gun(gun);
         gun = nullptr;
+    }
+
+    void grab(Map &map, const std::function<bool(const Hitbox &)> &func)
+    {
+        std::optional<uint8_t> id_to_erase;
+        for (auto &[id, gun] : map.get_guns())
+        {
+            Hitbox gun_hitbox = gun->get_hitbox();
+            if (!func(gun_hitbox))
+                continue;
+            id_to_erase = id;
+            this->gun = gun;
+        }
+        if (id_to_erase.has_value())
+            map.get_guns().erase(id_to_erase.value());
     }
 
     void shoot(DuckStatus &status, Position &position, Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles, std::vector<SoundType> &sounds)

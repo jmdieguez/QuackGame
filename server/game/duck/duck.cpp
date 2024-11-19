@@ -53,12 +53,8 @@ void Duck::drop_gun(Map &map)
 
 void Duck::drop_gun(std::vector<std::shared_ptr<Projectile>> &projectiles)
 {
-    Grenade *grenade = (Grenade *)gun.get();
-    std::shared_ptr<Projectile> projectil = grenade->get_projectile(status.looking_right, status.looking_up);
-    if (projectil == nullptr)
-        return;
-    projectiles.push_back(grenade->get_projectile(status.looking_right, status.looking_up));
-    gun = nullptr;
+    (void)projectiles;
+    // TODO usar para la granada
 }
 
 void Duck::shoot()
@@ -193,17 +189,8 @@ void Duck::set_receive_shot()
 
 void Duck::grab(Map &map)
 {
-    std::optional<uint8_t> id_to_erase;
-    for (auto &[id, gun] : map.get_guns())
-    {
-        Hitbox gun_hitbox = gun->get_hitbox();
-        if (!intersects(gun_hitbox))
-            continue;
-        id_to_erase = id;
-        this->gun = gun;
-    }
-    if (id_to_erase.has_value())
-        map.get_guns().erase(id_to_erase.value());
+    GunController::grab(map, [this](const Hitbox &a)
+                        { return intersects(a); });
 }
 
 DuckSnapshot Duck::get_status()
