@@ -1,11 +1,49 @@
 #include "duck.h"
 #include <optional>
 
-#define DUCK_HITBOX_X 16
-#define DUCK_HITBOX_Y 24
+#define X_VELOCITY 4
+#define Y_VELOCITY_INITIAL 0
+#define Y_VELOCITY_ON_JUMP 16
 
 #define DUCK_WIDTH 32
 #define DUCK_HEIGHT 32
+
+/***************************************************************************
+                              PRIVATE METHODS
+****************************************************************************/
+
+void Duck::process_movement(Map &map)
+{
+    if (status.mooving)
+        move_horizontal(position, status, map);
+
+    collision_detector(position, status, map);
+    status.grounded ? update_jump_status(status, y_velocity)
+                    : update_in_the_air_status(status, y_velocity);
+
+    if (y_velocity != Y_VELOCITY_INITIAL)
+        move_vertical(position, map, y_velocity);
+}
+
+void Duck::process_shooting(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles, std::vector<SoundType> &sounds)
+{
+    if (!status.shooting && !block_shooting_command && gun != nullptr)
+        finish_shooting();
+
+    if (status.gun_grab)
+        pick_up(map, status, [this](const Hitbox &a)
+                { return intersects(a); });
+
+    if (status.gun_drop)
+        gun->get_type() == GunType::Grenade ? drop_grenade(projectiles) : discard_gun(map, position, size, status);
+
+    if (status.shooting && !block_shooting_command && gun != nullptr)
+        fire(status, position, map, projectiles, sounds);
+}
+
+/***************************************************************************
+                              PUBLIC METHODS
+****************************************************************************/
 
 Duck::Duck(const uint8_t &i, const Position &p) : Hitbox(p, Size(DUCK_WIDTH, DUCK_HEIGHT)), id(i),
                                                   y_velocity(Y_VELOCITY_INITIAL)
@@ -55,7 +93,7 @@ void Duck::drop_gun()
 
 void Duck::shoot()
 {
-    if (gun == nullptr)
+    if (gun == nullptr || status.bent_down)
         return;
     status.shooting = true;
 }
@@ -70,6 +108,8 @@ void Duck::stop_shooting()
 
 void Duck::jump()
 {
+    if (status.bent_down)
+        return;
     status.grounded ? status.jumping = true : status.flapping = true;
 }
 
@@ -87,33 +127,15 @@ void Duck::grab()
 
 void Duck::lay()
 {
+    if (status.jumping || status.flapping || !status.grounded)
+        return;
     status.bent_down = true;
 }
 
 void Duck::step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles, std::vector<SoundType> &sounds)
 {
-    if (status.mooving)
-        move_horizontal(position, status, map);
-
-    collision_detector(position, status, map);
-    status.grounded ? update_jump_status(status, y_velocity)
-                    : update_in_the_air_status(status, y_velocity);
-
-    if (y_velocity != Y_VELOCITY_INITIAL)
-        move_vertical(position, map, y_velocity);
-
-    if (!status.shooting && !block_shooting_command && gun != nullptr)
-        finish_shooting();
-
-    if (status.gun_grab)
-        pick_up(map, status, [this](const Hitbox &a)
-                { return intersects(a); });
-
-    if (status.gun_drop)
-        gun->get_type() == GunType::Grenade ? drop_grenade(projectiles) : discard_gun(map, position, size, status);
-
-    if (status.shooting && !block_shooting_command && gun != nullptr)
-        fire(status, position, map, projectiles, sounds);
+    process_movement(map);
+    process_shooting(map, projectiles, sounds);
 }
 // true if duck dies after receiving the shot
 void Duck::set_receive_shot()

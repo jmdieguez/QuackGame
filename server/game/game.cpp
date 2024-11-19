@@ -136,37 +136,7 @@ void Game::verify_hit_ducks()
 
 void Game::move_grenade(std::shared_ptr<Projectile> &p)
 {
-    p->move();
-    ProjectileGrenade *grenade = (ProjectileGrenade *)p.get();
-    Position current_position = p->get_position();
-    grenade->reduce_time();
-    if (grenade->is_finish())
-    {
-        Position fragment_left(current_position.x - (5 * TILE_SIZE), current_position.y);
-        Position fragment_right(current_position.x + (5 * TILE_SIZE), current_position.y);
-        Explosion explosion(current_position);
-        explosions.push_back(explosion);
-        if (maps[current_map].validate_coordinate(fragment_left))
-        {
-            Explosion explosion_left(fragment_left);
-            explosions.push_back(explosion_left);
-        }
-        if (maps[current_map].validate_coordinate(fragment_right))
-        {
-            Explosion explosion_right(fragment_right);
-            explosions.push_back(explosion_right);
-        }
-        return;
-    }
-    if (maps[current_map].validate_coordinate(current_position))
-        return;
-    if (grenade->is_change_direction_apply())
-    {
-        grenade->cancel_move();
-        return;
-    }
-    grenade->collide_walls();
-    grenade->cancel_move();
+    (void)p;
 }
 
 void Game::move_projectiles()

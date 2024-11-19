@@ -1,10 +1,6 @@
 #ifndef SERVER_DUCK_H
 #define SERVER_DUCK_H
 
-#define X_VELOCITY 4
-#define Y_VELOCITY_INITIAL 0
-#define Y_VELOCITY_ON_JUMP 16
-
 #include <functional>
 #include <memory>
 #include <utility>
@@ -25,6 +21,9 @@ private:
     uint8_t id;
     DuckStatus status;
     int y_velocity;
+
+    void process_movement(Map &map);
+    void process_shooting(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles, std::vector<SoundType> &sounds);
 
 public:
     explicit Duck(const uint8_t &i, const Position &p);
