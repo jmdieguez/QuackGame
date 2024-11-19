@@ -66,19 +66,9 @@ Size Duck::get_gun_size() const
     return gun == nullptr ? Size(0, 0) : gun->get_size();
 }
 
-Position Duck::get_gun_position() const
-{
-    return gun == nullptr ? Position(0, 0) : gun->get_position_in_duck(size.height, position, status.looking_right, status.looking_up);
-}
-
 void Duck::drop_gun(Map &map)
 {
-    if (!gun)
-        return;
-    Position pos = get_gun_position();
-    gun->dropped(pos);
-    map.add_gun(gun);
-    gun = nullptr;
+    GunController::drop_gun(map, position, size, status);
 }
 
 void Duck::drop_gun(std::vector<std::shared_ptr<Projectile>> &projectiles)
@@ -100,16 +90,7 @@ void Duck::shoot()
 
 void Duck::stop_shooting()
 {
-    if (gun == nullptr)
-        return;
-    status.shooting = false;
-    block_shooting_command = false;
-    if (gun->get_type() == GunType::Shotgun)
-        ((Shotgun *)gun.get())->check_reset();
-    if (gun->get_type() == GunType::Sniper)
-        ((Sniper *)gun.get())->check_reset();
-    if (gun->get_type() == GunType::AK)
-        ((AK *)gun.get())->check_reset();
+    GunController::stop_shooting(status);
 }
 
 void Duck::jump()
@@ -251,7 +232,7 @@ DuckSnapshot Duck::get_status()
     TextureFigure gun_texture = get_gun_texture();
     Size gun_size = get_gun_size();
     Position aux(position.x - 8, position.y - 8);
-    Position gun_position = get_gun_position();
+    Position gun_position = get_gun_position(position, size, status);
     Position aux_gun(gun_position.x - 8, gun_position.y - 8);
     uint16_t gun_angle = get_gun_angle();
     return DuckSnapshot(id,

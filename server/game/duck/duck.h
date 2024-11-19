@@ -26,7 +26,6 @@ private:
     int y_velocity;
     uint16_t get_gun_angle() const;
     Size get_gun_size() const;
-    Position get_gun_position() const;
 
 public:
     explicit Duck(const uint8_t &i, const Position &p);

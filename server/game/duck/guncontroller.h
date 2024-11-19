@@ -17,6 +17,36 @@ public:
     bool block_shooting_command;
 
     explicit GunController() : gun(nullptr), block_shooting_command(false) {};
+
+    void stop_shooting(DuckStatus &status)
+    {
+        if (gun == nullptr)
+            return;
+        status.shooting = false;
+        block_shooting_command = false;
+        if (gun->get_type() == GunType::Shotgun)
+            ((Shotgun *)gun.get())->check_reset();
+        if (gun->get_type() == GunType::Sniper)
+            ((Sniper *)gun.get())->check_reset();
+        if (gun->get_type() == GunType::AK)
+            ((AK *)gun.get())->check_reset();
+    }
+
+    Position get_gun_position(Position &position, Size &size, DuckStatus &status) const
+    {
+        return gun == nullptr ? Position(0, 0) : gun->get_position_in_duck(size.height, position, status.looking_right, status.looking_up);
+    }
+
+    void drop_gun(Map &map, Position &position, Size &size, DuckStatus &status)
+    {
+        if (!gun)
+            return;
+        Position pos = get_gun_position(position, size, status);
+        gun->dropped(pos);
+        map.add_gun(gun);
+        gun = nullptr;
+    }
+
     void shoot(DuckStatus &status, Position &position, Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles, std::vector<SoundType> &sounds)
     {
 
