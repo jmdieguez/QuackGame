@@ -1,3 +1,6 @@
+#ifndef AK_H
+#define AK_H
+
 #include "gun.h"
 #include "gunammo.h"
 #include "dispersion/dispersionmedium.h"
@@ -21,3 +24,5 @@ public:
     void check_reset();
     ~AK();
 };
+
+#endif // AK_H

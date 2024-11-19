@@ -12,7 +12,7 @@ protected:
     Size size;
 
 public:
-    Hitbox(const Position &position, const Size &size);
+    explicit Hitbox(const Position &position, const Size &size);
     Position get_position() const;
     Size get_size() const;
     Hitbox get_hitbox() const;

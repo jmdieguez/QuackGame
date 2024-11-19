@@ -1,3 +1,6 @@
+#ifndef SNIPER_H
+#define SNIPER_H
+
 #include "gun.h"
 #include "gunammo.h"
 #include "positiongun.h"
@@ -21,3 +24,5 @@ public:
     void check_reset();
     ~Sniper();
 };
+
+#endif // SNIPER_H

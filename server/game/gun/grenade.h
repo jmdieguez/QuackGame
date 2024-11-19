@@ -1,4 +1,6 @@
-#
+#ifndef GRENADE_H
+#define GRENADE_H
+
 #include <utility>
 #include <cstdint>
 #include "../../../common/position.h"
@@ -22,3 +24,5 @@ public:
     std::shared_ptr<Projectile> get_projectile(bool &looking_right, bool &looking_up);
     ~Grenade();
 };
+
+#endif // GRENADE

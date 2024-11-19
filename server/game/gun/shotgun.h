@@ -1,3 +1,5 @@
+#ifndef SHOTGUN_H
+#define SHOTGUN_H
 
 #include "gun.h"
 #include "gunammo.h"
@@ -24,3 +26,5 @@ public:
     void check_reset();
     ~Shotgun();
 };
+
+#endif // SHOTGUN_H
