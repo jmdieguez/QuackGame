@@ -1,22 +1,31 @@
 #include "main_window.h"
 #include "ui_main_window.h"
-#include <QMessageBox>
 #include <QPushButton>
-#include <QIcon>
-
-#define ICON_PATH "/var/quackgame/logo.png"
+#include "window_utils.h"
+#include "sound_player.h"
+#include "../ui/defs.h"
 
 MainWindow::MainWindow(Lobby* lobby, QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow), lobby(lobby)
-{
+    : QMainWindow(parent), ui(new Ui::MainWindow), lobby(lobby) {
     ui->setupUi(this);
 
-    connect(ui->createButton, &QPushButton::clicked, this, &MainWindow::onCreateButtonClicked);
-    connect(ui->exitButton, &QPushButton::clicked, this, &MainWindow::onExitButtonClicked);
-    connect(ui->joinButton, &QPushButton::clicked, this, &MainWindow::onJoinButtonClicked);
+    WindowUtils::setFixedSize(this, 800, 600);
+    WindowUtils::centerWindow(this);
 
-    QIcon icon(ICON_PATH);
-    setWindowIcon(icon);
+    connect(ui->createButton, &QPushButton::clicked, this, [this]() {
+        SoundPlayer::instance()->playSound(CLICK_SOUND, false);
+        onCreateButtonClicked();
+    });
+
+    connect(ui->exitButton, &QPushButton::clicked, this, [this]() {
+        SoundPlayer::instance()->playSound(CLICK_SOUND, false);
+        onExitButtonClicked();
+    });
+
+    connect(ui->joinButton, &QPushButton::clicked, this, [this]() {
+        SoundPlayer::instance()->playSound(CLICK_SOUND, false);
+        onJoinButtonClicked();
+    });
 }
 
 void MainWindow::onCreateButtonClicked()
@@ -46,11 +55,14 @@ void MainWindow::onJoinButtonClicked()
     lobby->get_game_list(games);
     GameList* gameListWindow = new GameList(lobby);
     gameListWindow->setGameList(games);
+    this->hide();
     gameListWindow->show();
 }
 void MainWindow::onGameListClosed()
 {
     this->show();
+    delete gameListWindow;
+    gameListWindow = nullptr;
 }
 MainWindow::~MainWindow()
 {

@@ -12,5 +12,7 @@ struct SDL_Color;
 #define FONT_PATH "/var/quackgame/04B_30.TTF"
 #define ICON "/var/quackgame/logo.png"
 #define ICON_SIZE 256
+#define CLICK_SOUND "/var/quackgame/sound/click_sound.wav"
+#define MUSIC_SOUND "/var/quackgame/sound/click_sound.wav"
 
 #endif // UI_DEFS_H

@@ -63,6 +63,7 @@ if(TALLER_CLIENT)
     find_package(Qt5 COMPONENTS
             Core
             Widgets
+            Multimedia
             REQUIRED
     )
 
@@ -83,7 +84,6 @@ if(TALLER_CLIENT)
     set(CMAKE_AUTOUIC_SEARCH_PATHS "${CMAKE_SOURCE_DIR}/client/view")
     qt5_wrap_ui(UIS_HEADERS
             ./view/mainwindow.ui
-
     )
     target_link_libraries(quack_game_client
             quack_game_common
@@ -91,6 +91,7 @@ if(TALLER_CLIENT)
             ui_lib
             Qt5::Core
             Qt5::Widgets
+            Qt5::Multimedia
     )
 endif()
 

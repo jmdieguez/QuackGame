@@ -36,7 +36,6 @@ private:
     Ui::GameList *ui;
     Lobby* lobby;
     std::map<QString, uint16_t> nameToIdMap;
-
 };
 
 #endif //GAME_LIST_H

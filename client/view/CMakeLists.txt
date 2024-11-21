@@ -18,4 +18,6 @@ target_sources(quack_game_client
     game_list.h
     loading_screen.h
     start_game.h
+    sound_player.h
+    window_utils.h
 )

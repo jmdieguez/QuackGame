@@ -13,6 +13,23 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <widget class="QLabel" name="backgroundLabel">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>486</width>
+     <height>470</height>
+    </rect>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="background.jpg"/>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+  </widget>
+
   <widget class="QListWidget" name="listWidget">
    <property name="geometry">
     <rect>
@@ -21,6 +38,29 @@
      <width>256</width>
      <height>192</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">
+     QListWidget {
+     border: 2px solid #4CAF50;
+     border-radius: 10px;
+     background-color: #f9f9f9;
+     padding: 5px;
+     }
+     QListWidget::item {
+     padding: 10px;
+     border: 1px solid #ddd;
+     margin: 5px;
+     background-color: #ffffff;
+     }
+     QListWidget::item:hover {
+     background-color: #e8f5e9;
+     }
+     QListWidget::item:selected {
+     background-color: #4CAF50;
+     color: white;
+     }
+    </string>
    </property>
   </widget>
  </widget>
