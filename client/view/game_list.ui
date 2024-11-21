@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>486</width>
-    <height>470</height>
+    <width>796</width>
+    <height>490</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,25 +18,24 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>486</width>
-     <height>470</height>
+     <width>800</width>
+     <height>600</height>
     </rect>
    </property>
    <property name="pixmap">
-    <pixmap resource="background.jpg"/>
+    <pixmap/>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
    </property>
   </widget>
-
   <widget class="QListWidget" name="listWidget">
    <property name="geometry">
     <rect>
-     <x>110</x>
+     <x>80</x>
      <y>100</y>
-     <width>256</width>
-     <height>192</height>
+     <width>631</width>
+     <height>221</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -44,14 +43,14 @@
      QListWidget {
      border: 2px solid #4CAF50;
      border-radius: 10px;
-     background-color: #f9f9f9;
+     background-color: rgb(238, 229, 203);
      padding: 5px;
      }
      QListWidget::item {
      padding: 10px;
      border: 1px solid #ddd;
      margin: 5px;
-     background-color: #ffffff;
+     background-color: rgb(255, 231, 198)
      }
      QListWidget::item:hover {
      background-color: #e8f5e9;
@@ -61,6 +60,40 @@
      color: white;
      }
     </string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="back">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>370</y>
+     <width>199</width>
+     <height>43</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"> QPushButton {
+            background-color: #994d28;
+            color: white; 
+            font-size: 16px; 
+            border: 2px solid #2C6B43; 
+            border-radius: 15px; 
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+        QPushButton:pressed {
+            background-color: #3E7F58;
+        }
+
+        QPushButton:hover {
+            background-color: #3E7F58;
+            border: 2px solid #A1D0B1;
+
+        }</string>
+   </property>
+   <property name="text">
+    <string>Back</string>
    </property>
   </widget>
  </widget>

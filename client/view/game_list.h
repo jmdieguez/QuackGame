@@ -21,17 +21,18 @@ public:
     explicit GameList(Lobby* lobby, QWidget *parent = nullptr);
     ~GameList();
 
-    // Método para agregar una lista de juegos al QListWidget
     void setGameList(const std::map<uint16_t, std::string>&);
 
     signals:
         void closed();
+        void goBack();
 
 protected:
     void closeEvent(QCloseEvent* event) override;
 
 private slots:
         void onItemClicked(QListWidgetItem* item);
+        void onBackButtonClicked();
 private:
     Ui::GameList *ui;
     Lobby* lobby;

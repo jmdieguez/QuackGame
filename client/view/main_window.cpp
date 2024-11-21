@@ -33,15 +33,19 @@ void MainWindow::onCreateButtonClicked()
     create_room = new CreateRoom(lobby, nullptr);
     create_room->setAttribute(Qt::WA_DeleteOnClose);
 
-    connect(create_room, &CreateRoom::goBack, this, &MainWindow::onBackToMainWindow);
+    connect(create_room, &CreateRoom::goBack, this, [this]() {
+    this->onBackToMainWindow(create_room);
+});
 
     this->hide();
     create_room->show();
 }
 
-void MainWindow::onBackToMainWindow()
+void MainWindow::onBackToMainWindow(QWidget* window)
 {
-    create_room->hide();
+    if (window) {
+        window->hide();
+    }
     this->show();
 }
 void MainWindow::onExitButtonClicked()
@@ -55,6 +59,10 @@ void MainWindow::onJoinButtonClicked()
     lobby->get_game_list(games);
     GameList* gameListWindow = new GameList(lobby);
     gameListWindow->setGameList(games);
+    connect(gameListWindow, &GameList::goBack, this, [this, gameListWindow]() {
+         this->onBackToMainWindow(gameListWindow);
+    });
+
     this->hide();
     gameListWindow->show();
 }

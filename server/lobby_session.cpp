@@ -24,9 +24,7 @@ void LobbySession::run() {
                 break;
             case ClientActionType::GAME_LIST:
                 messages = matches.list_games();
-                if (messages.size() > 0) {
-                    protocol.send_lobby_info(messages);
-                }
+                protocol.send_lobby_info(messages);
                 break;
             case ClientActionType::START_GAME:
                 if (game_joined != -1) {

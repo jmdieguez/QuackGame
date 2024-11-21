@@ -22,7 +22,7 @@ private slots:
     void onCreateButtonClicked();
     void onExitButtonClicked();
     void onJoinButtonClicked();
-    void onBackToMainWindow();
+    void onBackToMainWindow(QWidget* window);
     void onGameListClosed();
 
 private:

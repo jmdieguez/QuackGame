@@ -22,6 +22,11 @@ GameList::GameList(Lobby* lobby, QWidget *parent) :
         SoundPlayer::instance()->playSound(CLICK_SOUND, false);
         onItemClicked(item);
     });
+
+    connect(ui->back, &QPushButton::clicked, this, [this]() {
+        SoundPlayer::instance()->playSound(CLICK_SOUND, false);
+        onBackButtonClicked();
+    });
 }
 
 
@@ -31,14 +36,20 @@ void GameList::setGameList(const std::map<uint16_t, std::string>& games)
 
     ui->listWidget->clear();
     nameToIdMap.clear();
+    if (games.size() > 0) {
+        for (const auto& game : games) {
+            QString qName = QString::fromStdString(game.second);
+            gameNames.append(qName);
 
-    for (const auto& game : games) {
-        QString qName = QString::fromStdString(game.second);
-        gameNames.append(qName);
+            ui->listWidget->addItem(qName);
 
-        ui->listWidget->addItem(qName);
-
-        nameToIdMap[qName] = game.first;
+            nameToIdMap[qName] = game.first;
+        }
+    } else {
+        QListWidgetItem* noGamesItem = new QListWidgetItem("No games available. Create a new match to start playing!");
+        noGamesItem->setTextAlignment(Qt::AlignCenter);
+        noGamesItem->setFlags(noGamesItem->flags() & ~Qt::ItemIsSelectable);
+        ui->listWidget->addItem(noGamesItem);
     }
 }
 
@@ -50,6 +61,11 @@ void GameList::onItemClicked(QListWidgetItem* item)
         lobby->join_room(gameId);
         QApplication::closeAllWindows();
     }
+}
+
+void GameList::onBackButtonClicked()
+{
+    emit goBack();
 }
 
 

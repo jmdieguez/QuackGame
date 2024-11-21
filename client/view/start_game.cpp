@@ -25,7 +25,6 @@ StartGame::~StartGame()
 
 void StartGame::onStartButtonClicked()
 {
-  // Añadir chequeo de que haya al menos 2 jugadores
     lobby->start_game();
     closeAll();
 }
