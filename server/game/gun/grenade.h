@@ -10,7 +10,7 @@
 #include "gunammo.h"
 #include "positiongun.h"
 
-class Grenade : public Gun, public GunAmmo
+class Grenade : public Gun
 {
 private:
     PositionGun position_gun;

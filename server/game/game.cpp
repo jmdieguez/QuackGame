@@ -140,15 +140,17 @@ void Game::verify_hit_ducks()
 
 void Game::move_grenade(std::shared_ptr<Projectile> &p)
 {
-    (void)p;
+    p->move();
 }
 
 void Game::move_projectiles()
 {
     for (std::shared_ptr<Projectile> &p : projectiles)
     {
+        std::cout << "voy a mover un projectile" << std::endl;
         if (p->get_type() == ProjectileType::Grenade)
         {
+            std::cout << "Quiero mover la granada" << std::endl;
             move_grenade(p);
             continue;
         }

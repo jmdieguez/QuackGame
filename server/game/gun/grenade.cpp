@@ -1,7 +1,6 @@
 #include "grenade.h"
 #include "projectile/projectilegrenade.h"
 
-#define MAX_AMMO 1
 #define MAX_DISTANCE 10
 #define VELOCITY 5
 #define TIME_EXPLOSION 100
@@ -23,7 +22,7 @@
                               PUBLIC METHODS
 ****************************************************************************/
 
-Grenade::Grenade(const uint16_t &id, const Position &position) : Gun(id, GunType::Grenade, Position(position), Size(GUN_WIDTH, GUN_HEIGHT), TextureFigure::GrenadeFigure), GunAmmo(MAX_AMMO),
+Grenade::Grenade(const uint16_t &id, const Position &position) : Gun(id, GunType::Grenade, Position(position), Size(GUN_WIDTH, GUN_HEIGHT), TextureFigure::GrenadeFigure),
                                                                  position_gun(HORIZONTAL_Y, HORIZONTAL_RIGHT, HORIZONTAL_LEFT, VERTICAL_RIGHT, VERTICAL_LEFT),
                                                                  start_explosion_state(false), time_explosion(TIME_EXPLOSION) {}
 
@@ -32,9 +31,6 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Gre
     (void)looking_right;
     (void)looking_up;
     (void)duck_position;
-    if (!have_ammo())
-        return std::nullopt;
-    reduce_ammo();
     start_explosion_state = true;
     return std::nullopt;
 }
@@ -51,15 +47,8 @@ Position Grenade::get_position_in_duck(const uint16_t &height_duck, const Positi
 std::shared_ptr<Projectile> Grenade::get_projectile(bool &looking_right, bool &looking_up)
 {
     (void)looking_up;
-    if (!start_explosion_state)
-        return nullptr;
-    std::pair<int, int> directions;
-    if (looking_right)
-        directions = {1, -1};
-    if (!looking_right)
-        directions = {-1, -1};
-    ProjectileType type = ProjectileType::Grenade;
-    return std::make_shared<ProjectileGrenade>(type, position, directions, VELOCITY);
+    std::pair<int, int> directions = looking_right ? std::make_pair(1, 0) : std::make_pair(-1, 0);
+    return std::make_shared<ProjectileGrenade>(position, directions, VELOCITY);
 }
 
 Grenade::~Grenade()

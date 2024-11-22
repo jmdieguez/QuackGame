@@ -1,14 +1,17 @@
 #include "projectile.h"
+#include "../dispersion/dispersiongrenade.h"
 
 class ProjectileGrenade : public Projectile
 {
 private:
+    std::shared_ptr<Dispersion> dispersion;
     uint16_t time_to_explosion;
     uint16_t time_fire;
+    uint16_t trayectory;
     bool change_direction;
 
 public:
-    explicit ProjectileGrenade(const ProjectileType &t, const Position &p, const std::pair<int, int> &d, uint8_t velocity);
+    explicit ProjectileGrenade(const Position &p, const std::pair<int, int> &d, uint8_t velocity);
 
     void move() override;
     void cancel_move() override;

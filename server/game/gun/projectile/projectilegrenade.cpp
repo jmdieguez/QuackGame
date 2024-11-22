@@ -8,17 +8,36 @@
                               PUBLIC METHODS
 ****************************************************************************/
 
-ProjectileGrenade::ProjectileGrenade(const ProjectileType &t, const Position &p, const std::pair<int, int> &d, uint8_t velocity) : Projectile(t, TextureFigure::GrenadeFigure, p, d, velocity),
-                                                                                                                                   time_to_explosion(TIME_TO_EXPLOSION),
-                                                                                                                                   time_fire(TIME_FIRE), change_direction(false) {}
+ProjectileGrenade::ProjectileGrenade(const Position &p, const std::pair<int, int> &d, uint8_t velocity) : Projectile(ProjectileType::Grenade, TextureFigure::GrenadeFigure, p, d, velocity),
+                                                                                                          dispersion(std::make_shared<DispersionGrenade>()),
+                                                                                                          time_to_explosion(TIME_TO_EXPLOSION), time_fire(TIME_FIRE),
+                                                                                                          trayectory(0), change_direction(false) {}
 
 void ProjectileGrenade::move()
 {
-    if (!time_to_explosion)
-        return;
-    position.x += direction.first * velocity;
-    position.y += direction.second * velocity;
-    time_to_explosion--;
+
+    std::cout << "Puedo mover" << std::endl;
+    if (dispersion != nullptr)
+    {
+        if (direction.first != 0)
+        {
+            std::cout << "Lo muevo en x" << std::endl;
+            position.x += direction.first * velocity;
+            std::cout << "Lo muevo en y" << std::endl;
+            position.y += dispersion->calculate_dispersion(trayectory);
+        }
+        if (direction.second == -1)
+        {
+            position.y += direction.second * velocity;
+            position.x += dispersion->calculate_dispersion(trayectory);
+        }
+    }
+    else
+    {
+        position.x += direction.first * velocity;
+        position.y += direction.second * velocity;
+    }
+    trayectory++;
 }
 
 void ProjectileGrenade::cancel_move()

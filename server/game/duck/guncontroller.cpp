@@ -62,9 +62,12 @@ void GunController::pick_up(Map &map, DuckStatus &status, const std::function<bo
     status.gun_grab = false;
 }
 
-void GunController::drop_grenade(std::vector<std::shared_ptr<Projectile>> &projectiles)
+void GunController::drop_grenade(DuckStatus &status, std::vector<std::shared_ptr<Projectile>> &projectiles)
 {
-    (void)projectiles;
+    Grenade *grenade = (Grenade *)gun.get();
+    projectiles.push_back(grenade->get_projectile(status.looking_right, status.looking_up));
+    gun = nullptr;
+    status.gun_drop = false;
 }
 
 void GunController::fire(DuckStatus &status, Position &position, Map &map,

@@ -35,7 +35,7 @@ void Duck::process_shooting(Map &map, std::vector<std::shared_ptr<Projectile>> &
                 { return intersects(a); });
 
     if (status.gun_drop)
-        gun->get_type() == GunType::Grenade ? drop_grenade(projectiles) : discard_gun(map, position, size, status);
+        gun->get_type() == GunType::Grenade ? drop_grenade(status, projectiles) : discard_gun(map, position, size, status);
 
     if (status.shooting && !block_shooting_command && gun != nullptr)
         fire(status, position, map, projectiles, sounds);
