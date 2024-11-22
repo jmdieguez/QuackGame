@@ -106,15 +106,15 @@ void Game::process(ClientCommand &command)
             break;
 
         case ClientActionType::SPAWN_AK:
-            maps[current_map].add_new_gun_ak(duck.get_position());
+            maps[current_map].cheat_spawn_gun<AK>(duck.get_position());
             break;
 
         case ClientActionType::SPAWN_SHOTGUN:
-            maps[current_map].add_new_shotgun(duck.get_position());
+            maps[current_map].cheat_spawn_gun<Shotgun>(duck.get_position());
             break;
 
         case ClientActionType::SPAWN_GRENADE:
-            maps[current_map].add_new_grenade(duck.get_position());
+            maps[current_map].cheat_spawn_gun<Grenade>(duck.get_position());
             break;
         default:
             break;

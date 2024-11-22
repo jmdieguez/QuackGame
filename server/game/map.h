@@ -146,21 +146,10 @@ public:
         guns.insert({gun->get_id(), gun});
     }
 
-    void add_new_gun_ak(const Position &position_gun)
+    template <typename T>
+    void cheat_spawn_gun(const Position &position_gun)
     {
-        guns.emplace(gun_id, std::make_shared<AK>(gun_id, Position(position_gun.x, position_gun.y - 10)));
-        gun_id++;
-    }
-
-    void add_new_shotgun(const Position &position_gun)
-    {
-        guns.emplace(gun_id, std::make_shared<Shotgun>(gun_id, Position(position_gun.x, position_gun.y - 10)));
-        gun_id++;
-    }
-
-    void add_new_grenade(const Position &position_gun)
-    {
-        guns.emplace(gun_id, std::make_shared<Grenade>(gun_id, Position(position_gun.x, position_gun.y - 10)));
+        guns.emplace(gun_id, std::make_shared<T>(gun_id, Position(position_gun.x, position_gun.y - 10)));
         gun_id++;
     }
 
