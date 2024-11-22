@@ -112,6 +112,10 @@ void Game::process(ClientCommand &command)
         case ClientActionType::SPAWN_SHOTGUN:
             maps[current_map].add_new_shotgun(duck.get_position());
             break;
+
+        case ClientActionType::SPAWN_GRENADE:
+            maps[current_map].add_new_grenade(duck.get_position());
+            break;
         default:
             break;
         }

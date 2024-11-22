@@ -158,6 +158,12 @@ public:
         gun_id++;
     }
 
+    void add_new_grenade(const Position &position_gun)
+    {
+        guns.emplace(gun_id, std::make_shared<Grenade>(gun_id, Position(position_gun.x, position_gun.y - 10)));
+        gun_id++;
+    }
+
     bool is_hitbox_valid(const Hitbox &hitbox) const
     {
 
