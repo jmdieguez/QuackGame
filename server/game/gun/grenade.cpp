@@ -2,7 +2,6 @@
 #include "projectile/projectilegrenade.h"
 
 #define MAX_DISTANCE 10
-#define VELOCITY 5
 #define TIME_EXPLOSION 100
 
 #define GUN_WIDTH 15
@@ -48,7 +47,7 @@ std::shared_ptr<Projectile> Grenade::get_projectile(bool &looking_right, bool &l
 {
     (void)looking_up;
     std::pair<int, int> directions = looking_right ? std::make_pair(1, 0) : std::make_pair(-1, 0);
-    return std::make_shared<ProjectileGrenade>(position, directions, VELOCITY);
+    return std::make_shared<ProjectileGrenade>(position, directions);
 }
 
 Grenade::~Grenade()

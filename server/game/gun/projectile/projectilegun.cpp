@@ -10,8 +10,9 @@ ProjectileGun::ProjectileGun(const ProjectileType &t, const TextureFigure &tex, 
 {
 }
 
-void ProjectileGun::move()
+void ProjectileGun::move(const std::function<bool(Position &)> &validator)
 {
+    (void)validator;
 
     if (iterations_left <= 0)
         return;

@@ -28,7 +28,6 @@ private:
     std::vector<Explosion> explosions;
     std::map<uint8_t, uint8_t> victories;
     void verify_hit_ducks();
-    void move_grenade(std::shared_ptr<Projectile> &p);
     void move_projectiles();
     void remove_projectiles();
     void spawn_players();

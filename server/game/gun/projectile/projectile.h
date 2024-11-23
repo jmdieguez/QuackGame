@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <cstdint>
+#include <functional>
 
 #include "../../../../common/projectiletype.h"
 #include "../../../../common/projectiledirection.h"
@@ -33,7 +34,7 @@ public:
             type_direction = direction.first == 1 ? ProjectileDirection::Right : ProjectileDirection::Left;
     }
 
-    virtual void move() = 0;
+    virtual void move(const std::function<bool(Position &)> &validator) = 0;
 
     virtual void cancel_move() = 0;
 
@@ -59,6 +60,11 @@ public:
     ProjectileSnapshot get_status()
     {
         return ProjectileSnapshot(position.x, position.y, type, texture, type_direction, finish);
+    }
+
+    uint8_t get_velocity()
+    {
+        return velocity;
     }
 
     virtual ~Projectile() = default;

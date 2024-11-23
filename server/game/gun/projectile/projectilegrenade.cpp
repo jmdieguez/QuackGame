@@ -3,54 +3,89 @@
 
 #define TIME_FIRE 10
 #define TIME_TO_EXPLOSION 10
+#define VELOCITY_X 3
+#define VELOCITY_Y 3
+#define MAX_TRAYECTORY 32 * 2
 
 /***************************************************************************
                               PUBLIC METHODS
 ****************************************************************************/
 
-ProjectileGrenade::ProjectileGrenade(const Position &p, const std::pair<int, int> &d, uint8_t velocity) : Projectile(ProjectileType::Grenade, TextureFigure::GrenadeFigure, p, d, velocity),
-                                                                                                          dispersion(std::make_shared<DispersionGrenade>()),
-                                                                                                          time_to_explosion(TIME_TO_EXPLOSION), time_fire(TIME_FIRE),
-                                                                                                          trayectory(0), change_direction(false) {}
+ProjectileGrenade::ProjectileGrenade(const Position &p, const std::pair<int, int> &d) : Projectile(ProjectileType::Grenade, TextureFigure::GrenadeFigure, p, d, VELOCITY_X),
 
-void ProjectileGrenade::move()
+                                                                                        time_to_explosion(TIME_TO_EXPLOSION), time_fire(TIME_FIRE),
+                                                                                        trayectory(0), collide_wall(false)
 {
-
-    std::cout << "Puedo mover" << std::endl;
-    if (dispersion != nullptr)
-    {
-        if (direction.first != 0)
-        {
-            std::cout << "Lo muevo en x" << std::endl;
-            position.x += direction.first * velocity;
-            std::cout << "Lo muevo en y" << std::endl;
-            position.y += dispersion->calculate_dispersion(trayectory);
-        }
-        if (direction.second == -1)
-        {
-            position.y += direction.second * velocity;
-            position.x += dispersion->calculate_dispersion(trayectory);
-        }
-    }
-    else
-    {
-        position.x += direction.first * velocity;
-        position.y += direction.second * velocity;
-    }
-    trayectory++;
 }
 
+void ProjectileGrenade::move(const std::function<bool(Position &)> &validator)
+{
+    if (collide_wall)
+    {
+
+        int i = 1;
+        while (i <= VELOCITY_Y)
+        {
+            Position new_position(position.x, position.y + 1);
+            Position end_hitbox(new_position.x + 8 - 1, new_position.y + 8 - 1);
+            if (validator(new_position) && validator(end_hitbox))
+            {
+                position = new_position;
+                i++;
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+
+    else
+    {
+
+        int i = 1;
+        while (i <= VELOCITY_X)
+        {
+            Position new_position(position.x + direction.first, position.y);
+            Position end_hitbox(new_position.x + 8 - 1, new_position.y + 8 - 1);
+            if (validator(new_position) && validator(end_hitbox))
+            {
+                position = new_position;
+                i++;
+            }
+            else
+            {
+                collide_wall = true;
+                break;
+            }
+        }
+        if (collide_wall)
+            return;
+        i = 1;
+        while (i <= VELOCITY_Y)
+        {
+            Position new_position(position.x, position.y + (trayectory < MAX_TRAYECTORY ? -1 : 1));
+            Position end_hitbox(new_position.x + 8 - 1, new_position.y + 8 - 1);
+            if (validator(new_position) && validator(end_hitbox))
+            {
+                position = new_position;
+                i++;
+            }
+            else
+            {
+                collide_wall = true;
+                break;
+            }
+        }
+        trayectory += VELOCITY_X;
+    }
+}
 void ProjectileGrenade::cancel_move()
 {
-    position.x -= direction.first * velocity;
-    position.y -= direction.second * velocity;
 }
 
 void ProjectileGrenade::collide_walls()
 {
-    direction.first = 0;
-    direction.second = -1;
-    change_direction = true;
 }
 
 void ProjectileGrenade::reduce_time()
@@ -58,10 +93,6 @@ void ProjectileGrenade::reduce_time()
     time_to_explosion--;
 }
 
-bool ProjectileGrenade::is_change_direction_apply() const
-{
-    return change_direction;
-}
 uint8_t ProjectileGrenade::get_time_fire() const
 {
     return time_fire;
