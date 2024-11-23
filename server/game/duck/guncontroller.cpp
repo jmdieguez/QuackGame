@@ -70,6 +70,14 @@ void GunController::drop_grenade(DuckStatus &status, std::vector<std::shared_ptr
     status.gun_drop = false;
 }
 
+void GunController::drop_banana(DuckStatus &status, std::vector<std::shared_ptr<Projectile>> &projectiles)
+{
+    Banana *banana = (Banana *)gun.get();
+    projectiles.push_back(banana->get_projectile(status.looking_right, status.looking_up));
+    gun = nullptr;
+    status.gun_drop = false;
+}
+
 void GunController::fire(DuckStatus &status, Position &position, Map &map,
                          std::vector<std::shared_ptr<Projectile>> &projectiles,
                          std::vector<SoundType> &sounds)

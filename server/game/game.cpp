@@ -134,7 +134,7 @@ void Game::verify_hit_ducks()
     for (auto &[id, duck] : ducks)
         for (std::shared_ptr<Projectile> &p : projectiles)
         {
-            if (p->get_type() == ProjectileType::Grenade)
+            if (p->get_type() == ProjectileType::Grenade || p->get_type() == ProjectileType::Banana)
                 continue;
             Hitbox proctile_hitbox = p->get_hitbox();
             if (!duck.intersects(proctile_hitbox))
@@ -148,7 +148,7 @@ void Game::move_projectiles()
 {
     for (std::shared_ptr<Projectile> &p : projectiles)
     {
-        if (p->get_type() == ProjectileType::Grenade)
+        if (p->get_type() == ProjectileType::Grenade || p->get_type() == ProjectileType::Banana)
         {
             p->move([this](Position &p)
                     { return maps[current_map].validate_coordinate(p); });
