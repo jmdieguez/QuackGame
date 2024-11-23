@@ -1,19 +1,29 @@
+#include <memory>
+#include <utility>
+
+#include "projectile/projectilegun.h"
 #include "../../../common/size.h"
 #include "../../../common/snapshots.h"
 #include "../../../common/position.h"
 #include "../../../common/texturefigure.h"
 
+#define WIDTH_EXPLOSION 40
+#define HEIGHT_EXPLOSION 40
 #define TIME_EXPLOSION 10
 
-class Explosion
+#define VELOCITY 10
+#define MAX_DISTANCE 5
+
+#define PROJECTILE_WIDTH 8
+#define PROJECTILE_HEIGHT 8
+
+class Explosion : public Hitbox
 {
 private:
-    Size size;
-    Position position;
     uint8_t time;
 
 public:
-    explicit Explosion(const Size &size, const Position &position) : size(size), position(position), time(TIME_EXPLOSION) {};
+    explicit Explosion(const Position &position) : Hitbox(position, Size(WIDTH_EXPLOSION, HEIGHT_EXPLOSION)), time(TIME_EXPLOSION) {};
     ExplosionSnapshot get_status()
     {
         return ExplosionSnapshot(size, position, TextureFigure::ExplosionFigure);
@@ -29,5 +39,14 @@ public:
     {
         return !time;
     }
+
+    void add_fragments(std::vector<std::shared_ptr<Projectile>> &projectiles)
+    {
+        std::vector<std::pair<int, int>> directions = {std::make_pair(-1, 0), std::make_pair(1, 0)};
+        Hitbox hitbox_projectile(Position(position), Size(PROJECTILE_WIDTH, PROJECTILE_HEIGHT));
+        for (std::pair<int, int> direction : directions)
+            projectiles.emplace_back(std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, TextureFigure::CowboyBullet, hitbox_projectile, direction, VELOCITY, MAX_DISTANCE));
+    };
+
     ~Explosion() {};
 };

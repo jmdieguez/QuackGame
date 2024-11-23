@@ -168,7 +168,7 @@ void Game::remove_projectiles()
         if (it->get()->is_finish())
         {
             if (it->get()->get_type() == ProjectileType::Grenade)
-                explosions.emplace_back(Explosion(Size(40, 40), it->get()->get_position()));
+                explosions.emplace_back(Explosion(it->get()->get_position()));
             it = projectiles.erase(it);
             continue;
         }
@@ -182,6 +182,14 @@ void Game::decrement_explosions()
     {
         if (it->is_finish())
         {
+            for (auto &[id, duck] : ducks)
+            {
+                Hitbox proctile_hitbox = it->get_hitbox();
+                if (!duck.intersects(proctile_hitbox))
+                    continue;
+                duck.set_receive_shot();
+            }
+            it->add_fragments(projectiles);
             it = explosions.erase(it);
             continue;
         }

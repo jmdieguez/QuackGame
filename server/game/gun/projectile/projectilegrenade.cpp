@@ -1,7 +1,7 @@
 
 #include "projectilegrenade.h"
 
-#define TIME_TO_EXPLOSION 100
+#define TIME_TO_EXPLOSION 30
 #define VELOCITY_X 3
 #define VELOCITY_Y 3
 #define MAX_TRAYECTORY 32 * 2
