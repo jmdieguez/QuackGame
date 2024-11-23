@@ -16,10 +16,10 @@ class Projectile : public Hitbox
 {
 private:
     ProjectileType type;
-    TextureFigure texture;
     ProjectileDirection type_direction;
 
 protected:
+    TextureFigure texture;
     uint8_t velocity;
     std::pair<int, int> direction;
     bool finish;

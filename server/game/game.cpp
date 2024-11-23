@@ -116,6 +116,10 @@ void Game::process(ClientCommand &command)
         case ClientActionType::SPAWN_GRENADE:
             maps[current_map].cheat_spawn_gun<Grenade>(duck.get_position());
             break;
+
+        case ClientActionType::SPAWN_BANANA:
+            maps[current_map].cheat_spawn_gun<Banana>(duck.get_position());
+            break;
         default:
             break;
         }

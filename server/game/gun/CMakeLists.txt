@@ -9,6 +9,7 @@ target_sources(quack_game_server
     ak.cpp
     pewpewlaser.cpp
     grenade.cpp
+    banana.cpp
     positiongun.cpp
 
     PUBLIC
@@ -25,6 +26,7 @@ target_sources(quack_game_server
     defminvalue.h
     moveback.h
     gunammo.h
+    banana.cpp
     positiongun.h
 )
 

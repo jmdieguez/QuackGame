@@ -1,27 +1,21 @@
-#ifndef GRENADE_H
-#define GRENADE_H
-
-#include <utility>
-#include <cstdint>
-#include "../../../common/position.h"
-#include "../../../common/snapshots.h"
-#include "projectile/projectile.h"
+#ifndef BANANA_H
+#define BANANA_H
 #include "gun.h"
 #include "positiongun.h"
+#include "projectile/projectilebanana.h"
 
-class Grenade : public Gun
+class Banana : public Gun
 {
 private:
+    bool peeled_banana;
     PositionGun position_gun;
-    bool start_explosion_state;
-    uint8_t time_explosion;
 
 public:
-    explicit Grenade(const uint16_t &id, const Position &position);
+    explicit Banana(const uint16_t &id, const Position &position);
     std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> shoot(bool &looking_right, bool &looking_up, const Position &duck_position) override;
     Position get_position_in_duck(const uint16_t &height_duck, const Position &duck, const bool &looking_right, const bool &looking_up) override;
     std::shared_ptr<Projectile> get_projectile(bool &looking_right, bool &looking_up);
-    ~Grenade();
+    ~Banana();
 };
 
-#endif // GRENADE
+#endif // BANANA_H

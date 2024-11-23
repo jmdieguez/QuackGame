@@ -39,6 +39,10 @@ std::string TextureFactory::get_path(TextureFigure figure)
         return BACKGROUND_PATH;
     else if (TextureFigure::ExplosionFigure == figure)
         return EXPLOSION_PATH;
+    else if (TextureFigure::BananaFigure == figure)
+        return BANANA_PATH;
+    else if (TextureFigure::BananaThrown == figure)
+        return BANANA_THROWN_PATH;
     return DUCK_PATH;
 }
 

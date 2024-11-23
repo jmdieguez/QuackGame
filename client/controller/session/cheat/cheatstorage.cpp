@@ -10,6 +10,7 @@ CheatStorage::CheatStorage()
     cheats["ak"] = ClientActionType::SPAWN_AK;
     cheats["sh"] = ClientActionType::SPAWN_SHOTGUN;
     cheats["gr"] = ClientActionType::SPAWN_GRENADE;
+    cheats["ba"] = ClientActionType::SPAWN_BANANA;
 }
 
 void CheatStorage::add_input(std::string input)

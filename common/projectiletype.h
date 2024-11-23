@@ -7,7 +7,7 @@ enum class ProjectileType
     ChainBullet,
     CowboyBullet,
     Grenade,
-    PeeledBanana,
+    Banana,
     Laser,
     ShotgunShell,
     MagnumShell,

@@ -18,7 +18,9 @@ enum TextureFigure
     Helmet,
     Chestplate,
     Background,
-    ExplosionFigure
+    ExplosionFigure,
+    BananaFigure,
+    BananaThrown
 };
 
 #endif // TEXTURE_FIGURE_GAME_H
