@@ -148,6 +148,8 @@ void Game::move_projectiles()
         {
             p->move([this](Position &p)
                     { return maps[current_map].validate_coordinate(p); });
+
+            continue;
         }
         p->move([this](Position &p)
                 { return maps[current_map].validate_coordinate(p); });
@@ -165,9 +167,25 @@ void Game::remove_projectiles()
     {
         if (it->get()->is_finish())
         {
+            if (it->get()->get_type() == ProjectileType::Grenade)
+                explosions.emplace_back(Explosion(Size(30, 45), it->get()->get_position()));
             it = projectiles.erase(it);
             continue;
         }
+        it++;
+    }
+}
+
+void Game::decrement_explosions()
+{
+    for (auto it = explosions.begin(); it != explosions.end();)
+    {
+        if (it->is_finish())
+        {
+            it = explosions.erase(it);
+            continue;
+        }
+        it->time_decrement();
         it++;
     }
 }
@@ -242,7 +260,7 @@ void Game::step()
     remove_projectiles();
     move_projectiles();
     verify_hit_ducks();
-
+    decrement_explosions();
     std::vector<uint8_t> ducks_alive;
     for (auto &[id, duck] : ducks)
     {
@@ -262,14 +280,18 @@ Snapshot Game::get_status()
     MapSnapshot map_snapshot = maps[current_map].get_status();
     std::vector<GunNoEquippedSnapshot> guns_snapshots = maps[current_map].get_guns_snapshots();
     std::vector<DuckSnapshot> duck_snapshots;
+    std::vector<ExplosionSnapshot> explosions_snapshots;
     std::vector<SoundSnapshot> sound_snapshots;
     for (auto &[id, duck] : ducks)
         duck_snapshots.push_back(duck.get_status());
     std::vector<ProjectileSnapshot> projectile_snapshots;
     for (auto &projectile : projectiles)
         projectile_snapshots.push_back(projectile->get_status());
+    for (auto &explosion : explosions)
+        explosions_snapshots.push_back(explosion.get_status());
     for (auto &sound : sounds)
         sound_snapshots.push_back(SoundSnapshot(sound));
     sounds.clear();
-    return Snapshot(std::move(duck_snapshots), std::move(guns_snapshots), std::move(projectile_snapshots), std::move(sound_snapshots), map_snapshot);
+    return Snapshot(std::move(duck_snapshots), std::move(guns_snapshots), std::move(projectile_snapshots),
+                    std::move(explosions_snapshots), std::move(sound_snapshots), map_snapshot);
 }

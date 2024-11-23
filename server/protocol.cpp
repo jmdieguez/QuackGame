@@ -119,6 +119,15 @@ void ServerProtocol::send_projectile(const ProjectileSnapshot &projectile)
     send_data(static_cast<uint16_t>(projectile.finish));
 }
 
+void ServerProtocol::send_explosion(const ExplosionSnapshot &explosion)
+{
+    send_data(static_cast<uint16_t>(explosion.texture));
+    send_data(static_cast<uint16_t>(explosion.position.x));
+    send_data(static_cast<uint16_t>(explosion.position.y));
+    send_data(static_cast<uint16_t>(explosion.size.width));
+    send_data(static_cast<uint16_t>(explosion.size.height));
+}
+
 void ServerProtocol::send_duck_status(const DuckStatus &status)
 {
     send_data(static_cast<uint16_t>(status.mooving));
@@ -154,21 +163,27 @@ void ServerProtocol::send_box(const BoxSnapshot &box)
 
 void ServerProtocol::send_snapshot(const Snapshot &snapshot)
 {
-    const uint16_t ducks_lenght = static_cast<uint16_t>(snapshot.ducks.size());
-    send_data(ducks_lenght);
+    const uint16_t ducks_length = static_cast<uint16_t>(snapshot.ducks.size());
+    send_data(ducks_length);
     for (const DuckSnapshot &duck : snapshot.ducks)
         send_duck(duck);
-    const uint16_t guns_lenght = static_cast<uint16_t>(snapshot.guns.size());
-    send_data(guns_lenght);
+    const uint16_t guns_length = static_cast<uint16_t>(snapshot.guns.size());
+    send_data(guns_length);
     for (const GunNoEquippedSnapshot &gun : snapshot.guns)
         send_gun(gun);
-    const uint16_t projectile_lenght = static_cast<uint16_t>(snapshot.projectiles.size());
-    send_data(projectile_lenght);
+    const uint16_t projectile_length = static_cast<uint16_t>(snapshot.projectiles.size());
+    send_data(projectile_length);
     for (const ProjectileSnapshot &projectile : snapshot.projectiles)
         send_projectile(projectile);
 
-    const uint16_t sound_lenght = static_cast<uint16_t>(snapshot.sounds.size());
-    send_data(sound_lenght);
+    const uint16_t explosion_length = static_cast<uint16_t>(snapshot.explosions.size());
+    send_data(explosion_length);
+
+    for (const ExplosionSnapshot &explosion : snapshot.explosions)
+        send_explosion(explosion);
+
+    const uint16_t sound_length = static_cast<uint16_t>(snapshot.sounds.size());
+    send_data(sound_length);
     for (SoundSnapshot sound_snapshot : snapshot.sounds)
         send_data(static_cast<uint16_t>(sound_snapshot.sound));
 

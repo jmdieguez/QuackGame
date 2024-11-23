@@ -4,6 +4,7 @@
 #include "projectiledrawer.h"
 #include "mapdrawer.h"
 #include "boxitem.h"
+#include "explosiondrawer.h"
 
 class RenderStorage
 {
@@ -14,6 +15,7 @@ private:
     ProjectileDrawer projectile_drawer;
     MapDrawer map_drawer;
     BoxItem box_item;
+    ExplosionDrawer explosion;
 
 public:
     explicit RenderStorage(SDL2pp::Renderer &renderer);
@@ -23,5 +25,6 @@ public:
     ProjectileDrawer &get_projectile_drawer();
     MapDrawer &get_map_drawer();
     BoxItem &get_box_item();
+    ExplosionDrawer &get_explosion();
     ~RenderStorage();
 };

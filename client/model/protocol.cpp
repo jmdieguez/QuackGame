@@ -68,6 +68,23 @@ ProjectileSnapshot ClientProtocol::read_projectile()
     return projectile;
 }
 
+ExplosionSnapshot ClientProtocol::read_explosion()
+{
+    uint16_t texture;
+    read_data(texture);
+    uint16_t x;
+    read_data(x);
+    uint16_t y;
+    read_data(y);
+    uint16_t width;
+    read_data(width);
+    uint16_t height;
+    read_data(height);
+    TextureFigure texture_value = static_cast<TextureFigure>(texture);
+    ExplosionSnapshot explosion(Size(width, height), Position(x, y), texture_value);
+    return explosion;
+}
+
 ClientProtocol::ClientProtocol(Socket &skt) : skt(skt) {}
 
 void ClientProtocol::read_snapshot(Snapshot &snapshot)
@@ -139,6 +156,15 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
     {
         ProjectileSnapshot projectile = read_projectile();
         snapshot.projectiles.emplace_back(projectile);
+    }
+
+    uint16_t explosion_length;
+    read_data(explosion_length);
+
+    for (uint16_t i = 0; i < explosion_length; i++)
+    {
+        ExplosionSnapshot explosion = read_explosion();
+        snapshot.explosions.emplace_back(explosion);
     }
 
     uint16_t sound_lenght;

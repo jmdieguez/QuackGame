@@ -78,10 +78,11 @@ public:
 class ExplosionSnapshot
 {
 public:
-    uint16_t pos_x;
-    uint16_t pos_y;
-    uint16_t phase;
-    explicit ExplosionSnapshot(uint16_t pos_x, uint16_t pos_y) : pos_x(pos_x), pos_y(pos_y), phase(0) {}
+    Size size;
+    Position position;
+    TextureFigure texture;
+    explicit ExplosionSnapshot(const Size &size, const Position &position, const TextureFigure &texture) : size(size), position(position),
+                                                                                                           texture(texture) {}
 };
 
 class GrenadeSnapshot
@@ -130,15 +131,17 @@ public:
     std::vector<DuckSnapshot> ducks;
     std::vector<GunNoEquippedSnapshot> guns;
     std::vector<ProjectileSnapshot> projectiles;
+    std::vector<ExplosionSnapshot> explosions;
     std::vector<SoundSnapshot> sounds;
     MapSnapshot map;
 
-    Snapshot() : ducks({}), guns({}), projectiles({}), sounds({}) {}
+    Snapshot() : ducks({}), guns({}), projectiles({}), explosions({}), sounds({}) {}
     Snapshot(std::vector<DuckSnapshot> &&d_s,
              std::vector<GunNoEquippedSnapshot> &&g_s,
              std::vector<ProjectileSnapshot> &&p,
+             std::vector<ExplosionSnapshot> &&e,
              std::vector<SoundSnapshot> &&s,
-             MapSnapshot &map_snapshot) : ducks(d_s), guns(g_s), projectiles(p), sounds(s), map(map_snapshot) {}
+             MapSnapshot &map_snapshot) : ducks(d_s), guns(g_s), projectiles(p), explosions(e), sounds(s), map(map_snapshot) {}
 };
 
 #endif // SNAPSHOTS_H

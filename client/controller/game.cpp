@@ -56,6 +56,8 @@ void Game::set_renderer(int frame_ticks)
             render_storage.get_item().render(gun);
         for (ProjectileSnapshot &projectile : snapshot.projectiles)
             render_storage.get_projectile_drawer().render(projectile);
+        for (ExplosionSnapshot &explosion : snapshot.explosions)
+            render_storage.get_explosion().render(explosion, frame_ticks);
         // for (SoundSnapshot &sound_snapshot : snapshot.sounds)
         //     music_box.play_sound(sound_snapshot);
     }

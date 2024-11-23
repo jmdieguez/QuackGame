@@ -5,7 +5,6 @@ class ProjectileGrenade : public Projectile
 {
 private:
     uint16_t time_to_explosion;
-    uint16_t time_fire;
     uint16_t trayectory;
     bool collide_wall;
 

@@ -30,6 +30,7 @@ private:
     void verify_hit_ducks();
     void move_projectiles();
     void remove_projectiles();
+    void decrement_explosions();
     void spawn_players();
     int calculate_winner(std::vector<uint8_t> possible_winners);
     void check_for_winner(const std::vector<uint8_t> &ducks_alive);

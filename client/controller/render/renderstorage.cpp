@@ -6,7 +6,7 @@
 
 RenderStorage::RenderStorage(SDL2pp::Renderer &renderer) : duck(renderer), scene(renderer), item(renderer),
                                                            projectile_drawer(renderer), map_drawer(renderer),
-                                                           box_item(renderer)
+                                                           box_item(renderer), explosion(renderer)
 {
 }
 
@@ -38,6 +38,11 @@ MapDrawer &RenderStorage::get_map_drawer()
 BoxItem &RenderStorage::get_box_item()
 {
     return box_item;
+}
+
+ExplosionDrawer &RenderStorage::get_explosion()
+{
+    return explosion;
 }
 
 RenderStorage::~RenderStorage()

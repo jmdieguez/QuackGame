@@ -1,8 +1,7 @@
 
 #include "projectilegrenade.h"
 
-#define TIME_FIRE 10
-#define TIME_TO_EXPLOSION 10
+#define TIME_TO_EXPLOSION 5
 #define VELOCITY_X 3
 #define VELOCITY_Y 3
 #define MAX_TRAYECTORY 32 * 2
@@ -12,13 +11,18 @@
 ****************************************************************************/
 
 ProjectileGrenade::ProjectileGrenade(const Hitbox &h, const std::pair<int, int> &d) : Projectile(ProjectileType::Grenade, TextureFigure::GrenadeFigure, h, d, VELOCITY_X),
-                                                                                      time_to_explosion(TIME_TO_EXPLOSION), time_fire(TIME_FIRE),
+                                                                                      time_to_explosion(TIME_TO_EXPLOSION),
                                                                                       trayectory(0), collide_wall(false)
 {
 }
 
 void ProjectileGrenade::move(const std::function<bool(Position &)> &validator)
 {
+    if (!time_to_explosion)
+    {
+        finish = true;
+        return;
+    }
     if (collide_wall)
     {
 
@@ -78,6 +82,7 @@ void ProjectileGrenade::move(const std::function<bool(Position &)> &validator)
         }
         trayectory += VELOCITY_X;
     }
+    time_to_explosion--;
 }
 void ProjectileGrenade::cancel_move()
 {
@@ -90,11 +95,6 @@ void ProjectileGrenade::collide_walls()
 void ProjectileGrenade::reduce_time()
 {
     time_to_explosion--;
-}
-
-uint8_t ProjectileGrenade::get_time_fire() const
-{
-    return time_fire;
 }
 
 ProjectileGrenade::~ProjectileGrenade()
