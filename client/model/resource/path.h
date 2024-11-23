@@ -11,12 +11,14 @@
 #define PEW_PEW_LASER_PATH "/var/quackgame/weapon/pewpewlaser.png"
 #define GRENADE_PATH "/var/quackgame/weapon/grenade.png"
 #define COWBOY_BULLET_PATH "/var/quackgame/weapon/cowboybullet.png"
+#define EXPLOSION_PATH "/var/quackgame/weapon/explosion.png"
+#define BANANA_PATH "/var/quackgame/weapon/banana_item.png"
+#define BANANA_THROWN_PATH "/var/quackgame/weapon/banana_thrown.png"
 #define SPAWN_PATH "/var/quackgame/spawn.png"
 #define BOX_PATH "/var/quackgame/box.png"
 #define CHESTPLATE_PATH "/var/quackgame/armor/chestplate.png"
 #define HELMET_PATH "/var/quackgame/armor/helmet.png"
 #define BACKGROUND_PATH "/var/quackgame/forest.png"
-#define EXPLOSION_PATH "/var/quackgame/weapon/explosion.png"
 
 #define SHOOT_SOUND_PATH "/var/quackgame/sound/shoot.mp3"
 #endif // PATH_H
