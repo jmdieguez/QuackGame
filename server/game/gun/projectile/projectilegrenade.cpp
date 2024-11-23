@@ -1,7 +1,7 @@
 
 #include "projectilegrenade.h"
 
-#define TIME_TO_EXPLOSION 5
+#define TIME_TO_EXPLOSION 100
 #define VELOCITY_X 3
 #define VELOCITY_Y 3
 #define MAX_TRAYECTORY 32 * 2
@@ -30,7 +30,7 @@ void ProjectileGrenade::move(const std::function<bool(Position &)> &validator)
         while (i <= VELOCITY_Y)
         {
             Position new_position(position.x, position.y + 1);
-            Position end_hitbox(new_position.x + 8 - 1, new_position.y + 8 - 1);
+            Position end_hitbox(new_position.x + 15 - 1, new_position.y + 15 - 1);
             if (validator(new_position) && validator(end_hitbox))
             {
                 position = new_position;

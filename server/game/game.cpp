@@ -168,7 +168,7 @@ void Game::remove_projectiles()
         if (it->get()->is_finish())
         {
             if (it->get()->get_type() == ProjectileType::Grenade)
-                explosions.emplace_back(Explosion(Size(30, 45), it->get()->get_position()));
+                explosions.emplace_back(Explosion(Size(40, 40), it->get()->get_position()));
             it = projectiles.erase(it);
             continue;
         }

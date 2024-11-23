@@ -1,9 +1,9 @@
 #include "explosiondrawer.h"
 
-#define POS_INIT_X_EXPLOSION 2
-#define POS_INIT_Y_EXPLOSION 1
-#define SRC_PROJECTILE_WIDTH 6
-#define SRC_PROJECTILE_HEIGHT 16
+#define POS_INIT_X_EXPLOSION 0 // 250
+#define POS_INIT_Y_EXPLOSION 0 // 100
+#define SRC_PROJECTILE_WIDTH 200
+#define SRC_PROJECTILE_HEIGHT 250
 
 /***************************************************************************
                               PRIVATE METHODS
@@ -11,9 +11,9 @@
 
 void ExplosionDrawer::set_xy(int frame_ticks, int &src_x)
 {
-    (void)frame_ticks;
-    // int phase = (frame_ticks / 4) % 4 + 1;
-    src_x = 4;
+    int offset = (frame_ticks / 3) % 7;
+    int phase = 250 * offset;
+    src_x = phase;
 }
 
 /***************************************************************************
@@ -31,7 +31,7 @@ void ExplosionDrawer::render(ExplosionSnapshot &explosion, int frame_ticks)
     set_xy(frame_ticks, src_x);
     SDL_Rect src_rect = {src_x, src_y, SRC_PROJECTILE_WIDTH, SRC_PROJECTILE_HEIGHT};
     SDL_Rect dst_rect = {explosion.position.x, explosion.position.y, explosion.size.width, explosion.size.height};
-    SDL_RenderCopyEx(renderer.Get(), texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(renderer.Get(), texture.Get(), &src_rect, &dst_rect, 90.0, nullptr, SDL_FLIP_NONE);
 }
 
 ExplosionDrawer::~ExplosionDrawer()
