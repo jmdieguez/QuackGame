@@ -31,13 +31,15 @@ class ProjectileSnapshot
 public:
     uint16_t pos_x;
     uint16_t pos_y;
+    Size size;
     ProjectileType type;
     TextureFigure texture;
     ProjectileDirection type_direction;
     bool finish;
-    explicit ProjectileSnapshot(const uint16_t &x, const uint16_t &y, const ProjectileType &type, const TextureFigure &texture, const ProjectileDirection &type_direction, bool finish) : pos_x(x), pos_y(y),
-                                                                                                                                                                                          type(type), texture(texture), type_direction(type_direction),
-                                                                                                                                                                                          finish(finish) {}
+    explicit ProjectileSnapshot(const uint16_t &x, const uint16_t &y, const Size &s, const ProjectileType &type, const TextureFigure &texture, const ProjectileDirection &type_direction, bool finish) : pos_x(x), pos_y(y),
+                                                                                                                                                                                                         size(s), type(type),
+                                                                                                                                                                                                         texture(texture), type_direction(type_direction),
+                                                                                                                                                                                                         finish(finish) {}
 };
 
 class DuckSnapshot

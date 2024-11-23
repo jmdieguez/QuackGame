@@ -9,6 +9,9 @@
 #define GUN_WIDTH 20
 #define GUN_HEIGHT 10
 
+#define PROJECTILE_WIDTH 8
+#define PROJECTILE_HEIGHT 8
+
 #define HORIZONTAL_Y 3
 #define HORIZONTAL_RIGHT 10
 #define HORIZONTAL_LEFT -14
@@ -38,8 +41,9 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Cow
     uint16_t adjusted_pos_x = duck_position.x + (looking_up ? (looking_right ? LOOKING_UP_RIGHT_OFFSET_X : LOOKING_UP_LEFT_OFFSET_X) : GUN_WIDTH * direction.first);
     uint16_t adjusted_pos_y = duck_position.y + (looking_up ? -GUN_WIDTH : VERTICAL_RIGHT);
     Position projectile_position(adjusted_pos_x, adjusted_pos_y);
+    Hitbox hitbox(projectile_position, Size(PROJECTILE_WIDTH, PROJECTILE_HEIGHT));
     std::vector<std::shared_ptr<Projectile>> projectiles = {
-        std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, TextureFigure::CowboyBullet, projectile_position, direction, VELOCITY, MAX_DISTANCE)};
+        std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, TextureFigure::CowboyBullet, hitbox, direction, VELOCITY, MAX_DISTANCE)};
     return std::make_optional(std::make_pair(projectiles, duck_position));
 }
 Position CowboyPistol::get_position_in_duck(const uint16_t &height_duck, const Position &duck, const bool &looking_right, const bool &looking_up)

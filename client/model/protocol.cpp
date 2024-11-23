@@ -54,12 +54,17 @@ ProjectileSnapshot ClientProtocol::read_projectile()
     read_data(pos_x);
     uint16_t pos_y;
     read_data(pos_y);
+    uint16_t width;
+    read_data(width);
+    uint16_t height;
+    read_data(height);
     uint16_t finish;
     read_data(finish);
     ProjectileType type_value = static_cast<ProjectileType>(type);
     TextureFigure texture_value = static_cast<TextureFigure>(texture);
     ProjectileDirection type_direction_value = static_cast<ProjectileDirection>(type_direction);
-    ProjectileSnapshot projectile(pos_x, pos_y, type_value, texture_value, type_direction_value, !!finish);
+    Size size(width, height);
+    ProjectileSnapshot projectile(pos_x, pos_y, size, type_value, texture_value, type_direction_value, !!finish);
     return projectile;
 }
 

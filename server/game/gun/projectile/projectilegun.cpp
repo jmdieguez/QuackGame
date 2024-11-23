@@ -1,12 +1,14 @@
 #include "projectilegun.h"
 
-ProjectileGun::ProjectileGun(const ProjectileType &t, const TextureFigure &tex, const Position &p, const std::pair<int, int> &d, uint8_t velocity, uint8_t tiles, std::shared_ptr<Dispersion> dispersion) : Projectile(t, tex, p, d, velocity),
-                                                                                                                                                                                                            dispersion(dispersion), trayectory(0), iterations_left(tiles * TILE_SIZE)
+ProjectileGun::ProjectileGun(const ProjectileType &t, const TextureFigure &tex, const Hitbox &h, const std::pair<int, int> &d, uint8_t velocity, uint8_t tiles, std::shared_ptr<Dispersion> dispersion) : Projectile(t, tex, h, d, velocity),
+                                                                                                                                                                                                          dispersion(dispersion), trayectory(0),
+                                                                                                                                                                                                          iterations_left(tiles * TILE_SIZE)
 {
 }
 
-ProjectileGun::ProjectileGun(const ProjectileType &t, const TextureFigure &tex, const Position &p, const std::pair<int, int> &d, uint8_t velocity, uint8_t tiles) : Projectile(t, tex, p, d, velocity),
-                                                                                                                                                                    dispersion(nullptr), trayectory(0), iterations_left(tiles * TILE_SIZE)
+ProjectileGun::ProjectileGun(const ProjectileType &t, const TextureFigure &tex, const Hitbox &h, const std::pair<int, int> &d, uint8_t velocity, uint8_t tiles) : Projectile(t, tex, h, d, velocity),
+                                                                                                                                                                  dispersion(nullptr), trayectory(0),
+                                                                                                                                                                  iterations_left(tiles * TILE_SIZE)
 {
 }
 

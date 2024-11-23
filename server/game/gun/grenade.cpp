@@ -7,6 +7,9 @@
 #define GUN_WIDTH 15
 #define GUN_HEIGHT 15
 
+#define PROJECTILE_WIDTH 15
+#define PROJECTILE_HEIGHT 15
+
 #define HORIZONTAL_Y 3
 #define HORIZONTAL_RIGHT -10
 #define HORIZONTAL_LEFT 10
@@ -47,7 +50,8 @@ std::shared_ptr<Projectile> Grenade::get_projectile(bool &looking_right, bool &l
 {
     (void)looking_up;
     std::pair<int, int> directions = looking_right ? std::make_pair(1, 0) : std::make_pair(-1, 0);
-    return std::make_shared<ProjectileGrenade>(position, directions);
+    Hitbox hitbox(position, Size(PROJECTILE_WIDTH, PROJECTILE_HEIGHT));
+    return std::make_shared<ProjectileGrenade>(hitbox, directions);
 }
 
 Grenade::~Grenade()

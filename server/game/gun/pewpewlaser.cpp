@@ -10,6 +10,9 @@
 #define GUN_WIDTH 20
 #define GUN_HEIGHT 10
 
+#define PROJECTILE_WIDTH 8
+#define PROJECTILE_HEIGHT 8
+
 #define HORIZONTAL_Y 3
 #define HORIZONTAL_RIGHT 10
 #define HORIZONTAL_LEFT -14
@@ -42,13 +45,14 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Pew
     uint16_t adjusted_pos_x = duck_position.x + (looking_up ? (looking_right ? LOOKING_UP_RIGHT_OFFSET_X : LOOKING_UP_LEFT_OFFSET_X) : (GUN_WIDTH + SPECIAL_OFFSET_X_PEWPEWLASER) * direction.first);
     uint16_t adjusted_pos_y = duck_position.y + (looking_up ? -GUN_WIDTH : VERTICAL_RIGHT);
     Position projectile_position(adjusted_pos_x, adjusted_pos_y);
+    Hitbox hitbox(projectile_position, Size(PROJECTILE_WIDTH, PROJECTILE_HEIGHT));
     std::vector<std::shared_ptr<Dispersion>> dispersions = {
         nullptr,
         std::make_shared<DispersionHigh>(true),
         std::make_shared<DispersionHigh>()};
 
     for (auto &dispersion : dispersions)
-        projectiles.push_back(std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, TextureFigure::CowboyBullet, projectile_position, direction, VELOCITY, MAX_DISTANCE, dispersion));
+        projectiles.push_back(std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, TextureFigure::CowboyBullet, hitbox, direction, VELOCITY, MAX_DISTANCE, dispersion));
 
     return std::make_optional(std::make_pair(projectiles, duck_position));
 }

@@ -11,6 +11,9 @@
 #define GUN_WIDTH 20
 #define GUN_HEIGHT 10
 
+#define PROJECTILE_WIDTH 8
+#define PROJECTILE_HEIGHT 8
+
 #define HORIZONTAL_Y 3
 #define HORIZONTAL_RIGHT 6
 #define HORIZONTAL_LEFT -10
@@ -69,9 +72,10 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Sni
     uint16_t adjusted_pos_x = duck_position.x + (looking_up ? (looking_right ? LOOKING_UP_RIGHT_OFFSET_X : LOOKING_UP_LEFT_OFFSET_X) : GUN_WIDTH * direction.first);
     uint16_t adjusted_pos_y = duck_position.y + (looking_up ? -GUN_WIDTH : VERTICAL_RIGHT);
     Position projectile_position(adjusted_pos_x, adjusted_pos_y);
+    Hitbox hitbox(projectile_position, Size(PROJECTILE_WIDTH, PROJECTILE_HEIGHT));
     std::vector<std::shared_ptr<Projectile>> projectiles;
     ProjectileType type = ProjectileType::CowboyBullet;
-    projectiles.push_back(std::make_shared<ProjectileGun>(type, TextureFigure::CowboyBullet, projectile_position, direction, VELOCITY, MAX_DISTANCE));
+    projectiles.push_back(std::make_shared<ProjectileGun>(type, TextureFigure::CowboyBullet, hitbox, direction, VELOCITY, MAX_DISTANCE));
     need_reload = true;
     block_shoot = true;
     time_to_reaload = TIME_TO_REALOAD;

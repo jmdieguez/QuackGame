@@ -12,6 +12,9 @@
 #define GUN_WIDTH 25
 #define GUN_HEIGHT 10
 
+#define PROJECTILE_WIDTH 8
+#define PROJECTILE_HEIGHT 8
+
 #define HORIZONTAL_Y 5
 #define HORIZONTAL_RIGHT 5
 #define HORIZONTAL_LEFT -14
@@ -68,7 +71,7 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Sho
     uint16_t adjusted_pos_x = duck_position.x + (looking_up ? (looking_right ? LOOKING_UP_RIGHT_OFFSET_X : LOOKING_UP_LEFT_OFFSET_X) : GUN_WIDTH * direction.first);
     uint16_t adjusted_pos_y = duck_position.y + (looking_up ? -GUN_WIDTH : VERTICAL_RIGHT);
     Position projectile_position(adjusted_pos_x, adjusted_pos_y);
-
+    Hitbox hitbox(projectile_position, Size(PROJECTILE_WIDTH, PROJECTILE_HEIGHT));
     std::vector<std::shared_ptr<Dispersion>> dispersions = {
         std::make_shared<DispersionLow>(true),
         std::make_shared<DispersionLow>(),
@@ -78,7 +81,7 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Sho
         std::make_shared<DispersionHigh>(true)};
 
     for (auto &dispersion : dispersions)
-        projectiles.push_back(std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, TextureFigure::CowboyBullet, projectile_position, direction, VELOCITY, MAX_DISTANCE, dispersion));
+        projectiles.push_back(std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, TextureFigure::CowboyBullet, hitbox, direction, VELOCITY, MAX_DISTANCE, dispersion));
 
     need_reload = true;
     block_shoot = true;

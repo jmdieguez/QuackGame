@@ -25,8 +25,8 @@ protected:
     bool finish;
 
 public:
-    Projectile(const ProjectileType &t, const TextureFigure &tex, const Position &p, const std::pair<int, int> &d, uint8_t velocity)
-        : Hitbox(p, Size(8, 8)), type(t), texture(tex), velocity(velocity), direction(d), finish(false)
+    Projectile(const ProjectileType &t, const TextureFigure &tex, const Hitbox &h, const std::pair<int, int> &d, uint8_t velocity)
+        : Hitbox(h), type(t), texture(tex), velocity(velocity), direction(d), finish(false)
     {
         if (direction.second > 0)
             type_direction = ProjectileDirection::Up;
@@ -59,7 +59,7 @@ public:
 
     ProjectileSnapshot get_status()
     {
-        return ProjectileSnapshot(position.x, position.y, type, texture, type_direction, finish);
+        return ProjectileSnapshot(position.x, position.y, size, type, texture, type_direction, finish);
     }
 
     uint8_t get_velocity()

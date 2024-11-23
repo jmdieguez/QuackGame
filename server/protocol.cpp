@@ -114,6 +114,8 @@ void ServerProtocol::send_projectile(const ProjectileSnapshot &projectile)
     send_data(static_cast<uint16_t>(projectile.type_direction));
     send_data(static_cast<uint16_t>(projectile.pos_x));
     send_data(static_cast<uint16_t>(projectile.pos_y));
+    send_data(static_cast<uint16_t>(projectile.size.width));
+    send_data(static_cast<uint16_t>(projectile.size.height));
     send_data(static_cast<uint16_t>(projectile.finish));
 }
 

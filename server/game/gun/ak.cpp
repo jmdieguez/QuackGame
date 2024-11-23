@@ -19,6 +19,9 @@
 #define GUN_WIDTH 25
 #define GUN_HEIGHT 10
 
+#define PROJECTILE_WIDTH 8
+#define PROJECTILE_HEIGHT 8
+
 #define HORIZONTAL_Y 5
 #define HORIZONTAL_RIGHT 5
 #define HORIZONTAL_LEFT -14
@@ -73,7 +76,8 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> AK:
     uint16_t adjusted_pos_y = duck_position.y + (looking_up ? -GUN_WIDTH : (VERTICAL_RIGHT + SPECIAL_OFFSET_X_AK));
     Position projectile_position(adjusted_pos_x, adjusted_pos_y);
     std::vector<std::shared_ptr<Projectile>> projectiles;
-    projectiles.push_back(std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, TextureFigure::CowboyBullet, projectile_position, direction, VELOCITY, MAX_DISTANCE, dispersion));
+    Hitbox hitbox(projectile_position, Size(PROJECTILE_WIDTH, PROJECTILE_HEIGHT));
+    projectiles.push_back(std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, TextureFigure::CowboyBullet, hitbox, direction, VELOCITY, MAX_DISTANCE, dispersion));
     Position new_position = move_back(duck_position, looking_right, BACK);
     delay_shooting = DELAY_SHOOTING;
     time_shooting--;

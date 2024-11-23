@@ -11,10 +11,9 @@
                               PUBLIC METHODS
 ****************************************************************************/
 
-ProjectileGrenade::ProjectileGrenade(const Position &p, const std::pair<int, int> &d) : Projectile(ProjectileType::Grenade, TextureFigure::GrenadeFigure, p, d, VELOCITY_X),
-
-                                                                                        time_to_explosion(TIME_TO_EXPLOSION), time_fire(TIME_FIRE),
-                                                                                        trayectory(0), collide_wall(false)
+ProjectileGrenade::ProjectileGrenade(const Hitbox &h, const std::pair<int, int> &d) : Projectile(ProjectileType::Grenade, TextureFigure::GrenadeFigure, h, d, VELOCITY_X),
+                                                                                      time_to_explosion(TIME_TO_EXPLOSION), time_fire(TIME_FIRE),
+                                                                                      trayectory(0), collide_wall(false)
 {
 }
 

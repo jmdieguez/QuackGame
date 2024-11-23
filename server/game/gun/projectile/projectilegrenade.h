@@ -10,7 +10,7 @@ private:
     bool collide_wall;
 
 public:
-    explicit ProjectileGrenade(const Position &p, const std::pair<int, int> &d);
+    explicit ProjectileGrenade(const Hitbox &h, const std::pair<int, int> &d);
 
     void move(const std::function<bool(Position &)> &validator) override;
     void cancel_move() override;
