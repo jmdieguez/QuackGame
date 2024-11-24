@@ -134,8 +134,14 @@ void Game::verify_hit_ducks()
     for (auto &[id, duck] : ducks)
         for (std::shared_ptr<Projectile> &p : projectiles)
         {
-            if (p->get_type() == ProjectileType::Grenade || p->get_type() == ProjectileType::Banana)
+            if (p->get_type() == ProjectileType::Grenade)
                 continue;
+            if (p->get_type() == ProjectileType::Banana)
+            {
+                ProjectileBanana *banana = (ProjectileBanana *)p.get();
+                banana->checkCollision(duck.get_hitbox(), duck.get_duck_status());
+                continue;
+            }
             Hitbox proctile_hitbox = p->get_hitbox();
             if (!duck.intersects(proctile_hitbox))
                 continue;

@@ -86,6 +86,16 @@ void ProjectileBanana::collide_walls()
 {
 }
 
+void ProjectileBanana::checkCollision(Hitbox duck, DuckStatus &status)
+{
+    if (!intersects(duck))
+        return;
+    if (texture != TextureFigure::BananaThrown)
+        return;
+    status.banana_move = true;
+    finish = true;
+}
+
 ProjectileBanana::~ProjectileBanana()
 {
 }

@@ -12,5 +12,7 @@ public:
     void cancel_move() override;
     void collide_walls() override;
 
+    void checkCollision(Hitbox duck, DuckStatus &status);
+
     ~ProjectileBanana();
 };

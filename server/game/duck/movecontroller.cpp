@@ -22,6 +22,7 @@ void MoveController::move_horizontal(Position &position, DuckStatus &status, Map
         }
         else
         {
+            status.banana_move = false;
             break;
         }
     }

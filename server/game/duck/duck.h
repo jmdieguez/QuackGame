@@ -42,6 +42,7 @@ public:
     void stand_up();
     void set_receive_shot();
     void grab();
+    DuckStatus &get_duck_status();
 
     // Get current duck snapshot
     DuckSnapshot get_status();

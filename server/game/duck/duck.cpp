@@ -14,14 +14,14 @@
 
 void Duck::process_movement(Map &map)
 {
-    if (status.mooving)
+    if (status.mooving || status.banana_move)
         move_horizontal(position, status, map);
 
     collision_detector(position, status, map);
     status.grounded ? update_jump_status(status, y_velocity)
                     : update_in_the_air_status(status, y_velocity);
 
-    if (y_velocity != Y_VELOCITY_INITIAL)
+    if (y_velocity != Y_VELOCITY_INITIAL || status.banana_move)
         move_vertical(position, map, y_velocity);
 }
 
@@ -54,6 +54,8 @@ Duck::~Duck() {}
 
 void Duck::move(Direction direction)
 {
+    if (status.banana_move)
+        return;
     switch (direction)
     {
     case Direction::RIGHT:
@@ -86,21 +88,21 @@ void Duck::stop_looking_up()
 
 void Duck::drop_gun()
 {
-    if (!gun)
+    if (!gun || status.banana_move)
         return;
     status.gun_drop = true;
 }
 
 void Duck::shoot()
 {
-    if (gun == nullptr || status.bent_down)
+    if (gun == nullptr || status.bent_down || status.banana_move)
         return;
     status.shooting = true;
 }
 
 void Duck::stop_shooting()
 {
-    if (gun == nullptr)
+    if (gun == nullptr || status.banana_move)
         return;
     status.shooting = false;
     block_shooting_command = false;
@@ -108,7 +110,7 @@ void Duck::stop_shooting()
 
 void Duck::jump()
 {
-    if (status.bent_down)
+    if (status.bent_down || status.banana_move)
         return;
     status.grounded ? status.jumping = true : status.flapping = true;
 }
@@ -120,14 +122,14 @@ void Duck::stand_up()
 
 void Duck::grab()
 {
-    if (gun != nullptr)
+    if (gun != nullptr || status.banana_move)
         return;
     status.gun_grab = true;
 }
 
 void Duck::lay()
 {
-    if (status.jumping || status.flapping || !status.grounded)
+    if (status.jumping || status.flapping || !status.grounded || status.banana_move)
         return;
     status.bent_down = true;
 }
@@ -151,6 +153,11 @@ void Duck::set_receive_shot()
 bool Duck::is_alive() const
 {
     return status.is_alive;
+}
+
+DuckStatus &Duck::get_duck_status()
+{
+    return status;
 }
 
 DuckSnapshot Duck::get_status()

@@ -21,6 +21,7 @@ struct DuckStatus
     bool is_alive = true;
     bool gun_drop = false;
     bool gun_grab = false;
+    bool banana_move = false;
 };
 
 #endif // COMMON_DUCK_H
