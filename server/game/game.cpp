@@ -154,20 +154,8 @@ void Game::move_projectiles()
 {
     for (std::shared_ptr<Projectile> &p : projectiles)
     {
-        if (p->get_type() == ProjectileType::Grenade || p->get_type() == ProjectileType::Banana)
-        {
-            p->move([this](Position &p)
-                    { return maps[current_map].validate_coordinate(p); });
-
-            continue;
-        }
         p->move([this](Position &p)
                 { return maps[current_map].validate_coordinate(p); });
-        Position current_position = p->get_position();
-        if (maps[current_map].validate_coordinate(current_position))
-            continue;
-        p->cancel_move();
-        p->destroy();
     }
 }
 

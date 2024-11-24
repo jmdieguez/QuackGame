@@ -11,36 +11,61 @@ ProjectileGun::ProjectileGun(const ProjectileType &t, const TextureFigure &tex, 
                                                                                                                                                                   iterations_left(tiles * TILE_SIZE)
 {
 }
-
 void ProjectileGun::move(const std::function<bool(Position &)> &validator)
 {
-    (void)validator;
-
     if (iterations_left <= 0)
+    {
+        finish = true;
         return;
-
-    if (dispersion != nullptr)
-    {
-        if (direction.first != 0)
-        {
-            position.x += direction.first * velocity;
-            position.y += dispersion->calculate_dispersion(trayectory);
-        }
-        if (direction.second == -1)
-        {
-            position.y += direction.second * velocity;
-            position.x += dispersion->calculate_dispersion(trayectory);
-        }
     }
-    else
+
+    if (direction.first != 0)
     {
-        position.x += direction.first * velocity;
-        position.y += direction.second * velocity;
+        int i = 0;
+
+        while (i <= velocity)
+        {
+            Position new_position(position.x + direction.first, position.y);
+            if (dispersion != nullptr && i == (velocity - 1))
+                new_position.y += dispersion->calculate_dispersion(trayectory);
+            Position end_hitbox(new_position.x + 8 - 1, new_position.y + 8 - 1);
+            if (validator(new_position) && validator(end_hitbox))
+                position = new_position;
+            else
+            {
+                finish = true;
+                break;
+            }
+            i++;
+        }
+
+        if (finish)
+            return;
+    }
+
+    if (direction.second == -1)
+    {
+
+        int i = 0;
+
+        while (i <= velocity)
+        {
+            Position new_position(position.x, position.y + direction.second);
+            if (dispersion != nullptr && i == (velocity - 1))
+                new_position.x += dispersion->calculate_dispersion(trayectory);
+            Position end_hitbox(new_position.x + 8 - 1, new_position.y + 8 - 1);
+            if (validator(new_position) && validator(end_hitbox))
+                position = new_position;
+            else
+            {
+                finish = true;
+                break;
+            }
+            i++;
+        }
     }
     iterations_left -= velocity;
     trayectory++;
-    if (iterations_left <= 0)
-        finish = true;
 }
 
 void ProjectileGun::cancel_move()
