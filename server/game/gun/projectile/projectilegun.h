@@ -12,7 +12,5 @@ public:
     ProjectileGun(const ProjectileType &t, const TextureFigure &tex, const Hitbox &h, const std::pair<int, int> &d, uint8_t velocity, uint8_t tiles, std::shared_ptr<Dispersion> dispersion);
     ProjectileGun(const ProjectileType &t, const TextureFigure &tex, const Hitbox &h, const std::pair<int, int> &d, uint8_t velocity, uint8_t tiles);
     void move(const std::function<bool(Position &)> &validator) override;
-    void cancel_move() override;
-    void collide_walls() override;
     ~ProjectileGun();
 };

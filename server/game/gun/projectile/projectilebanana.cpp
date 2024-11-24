@@ -78,13 +78,6 @@ void ProjectileBanana::move(const std::function<bool(Position &)> &validator)
         trayectory += VELOCITY_X;
     }
 }
-void ProjectileBanana::cancel_move()
-{
-}
-
-void ProjectileBanana::collide_walls()
-{
-}
 
 void ProjectileBanana::checkCollision(Hitbox duck, DuckStatus &status)
 {

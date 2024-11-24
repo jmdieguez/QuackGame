@@ -84,18 +84,6 @@ void ProjectileGrenade::move(const std::function<bool(Position &)> &validator)
     }
     time_to_explosion--;
 }
-void ProjectileGrenade::cancel_move()
-{
-}
-
-void ProjectileGrenade::collide_walls()
-{
-}
-
-void ProjectileGrenade::reduce_time()
-{
-    time_to_explosion--;
-}
 
 ProjectileGrenade::~ProjectileGrenade()
 {

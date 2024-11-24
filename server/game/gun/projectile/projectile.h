@@ -36,11 +36,7 @@ public:
 
     virtual void move(const std::function<bool(Position &)> &validator) = 0;
 
-    virtual void cancel_move() = 0;
-
     virtual bool is_finish() { return finish; };
-
-    virtual void collide_walls() = 0;
 
     void destroy()
     {

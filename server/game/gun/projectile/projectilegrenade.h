@@ -12,11 +12,6 @@ public:
     explicit ProjectileGrenade(const Hitbox &h, const std::pair<int, int> &d);
 
     void move(const std::function<bool(Position &)> &validator) override;
-    void cancel_move() override;
-    void collide_walls() override;
-
-    void reduce_time();
-    uint8_t get_time_fire() const;
 
     ~ProjectileGrenade();
 };

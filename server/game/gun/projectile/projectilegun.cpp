@@ -68,16 +68,6 @@ void ProjectileGun::move(const std::function<bool(Position &)> &validator)
     trayectory++;
 }
 
-void ProjectileGun::cancel_move()
-{
-    position.x -= direction.first * velocity;
-    position.y -= direction.second * velocity;
-}
-
-void ProjectileGun::collide_walls()
-{
-}
-
 ProjectileGun::~ProjectileGun()
 {
 }

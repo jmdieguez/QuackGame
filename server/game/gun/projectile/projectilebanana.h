@@ -9,8 +9,6 @@ private:
 public:
     explicit ProjectileBanana(const Hitbox &h, const std::pair<int, int> &d);
     void move(const std::function<bool(Position &)> &validator) override;
-    void cancel_move() override;
-    void collide_walls() override;
 
     void checkCollision(Hitbox duck, DuckStatus &status);
 
