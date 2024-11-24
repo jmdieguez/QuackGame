@@ -7,12 +7,10 @@
 #include "../../../common/snapshots.h"
 #include "projectile/projectile.h"
 #include "gun.h"
-#include "positiongun.h"
 
 class Grenade : public Gun
 {
 private:
-    PositionGun position_gun;
     bool start_explosion_state;
     uint8_t time_explosion;
 

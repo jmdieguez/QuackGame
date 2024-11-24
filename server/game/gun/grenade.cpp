@@ -25,8 +25,9 @@
 ****************************************************************************/
 
 Grenade::Grenade(const uint16_t &id, const Position &position) : Gun(id, GunType::Grenade, Position(position), Size(GUN_WIDTH, GUN_HEIGHT), TextureFigure::GrenadeFigure),
-                                                                 position_gun(HORIZONTAL_Y, HORIZONTAL_RIGHT, HORIZONTAL_LEFT, VERTICAL_RIGHT, VERTICAL_LEFT),
-                                                                 start_explosion_state(false), time_explosion(TIME_EXPLOSION) {}
+                                                                 start_explosion_state(false), time_explosion(TIME_EXPLOSION)
+{
+}
 
 std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Grenade::shoot(bool &looking_right, bool &looking_up, const Position &duck_position)
 {
