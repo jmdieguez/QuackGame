@@ -20,6 +20,8 @@ ProjectileDrawer::ProjectileDrawer(SDL2pp::Renderer &renderer) : Renderer(render
 void ProjectileDrawer::render(ProjectileSnapshot &projectile)
 {
 
+    if (projectile.texture == TextureFigure::None)
+        return;
     SDL2pp::Texture &texture = get_texture(projectile.texture);
     int src_x = POS_INIT_X_PROJECTILE, src_y = POS_INIT_Y_PROJECTILE;
     bool looking_right = projectile.type_direction == ProjectileDirection::Right;

@@ -35,9 +35,11 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Gre
     (void)looking_up;
     (void)duck_position;
     start_explosion_state = true;
-    return std::nullopt;
+    std::vector<std::shared_ptr<Projectile>> projectiles;
+    projectile_grenade = std::make_shared<ProjectileGrenade>(duck_position);
+    projectiles.push_back(projectile_grenade);
+    return std::make_optional(std::make_pair(projectiles, duck_position));
 }
-
 Position Grenade::get_position_in_duck(const uint16_t &height_duck, const Position &duck, const bool &looking_right, const bool &looking_up)
 {
     (void)height_duck;
@@ -47,12 +49,12 @@ Position Grenade::get_position_in_duck(const uint16_t &height_duck, const Positi
     return Position(pos_x, pos_y);
 }
 
-std::shared_ptr<Projectile> Grenade::get_projectile(bool &looking_right, bool &looking_up)
+bool Grenade::throw_grenade(bool &looking_right)
 {
-    (void)looking_up;
-    std::pair<int, int> directions = looking_right ? std::make_pair(1, 0) : std::make_pair(-1, 0);
-    Hitbox hitbox(position, Size(PROJECTILE_WIDTH, PROJECTILE_HEIGHT));
-    return std::make_shared<ProjectileGrenade>(hitbox, directions);
+    if (!start_explosion_state)
+        return false;
+    projectile_grenade->throw_grenade(looking_right);
+    return true;
 }
 
 Grenade::~Grenade()

@@ -34,6 +34,9 @@ public:
             type_direction = direction.first == 1 ? ProjectileDirection::Right : ProjectileDirection::Left;
     }
 
+    Projectile(const ProjectileType &t, const TextureFigure &tex, uint8_t velocity)
+        : Hitbox(Position(0, 0), Size(0, 0)), type(t), texture(tex), velocity(velocity), finish(false) {}
+
     virtual void move(const std::function<bool(Position &)> &validator) = 0;
 
     virtual bool is_finish() { return finish; };

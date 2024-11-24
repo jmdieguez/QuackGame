@@ -3,7 +3,8 @@
 
 enum TextureFigure
 {
-    DUCK = 0,
+    None = 0,
+    DUCK,
     CowboyPistolFigure,
     CowboyBullet,
     MagnumFigure,
