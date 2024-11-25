@@ -101,8 +101,6 @@ void ServerProtocol::send_gun(const GunNoEquippedSnapshot &gun)
     send_data(static_cast<uint16_t>(gun.texture));
     send_data(static_cast<uint16_t>(gun.position.x));
     send_data(static_cast<uint16_t>(gun.position.y));
-    send_data(static_cast<uint16_t>(gun.size.width));
-    send_data(static_cast<uint16_t>(gun.size.height));
     send_data(static_cast<uint16_t>(gun.angle));
 }
 

@@ -21,10 +21,9 @@ class GunNoEquippedSnapshot
 public:
     TextureFigure texture;
     Position position;
-    Size size;
     uint16_t angle;
-    explicit GunNoEquippedSnapshot(const TextureFigure &t, const Position &p, const Size &s, const uint16_t &angle) : texture(t), position(p),
-                                                                                                                      size(s), angle(angle) {}
+    explicit GunNoEquippedSnapshot(const TextureFigure &t, const Position &p, const uint16_t &angle) : texture(t), position(p),
+                                                                                                       angle(angle) {}
 };
 
 class ProjectileSnapshot
@@ -136,17 +135,19 @@ public:
     MapSnapshot map;
 
     Snapshot() : ducks({}), guns({}), projectiles({}), explosions({}), sounds({}) {}
-    
+
     Snapshot(std::vector<DuckSnapshot> &&d_s,
              std::vector<GunNoEquippedSnapshot> &&g_s,
              std::vector<ProjectileSnapshot> &&p,
              std::vector<ExplosionSnapshot> &&e,
              std::vector<SoundSnapshot> &&s,
              std::vector<BoxSnapshot> &&b,
-             
+
              MapSnapshot &map_snapshot)
-              : ducks(d_s), guns(g_s), projectiles(p), explosions(e),
-                sounds(s), boxes(b), map(map_snapshot) {}
+        : ducks(d_s), guns(g_s), projectiles(p), explosions(e),
+          sounds(s), boxes(b), map(map_snapshot)
+    {
+    }
 };
 
 #endif // SNAPSHOTS_H

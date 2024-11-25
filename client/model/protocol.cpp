@@ -138,13 +138,9 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
         uint16_t y;
         read_data(y);
         TextureFigure texture_value = static_cast<TextureFigure>(texture);
-        uint16_t weigth;
-        read_data(weigth);
-        uint16_t height;
-        read_data(height);
         uint16_t angle;
         read_data(angle);
-        GunNoEquippedSnapshot gun(texture_value, Position(x, y), Size(weigth, height), angle);
+        GunNoEquippedSnapshot gun(texture_value, Position(x, y), angle);
         snapshot.guns.emplace_back(gun);
     }
 

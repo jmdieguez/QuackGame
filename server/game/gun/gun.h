@@ -111,7 +111,7 @@ public:
 
     GunNoEquippedSnapshot get_status()
     {
-        return GunNoEquippedSnapshot(texture, position, size, angle);
+        return GunNoEquippedSnapshot(texture, position, angle);
     }
 
     GunType get_type()

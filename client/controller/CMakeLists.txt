@@ -7,6 +7,6 @@ target_sources(quack_game_client
     # .h files
     game.h 
 )
-add_subdirectory(render/)
 add_subdirectory(session/)
 add_subdirectory(music/)
+add_subdirectory(render/)

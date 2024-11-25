@@ -23,3 +23,5 @@ target_sources(quack_game_client
     renderer.h 
     renderstorage.h
 )
+
+add_subdirectory(size/)

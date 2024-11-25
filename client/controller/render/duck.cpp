@@ -123,11 +123,12 @@ void Duck::render_duck(DuckSnapshot &duck, int frame_ticks)
 
 void Duck::render_weapon(DuckSnapshot &duck)
 {
+    Size size = size_factory.get_size(duck.texture_gun);
     SDL2pp::Texture &texture = get_texture(duck.texture_gun);
     int src_x = POS_INIT_X_GUN, src_y = POS_INIT_Y_GUN;
     SDL_RendererFlip flip = duck.status.looking_right ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
     SDL_Rect src_rect = {src_x, src_y, SRC_GUN_WIDTH, SRC_GUN_HEIGHT};
-    SDL_Rect dst_rect = {duck.position_gun.x, duck.position_gun.y, 10, 10};
+    SDL_Rect dst_rect = {duck.position_gun.x, duck.position_gun.y, size.width, size.height};
     SDL_RenderCopyEx(renderer.Get(), texture.Get(), &src_rect, &dst_rect, duck.angle_gun, nullptr, flip);
 }
 
