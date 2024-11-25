@@ -33,32 +33,29 @@ void Game::set_renderer(int frame_ticks)
     render_storage.get_scene().render();
     Snapshot snapshot;
 
-    if (!session.get_queue_receiver().try_pop(snapshot))
-    {
-        if (!started)
-            loading_screen.render();
+    // aca quieren poppear mas de un snapshot por loop (y quedarse con el ultimo)
+    // esto es lo que les genera input lag
+    while (session.get_queue_receiver().try_pop(snapshot));
+    if (!started) {
+        loading_screen.render();
+        started = true;
         return;
     }
-    else
-        started = true;
 
-    if (started)
-    {
-        for (MapComponent &component : snapshot.map.components)
-            render_storage.get_map_drawer().render_component(component, snapshot.map.style);
-        for (BoxSnapshot &box : snapshot.map.boxes)
-            render_storage.get_box_item().render(box);
-        for (Position &position : snapshot.map.gun_spawns)
-            render_storage.get_map_drawer().render_spawn_in_map(position);
-        for (DuckSnapshot &duck_snapshot : snapshot.ducks)
-            render_storage.get_duck().render(duck_snapshot, frame_ticks);
-        for (GunNoEquippedSnapshot &gun : snapshot.guns)
-            render_storage.get_item().render(gun);
-        for (ProjectileSnapshot &projectile : snapshot.projectiles)
-            render_storage.get_projectile_drawer().render(projectile);
-        // for (SoundSnapshot &sound_snapshot : snapshot.sounds)
-        //     music_box.play_sound(sound_snapshot);
-    }
+    for (MapComponent &component : snapshot.map.components)
+        render_storage.get_map_drawer().render_component(component, snapshot.map.style);
+    for (BoxSnapshot &box : snapshot.map.boxes)
+        render_storage.get_box_item().render(box);
+    for (Position &position : snapshot.map.gun_spawns)
+        render_storage.get_map_drawer().render_spawn_in_map(position);
+    for (DuckSnapshot &duck_snapshot : snapshot.ducks)
+        render_storage.get_duck().render(duck_snapshot, frame_ticks);
+    for (GunNoEquippedSnapshot &gun : snapshot.guns)
+        render_storage.get_item().render(gun);
+    for (ProjectileSnapshot &projectile : snapshot.projectiles)
+        render_storage.get_projectile_drawer().render(projectile);
+    // for (SoundSnapshot &sound_snapshot : snapshot.sounds)
+    //     music_box.play_sound(sound_snapshot);
 }
 
 void Game::step(unsigned int current_step)

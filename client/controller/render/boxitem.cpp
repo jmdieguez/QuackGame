@@ -10,6 +10,9 @@ BoxItem::BoxItem(SDL2pp::Renderer &renderer) : Renderer(renderer)
 
 void BoxItem::render(BoxSnapshot &box)
 {
+    // esto lo comento acá pero va para todos los renderizables
+    // si el renderizable no esta en la vista de la camara (esto va a tomar mas relevancia cuando hagan el zoom)
+    // entonces NO lo rendericen
     if (box.status == Box::NONE)
         return;
     SDL2pp::Texture &texture = get_texture(TextureFigure::Box_T);

@@ -62,9 +62,6 @@ void Game::process(ClientCommand &command)
             break;
 
         case ClientActionType::STOP_MOVING_LEFT:
-            duck.stop_moving();
-            break;
-
         case ClientActionType::STOP_MOVING_RIGHT:
             duck.stop_moving();
             break;
@@ -204,6 +201,7 @@ void Game::check_for_winner(const std::vector<uint8_t> &ducks_alive)
         if (n_ducks_alive == 1)
         {
             ++victories[ducks_alive[0]];
+            // esto podría estar en la configuracion del juego
             if ((round >= 5) && (round % 5 == 0))
             { // Check if somebody won every five rounds
                 std::vector<uint8_t> possible_winners;

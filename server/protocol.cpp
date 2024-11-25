@@ -152,6 +152,8 @@ void ServerProtocol::send_box(const BoxSnapshot &box)
 
 void ServerProtocol::send_snapshot(const Snapshot &snapshot)
 {
+    // es bastante "chatty" el protocolo (muchos mensajes para mandar una sola cosa)
+    // una alternativa es armar un buffer entero y mandarlo de una
     const uint16_t ducks_lenght = static_cast<uint16_t>(snapshot.ducks.size());
     send_data(ducks_lenght);
     for (const DuckSnapshot &duck : snapshot.ducks)
@@ -167,9 +169,11 @@ void ServerProtocol::send_snapshot(const Snapshot &snapshot)
 
     const uint16_t sound_lenght = static_cast<uint16_t>(snapshot.sounds.size());
     send_data(sound_lenght);
+    // los sonidos los podría computar el cliente (esa logica esta bien que la tenga el cliente)
     for (SoundSnapshot sound_snapshot : snapshot.sounds)
         send_data(static_cast<uint16_t>(sound_snapshot.sound));
 
+    // esto deberían mandarlo una sola vez
     send_data(snapshot.map.style);
     send_data(snapshot.map.size_x);
     send_data(snapshot.map.size_y);
@@ -183,6 +187,7 @@ void ServerProtocol::send_snapshot(const Snapshot &snapshot)
     for (const BoxSnapshot &box : snapshot.map.boxes)
         send_box(box);
 
+    // idem el mapa, los spawns no deberían ser enviados multiples veces
     send_data(snapshot.map.gun_spawns.size());
     for (const Position &position : snapshot.map.gun_spawns)
     {

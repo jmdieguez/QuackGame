@@ -245,6 +245,7 @@ void ClientProtocol::recv(void *data, size_t size)
     skt.recvall(data, size, &was_closed);
     if (was_closed)
     {
+        // LibError es para excepciones de las libs del sistema operativo, no para el protocol
         throw LibError(errno, "Error al intentar recibir datos del servidor");
     }
 }

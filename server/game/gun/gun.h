@@ -38,6 +38,8 @@ protected:
     }
 
 public:
+    // esto es leaky respecto al cliente. Por que hay informacion de la textura y del tamaño/altura del arma?
+    // eso paracece responsabilidad del cliente, no del servidor
     explicit Gun(const uint16_t &id, const GunType &type, const Position &p, const Size &size, const TextureFigure &texture) : Hitbox(p, size), id(id),
                                                                                                                                type(type), is_equipped(false), is_grounded(false),
                                                                                                                                angle(ANGLE_DEFAULT),
