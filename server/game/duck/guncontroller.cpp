@@ -37,19 +37,19 @@ Position GunController::get_gun_position(Position &position, Size &size, DuckSta
     return gun == nullptr ? Position(0, 0) : gun->get_position_in_duck(size.height, position, status.looking_right, status.looking_up);
 }
 
-void GunController::discard_gun(Map &map, Position &position, Size &size, DuckStatus &status)
+void GunController::discard_gun(std::map<uint8_t, std::shared_ptr<Gun>> &guns, Position &position, Size &size, DuckStatus &status)
 {
     Position pos = get_gun_position(position, size, status);
     gun->dropped(pos);
-    map.add_gun(gun);
+    guns.insert({gun->get_id(), gun});
     gun = nullptr;
     status.gun_drop = false;
 }
 
-void GunController::pick_up(Map &map, DuckStatus &status, const std::function<bool(const Hitbox &)> &func)
+void GunController::pick_up(std::map<uint8_t, std::shared_ptr<Gun>> &guns, DuckStatus &status, const std::function<bool(const Hitbox &)> &func)
 {
     std::optional<uint8_t> id_to_erase;
-    for (auto &[id, gun] : map.get_guns())
+    for (auto &[id, gun] : guns)
     {
         Hitbox gun_hitbox = gun->get_hitbox();
         if (!func(gun_hitbox))
@@ -58,7 +58,7 @@ void GunController::pick_up(Map &map, DuckStatus &status, const std::function<bo
         this->gun = gun;
     }
     if (id_to_erase.has_value())
-        map.get_guns().erase(id_to_erase.value());
+        guns.erase(id_to_erase.value());
     status.gun_grab = false;
 }
 

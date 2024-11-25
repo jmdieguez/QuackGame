@@ -25,8 +25,10 @@ private:
     int y_velocity;
 
     void process_movement(Map &map);
-    void process_shooting(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles, std::vector<SoundType> &sounds);
-
+    void process_shooting(Map &map, 
+                          std::map<uint8_t, std::shared_ptr<Gun>> &guns,
+                          std::vector<std::shared_ptr<Projectile>> &projectiles,
+                          std::vector<SoundType> &sounds);
 public:
     explicit Duck(const uint8_t &i, const Position &p, const Color &color);
     ~Duck();
@@ -52,7 +54,8 @@ public:
     bool is_alive() const;
 
     // Simulate an iteration
-    void step(Map &map, 
+    void step(Map &map,
+              std::map<uint8_t, std::shared_ptr<Gun>> &guns,
               std::vector<std::shared_ptr<Projectile>> &projectiles, 
               std::vector<SoundType> &sounds);
 };

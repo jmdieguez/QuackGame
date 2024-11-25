@@ -107,19 +107,19 @@ void Game::process(ClientCommand &command)
             break;
 
         case ClientActionType::SPAWN_AK:
-            maps[current_map].cheat_spawn_gun<AK>(duck.get_position());
+            spawn_gun<AK>(duck.get_position());
             break;
 
         case ClientActionType::SPAWN_SHOTGUN:
-            maps[current_map].cheat_spawn_gun<Shotgun>(duck.get_position());
+            spawn_gun<Shotgun>(duck.get_position());
             break;
 
         case ClientActionType::SPAWN_GRENADE:
-            maps[current_map].cheat_spawn_gun<Grenade>(duck.get_position());
+            spawn_gun<Grenade>(duck.get_position());
             break;
 
         case ClientActionType::SPAWN_BANANA:
-            maps[current_map].cheat_spawn_gun<Banana>(duck.get_position());
+            spawn_gun<Banana>(duck.get_position());
             break;
         default:
             break;
@@ -160,7 +160,8 @@ bool Game::verify_hit_box(Box &box, const Position &position, std::shared_ptr<Pr
     Hitbox box_hitbox(position_as_pixels, size);
     if (box_hitbox.intersects(projectile_hitbox))
     {   
-        if (box == Box::BOX_1_HP) { // Refactorizar en clase 
+        if (box == Box::BOX_1_HP) { // Refactorizar en clase
+            spawn_gun<Shotgun>(position_as_pixels);
             boxes.erase(position);
         } else if (box == Box::BOX_2_HP) {
             box = Box::BOX_1_HP;
@@ -307,6 +308,37 @@ void Game::check_for_winner(const std::vector<uint8_t> &ducks_alive)
     }
 }
 
+std::vector<GunNoEquippedSnapshot> Game::get_guns_snapshots()
+    {
+        std::vector<GunNoEquippedSnapshot> guns_snapshots;
+        for (auto &[id, gun] : guns)
+        {
+            if (gun.get()->has_been_equipped())
+                continue;
+            guns_snapshots.push_back(gun->get_status());
+        }
+        return guns_snapshots;
+    }
+
+template <typename T>
+void Game::spawn_gun(const Position &position_gun)
+{
+    guns.emplace(gun_id, std::make_shared<T>(gun_id, Position(position_gun.x, position_gun.y - 10)));
+    gun_id++;
+}
+
+void Game::move_guns()
+{
+    for (auto &[id, gun] : guns)
+        gun->move([this](Position &p)
+                    { return maps[current_map].validate_coordinate(p); });
+}
+
+void Game::remove_gun(const uint16_t &id)
+{
+    guns.erase(id);
+}
+
 void Game::step()
 {
     if (initialize)
@@ -324,14 +356,14 @@ void Game::step()
     decrement_explosions();
     std::vector<uint8_t> ducks_alive;
     for (auto &[id, duck] : ducks)
-    {
-        duck.step(maps[current_map], projectiles, sounds);
+    {   
+        duck.step(maps[current_map], guns, projectiles, sounds);
         if (duck.is_alive())
         {
             ducks_alive.push_back(id);
         }
     }
-    maps[current_map].move_guns();
+    move_guns();
 
     check_for_winner(ducks_alive);
 }
@@ -339,7 +371,7 @@ void Game::step()
 Snapshot Game::get_status()
 {
     MapSnapshot map_snapshot = maps[current_map].get_status();
-    std::vector<GunNoEquippedSnapshot> guns_snapshots = maps[current_map].get_guns_snapshots();
+    std::vector<GunNoEquippedSnapshot> guns_snapshots = get_guns_snapshots();
     std::vector<DuckSnapshot> duck_snapshots;
     std::vector<ExplosionSnapshot> explosions_snapshots;
     std::vector<SoundSnapshot> sound_snapshots;

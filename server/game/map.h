@@ -112,37 +112,10 @@ class Map
 {
 private:
     MapConfig cfg;
-    uint16_t gun_id;
-    std::map<uint8_t, std::shared_ptr<Gun>> guns;
 
 public:
-    Map(const std::string &map_file) : cfg(map_file),
-                                       gun_id(0)
+    Map(const std::string &map_file) : cfg(map_file)
     {
-    }
-
-    std::vector<GunNoEquippedSnapshot> get_guns_snapshots()
-    {
-        std::vector<GunNoEquippedSnapshot> guns_snapshots;
-        for (auto &[id, gun] : guns)
-        {
-            if (gun.get()->has_been_equipped())
-                continue;
-            guns_snapshots.push_back(gun->get_status());
-        }
-        return guns_snapshots;
-    }
-
-    void add_gun(std::shared_ptr<Gun> gun)
-    {
-        guns.insert({gun->get_id(), gun});
-    }
-
-    template <typename T>
-    void cheat_spawn_gun(const Position &position_gun)
-    {
-        guns.emplace(gun_id, std::make_shared<T>(gun_id, Position(position_gun.x, position_gun.y - 10)));
-        gun_id++;
     }
 
     bool is_hitbox_valid(const Hitbox &hitbox) const
@@ -161,13 +134,6 @@ public:
         }
 
         return true;
-    }
-
-    void move_guns()
-    {
-        for (auto &[id, gun] : guns)
-            gun->move([this](Position &p)
-                      { return validate_coordinate(p); });
     }
 
     MapSnapshot get_status() const
@@ -192,16 +158,6 @@ public:
             return cfg.bit_map[p.x + (p.y * cfg.size_x)];
         }
         return false;
-    }
-
-    std::map<uint8_t, std::shared_ptr<Gun>> &get_guns()
-    {
-        return guns;
-    }
-
-    void remove_gun(uint16_t id)
-    {
-        guns.erase(id);
     }
 
     std::vector<Position> calculate_spawns(const int &n_players) const
