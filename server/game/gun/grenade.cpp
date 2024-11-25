@@ -29,10 +29,9 @@ Grenade::Grenade(const uint16_t &id, const Position &position) : Gun(id, GunType
 {
 }
 
-std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Grenade::shoot(bool &looking_right, bool &looking_up, const Position &duck_position)
+std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Grenade::shoot(DuckStatus &status, const Position &duck_position)
 {
-    (void)looking_right;
-    (void)looking_up;
+    (void)status;
     (void)duck_position;
     start_explosion_state = true;
     std::vector<std::shared_ptr<Projectile>> projectiles;

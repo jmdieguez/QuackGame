@@ -32,14 +32,14 @@ CowboyPistol::CowboyPistol(const uint16_t &id, const Position &position) : Gun(i
 {
 }
 
-std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> CowboyPistol::shoot(bool &looking_right, bool &looking_up, const Position &duck_position)
+std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> CowboyPistol::shoot(DuckStatus &status, const Position &duck_position)
 {
     if (!have_ammo())
         return std::nullopt;
     reduce_ammo();
-    auto direction = get_direction(looking_right, looking_up);
-    uint16_t adjusted_pos_x = duck_position.x + (looking_up ? (looking_right ? LOOKING_UP_RIGHT_OFFSET_X : LOOKING_UP_LEFT_OFFSET_X) : GUN_WIDTH * direction.first);
-    uint16_t adjusted_pos_y = duck_position.y + (looking_up ? -GUN_WIDTH : VERTICAL_RIGHT);
+    auto direction = get_direction(status.looking_right, status.looking_up);
+    uint16_t adjusted_pos_x = duck_position.x + (status.looking_up ? (status.looking_right ? LOOKING_UP_RIGHT_OFFSET_X : LOOKING_UP_LEFT_OFFSET_X) : GUN_WIDTH * direction.first);
+    uint16_t adjusted_pos_y = duck_position.y + (status.looking_up ? -GUN_WIDTH : VERTICAL_RIGHT);
     Position projectile_position(adjusted_pos_x, adjusted_pos_y);
     Hitbox hitbox(projectile_position, Size(PROJECTILE_WIDTH, PROJECTILE_HEIGHT));
     std::vector<std::shared_ptr<Projectile>> projectiles = {

@@ -10,6 +10,7 @@
 #include "../../../common/position.h"
 #include "../../../common/size.h"
 #include "../../../common/texturefigure.h"
+#include "../../../common/duck.h"
 #include "../hitbox.h"
 #include "projectile/projectile.h"
 
@@ -126,7 +127,7 @@ public:
 
     virtual Position get_position_in_duck(const uint16_t &height_duck, const Position &duck, const bool &looking_right, const bool &looking_up) = 0;
 
-    virtual std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> shoot(bool &looking_right, bool &looking_up, const Position &duck_position) = 0;
+    virtual std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> shoot(DuckStatus &status, const Position &duck_position) = 0;
 };
 
 #endif // SERVER_GUN_H

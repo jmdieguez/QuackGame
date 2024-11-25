@@ -29,11 +29,11 @@ Banana::Banana(const uint16_t &id, const Position &position) : Gun(id, GunType::
 {
 }
 
-std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Banana::shoot(bool &looking_right, bool &looking_up, const Position &duck_position)
+std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Banana::shoot(DuckStatus &status, const Position &duck_position)
 {
-    (void)looking_right;
-    (void)looking_up;
+
     (void)duck_position;
+    (void)status;
     peeled_banana = true;
     return std::nullopt;
 }

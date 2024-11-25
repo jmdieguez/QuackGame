@@ -84,7 +84,7 @@ void GunController::fire(DuckStatus &status, Position &position, Map &map,
                          std::vector<std::shared_ptr<Projectile>> &projectiles,
                          std::vector<SoundType> &sounds)
 {
-    auto result = gun->shoot(status.looking_right, status.looking_up, position);
+    auto result = gun->shoot(status, position);
     if (!result.has_value())
     {
         if ((gun->get_type() == GunType::Shotgun && ((Shotgun *)gun.get())->is_block_shoot()) ||
