@@ -14,7 +14,7 @@ trap 'echo -e "${RED}Error: La instalación ha fallado en la línea $LINENO.${RE
 # 1. Descargar e instalar dependencias
 echo -e "${GREEN}Instalando dependencias...${RESET}"
 sudo apt update
-sudo apt install -y libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libsdl2-mixer-dev qtbase5-dev qt5-qmake
+sudo apt install -y libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libsdl2-mixer-dev qtbase5-dev qt5-qmake qtmultimedia5-dev
 
 printf '%*s\n' "$(tput cols)" | tr ' ' '-'
 

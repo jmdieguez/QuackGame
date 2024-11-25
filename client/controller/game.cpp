@@ -46,7 +46,7 @@ void Game::set_renderer(int frame_ticks)
     {
         for (MapComponent &component : snapshot.map.components)
             render_storage.get_map_drawer().render_component(component, snapshot.map.style);
-        for (BoxSnapshot &box : snapshot.map.boxes)
+        for (BoxSnapshot &box : snapshot.boxes)
             render_storage.get_box_item().render(box);
         for (Position &position : snapshot.map.gun_spawns)
             render_storage.get_map_drawer().render_spawn_in_map(position);

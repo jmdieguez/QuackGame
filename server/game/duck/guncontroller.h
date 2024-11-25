@@ -26,10 +26,10 @@ public:
 
     void finish_shooting();
     Position get_gun_position(Position &position, Size &size, DuckStatus &status) const;
-    void discard_gun(Map &map, Position &position, Size &size, DuckStatus &status);
+    void discard_gun(std::map<uint8_t, std::shared_ptr<Gun>> &guns, Position &position, Size &size, DuckStatus &status);
     void drop_grenade(DuckStatus &status, std::vector<std::shared_ptr<Projectile>> &projectiles);
     void drop_banana(DuckStatus &status, std::vector<std::shared_ptr<Projectile>> &projectiles);
-    void pick_up(Map &map, DuckStatus &status, const std::function<bool(const Hitbox &)> &func);
+    void pick_up(std::map<uint8_t, std::shared_ptr<Gun>> &guns, DuckStatus &status, const std::function<bool(const Hitbox &)> &func);
     void fire(DuckStatus &status, Position &position, Map &map,
               std::vector<std::shared_ptr<Projectile>> &projectiles,
               std::vector<SoundType> &sounds);

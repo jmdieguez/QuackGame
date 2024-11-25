@@ -195,9 +195,9 @@ void ServerProtocol::send_snapshot(const Snapshot &snapshot)
     for (const MapComponent &component : snapshot.map.components)
         send_map_component(component);
 
-    const uint16_t boxes_length = static_cast<uint16_t>(snapshot.map.boxes.size());
+    const uint16_t boxes_length = static_cast<uint16_t>(snapshot.boxes.size());
     send_data(boxes_length);
-    for (const BoxSnapshot &box : snapshot.map.boxes)
+    for (const BoxSnapshot &box : snapshot.boxes)
         send_box(box);
 
     send_data(snapshot.map.gun_spawns.size());

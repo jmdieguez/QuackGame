@@ -25,17 +25,29 @@ void Duck::process_movement(Map &map)
         move_vertical(position, size, map, y_velocity);
 }
 
-void Duck::process_shooting(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles, std::vector<SoundType> &sounds)
+void Duck::process_shooting(Map &map, 
+                            std::map<uint8_t, std::shared_ptr<Gun>> &guns,
+                            std::vector<std::shared_ptr<Projectile>> &projectiles,
+                            std::vector<SoundType> &sounds)
 {
     if (!status.shooting && !block_shooting_command && gun != nullptr)
         finish_shooting();
 
     if (status.gun_grab)
-        pick_up(map, status, [this](const Hitbox &a)
+        pick_up(guns, status, [this](const Hitbox &a)
                 { return intersects(a); });
 
-    if (status.gun_drop)
-        gun->get_type() == GunType::Grenade || gun->get_type() == GunType::Banana ? (gun->get_type() == GunType::Grenade ? drop_grenade(status, projectiles) : drop_banana(status, projectiles)) : discard_gun(map, position, size, status);
+    if (status.gun_drop) {
+        GunType gunType = gun->get_type();
+
+        if (gunType == GunType::Grenade) {
+            drop_grenade(status, projectiles);
+        } else if (gunType == GunType::Banana) {
+            drop_banana(status, projectiles);
+        } else {
+            discard_gun(guns, position, size, status);
+        }
+    }
 
     if (status.shooting && !block_shooting_command && gun != nullptr)
         fire(status, position, map, projectiles, sounds);
@@ -134,10 +146,13 @@ void Duck::bent_down()
     status.bent_down = true;
 }
 
-void Duck::step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles, std::vector<SoundType> &sounds)
+void Duck::step(Map &map,
+                std::map<uint8_t, std::shared_ptr<Gun>> &guns,
+                std::vector<std::shared_ptr<Projectile>> &projectiles,
+                std::vector<SoundType> &sounds)
 {
     process_movement(map);
-    process_shooting(map, projectiles, sounds);
+    process_shooting(map, guns, projectiles, sounds);
 }
 // true if duck dies after receiving the shot
 void Duck::set_receive_shot()

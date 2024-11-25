@@ -6,6 +6,7 @@
 class MoveController
 {
 private:
+    bool validate_position(const Map &map, const Size &size, const Position &position);
 public:
     MoveController();
     void move_horizontal(Position &position, Size &size, DuckStatus &status, Map &map);

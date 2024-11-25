@@ -3,6 +3,12 @@
 
 MoveController::MoveController() {}
 
+bool MoveController::validate_position(const Map &map, const Size &size, const Position &position)
+{   
+    Position end_hitbox(position.x + size.width - 1, position.y + size.height - 1);
+    return map.validate_coordinate(position) && map.validate_coordinate(end_hitbox);
+}
+
 void MoveController::move_horizontal(Position &position, Size &size, DuckStatus &status, Map &map)
 {
     std::function<int(int, int)> operation = status.looking_right
@@ -15,8 +21,7 @@ void MoveController::move_horizontal(Position &position, Size &size, DuckStatus 
     while (i <= X_VELOCITY)
     {
         Position new_position(operation(position.x, 1), position.y);
-        Position end_hitbox(new_position.x + size.width - 1, new_position.y + size.height - 1);
-        if (map.validate_coordinate(new_position) && map.validate_coordinate(end_hitbox))
+        if (validate_position(map, size, new_position))
         {
             position = new_position;
             i++;
@@ -81,8 +86,7 @@ void MoveController::move_vertical(Position &position, Size &size, Map &map, int
     while (i <= abs_y_velocity)
     {
         Position new_position(position.x, operation(position.y, 1));
-        Position end_hitbox(new_position.x + size.width - 1, new_position.y + size.height - 1);
-        if (map.validate_coordinate(new_position) && map.validate_coordinate(end_hitbox))
+        if (validate_position(map, size, new_position))
         {
             position = new_position;
             i++;
@@ -104,12 +108,12 @@ void MoveController::move_bent_down(DuckStatus &status, Position &position, Size
     int diff_h = DUCK_DEFAULT_HEIGHT - DUCK_BENT_DOWN_HEIGHT;
     Size new_size_bent_down(w, h);
     Position new_position_bent_down(position.x - diff_w, position.y + diff_h);
+    
     int i = 1;
     while (i <= 6)
     {
         Position new_position(position.x - i, position.y);
-        Position end_hitbox(new_position.x + w - 1, new_position.y + h - 1);
-        if (map.validate_coordinate(new_position) && map.validate_coordinate(end_hitbox))
+        if (validate_position(map, size, new_position))
             i++;
         else
         {
@@ -121,8 +125,7 @@ void MoveController::move_bent_down(DuckStatus &status, Position &position, Size
     while (i <= 11)
     {
         Position new_position(position.x, position.y + i);
-        Position end_hitbox(new_position.x + w - 1, new_position.y + h - 1);
-        if (map.validate_coordinate(new_position) && map.validate_coordinate(end_hitbox))
+        if (validate_position(map, size, new_position))
             i++;
         else
         {

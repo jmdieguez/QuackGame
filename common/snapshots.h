@@ -110,7 +110,6 @@ public:
     uint16_t size_x;
     uint16_t size_y;
     std::vector<MapComponent> components;
-    std::vector<BoxSnapshot> boxes;
     std::vector<Position> gun_spawns;
 
     MapSnapshot() : style(0), size_x(0), size_y(0) {}
@@ -119,9 +118,8 @@ public:
                 const uint16_t &s_x,
                 const uint16_t &s_y,
                 const std::vector<MapComponent> &c,
-                const std::vector<BoxSnapshot> &b,
                 const std::vector<Position> &g)
-        : style(s), size_x(s_x), size_y(s_y), components(c), boxes(b), gun_spawns(g) {}
+        : style(s), size_x(s_x), size_y(s_y), components(c), gun_spawns(g) {}
 
     ~MapSnapshot() {}
 };
@@ -134,15 +132,21 @@ public:
     std::vector<ProjectileSnapshot> projectiles;
     std::vector<ExplosionSnapshot> explosions;
     std::vector<SoundSnapshot> sounds;
+    std::vector<BoxSnapshot> boxes;
     MapSnapshot map;
 
     Snapshot() : ducks({}), guns({}), projectiles({}), explosions({}), sounds({}) {}
+    
     Snapshot(std::vector<DuckSnapshot> &&d_s,
              std::vector<GunNoEquippedSnapshot> &&g_s,
              std::vector<ProjectileSnapshot> &&p,
              std::vector<ExplosionSnapshot> &&e,
              std::vector<SoundSnapshot> &&s,
-             MapSnapshot &map_snapshot) : ducks(d_s), guns(g_s), projectiles(p), explosions(e), sounds(s), map(map_snapshot) {}
+             std::vector<BoxSnapshot> &&b,
+             
+             MapSnapshot &map_snapshot)
+              : ducks(d_s), guns(g_s), projectiles(p), explosions(e),
+                sounds(s), boxes(b), map(map_snapshot) {}
 };
 
 #endif // SNAPSHOTS_H
