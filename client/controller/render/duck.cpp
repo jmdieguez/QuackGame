@@ -35,9 +35,9 @@ void Duck::set_xywh(const DuckSnapshot &duck, const int &frame_ticks, int &x, in
     }
     else if (duck.status.start_jumping)
     {
-        x = 43;
+        x = 42;
         y = 46;
-        w = 12;
+        w = 14;
         h = 24;
     }
     else if (duck.status.bent_down)
@@ -113,8 +113,6 @@ void Duck::render_duck(DuckSnapshot &duck, int frame_ticks)
     duck_texture.SetColorMod(duck.color.GetRed(), duck.color.GetGreen(), duck.color.GetBlue());
     int x = 8, y = 16;
     int w = 16, h = 23;
-    renderer.SetDrawColor(255, 0, 0, 255);
-    renderer.FillRect(SDL2pp::Rect(duck.position.x, duck.position.y, duck.size_duck.width, duck.size_duck.height));
     if (!duck.status.banana_move)
         set_xywh(duck, frame_ticks, x, y, w, h);
     SDL_Rect src_rect = {x, y, w, h};
