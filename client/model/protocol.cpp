@@ -120,13 +120,20 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
         uint16_t gun_angle;
         read_data(gun_angle);
         DuckStatus duck_status = read_status();
+        uint16_t red;
+        read_data(red);
+        uint16_t green;
+        read_data(green);
+        uint16_t blue;
+        read_data(blue);
         Position p(x, y);
         Size duck_size(duck_width, duck_height);
         GunType type_gun_value = static_cast<GunType>(type_gun);
         TextureFigure texture_gun_value = static_cast<TextureFigure>(texture_gun);
         Size gun_size(gun_width, gun_height);
         Position gun_position(gun_x, gun_y);
-        DuckSnapshot duck(id, p, duck_size, type_gun_value, texture_gun_value, gun_size, gun_position, gun_angle, duck_status);
+        Color color(red, green, blue);
+        DuckSnapshot duck(id, p, duck_size, type_gun_value, texture_gun_value, gun_size, gun_position, gun_angle, duck_status, color);
         snapshot.ducks.emplace_back(duck);
     }
     uint16_t guns_length;

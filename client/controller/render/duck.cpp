@@ -70,6 +70,10 @@ void Duck::render_helmet_chestplate(DuckSnapshot &duck)
 void Duck::render_duck(DuckSnapshot &duck, int frame_ticks)
 {
     SDL2pp::Texture &duck_texture = get_texture(TextureFigure::DUCK);
+    std::cout << "Mi color en rojo es " << (int)duck.color.GetRed() << std::endl;
+    std::cout << "Mi color en verde es " << (int)duck.color.GetGreen() << std::endl;
+    std::cout << "Mi color en azul es " << (int)duck.color.GetBlue() << std::endl;
+    duck_texture.SetColorMod(duck.color.GetRed(), duck.color.GetGreen(), duck.color.GetBlue());
     int src_x = POS_INIT_X_DUCK, src_y = POS_INIT_Y_DUCK;
     if (!duck.status.banana_move)
         set_xy(duck, frame_ticks, src_x, src_y);

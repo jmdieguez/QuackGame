@@ -10,6 +10,7 @@
 #include "../gun/gun.h"
 #include "../map.h"
 #include "../hitbox.h"
+#include "../../../common/color.h"
 #include "../../../common/duck.h"
 #include "../../../common/direction.h"
 #include "../../../common/snapshots.h"
@@ -20,13 +21,14 @@ class Duck : public Hitbox, public GunController, public MoveController
 private:
     uint8_t id;
     DuckStatus status;
+    Color color;
     int y_velocity;
 
     void process_movement(Map &map);
     void process_shooting(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles, std::vector<SoundType> &sounds);
 
 public:
-    explicit Duck(const uint8_t &i, const Position &p);
+    explicit Duck(const uint8_t &i, const Position &p, const Color &color);
     ~Duck();
 
     // Actions

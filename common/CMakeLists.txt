@@ -6,6 +6,8 @@ target_sources(quack_game_common
     resolver.cpp
     resolvererror.cpp
     socket.cpp
+    color.cpp
+
     PUBLIC
     # .h files
     constant_rate_loop.h
@@ -29,4 +31,5 @@ target_sources(quack_game_common
     projectiledirection.h
     tiles.h
     size.h
+    color.h
 )

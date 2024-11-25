@@ -14,6 +14,7 @@
 #include "projectiledirection.h"
 #include "size.h"
 #include "texturefigure.h"
+#include "color.h"
 
 class GunNoEquippedSnapshot
 {
@@ -54,16 +55,18 @@ public:
     Position position_gun;
     uint16_t angle_gun;
     DuckStatus status;
+    Color color;
 
-    explicit DuckSnapshot(const uint16_t &i, const Position &p, const Size &size_duck, const GunType &type_gun, const TextureFigure &texture_gun, const Size &size_gun, const Position &position_gun, const uint16_t &angle_gun, const DuckStatus &status) : id(i),
-                                                                                                                                                                                                                                                             position(std::move(p)),
-                                                                                                                                                                                                                                                             size_duck(size_duck),
-                                                                                                                                                                                                                                                             type_gun(type_gun),
-                                                                                                                                                                                                                                                             texture_gun(texture_gun),
-                                                                                                                                                                                                                                                             size_gun(size_gun),
-                                                                                                                                                                                                                                                             position_gun(position_gun),
-                                                                                                                                                                                                                                                             angle_gun(angle_gun),
-                                                                                                                                                                                                                                                             status(status)
+    explicit DuckSnapshot(const uint16_t &i, const Position &p, const Size &size_duck, const GunType &type_gun, const TextureFigure &texture_gun, const Size &size_gun, const Position &position_gun, const uint16_t &angle_gun, const DuckStatus &status, const Color &color) : id(i),
+                                                                                                                                                                                                                                                                                 position(std::move(p)),
+                                                                                                                                                                                                                                                                                 size_duck(size_duck),
+                                                                                                                                                                                                                                                                                 type_gun(type_gun),
+                                                                                                                                                                                                                                                                                 texture_gun(texture_gun),
+                                                                                                                                                                                                                                                                                 size_gun(size_gun),
+                                                                                                                                                                                                                                                                                 position_gun(position_gun),
+                                                                                                                                                                                                                                                                                 angle_gun(angle_gun),
+                                                                                                                                                                                                                                                                                 status(status),
+                                                                                                                                                                                                                                                                                 color(color)
     {
     }
 };

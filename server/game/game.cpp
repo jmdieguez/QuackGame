@@ -25,10 +25,11 @@ Game::Game()
     return;
 }
 
-void Game::add_player(const uint16_t &id)
+void Game::add_player(const uint16_t &id, Color color)
 {
     player_ids.push_back(id);
     victories.emplace(id, 0);
+    colors.emplace(id, color);
 }
 
 void Game::spawn_players()
@@ -40,7 +41,7 @@ void Game::spawn_players()
     {
         Position p = spawns[i];
         uint8_t id = player_ids[i++];
-        ducks.emplace(id, Duck(id, p));
+        ducks.emplace(id, Duck(id, p, colors[id]));
     }
 }
 

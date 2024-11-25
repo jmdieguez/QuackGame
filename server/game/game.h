@@ -8,6 +8,7 @@
 #include "../client_command.h"
 #include "../../common/snapshots.h"
 #include "../../common/soundtype.h"
+#include "../../common/color.h"
 #include "gun/gun.h"
 #include "gun/cowboypistol.h"
 #include "gun/explosion.h"
@@ -27,6 +28,7 @@ private:
     std::vector<SoundType> sounds;
     std::vector<Explosion> explosions;
     std::map<uint8_t, uint8_t> victories;
+    std::map<uint16_t, Color> colors;
     void verify_hit_ducks();
     void move_projectiles();
     void remove_projectiles();
@@ -41,7 +43,7 @@ public:
     void step();
     bool started = false;
     bool ended = false;
-    void add_player(const uint16_t &id);
+    void add_player(const uint16_t &id, Color color);
     Snapshot get_status();
     ~Game() {}
 };

@@ -45,8 +45,8 @@ void Duck::process_shooting(Map &map, std::vector<std::shared_ptr<Projectile>> &
                               PUBLIC METHODS
 ****************************************************************************/
 
-Duck::Duck(const uint8_t &i, const Position &p) : Hitbox(p, Size(DUCK_WIDTH, DUCK_HEIGHT)), id(i),
-                                                  y_velocity(Y_VELOCITY_INITIAL)
+Duck::Duck(const uint8_t &i, const Position &p, const Color &color) : Hitbox(p, Size(DUCK_WIDTH, DUCK_HEIGHT)), id(i), color(color),
+                                                                      y_velocity(Y_VELOCITY_INITIAL)
 {
 }
 
@@ -171,5 +171,5 @@ DuckSnapshot Duck::get_status()
     uint16_t gun_angle = get_gun_angle(status);
     return DuckSnapshot(id,
                         aux,
-                        size, gun_type, gun_texture, gun_size, gun_position, gun_angle, status);
+                        size, gun_type, gun_texture, gun_size, gun_position, gun_angle, status, color);
 }
