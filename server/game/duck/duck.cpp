@@ -164,10 +164,9 @@ DuckSnapshot Duck::get_status()
 {
     GunType gun_type = get_gun_type();
     TextureFigure gun_texture = get_gun_texture();
-    Size gun_size = get_gun_size();
     Position gun_position = get_gun_position(position, size, status);
     uint16_t gun_angle = get_gun_angle(status);
     return DuckSnapshot(id,
                         position,
-                        size, gun_type, gun_texture, gun_size, gun_position, gun_angle, status, color);
+                        gun_type, gun_texture, gun_position, gun_angle, status, color);
 }

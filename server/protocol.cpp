@@ -85,12 +85,8 @@ void ServerProtocol::send_duck(const DuckSnapshot &duck)
     send_data(duck.id);
     send_data(duck.position.x);
     send_data(duck.position.y);
-    send_data(static_cast<uint16_t>(duck.size_duck.width));
-    send_data(static_cast<uint16_t>(duck.size_duck.height));
     send_data(static_cast<uint16_t>(duck.type_gun));
     send_data(static_cast<uint16_t>(duck.texture_gun));
-    send_data(static_cast<uint16_t>(duck.size_gun.width));
-    send_data(static_cast<uint16_t>(duck.size_gun.height));
     send_data(static_cast<uint16_t>(duck.position_gun.x));
     send_data(static_cast<uint16_t>(duck.position_gun.y));
     send_data(static_cast<uint16_t>(duck.angle_gun));
@@ -257,10 +253,12 @@ void ServerProtocol::read_name(std::string &name)
     name.assign(nameBuffer.begin(), nameBuffer.end());
 }
 
-void ServerProtocol::send_not_ready() {
+void ServerProtocol::send_not_ready()
+{
     send_data(static_cast<uint16_t>(ClientActionType::NOT_READY));
 }
 
-void ServerProtocol::send_ready() {
+void ServerProtocol::send_ready()
+{
     send_data(static_cast<uint16_t>(ClientActionType::READY));
 }

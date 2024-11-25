@@ -101,18 +101,10 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
         read_data(x);
         uint16_t y;
         read_data(y);
-        uint16_t duck_width;
-        read_data(duck_width);
-        uint16_t duck_height;
-        read_data(duck_height);
         uint16_t type_gun;
         read_data(type_gun);
         uint16_t texture_gun;
         read_data(texture_gun);
-        uint16_t gun_width;
-        read_data(gun_width);
-        uint16_t gun_height;
-        read_data(gun_height);
         uint16_t gun_x;
         read_data(gun_x);
         uint16_t gun_y;
@@ -127,13 +119,11 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
         uint16_t blue;
         read_data(blue);
         Position p(x, y);
-        Size duck_size(duck_width, duck_height);
         GunType type_gun_value = static_cast<GunType>(type_gun);
         TextureFigure texture_gun_value = static_cast<TextureFigure>(texture_gun);
-        Size gun_size(gun_width, gun_height);
         Position gun_position(gun_x, gun_y);
         Color color(red, green, blue);
-        DuckSnapshot duck(id, p, duck_size, type_gun_value, texture_gun_value, gun_size, gun_position, gun_angle, duck_status, color);
+        DuckSnapshot duck(id, p, type_gun_value, texture_gun_value, gun_position, gun_angle, duck_status, color);
         snapshot.ducks.emplace_back(duck);
     }
     uint16_t guns_length;
@@ -394,10 +384,9 @@ void ClientProtocol::send_game_list()
     }
 }
 
-void ClientProtocol::read_start_game(ClientActionType& action_type)
+void ClientProtocol::read_start_game(ClientActionType &action_type)
 {
     uint16_t action;
     read_data(action);
     action_type = static_cast<ClientActionType>(action);
 }
-
