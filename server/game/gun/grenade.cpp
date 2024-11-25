@@ -35,7 +35,7 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Gre
     (void)duck_position;
     start_explosion_state = true;
     std::vector<std::shared_ptr<Projectile>> projectiles;
-    projectile_grenade = std::make_shared<ProjectileGrenade>(duck_position);
+    projectile_grenade = std::make_shared<ProjectileGrenade>(status, duck_position);
     projectiles.push_back(projectile_grenade);
     return std::make_optional(std::make_pair(projectiles, duck_position));
 }

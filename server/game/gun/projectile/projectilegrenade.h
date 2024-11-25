@@ -7,6 +7,7 @@
 class ProjectileGrenade : public Projectile
 {
 private:
+    DuckStatus &status;
     const Position &duck_position;
     uint16_t time_to_explosion;
     uint16_t trayectory;
@@ -16,7 +17,7 @@ private:
     void set_value_explosion();
 
 public:
-    explicit ProjectileGrenade(const Position &duck_position);
+    explicit ProjectileGrenade(DuckStatus &status, const Position &duck_position);
 
     void move(const std::function<bool(Position &)> &validator) override;
 

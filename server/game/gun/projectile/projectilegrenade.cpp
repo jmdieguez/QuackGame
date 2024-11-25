@@ -21,10 +21,11 @@ void ProjectileGrenade::set_value_explosion()
     position = new_position;
 }
 
-ProjectileGrenade::ProjectileGrenade(const Position &duck_position) : Projectile(ProjectileType::Grenade, TextureFigure::None, VELOCITY_X),
-                                                                      duck_position(duck_position),
-                                                                      time_to_explosion(TIME_TO_EXPLOSION),
-                                                                      trayectory(0), is_throwing(false), collide_wall(false)
+ProjectileGrenade::ProjectileGrenade(DuckStatus &status, const Position &duck_position) : Projectile(ProjectileType::Grenade, TextureFigure::None, VELOCITY_X),
+                                                                                          status(status),
+                                                                                          duck_position(duck_position),
+                                                                                          time_to_explosion(TIME_TO_EXPLOSION),
+                                                                                          trayectory(0), is_throwing(false), collide_wall(false)
 
 {
 }
@@ -36,8 +37,10 @@ void ProjectileGrenade::move(const std::function<bool(Position &)> &validator)
     if (!time_to_explosion)
     {
         if (!is_throwing)
+        {
+            status.is_alive = false;
             set_value_explosion();
-
+        }
         finish = true;
         return;
     }
