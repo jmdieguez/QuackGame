@@ -28,6 +28,8 @@ public:
     ActionLobby read_lobby();
     void send_snapshot(const Snapshot& snapshot);
     void send_lobby_info(const std::vector<LobbyMessage> &lobby_info);
+    void send_not_ready();
+    void send_ready();
 };
 
 #endif // SERVER_PROTOCOL_H

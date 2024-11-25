@@ -235,3 +235,11 @@ void ServerProtocol::read_name(std::string &name)
     }
     name.assign(nameBuffer.begin(), nameBuffer.end());
 }
+
+void ServerProtocol::send_not_ready() {
+    send_data(static_cast<uint16_t>(ClientActionType::NOT_READY));
+}
+
+void ServerProtocol::send_ready() {
+    send_data(static_cast<uint16_t>(ClientActionType::READY));
+}

@@ -27,9 +27,16 @@ void LobbySession::run() {
                 protocol.send_lobby_info(messages);
                 break;
             case ClientActionType::START_GAME:
+                 uint16_t players;
                 if (game_joined != -1) {
-                    matches.start_game(id, game_joined, socket);
-                    _keep_running = false;
+                    matches.number_of_players(game_joined, players);
+                    if (players > 1) {
+                        protocol.send_ready();
+                        matches.start_game(id, game_joined, socket);
+                        _keep_running = false;
+                    } else {
+                         protocol.send_not_ready();
+                    }
                 }
                 break;
             default:

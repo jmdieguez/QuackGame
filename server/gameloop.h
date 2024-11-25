@@ -21,6 +21,7 @@ private:
     std::shared_ptr<Queue<ClientCommand>> recv_queue;
     Game game;
     SessionsHandler handler;
+    uint16_t number_of_players = 0;
 public:
     Gameloop(const uint16_t& id, const std::string&, const uint16_t& creator_id);
     ~Gameloop() {}
@@ -32,6 +33,7 @@ public:
     const std::string& get_name();
     void game_state(std::atomic<bool>&);
     bool has_finished() const { return finished; }
+    void get_number_of_players(uint16_t&);
 };
 
 #endif // GAMELOOP_H

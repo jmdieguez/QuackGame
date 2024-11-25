@@ -42,10 +42,7 @@ void CreateRoom::onCreateRoomButtonClicked() {
     lobby->create_room(roomName.toStdString());
     this->hide();
     StartGame startDialog(lobby, nullptr);
-
-    if (startDialog.exec() == QDialog::Accepted) {
-        lobby->start_game();
-    }
+    startDialog.exec();
 
     QApplication::closeAllWindows();
 }
