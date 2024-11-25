@@ -1,8 +1,9 @@
 #include "movecontroller.h"
+#include "defs.h"
 
 MoveController::MoveController() {}
 
-void MoveController::move_horizontal(Position &position, DuckStatus &status, Map &map)
+void MoveController::move_horizontal(Position &position, Size &size, DuckStatus &status, Map &map)
 {
     std::function<int(int, int)> operation = status.looking_right
                                                  ? [](int a, int b)
@@ -14,7 +15,7 @@ void MoveController::move_horizontal(Position &position, DuckStatus &status, Map
     while (i <= X_VELOCITY)
     {
         Position new_position(operation(position.x, 1), position.y);
-        Position end_hitbox(new_position.x + DUCK_HITBOX_X - 1, new_position.y + DUCK_HITBOX_Y - 1);
+        Position end_hitbox(new_position.x + size.width - 1, new_position.y + size.height - 1);
         if (map.validate_coordinate(new_position) && map.validate_coordinate(end_hitbox))
         {
             position = new_position;
@@ -28,10 +29,10 @@ void MoveController::move_horizontal(Position &position, DuckStatus &status, Map
     }
 }
 
-void MoveController::collision_detector(Position &position, DuckStatus &status, Map &map)
+void MoveController::collision_detector(Position &position, Size &size, DuckStatus &status, Map &map)
 {
-    Position below_left(position.x, position.y + DUCK_HITBOX_Y);
-    Position below_right(position.x + DUCK_HITBOX_X - 1, position.y + DUCK_HITBOX_Y - 1);
+    Position below_left(position.x, position.y + size.height);
+    Position below_right(position.x + size.width - 1, position.y + size.height - 1);
     status.grounded = map.has_something_in(below_left) || map.has_something_in(below_right);
     status.falling = false;
 }
@@ -59,15 +60,15 @@ void MoveController::update_in_the_air_status(DuckStatus &status, int &y_velocit
 
     if (status.flapping && y_velocity < 0)
     {
-        y_velocity = -2;
+        y_velocity = Y_VELOCITY_FLAPPING;
         status.flapping = false;
         return;
     }
     status.flapping = false;
-    y_velocity -= 1;
+    y_velocity -= Y_VELOCITY_FALL;
 }
 
-void MoveController::move_vertical(Position &position, Map &map, int &y_velocity)
+void MoveController::move_vertical(Position &position, Size &size, Map &map, int &y_velocity)
 {
     std::function<int(int, int)> operation = (y_velocity < Y_VELOCITY_INITIAL)
                                                  ? [](int a, int b)
@@ -80,7 +81,7 @@ void MoveController::move_vertical(Position &position, Map &map, int &y_velocity
     while (i <= abs_y_velocity)
     {
         Position new_position(position.x, operation(position.y, 1));
-        Position end_hitbox(new_position.x + DUCK_HITBOX_X - 1, new_position.y + DUCK_HITBOX_Y - 1);
+        Position end_hitbox(new_position.x + size.width - 1, new_position.y + size.height - 1);
         if (map.validate_coordinate(new_position) && map.validate_coordinate(end_hitbox))
         {
             position = new_position;
@@ -96,11 +97,13 @@ void MoveController::move_vertical(Position &position, Map &map, int &y_velocity
 
 void MoveController::move_bent_down(DuckStatus &status, Position &position, Size &size, Map &map)
 {
-    if (status.mooving || !status.bent_down || size.height == 13 || size.width == 22)
+    int w = DUCK_BENT_DOWN_WIDTH, h = DUCK_BENT_DOWN_HEIGHT;
+    if (status.mooving || !status.bent_down || size.height == h || size.width == w)
         return;
-    int w = 22, h = 13;
+    int diff_w = DUCK_BENT_DOWN_WIDTH - DUCK_DEFAULT_WIDTH;
+    int diff_h = DUCK_DEFAULT_HEIGHT - DUCK_BENT_DOWN_HEIGHT;
     Size new_size_bent_down(w, h);
-    Position new_position_bent_down(position.x - 6, position.y + 11);
+    Position new_position_bent_down(position.x - diff_w, position.y + diff_h);
     int i = 1;
     while (i <= 6)
     {
@@ -131,14 +134,15 @@ void MoveController::move_bent_down(DuckStatus &status, Position &position, Size
     position = new_position_bent_down;
 }
 
-void MoveController::remove_bent_down(DuckStatus &status, Position &position, Size &size, Map &map)
+void MoveController::remove_bent_down(DuckStatus &status, Position &position, Size &size)
 {
-    (void)map;
-    if (status.mooving || status.bent_down || size.height == 24 || size.width == 16)
+    int w = DUCK_DEFAULT_WIDTH, h = DUCK_DEFAULT_HEIGHT;
+    if (status.mooving || status.bent_down || size.height == h || size.width == w)
         return;
-    int w = 16, h = 24;
+    int diff_w = DUCK_BENT_DOWN_WIDTH - DUCK_DEFAULT_WIDTH;
+    int diff_h = DUCK_DEFAULT_HEIGHT - DUCK_BENT_DOWN_HEIGHT;
     Size new_size_bent_down(w, h);
-    Position new_position_bent_down(position.x + 6, position.y - 11);
+    Position new_position_bent_down(position.x + diff_w, position.y - diff_h);
     size = new_size_bent_down;
     position = new_position_bent_down;
 }

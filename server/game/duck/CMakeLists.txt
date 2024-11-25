@@ -10,4 +10,5 @@ target_sources(quack_game_server
     duck.h
     guncontroller.h
     movecontroller.h
+    defs.h
 )

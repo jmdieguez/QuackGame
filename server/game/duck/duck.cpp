@@ -1,12 +1,10 @@
 #include "duck.h"
+#include "defs.h"
 #include <optional>
 
 #define X_VELOCITY 4
 #define Y_VELOCITY_INITIAL 0
 #define Y_VELOCITY_ON_JUMP 16
-
-#define DUCK_WIDTH 16
-#define DUCK_HEIGHT 24
 
 /***************************************************************************
                               PRIVATE METHODS
@@ -15,16 +13,16 @@
 void Duck::process_movement(Map &map)
 {
     move_bent_down(status, position, size, map);
-    remove_bent_down(status, position, size, map);
+    remove_bent_down(status, position, size);
     if (status.mooving || status.banana_move)
-        move_horizontal(position, status, map);
+        move_horizontal(position, size, status, map);
 
-    collision_detector(position, status, map);
+    collision_detector(position, size, status, map);
     status.grounded ? update_jump_status(status, y_velocity)
                     : update_in_the_air_status(status, y_velocity);
 
     if (y_velocity != Y_VELOCITY_INITIAL || status.banana_move)
-        move_vertical(position, map, y_velocity);
+        move_vertical(position, size, map, y_velocity);
 }
 
 void Duck::process_shooting(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles, std::vector<SoundType> &sounds)
@@ -47,7 +45,7 @@ void Duck::process_shooting(Map &map, std::vector<std::shared_ptr<Projectile>> &
                               PUBLIC METHODS
 ****************************************************************************/
 
-Duck::Duck(const uint8_t &i, const Position &p, const Color &color) : Hitbox(p, Size(DUCK_WIDTH, DUCK_HEIGHT)), id(i), color(color),
+Duck::Duck(const uint8_t &i, const Position &p, const Color &color) : Hitbox(p, Size(DUCK_DEFAULT_WIDTH, DUCK_DEFAULT_HEIGHT)), id(i), color(color),
                                                                       y_velocity(Y_VELOCITY_INITIAL)
 {
 }
