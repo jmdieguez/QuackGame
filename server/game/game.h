@@ -29,7 +29,11 @@ private:
     std::vector<Explosion> explosions;
     std::map<uint8_t, uint8_t> victories;
     std::map<uint16_t, Color> colors;
-    void verify_hit_ducks();
+    std::map<Position, Box> boxes;
+    
+    bool verify_hit_box(Box &box, const Position &position, std::shared_ptr<Projectile> &projectile);
+    bool verify_hit_duck(Duck &duck, std::shared_ptr<Projectile> &projectile);
+    void verify_hits();
     void move_projectiles();
     void remove_projectiles();
     void decrement_explosions();

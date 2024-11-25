@@ -105,11 +105,6 @@ public:
             std::pair<int, int> component_dimensions = dimensions[component.type];
             change_pixels(true, component.x, component.y, component_dimensions.first, component_dimensions.second);
         }
-
-        for (const auto &box : boxes)
-        {
-            change_pixels(true, box.x, box.y, TILE_SIZE, TILE_SIZE);
-        }
     }
 };
 
@@ -119,15 +114,11 @@ private:
     MapConfig cfg;
     uint16_t gun_id;
     std::map<uint8_t, std::shared_ptr<Gun>> guns;
-    std::map<Position, Box> boxes;
 
 public:
     Map(const std::string &map_file) : cfg(map_file),
                                        gun_id(0)
     {
-
-        for (const auto &position : cfg.boxes)
-            boxes.emplace(position, Box::BOX_4_HP);
     }
 
     std::vector<GunNoEquippedSnapshot> get_guns_snapshots()
@@ -181,26 +172,20 @@ public:
 
     MapSnapshot get_status() const
     {
-        std::vector<BoxSnapshot> box_snapshots;
-        for (auto &[position, box] : boxes)
-        {
-            box_snapshots.push_back(BoxSnapshot(position, box));
-        }
-
-        return MapSnapshot(cfg.style, cfg.size_x, cfg.size_y, cfg.components, box_snapshots, cfg.gun_spawns);
+        return MapSnapshot(cfg.style, cfg.size_x, cfg.size_y, cfg.components, cfg.gun_spawns);
     }
 
-    bool in_range(Position &p) const
+    bool in_range(const Position &p) const
     {
         return (p.x < cfg.size_x) && (p.y < cfg.size_y);
     }
 
-    bool validate_coordinate(Position &p) const
+    bool validate_coordinate(const Position &p) const
     {
         return !has_something_in(p);
     }
 
-    bool has_something_in(Position &p) const
+    bool has_something_in(const Position &p) const
     {
         if (in_range(p))
         {
@@ -219,7 +204,7 @@ public:
         guns.erase(id);
     }
 
-    std::vector<Position> calculate_spawns(const int &n_players)
+    std::vector<Position> calculate_spawns(const int &n_players) const
     {
         std::vector<Position> spawns;
 
@@ -231,6 +216,11 @@ public:
         }
 
         return spawns;
+    }
+
+    std::vector<Position> get_boxes_spawns() const
+    {
+        return cfg.boxes;
     }
 
     ~Map() {}

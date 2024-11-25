@@ -134,7 +134,9 @@ void Duck::bent_down()
     status.bent_down = true;
 }
 
-void Duck::step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles, std::vector<SoundType> &sounds)
+void Duck::step(Map &map,
+                std::vector<std::shared_ptr<Projectile>> &projectiles,
+                std::vector<SoundType> &sounds)
 {
     process_movement(map);
     process_shooting(map, projectiles, sounds);

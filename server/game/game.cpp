@@ -130,25 +130,74 @@ void Game::process(ClientCommand &command)
     }
 }
 
-void Game::verify_hit_ducks()
-{
-    for (auto &[id, duck] : ducks)
-        for (std::shared_ptr<Projectile> &p : projectiles)
-        {
-            if (p->get_type() == ProjectileType::Grenade)
-                continue;
-            if (p->get_type() == ProjectileType::Banana)
-            {
-                ProjectileBanana *banana = (ProjectileBanana *)p.get();
-                banana->checkCollision(duck.get_hitbox(), duck.get_duck_status());
-                continue;
-            }
-            Hitbox proctile_hitbox = p->get_hitbox();
-            if (!duck.intersects(proctile_hitbox))
-                continue;
-            duck.set_receive_shot();
-            p->destroy();
+bool Game::verify_hit_duck(Duck &duck, std::shared_ptr<Projectile> &projectile)
+{   
+    Hitbox projectile_hitbox = projectile->get_hitbox();
+
+    if (projectile->get_type() == ProjectileType::Grenade)
+        return false;
+    if (projectile->get_type() == ProjectileType::Banana)
+    {
+        ProjectileBanana *banana = (ProjectileBanana *)projectile.get();
+        banana->checkCollision(duck.get_hitbox(), duck.get_duck_status());
+        return false;
+    }
+    
+    if (duck.intersects(projectile_hitbox))
+    {
+        duck.set_receive_shot();
+        projectile->destroy();
+        return true;
+    }
+    return false;
+}
+
+bool Game::verify_hit_box(Box &box, const Position &position, std::shared_ptr<Projectile> &projectile)
+{   
+    Hitbox projectile_hitbox = projectile->get_hitbox();
+    Size size(TILE_SIZE, TILE_SIZE);
+    Position position_as_pixels(position.x * TILE_SIZE, position.y * TILE_SIZE);
+    Hitbox box_hitbox(position_as_pixels, size);
+    if (box_hitbox.intersects(projectile_hitbox))
+    {   
+        if (box == Box::BOX_1_HP) { // Refactorizar en clase 
+            boxes.erase(position);
+        } else if (box == Box::BOX_2_HP) {
+            box = Box::BOX_1_HP;
+        } else if (box == Box::BOX_3_HP) {
+            box = Box::BOX_2_HP;
+        } else if (box == Box::BOX_4_HP) {
+            box = Box::BOX_3_HP;
         }
+        projectile->destroy();
+        return true;
+    }
+    return false;
+}
+
+void Game::verify_hits()
+{   
+    for (std::shared_ptr<Projectile> &p : projectiles)
+    {   
+        bool hit = false;
+        for (auto &[id, duck] : ducks)
+        {
+            if (verify_hit_duck(duck, p)) {
+                hit = true;
+                break;
+            }
+        }
+
+        if (!hit) {
+            for (auto &[position, box] : boxes)
+            {   
+                if (verify_hit_box(box, position, p))
+                {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 void Game::move_projectiles()
@@ -262,13 +311,16 @@ void Game::step()
 {
     if (initialize)
     {
+        for (const auto &position : maps[current_map].get_boxes_spawns())
+            boxes.emplace(position, Box::BOX_4_HP);
+
         spawn_players();
         initialize = false;
     }
 
     remove_projectiles();
     move_projectiles();
-    verify_hit_ducks();
+    verify_hits();
     decrement_explosions();
     std::vector<uint8_t> ducks_alive;
     for (auto &[id, duck] : ducks)
@@ -291,16 +343,27 @@ Snapshot Game::get_status()
     std::vector<DuckSnapshot> duck_snapshots;
     std::vector<ExplosionSnapshot> explosions_snapshots;
     std::vector<SoundSnapshot> sound_snapshots;
+    std::vector<BoxSnapshot> box_snapshots;
+    std::vector<ProjectileSnapshot> projectile_snapshots;
+
+    for (auto &[position, box] : boxes)
+    {
+        box_snapshots.push_back(BoxSnapshot(position, box));
+    }
     for (auto &[id, duck] : ducks)
         duck_snapshots.push_back(duck.get_status());
-    std::vector<ProjectileSnapshot> projectile_snapshots;
+
     for (auto &projectile : projectiles)
         projectile_snapshots.push_back(projectile->get_status());
+
     for (auto &explosion : explosions)
         explosions_snapshots.push_back(explosion.get_status());
+
     for (auto &sound : sounds)
         sound_snapshots.push_back(SoundSnapshot(sound));
+
     sounds.clear();
+    
     return Snapshot(std::move(duck_snapshots), std::move(guns_snapshots), std::move(projectile_snapshots),
-                    std::move(explosions_snapshots), std::move(sound_snapshots), map_snapshot);
+                    std::move(explosions_snapshots), std::move(sound_snapshots), std::move(box_snapshots), map_snapshot);
 }

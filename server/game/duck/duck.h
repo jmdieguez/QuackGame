@@ -52,7 +52,9 @@ public:
     bool is_alive() const;
 
     // Simulate an iteration
-    void step(Map &map, std::vector<std::shared_ptr<Projectile>> &projectiles, std::vector<SoundType> &sounds);
+    void step(Map &map, 
+              std::vector<std::shared_ptr<Projectile>> &projectiles, 
+              std::vector<SoundType> &sounds);
 };
 
 #endif // SERVER_DUCK_H
