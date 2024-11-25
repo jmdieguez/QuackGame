@@ -7,7 +7,7 @@
 #define Y_VELOCITY_INITIAL 0
 #define Y_VELOCITY_ON_JUMP 16
 
-#define DUCK_HITBOX_X 16
+#define DUCK_HITBOX_X 15
 #define DUCK_HITBOX_Y 24
 
 class MoveController

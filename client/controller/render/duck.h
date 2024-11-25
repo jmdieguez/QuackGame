@@ -7,6 +7,7 @@
 class Duck : protected Renderer
 {
 private:
+    void set_xywh(const DuckSnapshot &duck, const int &frame_ticks, int &x, int &y, int &w, int &h);
     void set_xy(DuckSnapshot &duck, int frame_ticks, int &src_x, int &src_y);
     void render_helmet_chestplate(DuckSnapshot &duck);
     void render_weapon(DuckSnapshot &duck);

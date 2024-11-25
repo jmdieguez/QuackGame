@@ -5,8 +5,8 @@
 #define Y_VELOCITY_INITIAL 0
 #define Y_VELOCITY_ON_JUMP 16
 
-#define DUCK_WIDTH 32
-#define DUCK_HEIGHT 32
+#define DUCK_WIDTH 15
+#define DUCK_HEIGHT 24
 
 /***************************************************************************
                               PRIVATE METHODS
@@ -165,11 +165,9 @@ DuckSnapshot Duck::get_status()
     GunType gun_type = get_gun_type();
     TextureFigure gun_texture = get_gun_texture();
     Size gun_size = get_gun_size();
-    Position aux(position.x - 8, position.y - 8);
     Position gun_position = get_gun_position(position, size, status);
-    Position aux_gun(gun_position.x - 8, gun_position.y - 8);
     uint16_t gun_angle = get_gun_angle(status);
     return DuckSnapshot(id,
-                        aux,
+                        position,
                         size, gun_type, gun_texture, gun_size, gun_position, gun_angle, status, color);
 }
