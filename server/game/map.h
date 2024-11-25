@@ -175,17 +175,8 @@ public:
     void move_guns()
     {
         for (auto &[id, gun] : guns)
-        {
-            if (!gun->is_necessary_move())
-                continue;
-            gun->move();
-            Position new_position = gun->get_position();
-            Size size_gun = gun->get_size();
-            Position end_hitbox(new_position.x + size_gun.width, new_position.y + (size_gun.height * 2) + 7);
-            if (validate_coordinate(new_position) && validate_coordinate(end_hitbox))
-                continue;
-            gun->cancel_move();
-        }
+            gun->move([this](Position &p)
+                      { return validate_coordinate(p); });
     }
 
     MapSnapshot get_status() const

@@ -24,7 +24,6 @@ private:
     uint16_t id;
     GunType type;
     bool is_equipped;
-    bool is_grounded;
     uint16_t angle;
     TextureFigure texture;
 
@@ -40,7 +39,7 @@ protected:
 
 public:
     explicit Gun(const uint16_t &id, const GunType &type, const Position &p, const Size &size, const TextureFigure &texture) : Hitbox(p, size), id(id),
-                                                                                                                               type(type), is_equipped(false), is_grounded(false),
+                                                                                                                               type(type), is_equipped(false),
                                                                                                                                angle(ANGLE_DEFAULT),
                                                                                                                                texture(texture) {}
 
@@ -50,7 +49,6 @@ public:
 
     void dropped(const Position duck)
     {
-        is_grounded = false;
         is_equipped = false;
         position.x = duck.x;
         position.y = duck.y - size.height;
@@ -66,11 +64,6 @@ public:
     void reverse_look_up()
     {
         angle = ANGLE_DEFAULT;
-    }
-
-    bool is_necessary_move()
-    {
-        return !is_grounded;
     }
 
     bool can_take_this_gun(const Position &duck_position) const
@@ -97,17 +90,23 @@ public:
         return size;
     }
 
-    void move()
+    void move(const std::function<bool(Position &)> &validator)
     {
-        if (is_grounded)
-            return;
-        position.y++;
-    }
-
-    void cancel_move()
-    {
-        is_grounded = true;
-        position.y--;
+        int i = 0;
+        while (i <= 1)
+        {
+            Position new_position(position.x, position.y + 1);
+            Position end_hitbox(new_position.x + size.width - 1, new_position.y + size.height - 1);
+            if (validator(new_position) && validator(end_hitbox))
+            {
+                position = new_position;
+                i++;
+            }
+            else
+            {
+                break;
+            }
+        }
     }
 
     GunNoEquippedSnapshot get_status()
