@@ -161,7 +161,7 @@ bool Game::verify_hit_box(Box &box, const Position &position, std::shared_ptr<Pr
     if (box_hitbox.intersects(projectile_hitbox))
     {   
         if (box == Box::BOX_1_HP) { // Refactorizar en clase
-            spawn_gun<Shotgun>(position_as_pixels);
+            spawn_gun<AK>(position_as_pixels);
             boxes.erase(position);
         } else if (box == Box::BOX_2_HP) {
             box = Box::BOX_1_HP;
