@@ -90,8 +90,8 @@ void Game::process(ClientCommand &command)
             duck.stop_looking_up();
             break;
 
-        case ClientActionType::LAY:
-            duck.lay();
+        case ClientActionType::BENT_DOWN:
+            duck.bent_down();
             break;
 
         case ClientActionType::STAND_UP:

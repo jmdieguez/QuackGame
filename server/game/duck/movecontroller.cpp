@@ -31,7 +31,7 @@ void MoveController::move_horizontal(Position &position, DuckStatus &status, Map
 void MoveController::collision_detector(Position &position, DuckStatus &status, Map &map)
 {
     Position below_left(position.x, position.y + DUCK_HITBOX_Y);
-    Position below_right(position.x + DUCK_HITBOX_X - 1, position.y + DUCK_HITBOX_Y);
+    Position below_right(position.x + DUCK_HITBOX_X - 1, position.y + DUCK_HITBOX_Y - 1);
     status.grounded = map.has_something_in(below_left) || map.has_something_in(below_right);
     status.falling = false;
 }
@@ -92,6 +92,55 @@ void MoveController::move_vertical(Position &position, Map &map, int &y_velocity
             break;
         }
     }
+}
+
+void MoveController::move_bent_down(DuckStatus &status, Position &position, Size &size, Map &map)
+{
+    if (status.mooving || !status.bent_down || size.height == 13 || size.width == 22)
+        return;
+    int w = 22, h = 13;
+    Size new_size_bent_down(w, h);
+    Position new_position_bent_down(position.x - 6, position.y + 11);
+    int i = 1;
+    while (i <= 6)
+    {
+        Position new_position(position.x - i, position.y);
+        Position end_hitbox(new_position.x + w - 1, new_position.y + h - 1);
+        if (map.validate_coordinate(new_position) && map.validate_coordinate(end_hitbox))
+            i++;
+        else
+        {
+            status.bent_down = false;
+            return;
+        }
+    }
+    i = 1;
+    while (i <= 11)
+    {
+        Position new_position(position.x, position.y + i);
+        Position end_hitbox(new_position.x + w - 1, new_position.y + h - 1);
+        if (map.validate_coordinate(new_position) && map.validate_coordinate(end_hitbox))
+            i++;
+        else
+        {
+            status.bent_down = false;
+            return;
+        }
+    }
+    size = new_size_bent_down;
+    position = new_position_bent_down;
+}
+
+void MoveController::remove_bent_down(DuckStatus &status, Position &position, Size &size, Map &map)
+{
+    (void)map;
+    if (status.mooving || status.bent_down || size.height == 24 || size.width == 16)
+        return;
+    int w = 16, h = 24;
+    Size new_size_bent_down(w, h);
+    Position new_position_bent_down(position.x + 6, position.y - 11);
+    size = new_size_bent_down;
+    position = new_position_bent_down;
 }
 
 MoveController::~MoveController() {}

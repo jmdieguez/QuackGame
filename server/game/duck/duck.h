@@ -39,7 +39,7 @@ public:
     void drop_gun();
     void shoot();
     void stop_shooting();
-    void lay();
+    void bent_down();
     void jump();
     void stand_up();
     void set_receive_shot();

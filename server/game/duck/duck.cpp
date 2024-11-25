@@ -5,7 +5,7 @@
 #define Y_VELOCITY_INITIAL 0
 #define Y_VELOCITY_ON_JUMP 16
 
-#define DUCK_WIDTH 15
+#define DUCK_WIDTH 16
 #define DUCK_HEIGHT 24
 
 /***************************************************************************
@@ -14,6 +14,8 @@
 
 void Duck::process_movement(Map &map)
 {
+    move_bent_down(status, position, size, map);
+    remove_bent_down(status, position, size, map);
     if (status.mooving || status.banana_move)
         move_horizontal(position, status, map);
 
@@ -54,7 +56,7 @@ Duck::~Duck() {}
 
 void Duck::move(Direction direction)
 {
-    if (status.banana_move)
+    if (status.banana_move || status.bent_down)
         return;
     switch (direction)
     {
@@ -127,9 +129,9 @@ void Duck::grab()
     status.gun_grab = true;
 }
 
-void Duck::lay()
+void Duck::bent_down()
 {
-    if (status.jumping || status.flapping || !status.grounded || status.banana_move)
+    if (status.jumping || status.mooving || status.flapping || !status.grounded || status.banana_move)
         return;
     status.bent_down = true;
 }

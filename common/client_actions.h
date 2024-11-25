@@ -14,8 +14,8 @@ enum class ClientActionType : uint16_t
     MOVE_LEFT,
     JUMP,
     SHOOT,
-    FLAP, // aletear
-    LAY,  // tirarse al piso,
+    FLAP,      // aletear
+    BENT_DOWN, // tirarse al piso,
     LOOK_UP,
     STOP_MOVING_RIGHT,
     STOP_MOVING_LEFT,

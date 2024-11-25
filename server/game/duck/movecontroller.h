@@ -7,7 +7,7 @@
 #define Y_VELOCITY_INITIAL 0
 #define Y_VELOCITY_ON_JUMP 16
 
-#define DUCK_HITBOX_X 15
+#define DUCK_HITBOX_X 16
 #define DUCK_HITBOX_Y 24
 
 class MoveController
@@ -20,5 +20,8 @@ public:
     void update_jump_status(DuckStatus &status, int &y_velocity);
     void update_in_the_air_status(DuckStatus &status, int &y_velocity);
     void move_vertical(Position &position, Map &map, int &y_velocity);
+    void remove_bent_down(DuckStatus &status, Position &position, Size &size, Map &map);
+    void move_bent_down(DuckStatus &status, Position &position, Size &size, Map &map);
+
     ~MoveController();
 };

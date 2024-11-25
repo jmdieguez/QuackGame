@@ -10,7 +10,7 @@ MoveRight::MoveRight()
 
 void MoveRight::execute(GameContext &game_context)
 {
-    if (game_context.right_direction || game_context.is_bent_down)
+    if (game_context.right_direction)
         return;
     game_context.right_direction = true;
     game_context.push_message(ClientActionType::MOVE_RIGHT);
