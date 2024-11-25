@@ -27,6 +27,7 @@ public:
     void send_create_game(const std::string &);
     void send_join_game(const uint16_t &id);
     void send_start_game();
+    void read_start_game(ClientActionType &action);
     void read_list(std::map<uint16_t, std::string> &games);
     void send_game_list();
 };

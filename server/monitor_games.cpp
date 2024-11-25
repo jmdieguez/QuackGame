@@ -66,3 +66,11 @@ void MonitorGames::remove_all_matches() {
         game->join();
     }
 }
+
+void MonitorGames::number_of_players(const uint16_t& game_id, uint16_t& amount) {
+    std::lock_guard<std::mutex> lock(mtx);
+    auto game = games.find(game_id);
+    if (game != games.end()) {
+        game->second->get_number_of_players(amount);
+    }
+}

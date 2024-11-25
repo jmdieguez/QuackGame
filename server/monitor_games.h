@@ -24,6 +24,7 @@ public:
     void start_game(const uint16_t &creator_id, const int &game_id, Socket &skt);
     void remove_finished_matches();
     void remove_all_matches();
+    void number_of_players(const uint16_t& game_id, uint16_t& amount_of_players);
 };
 
 

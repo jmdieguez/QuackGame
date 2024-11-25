@@ -393,3 +393,11 @@ void ClientProtocol::send_game_list()
         throw LibError(errno, "Error al intentar enviar datos a cliente");
     }
 }
+
+void ClientProtocol::read_start_game(ClientActionType& action_type)
+{
+    uint16_t action;
+    read_data(action);
+    action_type = static_cast<ClientActionType>(action);
+}
+

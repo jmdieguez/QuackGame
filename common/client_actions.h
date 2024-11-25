@@ -32,6 +32,8 @@ enum class ClientActionType : uint16_t
     SPAWN_SHOTGUN,
     SPAWN_GRENADE,
     SPAWN_BANANA,
+    READY,
+    NOT_READY,
 };
 
 class ActionMessage

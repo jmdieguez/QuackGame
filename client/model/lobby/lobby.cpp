@@ -11,11 +11,11 @@ void Lobby::join_room(const uint16_t& id) {
      protocol.send_join_game(id);
 }
 
-void Lobby::start_game() {
+void Lobby::start_game(bool& start) {
      protocol.send_start_game();
-   //  uint16_t action;
-   //  protocol.read_data(action);
-   //  return action == 1;
+     ClientActionType action;
+     protocol.read_start_game(action);
+     start = action == ClientActionType::READY;
 }
 
 void Lobby::get_game_list(std::map<uint16_t, std::string>& games) {
