@@ -344,6 +344,10 @@ void Game::step()
     if (initialize)
     {   
         guns.clear();
+        projectiles.clear();
+        boxes.clear();
+        explosions.clear();
+
         for (const auto &position : maps[current_map].get_boxes_spawns())
             boxes.emplace(position, Box::BOX_4_HP);
 
