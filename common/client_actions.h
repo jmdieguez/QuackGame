@@ -32,6 +32,11 @@ enum class ClientActionType : uint16_t
     SPAWN_SHOTGUN,
     SPAWN_GRENADE,
     SPAWN_BANANA,
+    SPAWN_COWBOY_PISTOL,
+    SPAWN_DUELING_PISTOL,
+    SPAWN_MAGNUM,
+    SPAWN_PEW_PEW_LASER,
+    SPAWN_SNIPER,
     READY,
     NOT_READY,
 };
