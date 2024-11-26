@@ -37,6 +37,7 @@ enum class ClientActionType : uint16_t
     SPAWN_MAGNUM,
     SPAWN_PEW_PEW_LASER,
     SPAWN_SNIPER,
+    SPAWN_LASER_RIFLE,
     READY,
     NOT_READY,
 };

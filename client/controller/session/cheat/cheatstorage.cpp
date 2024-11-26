@@ -16,6 +16,7 @@ CheatStorage::CheatStorage()
     cheats["ma"] = ClientActionType::SPAWN_MAGNUM;
     cheats["pe"] = ClientActionType::SPAWN_PEW_PEW_LASER;
     cheats["sn"] = ClientActionType::SPAWN_SNIPER;
+    cheats["la"] = ClientActionType::SPAWN_LASER_RIFLE;
 }
 
 void CheatStorage::add_input(std::string input)

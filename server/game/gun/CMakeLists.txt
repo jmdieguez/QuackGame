@@ -11,6 +11,7 @@ target_sources(quack_game_server
     grenade.cpp
     banana.cpp
     positiongun.cpp
+    laserrifle.cpp
 
     PUBLIC
     # .h files
@@ -28,6 +29,7 @@ target_sources(quack_game_server
     gunammo.h
     banana.cpp
     positiongun.h
+    laserrifle.h
 )
 
 add_subdirectory(projectile/)

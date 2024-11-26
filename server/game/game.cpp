@@ -165,6 +165,10 @@ void Game::process(ClientCommand &command)
         case ClientActionType::SPAWN_SNIPER:
             spawn_gun<Sniper>(duck.get_position());
             break;
+
+        case ClientActionType::SPAWN_LASER_RIFLE:
+            spawn_gun<LaserRifle>(duck.get_position());
+            break;
         default:
             break;
         }

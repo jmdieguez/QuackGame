@@ -4,6 +4,9 @@
 #define AK_WIDTH 25
 #define AK_HEIGHT 10
 
+#define LASER_RIFLE_WIDTH 25
+#define LASER_RIFLE_HEIGHT 10
+
 #define BANANA_WIDTH 15
 #define BANANA_HEIGHT 15
 

@@ -30,6 +30,8 @@ void GunController::finish_shooting()
         ((Sniper *)gun.get())->check_reset();
     if (gun->get_type() == GunType::AK)
         ((AK *)gun.get())->check_reset();
+    if (gun->get_type() == GunType::LaserRifle)
+        ((LaserRifle *)gun.get())->check_reset();
 }
 
 Position GunController::get_gun_position(Position &position, Size &size, DuckStatus &status) const
@@ -140,7 +142,7 @@ void GunController::fire(DuckStatus &status, Position &position, Map &map,
 
     if ((gun->get_type() == GunType::Shotgun && !((Shotgun *)gun.get())->is_block_shoot()) ||
         (gun->get_type() == GunType::Sniper && !((Sniper *)gun.get())->is_block_shoot()) ||
-        gun->get_type() == GunType::AK)
+        gun->get_type() == GunType::AK || gun->get_type() == GunType::LaserRifle)
     {
         return;
     }

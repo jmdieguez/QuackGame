@@ -23,6 +23,8 @@ Size GunSizeFactory::texture_to_gun_size(const TextureFigure &texture) const
         return Size(PEW_PEW_LASER_WIDTH, PEW_PEW_LASER_HEIGHT);
     else if (texture == TextureFigure::ShotgunFigure)
         return Size(SHOTGUN_WIDTH, SHOTGUN_HEIGHT);
+    else if (texture == TextureFigure::LaserRifleFigure)
+        return Size(LASER_RIFLE_WIDTH, LASER_RIFLE_HEIGHT);
     else
         return Size(SNIPER_WIDTH, SNIPER_HEIGHT);
 }
