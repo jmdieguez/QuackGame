@@ -25,7 +25,7 @@ void Duck::process_movement(Map &map)
         move_vertical(position, size, map, y_velocity);
 }
 
-void Duck::process_shooting(Map &map, 
+void Duck::process_shooting(Map &map,
                             std::map<uint8_t, std::shared_ptr<Gun>> &guns,
                             std::vector<std::shared_ptr<Projectile>> &projectiles,
                             std::vector<SoundType> &sounds)
@@ -37,14 +37,20 @@ void Duck::process_shooting(Map &map,
         pick_up(guns, status, [this](const Hitbox &a)
                 { return intersects(a); });
 
-    if (status.gun_drop) {
+    if (status.gun_drop)
+    {
         GunType gunType = gun->get_type();
 
-        if (gunType == GunType::Grenade) {
+        if (gunType == GunType::Grenade)
+        {
             drop_grenade(status, projectiles);
-        } else if (gunType == GunType::Banana) {
+        }
+        else if (gunType == GunType::Banana)
+        {
             drop_banana(status, projectiles);
-        } else {
+        }
+        else
+        {
             discard_gun(guns, position, size, status);
         }
     }
@@ -103,6 +109,7 @@ void Duck::drop_gun()
     if (!gun || status.banana_move)
         return;
     status.gun_drop = true;
+    status.shooting = false;
 }
 
 void Duck::shoot()
