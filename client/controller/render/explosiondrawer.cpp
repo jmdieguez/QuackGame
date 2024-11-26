@@ -1,10 +1,5 @@
 #include "explosiondrawer.h"
 
-#define POS_INIT_X_EXPLOSION 0 // 250
-#define POS_INIT_Y_EXPLOSION 0 // 100
-#define SRC_PROJECTILE_WIDTH 200
-#define SRC_PROJECTILE_HEIGHT 250
-
 /***************************************************************************
                               PRIVATE METHODS
 ****************************************************************************/

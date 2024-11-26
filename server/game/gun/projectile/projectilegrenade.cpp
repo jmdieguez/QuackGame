@@ -119,6 +119,11 @@ void ProjectileGrenade::throw_grenade(bool &looking_right)
     position = new_position;
 }
 
+Position ProjectileGrenade::get_position_to_explosion()
+{
+    return Position(position.x - 10, position.y - 20);
+}
+
 ProjectileGrenade::~ProjectileGrenade()
 {
 }
