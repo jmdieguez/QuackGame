@@ -72,8 +72,8 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> AK:
         dispersion = std::make_shared<DispersionLow>(random());
     if (time_shooting < START_MORE_DISPERSION)
         dispersion = std::make_shared<DispersionMedium>(random());
-    uint16_t adjusted_pos_x = duck_position.x + (status.looking_up ? (status.looking_right ? LOOKING_UP_RIGHT_OFFSET_X : LOOKING_UP_LEFT_OFFSET_X) : (GUN_WIDTH + SPECIAL_OFFSET_SHOOT_AK) * direction.first);
-    uint16_t adjusted_pos_y = duck_position.y + (status.looking_up ? -GUN_WIDTH : (VERTICAL_RIGHT + SPECIAL_OFFSET_X_AK));
+    uint16_t adjusted_pos_x = duck_position.x + (status.looking_up ? (status.looking_right ? LOOKING_UP_RIGHT_OFFSET_X : LOOKING_UP_LEFT_OFFSET_X) : (DUCK_DEFAULT_WIDTH + VELOCITY) * direction.first);
+    uint16_t adjusted_pos_y = duck_position.y + (status.looking_up ? -GUN_WIDTH : HORIZONTAL_Y);
     Position projectile_position(adjusted_pos_x, adjusted_pos_y);
     std::vector<std::shared_ptr<Projectile>> projectiles;
     Hitbox hitbox(projectile_position, Size(PROJECTILE_WIDTH, PROJECTILE_HEIGHT));

@@ -12,6 +12,7 @@
 #include "../../../common/texturefigure.h"
 #include "../../../common/duck.h"
 #include "../hitbox.h"
+#include "../duck/defs.h"
 #include "projectile/projectile.h"
 
 #define ANGLE_LOOK_UP 90
