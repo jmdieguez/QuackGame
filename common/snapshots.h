@@ -78,11 +78,10 @@ public:
 class ExplosionSnapshot
 {
 public:
-    Size size;
     Position position;
     TextureFigure texture;
-    explicit ExplosionSnapshot(const Size &size, const Position &position, const TextureFigure &texture) : size(size), position(position),
-                                                                                                           texture(texture) {}
+    explicit ExplosionSnapshot(const Position &position, const TextureFigure &texture) : position(position),
+                                                                                         texture(texture) {}
 };
 
 class GrenadeSnapshot

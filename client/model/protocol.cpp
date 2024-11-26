@@ -78,12 +78,8 @@ ExplosionSnapshot ClientProtocol::read_explosion()
     read_data(x);
     uint16_t y;
     read_data(y);
-    uint16_t width;
-    read_data(width);
-    uint16_t height;
-    read_data(height);
     TextureFigure texture_value = static_cast<TextureFigure>(texture);
-    ExplosionSnapshot explosion(Size(width, height), Position(x, y), texture_value);
+    ExplosionSnapshot explosion(Position(x, y), texture_value);
     return explosion;
 }
 

@@ -26,7 +26,7 @@ public:
     explicit Explosion(const Position &position) : Hitbox(position, Size(WIDTH_EXPLOSION, HEIGHT_EXPLOSION)), time(TIME_EXPLOSION) {};
     ExplosionSnapshot get_status()
     {
-        return ExplosionSnapshot(size, position, TextureFigure::ExplosionFigure);
+        return ExplosionSnapshot(position, TextureFigure::ExplosionFigure);
     };
     void time_decrement()
     {

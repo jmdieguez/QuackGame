@@ -7,7 +7,7 @@
 class ExplosionDrawer : protected Renderer
 {
 private:
-    void set_xy(int frame_ticks, int &src_x);
+    void set_xywh(const int &frame_ticks, int &x, int &y, int &w, int &h);
 
 public:
     explicit ExplosionDrawer(SDL2pp::Renderer &renderer);

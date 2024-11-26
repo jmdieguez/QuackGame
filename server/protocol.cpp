@@ -121,8 +121,6 @@ void ServerProtocol::send_explosion(const ExplosionSnapshot &explosion)
     send_data(static_cast<uint16_t>(explosion.texture));
     send_data(static_cast<uint16_t>(explosion.position.x));
     send_data(static_cast<uint16_t>(explosion.position.y));
-    send_data(static_cast<uint16_t>(explosion.size.width));
-    send_data(static_cast<uint16_t>(explosion.size.height));
 }
 
 void ServerProtocol::send_duck_status(const DuckStatus &status)
