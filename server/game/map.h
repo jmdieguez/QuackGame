@@ -179,6 +179,11 @@ public:
         return cfg.boxes;
     }
 
+    std::vector<Position> get_guns_spawns() const
+    {
+        return cfg.gun_spawns;
+    }
+
     ~Map() {}
 };
 
