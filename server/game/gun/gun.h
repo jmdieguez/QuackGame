@@ -26,7 +26,7 @@ private:
     bool is_equipped;
     uint16_t angle;
     TextureFigure texture;
-
+    bool picked_up_once = false;
 protected:
     std::pair<int, int> get_direction(bool looking_right, bool looking_up)
     {
@@ -45,14 +45,19 @@ public:
 
     virtual ~Gun() = default;
 
-    void equipped() { is_equipped = true; }
+    void equipped() { 
+        is_equipped = true;
+    }
 
     void dropped(const Position duck)
-    {
+    {   
+        picked_up_once = true;
         is_equipped = false;
         position.x = duck.x;
         position.y = duck.y - size.height;
     }
+
+    bool has_been_picked_up() const { return picked_up_once; }
 
     bool has_been_equipped() { return is_equipped; }
 
@@ -91,20 +96,22 @@ public:
     }
 
     void move(const std::function<bool(Position &)> &validator)
-    {
-        int i = 0;
-        while (i <= 1)
-        {
-            Position new_position(position.x, position.y + 1);
-            Position end_hitbox(new_position.x + size.width - 1, new_position.y + size.height - 1);
-            if (validator(new_position) && validator(end_hitbox))
+    {   
+        if (picked_up_once) {
+            int i = 0;
+            while (i <= 1)
             {
-                position = new_position;
-                i++;
-            }
-            else
-            {
-                break;
+                Position new_position(position.x, position.y + 1);
+                Position end_hitbox(new_position.x + size.width - 1, new_position.y + size.height - 1);
+                if (validator(new_position) && validator(end_hitbox))
+                {
+                    position = new_position;
+                    i++;
+                }
+                else
+                {
+                    break;
+                }
             }
         }
     }

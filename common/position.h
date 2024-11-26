@@ -17,6 +17,10 @@ public:
         // Ordenar primero por x, luego por y
         return (x < other.x) || (x == other.x && y < other.y);
     }
+
+    bool operator==(const Position& other) const {
+        return (x == other.x) && (y == other.y);
+    }
 };
 
 #endif // COMMON_POSITION_H
