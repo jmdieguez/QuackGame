@@ -115,8 +115,6 @@ void Duck::render_duck(DuckSnapshot &duck, int frame_ticks)
     int w = 16, h = 23;
     if (!duck.status.banana_move)
         set_xywh(duck, frame_ticks, x, y, w, h);
-    renderer.SetDrawColor(255, 0, 0, 255);
-    renderer.FillRect(SDL2pp::Rect(duck.position.x, duck.position.y, w, h));
     SDL_Rect src_rect = {x, y, w, h};
     SDL_Rect dst_rect = {duck.position.x, duck.position.y + (duck.status.is_alive ? 0 : 13), w, h};
     SDL_RendererFlip flip = duck.status.looking_right ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;

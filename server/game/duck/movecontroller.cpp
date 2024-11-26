@@ -75,8 +75,6 @@ void MoveController::update_in_the_air_status(DuckStatus &status, int &y_velocit
 
 void MoveController::move_vertical(Position &position, Size &size, Map &map, int &y_velocity)
 {
-    std::cout << "Me muevo verticalmente" << std::endl;
-
     std::function<int(int, int)> operation = (y_velocity < Y_VELOCITY_INITIAL)
                                                  ? [](int a, int b)
     { return a + b; }
@@ -88,7 +86,6 @@ void MoveController::move_vertical(Position &position, Size &size, Map &map, int
     while (i <= abs_y_velocity)
     {
         Position new_position(position.x, operation(position.y, 1));
-        std::cout << "La nueva posicion en y es: " << (int)new_position.y << std::endl;
         if (validate_position(map, size, new_position))
         {
             position = new_position;
@@ -96,7 +93,6 @@ void MoveController::move_vertical(Position &position, Size &size, Map &map, int
         }
         else
         {
-            std::cout << "La nueva posicion fallada en y es: " << (int)new_position.y << std::endl;
             y_velocity = Y_VELOCITY_INITIAL;
             break;
         }

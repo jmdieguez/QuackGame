@@ -23,7 +23,7 @@ void ProjectileGrenade::set_value_explosion()
 {
     texture = TextureFigure::None;
     direction = std::make_pair(1, 0);
-    Position new_position(duck_position.x + EXPLOSION_IN_HAND_POSITION_OFFSET_X, duck_position.y + EXPLOSION_IN_HAND_POSITION_OFFSET_Y);
+    Position new_position(duck_position.x + EXPLOSION_IN_HAND_POSITION_OFFSET_X, duck_position.y);
     position = new_position;
 }
 
