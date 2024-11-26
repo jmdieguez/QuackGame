@@ -4,7 +4,7 @@
 MoveController::MoveController() {}
 
 bool MoveController::validate_position(const Map &map, const Size &size, const Position &position)
-{   
+{
     Position end_hitbox(position.x + size.width - 1, position.y + size.height - 1);
     return map.validate_coordinate(position) && map.validate_coordinate(end_hitbox);
 }
@@ -102,18 +102,20 @@ void MoveController::move_vertical(Position &position, Size &size, Map &map, int
 void MoveController::move_bent_down(DuckStatus &status, Position &position, Size &size, Map &map)
 {
     int w = DUCK_BENT_DOWN_WIDTH, h = DUCK_BENT_DOWN_HEIGHT;
-    if (status.mooving || !status.bent_down || size.height == h || size.width == w)
+    if (!status.bent_down || size.height == h || size.width == w)
         return;
     int diff_w = DUCK_BENT_DOWN_WIDTH - DUCK_DEFAULT_WIDTH;
     int diff_h = DUCK_DEFAULT_HEIGHT - DUCK_BENT_DOWN_HEIGHT;
     Size new_size_bent_down(w, h);
     Position new_position_bent_down(position.x - diff_w, position.y + diff_h);
-    
+
     int i = 1;
     while (i <= 6)
     {
         Position new_position(position.x - i, position.y);
-        if (validate_position(map, size, new_position))
+        Position end_hitbox(new_position.x + w - 1, new_position.y + h - 1);
+        if (map.validate_coordinate(new_position) && map.validate_coordinate(end_hitbox))
+
             i++;
         else
         {
@@ -125,7 +127,8 @@ void MoveController::move_bent_down(DuckStatus &status, Position &position, Size
     while (i <= 11)
     {
         Position new_position(position.x, position.y + i);
-        if (validate_position(map, size, new_position))
+        Position end_hitbox(new_position.x + w - 1, new_position.y + h - 1);
+        if (map.validate_coordinate(new_position) && map.validate_coordinate(end_hitbox))
             i++;
         else
         {
@@ -140,7 +143,7 @@ void MoveController::move_bent_down(DuckStatus &status, Position &position, Size
 void MoveController::remove_bent_down(DuckStatus &status, Position &position, Size &size)
 {
     int w = DUCK_DEFAULT_WIDTH, h = DUCK_DEFAULT_HEIGHT;
-    if (status.mooving || status.bent_down || size.height == h || size.width == w)
+    if (status.bent_down || size.height == h || size.width == w)
         return;
     int diff_w = DUCK_BENT_DOWN_WIDTH - DUCK_DEFAULT_WIDTH;
     int diff_h = DUCK_DEFAULT_HEIGHT - DUCK_BENT_DOWN_HEIGHT;
