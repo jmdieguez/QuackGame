@@ -7,7 +7,7 @@
 class GunSizeFactory
 {
 private:
-    Size get_gun_size_to_texture(const TextureFigure &texture) const;
+    Size texture_to_gun_size(const TextureFigure &texture) const;
 
 public:
     GunSizeFactory();

@@ -5,7 +5,7 @@
                               PRIVATE METHODS
 ****************************************************************************/
 
-Size GunSizeFactory::get_gun_size_to_texture(const TextureFigure &texture) const
+Size GunSizeFactory::texture_to_gun_size(const TextureFigure &texture) const
 {
     if (texture == TextureFigure::AKFigure)
         return Size(AK_WIDTH, AK_HEIGHT);
@@ -37,7 +37,7 @@ GunSizeFactory::GunSizeFactory()
 
 Size GunSizeFactory::get_size(const TextureFigure &texture) const
 {
-    return get_gun_size_to_texture(texture);
+    return texture_to_gun_size(texture);
 }
 
 GunSizeFactory::~GunSizeFactory()

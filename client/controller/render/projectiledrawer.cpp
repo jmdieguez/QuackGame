@@ -22,16 +22,13 @@ void ProjectileDrawer::render(ProjectileSnapshot &projectile)
 
     if (projectile.texture == TextureFigure::None)
         return;
+    Size size = size_factory.get_size(projectile.texture);
     SDL2pp::Texture &texture = get_texture(projectile.texture);
     int src_x = POS_INIT_X_PROJECTILE, src_y = POS_INIT_Y_PROJECTILE;
-    renderer.SetDrawColor(255, 0, 0, 255);
     bool looking_right = projectile.type_direction == ProjectileDirection::Right;
     SDL_RendererFlip flip = looking_right ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
     SDL_Rect src_rect = {src_x, src_y, SRC_PROJECTILE_WIDTH, SRC_PROJECTILE_HEIGHT};
-    uint16_t dst_rect_x = projectile.pos_x + (looking_right ? HORIZONTAL_RIGHT : HORIZONTAL_LEFT);
-    (void)dst_rect_x;
-    renderer.FillRect(SDL2pp::Rect(projectile.pos_x, projectile.pos_y, projectile.size.width, projectile.size.height));
-    SDL_Rect dst_rect = {projectile.pos_x, projectile.pos_y, projectile.size.width, projectile.size.height};
+    SDL_Rect dst_rect = {projectile.pos_x, projectile.pos_y, size.width, size.height};
     SDL_RenderCopyEx(renderer.Get(), texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);
 }
 

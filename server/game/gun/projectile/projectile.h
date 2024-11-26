@@ -58,7 +58,7 @@ public:
 
     ProjectileSnapshot get_status()
     {
-        return ProjectileSnapshot(position.x, position.y, size, type, texture, type_direction, finish);
+        return ProjectileSnapshot(position.x, position.y, type, texture, type_direction);
     }
 
     uint8_t get_velocity()
