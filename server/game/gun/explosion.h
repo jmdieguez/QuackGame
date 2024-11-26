@@ -43,7 +43,9 @@ public:
     void add_fragments(std::vector<std::shared_ptr<Projectile>> &projectiles)
     {
         std::vector<std::pair<int, int>> directions = {std::make_pair(-1, 0), std::make_pair(1, 0)};
-        Hitbox hitbox_projectile(Position(position), Size(PROJECTILE_WIDTH, PROJECTILE_HEIGHT));
+        uint16_t x = position.x + size.width / 2;
+        uint16_t y = position.y + size.height / 2;
+        Hitbox hitbox_projectile(Position(x, y), Size(PROJECTILE_WIDTH, PROJECTILE_HEIGHT));
         for (std::pair<int, int> direction : directions)
             projectiles.emplace_back(std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, TextureFigure::CowboyBullet, hitbox_projectile, direction, VELOCITY, MAX_DISTANCE));
     };
