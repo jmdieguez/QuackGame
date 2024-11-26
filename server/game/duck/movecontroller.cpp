@@ -75,6 +75,8 @@ void MoveController::update_in_the_air_status(DuckStatus &status, int &y_velocit
 
 void MoveController::move_vertical(Position &position, Size &size, Map &map, int &y_velocity)
 {
+    std::cout << "Me muevo verticalmente" << std::endl;
+
     std::function<int(int, int)> operation = (y_velocity < Y_VELOCITY_INITIAL)
                                                  ? [](int a, int b)
     { return a + b; }
@@ -86,6 +88,7 @@ void MoveController::move_vertical(Position &position, Size &size, Map &map, int
     while (i <= abs_y_velocity)
     {
         Position new_position(position.x, operation(position.y, 1));
+        std::cout << "La nueva posicion en y es: " << (int)new_position.y << std::endl;
         if (validate_position(map, size, new_position))
         {
             position = new_position;
@@ -93,6 +96,7 @@ void MoveController::move_vertical(Position &position, Size &size, Map &map, int
         }
         else
         {
+            std::cout << "La nueva posicion fallada en y es: " << (int)new_position.y << std::endl;
             y_velocity = Y_VELOCITY_INITIAL;
             break;
         }
@@ -110,7 +114,7 @@ void MoveController::move_bent_down(DuckStatus &status, Position &position, Size
     Position new_position_bent_down(position.x - diff_w, position.y + diff_h);
 
     int i = 1;
-    while (i <= 6)
+    while (i <= diff_w)
     {
         Position new_position(position.x - i, position.y);
         Position end_hitbox(new_position.x + w - 1, new_position.y + h - 1);
@@ -124,7 +128,7 @@ void MoveController::move_bent_down(DuckStatus &status, Position &position, Size
         }
     }
     i = 1;
-    while (i <= 11)
+    while (i <= diff_h)
     {
         Position new_position(position.x, position.y + i);
         Position end_hitbox(new_position.x + w - 1, new_position.y + h - 1);

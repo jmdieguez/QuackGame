@@ -23,12 +23,14 @@ private:
     DuckStatus status;
     Color color;
     int y_velocity;
+    bool set_is_alive;
 
     void process_movement(Map &map);
-    void process_shooting(Map &map, 
+    void process_shooting(Map &map,
                           std::map<uint8_t, std::shared_ptr<Gun>> &guns,
                           std::vector<std::shared_ptr<Projectile>> &projectiles,
                           std::vector<SoundType> &sounds);
+
 public:
     explicit Duck(const uint8_t &i, const Position &p, const Color &color);
     ~Duck();
@@ -56,7 +58,7 @@ public:
     // Simulate an iteration
     void step(Map &map,
               std::map<uint8_t, std::shared_ptr<Gun>> &guns,
-              std::vector<std::shared_ptr<Projectile>> &projectiles, 
+              std::vector<std::shared_ptr<Projectile>> &projectiles,
               std::vector<SoundType> &sounds);
 };
 

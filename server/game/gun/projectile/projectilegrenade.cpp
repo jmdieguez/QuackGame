@@ -6,20 +6,30 @@
 #define VELOCITY_Y 3
 #define MAX_TRAYECTORY 32 * 2
 
+#define EXPLOSION_POSITION_OFFSET_X -10
+#define EXPLOSION_POSITION_OFFSET_Y -20
+
+#define EXPLOSION_IN_HAND_POSITION_OFFSET_X -10
+#define EXPLOSION_IN_HAND_POSITION_OFFSET_Y -20
+
 #define GUN_WIDTH 15
 #define GUN_HEIGHT 15
 
 /***************************************************************************
-                              PUBLIC METHODS
+                              PRIVATE METHODS
 ****************************************************************************/
 
 void ProjectileGrenade::set_value_explosion()
 {
     texture = TextureFigure::None;
     direction = std::make_pair(1, 0);
-    Position new_position(duck_position.x - 10, duck_position.y - 10);
+    Position new_position(duck_position.x + EXPLOSION_IN_HAND_POSITION_OFFSET_X, duck_position.y + EXPLOSION_IN_HAND_POSITION_OFFSET_Y);
     position = new_position;
 }
+
+/***************************************************************************
+                              PUBLIC METHODS
+****************************************************************************/
 
 ProjectileGrenade::ProjectileGrenade(DuckStatus &status, const Position &duck_position) : Projectile(ProjectileType::Grenade, TextureFigure::None, VELOCITY_X),
                                                                                           status(status),
@@ -121,7 +131,7 @@ void ProjectileGrenade::throw_grenade(bool &looking_right)
 
 Position ProjectileGrenade::get_position_to_explosion()
 {
-    return Position(position.x - 10, position.y - 20);
+    return Position(position.x + EXPLOSION_POSITION_OFFSET_X, position.y + EXPLOSION_POSITION_OFFSET_Y);
 }
 
 ProjectileGrenade::~ProjectileGrenade()

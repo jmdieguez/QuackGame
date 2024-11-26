@@ -2,10 +2,6 @@
 #include "defs.h"
 #include <optional>
 
-#define X_VELOCITY 4
-#define Y_VELOCITY_INITIAL 0
-#define Y_VELOCITY_ON_JUMP 16
-
 /***************************************************************************
                               PRIVATE METHODS
 ****************************************************************************/
@@ -64,7 +60,7 @@ void Duck::process_shooting(Map &map,
 ****************************************************************************/
 
 Duck::Duck(const uint8_t &i, const Position &p, const Color &color) : Hitbox(p, Size(DUCK_DEFAULT_WIDTH, DUCK_DEFAULT_HEIGHT)), id(i), color(color),
-                                                                      y_velocity(Y_VELOCITY_INITIAL)
+                                                                      y_velocity(Y_VELOCITY_INITIAL), set_is_alive(false)
 {
 }
 
@@ -158,6 +154,12 @@ void Duck::step(Map &map,
                 std::vector<std::shared_ptr<Projectile>> &projectiles,
                 std::vector<SoundType> &sounds)
 {
+    if (!status.is_alive && !set_is_alive)
+    {
+        y_velocity -= Y_VELOCITY_FALL;
+        status.bent_down = false;
+        set_is_alive = true;
+    }
     process_movement(map);
     process_shooting(map, guns, projectiles, sounds);
 }
@@ -169,7 +171,9 @@ void Duck::set_receive_shot()
     else if (status.has_helmet)
         status.has_helmet = false;
     else
+    {
         status.is_alive = false;
+    }
 }
 
 bool Duck::is_alive() const

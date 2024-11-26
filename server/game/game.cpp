@@ -210,6 +210,8 @@ void Game::verify_hits()
         bool hit = false;
         for (auto &[id, duck] : ducks)
         {
+            if (!duck.is_alive())
+                continue;
             if (verify_hit_duck(duck, p))
             {
                 hit = true;
