@@ -63,8 +63,7 @@ void ProjectileLaser::move(const std::function<bool(Position &)> &validator)
         int i = 0;
         while (i <= velocity)
         {
-            Position new_position(position.x, position.y + direction.second);
-            new_position.x = trayectory;
+            Position new_position(position.x + direction_to_move.first, position.y + direction_to_move.second);
             if (dispersion != nullptr && i == (velocity - 1))
                 new_position.x += dispersion->calculate_dispersion(trayectory);
             Position end_hitbox(new_position.x + 8 - 1, new_position.y + 8 - 1);
