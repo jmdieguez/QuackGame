@@ -21,7 +21,9 @@ enum TextureFigure
     Background,
     ExplosionFigure,
     BananaFigure,
-    BananaThrown
+    BananaThrown,
+    LaserRifleFigure,
+    LaserRifleBullet
 };
 
 #endif // TEXTURE_FIGURE_GAME_H

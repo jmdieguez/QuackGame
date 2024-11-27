@@ -43,6 +43,10 @@ std::string TextureFactory::get_path(TextureFigure figure)
         return BANANA_PATH;
     else if (TextureFigure::BananaThrown == figure)
         return BANANA_THROWN_PATH;
+    else if (TextureFigure::LaserRifleFigure == figure)
+        return LASER_RIFLE_PATH;
+    else if (TextureFigure::LaserRifleBullet == figure)
+        return LASER_RIFLE_BULLET_PATH;
     return DUCK_PATH;
 }
 

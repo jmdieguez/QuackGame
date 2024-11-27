@@ -35,7 +35,10 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Ban
     (void)duck_position;
     (void)status;
     peeled_banana = true;
-    return std::nullopt;
+    std::vector<std::shared_ptr<Projectile>> projectiles;
+    projectile_banana = std::make_shared<ProjectileBanana>(status, duck_position);
+    projectiles.push_back(projectile_banana);
+    return std::make_optional(std::make_pair(projectiles, duck_position));
 }
 
 Position Banana::get_position_in_duck(const uint16_t &height_duck, const Position &duck, const bool &looking_right, const bool &looking_up)
@@ -47,12 +50,12 @@ Position Banana::get_position_in_duck(const uint16_t &height_duck, const Positio
     return Position(pos_x, pos_y);
 }
 
-std::shared_ptr<Projectile> Banana::get_projectile(bool &looking_right, bool &looking_up)
+bool Banana::throw_banana(bool &looking_right)
 {
-    (void)looking_up;
-    std::pair<int, int> directions = looking_right ? std::make_pair(1, 0) : std::make_pair(-1, 0);
-    Hitbox hitbox(position, Size(PROJECTILE_WIDTH, PROJECTILE_HEIGHT));
-    return std::make_shared<ProjectileBanana>(hitbox, directions);
+    if (!peeled_banana)
+        return false;
+    projectile_banana->throw_banana(looking_right);
+    return true;
 }
 
 Banana::~Banana()

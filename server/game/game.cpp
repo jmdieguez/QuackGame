@@ -9,9 +9,9 @@
 
 namespace fs = std::filesystem;
 
-Game::Game(): rng(rd()), dist(0, N_GUNS - 1)
-{   
-    
+Game::Game() : rng(rd()), dist(0, N_GUNS - 1)
+{
+
     try
     {
         for (const auto &entry : fs::directory_iterator(MAPS_PATH))
@@ -23,16 +23,25 @@ Game::Game(): rng(rd()), dist(0, N_GUNS - 1)
     {
         std::cerr << "Filesystem error: " << e.what() << std::endl;
     }
-        
-    gun_spawners.push_back([this](const Position& pos) { spawn_gun<AK>(pos); });
-    gun_spawners.push_back([this](const Position& pos) { spawn_gun<Shotgun>(pos); });
-    gun_spawners.push_back([this](const Position& pos) { spawn_gun<Banana>(pos); });
-    gun_spawners.push_back([this](const Position& pos) { spawn_gun<CowboyPistol>(pos); });
-    gun_spawners.push_back([this](const Position& pos) { spawn_gun<DuelingPistol>(pos); });
-    gun_spawners.push_back([this](const Position& pos) { spawn_gun<Grenade>(pos); });
-    gun_spawners.push_back([this](const Position& pos) { spawn_gun<Magnum>(pos); });
-    gun_spawners.push_back([this](const Position& pos) { spawn_gun<PewPewLaser>(pos); });
-    gun_spawners.push_back([this](const Position& pos) { spawn_gun<Sniper>(pos); });
+
+    gun_spawners.push_back([this](const Position &pos)
+                           { spawn_gun<AK>(pos); });
+    gun_spawners.push_back([this](const Position &pos)
+                           { spawn_gun<Shotgun>(pos); });
+    gun_spawners.push_back([this](const Position &pos)
+                           { spawn_gun<Banana>(pos); });
+    gun_spawners.push_back([this](const Position &pos)
+                           { spawn_gun<CowboyPistol>(pos); });
+    gun_spawners.push_back([this](const Position &pos)
+                           { spawn_gun<DuelingPistol>(pos); });
+    gun_spawners.push_back([this](const Position &pos)
+                           { spawn_gun<Grenade>(pos); });
+    gun_spawners.push_back([this](const Position &pos)
+                           { spawn_gun<Magnum>(pos); });
+    gun_spawners.push_back([this](const Position &pos)
+                           { spawn_gun<PewPewLaser>(pos); });
+    gun_spawners.push_back([this](const Position &pos)
+                           { spawn_gun<Sniper>(pos); });
 
     return;
 }
@@ -136,6 +145,30 @@ void Game::process(ClientCommand &command)
         case ClientActionType::SPAWN_BANANA:
             spawn_gun<Banana>(below_duck);
             break;
+
+        case ClientActionType::SPAWN_COWBOY_PISTOL:
+            spawn_gun<CowboyPistol>(duck.get_position());
+            break;
+
+        case ClientActionType::SPAWN_DUELING_PISTOL:
+            spawn_gun<DuelingPistol>(duck.get_position());
+            break;
+
+        case ClientActionType::SPAWN_MAGNUM:
+            spawn_gun<Magnum>(duck.get_position());
+            break;
+
+        case ClientActionType::SPAWN_PEW_PEW_LASER:
+            spawn_gun<PewPewLaser>(duck.get_position());
+            break;
+
+        case ClientActionType::SPAWN_SNIPER:
+            spawn_gun<Sniper>(duck.get_position());
+            break;
+
+        case ClientActionType::SPAWN_LASER_RIFLE:
+            spawn_gun<LaserRifle>(duck.get_position());
+            break;
         default:
             break;
         }
@@ -146,7 +179,7 @@ void Game::process(ClientCommand &command)
 }
 
 bool Game::verify_hit_duck(Duck &duck, std::shared_ptr<Projectile> &projectile)
-{   
+{
     Hitbox projectile_hitbox = projectile->get_hitbox();
 
     if (projectile->get_type() == ProjectileType::Grenade)
@@ -154,10 +187,10 @@ bool Game::verify_hit_duck(Duck &duck, std::shared_ptr<Projectile> &projectile)
     if (projectile->get_type() == ProjectileType::Banana)
     {
         ProjectileBanana *banana = (ProjectileBanana *)projectile.get();
-        banana->checkCollision(duck.get_hitbox(), duck.get_duck_status());
+        banana->check_collision(duck.get_hitbox(), duck.get_duck_status());
         return false;
     }
-    
+
     if (duck.intersects(projectile_hitbox))
     {
         duck.set_receive_shot();
@@ -168,22 +201,29 @@ bool Game::verify_hit_duck(Duck &duck, std::shared_ptr<Projectile> &projectile)
 }
 
 bool Game::verify_hit_box(Box &box, const Position &position, std::shared_ptr<Projectile> &projectile)
-{   
+{
     Hitbox projectile_hitbox = projectile->get_hitbox();
     Size size(TILE_SIZE, TILE_SIZE);
     Position position_as_pixels(position.x * TILE_SIZE, position.y * TILE_SIZE);
     Hitbox box_hitbox(position_as_pixels, size);
     if (box_hitbox.intersects(projectile_hitbox))
-    {   
-        if (box == Box::BOX_1_HP) { // Refactorizar en clase
+    {
+        if (box == Box::BOX_1_HP)
+        { // Refactorizar en clase
             Position gun_position(position_as_pixels.x, position_as_pixels.y + TILE_SIZE);
             spawn_random_gun(gun_position);
             boxes.erase(position);
-        } else if (box == Box::BOX_2_HP) {
+        }
+        else if (box == Box::BOX_2_HP)
+        {
             box = Box::BOX_1_HP;
-        } else if (box == Box::BOX_3_HP) {
+        }
+        else if (box == Box::BOX_3_HP)
+        {
             box = Box::BOX_2_HP;
-        } else if (box == Box::BOX_4_HP) {
+        }
+        else if (box == Box::BOX_4_HP)
+        {
             box = Box::BOX_3_HP;
         }
         projectile->destroy();
@@ -193,22 +233,26 @@ bool Game::verify_hit_box(Box &box, const Position &position, std::shared_ptr<Pr
 }
 
 void Game::verify_hits()
-{   
+{
     for (std::shared_ptr<Projectile> &p : projectiles)
-    {   
+    {
         bool hit = false;
         for (auto &[id, duck] : ducks)
         {
-            if (verify_hit_duck(duck, p)) {
+            if (!duck.is_alive())
+                continue;
+            if (verify_hit_duck(duck, p))
+            {
                 hit = true;
                 break;
             }
         }
 
-        if (!hit) {
+        if (!hit)
+        {
             for (auto &[position, box] : boxes)
-            {   
-                if (verify_hit_box(box, position, p))
+            {
+                if (p->get_type() == ProjectileType::Banana || p->get_type() == ProjectileType::Grenade || verify_hit_box(box, position, p))
                     break;
             }
         }
@@ -231,9 +275,7 @@ void Game::remove_projectiles()
         if (it->get()->is_finish())
         {
             if (it->get()->get_type() == ProjectileType::Grenade)
-            {
-                explosions.emplace_back(it->get()->get_position());
-            }
+                explosions.emplace_back(((ProjectileGrenade *)it->get())->get_position_to_explosion());
             it = projectiles.erase(it);
             continue;
         }
@@ -328,7 +370,8 @@ void Game::spawn_gun(const Position &position_gun)
     gun_id++;
 }
 
-void Game::spawn_random_gun(const Position& position) {
+void Game::spawn_random_gun(const Position &position)
+{
     int random_index = dist(rng);
     gun_spawners[random_index](position);
 }
@@ -337,7 +380,7 @@ void Game::move_guns()
 {
     for (auto &[id, gun] : guns)
         gun->move([this](Position &p)
-                    { return maps[current_map].validate_coordinate(p); });
+                  { return maps[current_map].validate_coordinate(p); });
 }
 
 void Game::remove_gun(const uint16_t &id)
@@ -347,16 +390,20 @@ void Game::remove_gun(const uint16_t &id)
 
 void Game::spawn_guns()
 {
-    for (auto &[position, gun_spawn] : gun_spawns) {
+    for (auto &[position, gun_spawn] : gun_spawns)
+    {
         Position position_as_pixels(position.x * TILE_SIZE + 2,
                                     position.y * TILE_SIZE + 20);
-        if (gun_spawn.step()) {
+        if (gun_spawn.step())
+        {
             bool spawned = false;
 
             if (guns.empty())
                 spawned = true;
-            else {
-                for (auto &[id, gun] : guns) {
+            else
+            {
+                for (auto &[id, gun] : guns)
+                {
                     // Don't spawn a gun if there's one spawned there already
                     if (gun->get_position() == position_as_pixels && !gun->has_been_picked_up())
                         continue;
@@ -365,7 +412,8 @@ void Game::spawn_guns()
                 }
             }
 
-            if (spawned) {
+            if (spawned)
+            {
                 spawn_random_gun(position_as_pixels);
                 gun_spawn.restart();
             }
@@ -398,7 +446,7 @@ void Game::update_camera(std::map<uint8_t, Duck &> &ducks)
 void Game::step()
 {
     if (initialize)
-    {   
+    {
         guns.clear();
         projectiles.clear();
         boxes.clear();
@@ -422,7 +470,7 @@ void Game::step()
     decrement_explosions();
     std::map<uint8_t, Duck&> ducks_alive;
     for (auto &[id, duck] : ducks)
-    {   
+    {
         duck.step(maps[current_map], guns, projectiles, sounds);
         if (duck.is_alive())
         {
@@ -453,7 +501,7 @@ Snapshot Game::get_status()
 
     for (auto &[position, box] : boxes)
         box_snapshots.push_back(BoxSnapshot(position, box));
-    
+
     for (auto &[id, duck] : ducks)
         duck_snapshots.push_back(duck.get_status());
 
@@ -467,7 +515,7 @@ Snapshot Game::get_status()
         sound_snapshots.push_back(SoundSnapshot(sound));
 
     sounds.clear();
-    
+
     return Snapshot(std::move(duck_snapshots), std::move(guns_snapshots), std::move(projectile_snapshots),
                     std::move(explosions_snapshots), std::move(sound_snapshots), std::move(box_snapshots),
                     map_snapshot, camera_snapshot);

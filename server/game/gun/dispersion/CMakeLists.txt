@@ -5,6 +5,7 @@ target_sources(quack_game_server
     dispersionmedium.cpp
     dispersionhigh.cpp
     dispersiongrenade.cpp
+    dispersionlaser.cpp
 
     PUBLIC
     # .h files
@@ -13,4 +14,5 @@ target_sources(quack_game_server
     dispersionhigh.h
     dispersiongrenade.h
     dispersion.h
-)
+    dispersionlaser.h
+    )

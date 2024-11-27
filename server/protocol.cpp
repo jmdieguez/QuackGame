@@ -85,12 +85,8 @@ void ServerProtocol::send_duck(const DuckSnapshot &duck)
     send_data(duck.id);
     send_data(duck.position.x);
     send_data(duck.position.y);
-    send_data(static_cast<uint16_t>(duck.size_duck.width));
-    send_data(static_cast<uint16_t>(duck.size_duck.height));
     send_data(static_cast<uint16_t>(duck.type_gun));
     send_data(static_cast<uint16_t>(duck.texture_gun));
-    send_data(static_cast<uint16_t>(duck.size_gun.width));
-    send_data(static_cast<uint16_t>(duck.size_gun.height));
     send_data(static_cast<uint16_t>(duck.position_gun.x));
     send_data(static_cast<uint16_t>(duck.position_gun.y));
     send_data(static_cast<uint16_t>(duck.angle_gun));
@@ -105,8 +101,6 @@ void ServerProtocol::send_gun(const GunNoEquippedSnapshot &gun)
     send_data(static_cast<uint16_t>(gun.texture));
     send_data(static_cast<uint16_t>(gun.position.x));
     send_data(static_cast<uint16_t>(gun.position.y));
-    send_data(static_cast<uint16_t>(gun.size.width));
-    send_data(static_cast<uint16_t>(gun.size.height));
     send_data(static_cast<uint16_t>(gun.angle));
 }
 
@@ -117,9 +111,6 @@ void ServerProtocol::send_projectile(const ProjectileSnapshot &projectile)
     send_data(static_cast<uint16_t>(projectile.type_direction));
     send_data(static_cast<uint16_t>(projectile.pos_x));
     send_data(static_cast<uint16_t>(projectile.pos_y));
-    send_data(static_cast<uint16_t>(projectile.size.width));
-    send_data(static_cast<uint16_t>(projectile.size.height));
-    send_data(static_cast<uint16_t>(projectile.finish));
 }
 
 void ServerProtocol::send_explosion(const ExplosionSnapshot &explosion)
@@ -127,8 +118,6 @@ void ServerProtocol::send_explosion(const ExplosionSnapshot &explosion)
     send_data(static_cast<uint16_t>(explosion.texture));
     send_data(static_cast<uint16_t>(explosion.position.x));
     send_data(static_cast<uint16_t>(explosion.position.y));
-    send_data(static_cast<uint16_t>(explosion.size.width));
-    send_data(static_cast<uint16_t>(explosion.size.height));
 }
 
 void ServerProtocol::send_duck_status(const DuckStatus &status)
@@ -261,10 +250,12 @@ void ServerProtocol::read_name(std::string &name)
     name.assign(nameBuffer.begin(), nameBuffer.end());
 }
 
-void ServerProtocol::send_not_ready() {
+void ServerProtocol::send_not_ready()
+{
     send_data(static_cast<uint16_t>(ClientActionType::NOT_READY));
 }
 
-void ServerProtocol::send_ready() {
+void ServerProtocol::send_ready()
+{
     send_data(static_cast<uint16_t>(ClientActionType::READY));
 }

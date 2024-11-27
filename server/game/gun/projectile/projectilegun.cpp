@@ -19,7 +19,7 @@ void ProjectileGun::move(const std::function<bool(Position &)> &validator)
         return;
     }
 
-    if (direction.first != 0)
+    if (direction.second != -1)
     {
         int i = 0;
 

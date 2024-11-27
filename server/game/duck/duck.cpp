@@ -2,10 +2,6 @@
 #include "defs.h"
 #include <optional>
 
-#define X_VELOCITY 4
-#define Y_VELOCITY_INITIAL 0
-#define Y_VELOCITY_ON_JUMP 16
-
 /***************************************************************************
                               PRIVATE METHODS
 ****************************************************************************/
@@ -25,7 +21,7 @@ void Duck::process_movement(Map &map)
         move_vertical(position, size, map, y_velocity);
 }
 
-void Duck::process_shooting(Map &map, 
+void Duck::process_shooting(Map &map,
                             std::map<uint8_t, std::shared_ptr<Gun>> &guns,
                             std::vector<std::shared_ptr<Projectile>> &projectiles,
                             std::vector<SoundType> &sounds)
@@ -37,14 +33,22 @@ void Duck::process_shooting(Map &map,
         pick_up(guns, status, [this](const Hitbox &a)
                 { return intersects(a); });
 
-    if (status.gun_drop) {
+    if (status.gun_drop)
+    {
         GunType gunType = gun->get_type();
 
-        if (gunType == GunType::Grenade) {
-            drop_grenade(status, projectiles);
-        } else if (gunType == GunType::Banana) {
-            drop_banana(status, projectiles);
-        } else {
+        if (gunType == GunType::Grenade)
+        {
+            if (!drop_grenade(status, projectiles))
+                discard_gun(guns, position, size, status);
+        }
+        else if (gunType == GunType::Banana)
+        {
+            if (!drop_banana(status, projectiles))
+                discard_gun(guns, position, size, status);
+        }
+        else
+        {
             discard_gun(guns, position, size, status);
         }
     }
@@ -58,7 +62,7 @@ void Duck::process_shooting(Map &map,
 ****************************************************************************/
 
 Duck::Duck(const uint8_t &i, const Position &p, const Color &color) : Hitbox(p, Size(DUCK_DEFAULT_WIDTH, DUCK_DEFAULT_HEIGHT)), id(i), color(color),
-                                                                      y_velocity(Y_VELOCITY_INITIAL)
+                                                                      y_velocity(Y_VELOCITY_INITIAL), set_is_alive(false)
 {
 }
 
@@ -103,6 +107,7 @@ void Duck::drop_gun()
     if (!gun || status.banana_move)
         return;
     status.gun_drop = true;
+    status.shooting = false;
 }
 
 void Duck::shoot()
@@ -151,6 +156,12 @@ void Duck::step(Map &map,
                 std::vector<std::shared_ptr<Projectile>> &projectiles,
                 std::vector<SoundType> &sounds)
 {
+    if (!status.is_alive && !set_is_alive)
+    {
+        y_velocity -= Y_VELOCITY_FALL;
+        status.bent_down = false;
+        set_is_alive = true;
+    }
     process_movement(map);
     process_shooting(map, guns, projectiles, sounds);
 }
@@ -162,7 +173,9 @@ void Duck::set_receive_shot()
     else if (status.has_helmet)
         status.has_helmet = false;
     else
+    {
         status.is_alive = false;
+    }
 }
 
 bool Duck::is_alive() const
@@ -179,10 +192,9 @@ DuckSnapshot Duck::get_status()
 {
     GunType gun_type = get_gun_type();
     TextureFigure gun_texture = get_gun_texture();
-    Size gun_size = get_gun_size();
     Position gun_position = get_gun_position(position, size, status);
     uint16_t gun_angle = get_gun_angle(status);
     return DuckSnapshot(id,
                         position,
-                        size, gun_type, gun_texture, gun_size, gun_position, gun_angle, status, color);
+                        gun_type, gun_texture, gun_position, gun_angle, status, color);
 }

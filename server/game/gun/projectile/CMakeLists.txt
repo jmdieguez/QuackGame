@@ -4,6 +4,7 @@ target_sources(quack_game_server
     projectilegrenade.cpp
     projectilegun.cpp
     projectilebanana.cpp
+    projectilelaser.cpp
 
     PUBLIC
     # .h files
@@ -11,4 +12,5 @@ target_sources(quack_game_server
     projectilegrenade.h
     projectilebanana.h
     projectilegun.h
-)
+    projectilelaser.h
+    )

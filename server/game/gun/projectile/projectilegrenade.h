@@ -18,10 +18,9 @@ private:
 
 public:
     explicit ProjectileGrenade(DuckStatus &status, const Position &duck_position);
-
     void move(const std::function<bool(Position &)> &validator) override;
-
     void throw_grenade(bool &looking_right);
+    Position get_position_to_explosion();
     ~ProjectileGrenade();
 };
 

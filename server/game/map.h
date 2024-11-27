@@ -13,6 +13,7 @@
 #include "gun/pewpewlaser.h"
 #include "gun/grenade.h"
 #include "gun/banana.h"
+#include "gun/laserrifle.h"
 
 class MapConfig
 {

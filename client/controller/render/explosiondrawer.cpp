@@ -1,19 +1,70 @@
 #include "explosiondrawer.h"
 
-#define POS_INIT_X_EXPLOSION 0 // 250
-#define POS_INIT_Y_EXPLOSION 0 // 100
-#define SRC_PROJECTILE_WIDTH 200
-#define SRC_PROJECTILE_HEIGHT 250
-
 /***************************************************************************
                               PRIVATE METHODS
 ****************************************************************************/
 
-void ExplosionDrawer::set_xy(int frame_ticks, int &src_x)
+void ExplosionDrawer::set_xywh(const int &frame_ticks, int &x, int &y, int &w, int &h)
 {
-    int offset = (frame_ticks / 3) % 7;
-    int phase = 250 * offset;
-    src_x = phase;
+    int phase = (frame_ticks / 4) % 8;
+    if (phase == 0)
+    {
+        x = 90;
+        y = 80;
+        w = 80;
+        h = 80;
+    }
+    else if (phase == 1)
+    {
+        x = 331;
+        y = 82;
+        w = 80;
+        h = 80;
+    }
+    else if (phase == 2)
+    {
+        x = 573;
+        y = 85;
+        w = 80;
+        h = 80;
+    }
+    else if (phase == 3)
+    {
+        x = 812;
+        y = 85;
+        w = 80;
+        h = 80;
+    }
+
+    else if (phase == 4)
+    {
+        x = 1040;
+        y = 68;
+        w = 112;
+        h = 112;
+    }
+
+    else if (phase == 5)
+    {
+        x = 1277;
+        y = 67;
+        w = 112;
+        h = 112;
+    }
+    else if (phase == 6)
+    {
+        x = 1509;
+        y = 50;
+        w = 130;
+        h = 134;
+    }
+    else
+    {
+        x = 1746;
+        y = 47;
+        w = 140;
+        h = 140;
+    }
 }
 
 /***************************************************************************
@@ -34,14 +85,14 @@ void ExplosionDrawer::render(ExplosionSnapshot &explosion, int frame_ticks,
     && ((explosion.position.y + TILE_SIZE) < (camera.y + camera.height)))
     {  
         SDL2pp::Texture &texture = get_texture(explosion.texture);
-        int src_x = POS_INIT_X_EXPLOSION, src_y = POS_INIT_Y_EXPLOSION;
-        set_xy(frame_ticks, src_x);
-        SDL_Rect src_rect = {src_x, src_y, SRC_PROJECTILE_WIDTH, SRC_PROJECTILE_HEIGHT};
+        int x, y, w, h;
+        set_xywh(frame_ticks, x, y, w, h);
+        SDL_Rect src_rect = {x, y, w, h};
         SDL_Rect dst_rect = {
             static_cast<int>((explosion.position.x - camera.x) * scale_x), 
             static_cast<int>((explosion.position.y - camera.y) * scale_y), 
-            static_cast<int>(explosion.size.width * scale_x), 
-            static_cast<int>(explosion.size.height * scale_y)
+            static_cast<int>(40 * scale_x), 
+            static_cast<int>(40 * scale_y)
         };
 
         SDL_RenderCopyEx(renderer.Get(), texture.Get(), &src_rect, &dst_rect, 90.0, nullptr, SDL_FLIP_NONE);

@@ -30,6 +30,8 @@ void GunController::finish_shooting()
         ((Sniper *)gun.get())->check_reset();
     if (gun->get_type() == GunType::AK)
         ((AK *)gun.get())->check_reset();
+    if (gun->get_type() == GunType::LaserRifle)
+        ((LaserRifle *)gun.get())->check_reset();
 }
 
 Position GunController::get_gun_position(Position &position, Size &size, DuckStatus &status) const
@@ -62,22 +64,26 @@ void GunController::pick_up(std::map<uint8_t, std::shared_ptr<Gun>> &guns, DuckS
     status.gun_grab = false;
 }
 
-void GunController::drop_grenade(DuckStatus &status, std::vector<std::shared_ptr<Projectile>> &projectiles)
+bool GunController::drop_grenade(DuckStatus &status, std::vector<std::shared_ptr<Projectile>> &projectiles)
 {
     (void)projectiles;
     Grenade *grenade = (Grenade *)gun.get();
     status.gun_drop = false;
     if (!grenade->throw_grenade(status.looking_right))
-        return;
+        return false;
     gun = nullptr;
+    return true;
 }
 
-void GunController::drop_banana(DuckStatus &status, std::vector<std::shared_ptr<Projectile>> &projectiles)
+bool GunController::drop_banana(DuckStatus &status, std::vector<std::shared_ptr<Projectile>> &projectiles)
 {
+    (void)projectiles;
     Banana *banana = (Banana *)gun.get();
-    projectiles.push_back(banana->get_projectile(status.looking_right, status.looking_up));
-    gun = nullptr;
     status.gun_drop = false;
+    if (!banana->throw_banana(status.looking_right))
+        return false;
+    gun = nullptr;
+    return true;
 }
 
 void GunController::fire(DuckStatus &status, Position &position, Map &map,
@@ -140,7 +146,7 @@ void GunController::fire(DuckStatus &status, Position &position, Map &map,
 
     if ((gun->get_type() == GunType::Shotgun && !((Shotgun *)gun.get())->is_block_shoot()) ||
         (gun->get_type() == GunType::Sniper && !((Sniper *)gun.get())->is_block_shoot()) ||
-        gun->get_type() == GunType::AK)
+        gun->get_type() == GunType::AK || gun->get_type() == GunType::LaserRifle)
     {
         return;
     }

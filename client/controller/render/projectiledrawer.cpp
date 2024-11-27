@@ -30,6 +30,7 @@ void ProjectileDrawer::render(ProjectileSnapshot &projectile,
     && ((projectile.pos_y + TILE_SIZE) >= camera.y)
     && ((projectile.pos_y + TILE_SIZE) < (camera.y + camera.height)))
     {   
+        Size size = size_factory.get_size(projectile.texture);
         SDL2pp::Texture &texture = get_texture(projectile.texture);
         int src_x = POS_INIT_X_PROJECTILE, src_y = POS_INIT_Y_PROJECTILE;
         bool looking_right = projectile.type_direction == ProjectileDirection::Right;
@@ -40,8 +41,8 @@ void ProjectileDrawer::render(ProjectileSnapshot &projectile,
         SDL_Rect dst_rect = {
             static_cast<int>((dst_rect_x - camera.x) * scale_x), 
             static_cast<int>((projectile.pos_y + HORIZONTAL_Y - camera.y) * scale_y), 
-            static_cast<int>(projectile.size.width * scale_x), 
-            static_cast<int>(projectile.size.height * scale_y)
+            static_cast<int>(size.width * scale_x), 
+            static_cast<int>(size.height * scale_y)
         };
         
         SDL_RenderCopyEx(renderer.Get(), texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);

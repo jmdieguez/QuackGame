@@ -21,10 +21,9 @@ class GunNoEquippedSnapshot
 public:
     TextureFigure texture;
     Position position;
-    Size size;
     uint16_t angle;
-    explicit GunNoEquippedSnapshot(const TextureFigure &t, const Position &p, const Size &s, const uint16_t &angle) : texture(t), position(p),
-                                                                                                                      size(s), angle(angle) {}
+    explicit GunNoEquippedSnapshot(const TextureFigure &t, const Position &p, const uint16_t &angle) : texture(t), position(p),
+                                                                                                       angle(angle) {}
 };
 
 class ProjectileSnapshot
@@ -32,15 +31,14 @@ class ProjectileSnapshot
 public:
     uint16_t pos_x;
     uint16_t pos_y;
-    Size size;
     ProjectileType type;
     TextureFigure texture;
     ProjectileDirection type_direction;
-    bool finish;
-    explicit ProjectileSnapshot(const uint16_t &x, const uint16_t &y, const Size &s, const ProjectileType &type, const TextureFigure &texture, const ProjectileDirection &type_direction, bool finish) : pos_x(x), pos_y(y),
-                                                                                                                                                                                                         size(s), type(type),
-                                                                                                                                                                                                         texture(texture), type_direction(type_direction),
-                                                                                                                                                                                                         finish(finish) {}
+    explicit ProjectileSnapshot(const uint16_t &x, const uint16_t &y, const ProjectileType &type, const TextureFigure &texture, const ProjectileDirection &type_direction) : pos_x(x), pos_y(y),
+                                                                                                                                                                             type(type),
+                                                                                                                                                                             texture(texture), type_direction(type_direction)
+    {
+    }
 };
 
 class DuckSnapshot
@@ -48,25 +46,23 @@ class DuckSnapshot
 public:
     uint16_t id;
     Position position;
-    Size size_duck;
     GunType type_gun;
     TextureFigure texture_gun;
-    Size size_gun;
     Position position_gun;
     uint16_t angle_gun;
     DuckStatus status;
     Color color;
 
-    explicit DuckSnapshot(const uint16_t &i, const Position &p, const Size &size_duck, const GunType &type_gun, const TextureFigure &texture_gun, const Size &size_gun, const Position &position_gun, const uint16_t &angle_gun, const DuckStatus &status, const Color &color) : id(i),
-                                                                                                                                                                                                                                                                                 position(std::move(p)),
-                                                                                                                                                                                                                                                                                 size_duck(size_duck),
-                                                                                                                                                                                                                                                                                 type_gun(type_gun),
-                                                                                                                                                                                                                                                                                 texture_gun(texture_gun),
-                                                                                                                                                                                                                                                                                 size_gun(size_gun),
-                                                                                                                                                                                                                                                                                 position_gun(position_gun),
-                                                                                                                                                                                                                                                                                 angle_gun(angle_gun),
-                                                                                                                                                                                                                                                                                 status(status),
-                                                                                                                                                                                                                                                                                 color(color)
+    explicit DuckSnapshot(const uint16_t &i, const Position &p, const GunType &type_gun, const TextureFigure &texture_gun, const Position &position_gun, const uint16_t &angle_gun, const DuckStatus &status, const Color &color) : id(i),
+                                                                                                                                                                                                                                    position(std::move(p)),
+
+                                                                                                                                                                                                                                    type_gun(type_gun),
+                                                                                                                                                                                                                                    texture_gun(texture_gun),
+
+                                                                                                                                                                                                                                    position_gun(position_gun),
+                                                                                                                                                                                                                                    angle_gun(angle_gun),
+                                                                                                                                                                                                                                    status(status),
+                                                                                                                                                                                                                                    color(color)
     {
     }
 };
@@ -81,11 +77,10 @@ public:
 class ExplosionSnapshot
 {
 public:
-    Size size;
     Position position;
     TextureFigure texture;
-    explicit ExplosionSnapshot(const Size &size, const Position &position, const TextureFigure &texture) : size(size), position(position),
-                                                                                                           texture(texture) {}
+    explicit ExplosionSnapshot(const Position &position, const TextureFigure &texture) : position(position),
+                                                                                         texture(texture) {}
 };
 
 class GrenadeSnapshot
@@ -155,7 +150,7 @@ public:
     CameraSnapshot camera;
 
     Snapshot() : ducks({}), guns({}), projectiles({}), explosions({}), sounds({}) {}
-    
+
     Snapshot(std::vector<DuckSnapshot> &&d_s,
              std::vector<GunNoEquippedSnapshot> &&g_s,
              std::vector<ProjectileSnapshot> &&p,

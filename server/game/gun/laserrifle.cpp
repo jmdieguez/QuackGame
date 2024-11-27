@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include <ctime>
 
-#include "ak.h"
+#include "laserrifle.h"
 #include "defminvalue.h"
 #include "projectile/projectilegun.h"
 
@@ -14,7 +14,6 @@
 #define START_MORE_DISPERSION 45
 #define VALUE_DISPERSION 1
 #define VALUE_MORE_DISPERSION 2
-#define BACK 3
 
 #define GUN_WIDTH 25
 #define GUN_HEIGHT 10
@@ -39,7 +38,7 @@
                               PRIVATE METHODS
 ****************************************************************************/
 
-bool AK::random()
+bool LaserRifle::random()
 {
     std::srand(std::time(nullptr));
     return std::rand() % 2 == 0;
@@ -49,14 +48,18 @@ bool AK::random()
                               PUBLIC METHODS
 ****************************************************************************/
 
-AK::AK(const uint16_t &id, const Position &position) : Gun(id, GunType::AK, Position(position), Size(GUN_WIDTH, GUN_HEIGHT), TextureFigure::AKFigure),
-                                                       GunAmmo(MAX_AMMO),
-                                                       position_gun(HORIZONTAL_Y, HORIZONTAL_RIGHT, HORIZONTAL_LEFT, VERTICAL_RIGHT, VERTICAL_LEFT),
-                                                       time_shooting(TIME_SHOOTING), delay_shooting(DELAY_SHOOTING)
+/***************************************************************************
+                              PUBLIC METHODS
+****************************************************************************/
+
+LaserRifle::LaserRifle(const uint16_t &id, const Position &position) : Gun(id, GunType::LaserRifle, Position(position), Size(GUN_WIDTH, GUN_HEIGHT), TextureFigure::LaserRifleFigure),
+                                                                       GunAmmo(MAX_AMMO),
+                                                                       position_gun(HORIZONTAL_Y, HORIZONTAL_RIGHT, HORIZONTAL_LEFT, VERTICAL_RIGHT, VERTICAL_LEFT),
+                                                                       time_shooting(TIME_SHOOTING), delay_shooting(DELAY_SHOOTING)
 {
 }
 
-std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> AK::shoot(DuckStatus &status, const Position &duck_position)
+std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> LaserRifle::shoot(DuckStatus &status, const Position &duck_position)
 {
     if (!have_ammo())
         return std::nullopt;
@@ -77,24 +80,22 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> AK:
     Position projectile_position(adjusted_pos_x, adjusted_pos_y);
     std::vector<std::shared_ptr<Projectile>> projectiles;
     Hitbox hitbox(projectile_position, Size(PROJECTILE_WIDTH, PROJECTILE_HEIGHT));
-    projectiles.push_back(std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, TextureFigure::CowboyBullet, hitbox, direction, VELOCITY, MAX_DISTANCE, dispersion));
-    Position new_position = move_back(duck_position, status.looking_right, BACK);
+    projectiles.push_back(std::make_shared<ProjectileLaser>(ProjectileType::CowboyBullet, TextureFigure::LaserRifleBullet, hitbox, direction, VELOCITY, MAX_DISTANCE, dispersion));
     delay_shooting = DELAY_SHOOTING;
     time_shooting--;
-    return std::make_optional(std::make_pair(projectiles, new_position));
+    return std::make_optional(std::make_pair(projectiles, duck_position));
 }
 
-Position AK::get_position_in_duck(const uint16_t &height_duck, const Position &duck, const bool &looking_right, const bool &looking_up)
+Position LaserRifle::get_position_in_duck(const uint16_t &height_duck, const Position &duck, const bool &looking_right, const bool &looking_up)
 {
     return position_gun.get_position(height_duck, duck, looking_right, looking_up);
 }
 
-void AK::check_reset()
+void LaserRifle::check_reset()
 {
     time_shooting = TIME_SHOOTING;
     delay_shooting = DELAY_SHOOTING;
 }
-
-AK::~AK()
+LaserRifle::~LaserRifle()
 {
 }

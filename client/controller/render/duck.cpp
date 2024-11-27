@@ -35,9 +35,9 @@ void Duck::set_xywh(const DuckSnapshot &duck, const int &frame_ticks, int &x, in
     }
     else if (duck.status.start_jumping)
     {
-        x = 42;
+        x = 43;
         y = 46;
-        w = 14;
+        w = 12;
         h = 24;
     }
     else if (duck.status.bent_down)
@@ -137,9 +137,9 @@ void Duck::render_duck(DuckSnapshot &duck, int frame_ticks, CameraSnapshot &came
         SDL_Rect src_rect = {x, y, w, h};
         SDL_Rect dst_rect = {
             static_cast<int>((duck.position.x - camera.x) * scale_x),
-            static_cast<int>((duck.position.y - camera.y) * scale_y),
-            static_cast<int>(duck.size_duck.width * scale_x),
-            static_cast<int>(duck.size_duck.height * scale_y)
+            static_cast<int>((duck.position.y - camera.y + (duck.status.is_alive ? 0 : 13)) * scale_y),
+            static_cast<int>(w * scale_x),
+            static_cast<int>(h * scale_y)
         };
 
         SDL_RendererFlip flip = duck.status.looking_right ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
@@ -155,6 +155,7 @@ void Duck::render_weapon(DuckSnapshot &duck, CameraSnapshot &camera,
     && ((duck.position_gun.y + TILE_SIZE) >= camera.y)
     && ((duck.position_gun.y + TILE_SIZE) < (camera.y + camera.height)))
     {   
+        Size size = size_factory.get_size(duck.texture_gun);
         SDL2pp::Texture &texture = get_texture(duck.texture_gun);
         int src_x = POS_INIT_X_GUN, src_y = POS_INIT_Y_GUN;
         SDL_RendererFlip flip = duck.status.looking_right ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
@@ -162,8 +163,8 @@ void Duck::render_weapon(DuckSnapshot &duck, CameraSnapshot &camera,
         SDL_Rect dst_rect = {
             static_cast<int>((duck.position_gun.x - camera.x) * scale_x), 
             static_cast<int>((duck.position_gun.y - camera.y) * scale_y), 
-            static_cast<int>(duck.size_gun.width * scale_x), 
-            static_cast<int>(duck.size_gun.height * scale_y)
+            static_cast<int>(size.width * scale_x), 
+            static_cast<int>(size.height * scale_y)
         };
         
         SDL_RenderCopyEx(renderer.Get(), texture.Get(), &src_rect, &dst_rect, duck.angle_gun, nullptr, flip);
@@ -182,7 +183,7 @@ void Duck::render(DuckSnapshot &duck, int frame_ticks,
                                  float &scale_x, float &scale_y)
 {
     render_duck(duck, frame_ticks, camera, scale_x, scale_y);
-    if (duck.type_gun != GunType::None)
+    if (duck.type_gun != GunType::None && duck.status.is_alive)
         render_weapon(duck, camera, scale_x, scale_y);
 }
 
