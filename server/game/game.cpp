@@ -187,7 +187,7 @@ bool Game::verify_hit_duck(Duck &duck, std::shared_ptr<Projectile> &projectile)
     if (projectile->get_type() == ProjectileType::Banana)
     {
         ProjectileBanana *banana = (ProjectileBanana *)projectile.get();
-        banana->checkCollision(duck.get_hitbox(), duck.get_duck_status());
+        banana->check_collision(duck.get_hitbox(), duck.get_duck_status());
         return false;
     }
 

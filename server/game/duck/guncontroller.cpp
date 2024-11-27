@@ -64,24 +64,26 @@ void GunController::pick_up(std::map<uint8_t, std::shared_ptr<Gun>> &guns, DuckS
     status.gun_grab = false;
 }
 
-void GunController::drop_grenade(DuckStatus &status, std::vector<std::shared_ptr<Projectile>> &projectiles)
+bool GunController::drop_grenade(DuckStatus &status, std::vector<std::shared_ptr<Projectile>> &projectiles)
 {
     (void)projectiles;
     Grenade *grenade = (Grenade *)gun.get();
     status.gun_drop = false;
     if (!grenade->throw_grenade(status.looking_right))
-        return;
+        return false;
     gun = nullptr;
+    return true;
 }
 
-void GunController::drop_banana(DuckStatus &status, std::vector<std::shared_ptr<Projectile>> &projectiles)
+bool GunController::drop_banana(DuckStatus &status, std::vector<std::shared_ptr<Projectile>> &projectiles)
 {
     (void)projectiles;
     Banana *banana = (Banana *)gun.get();
     status.gun_drop = false;
     if (!banana->throw_banana(status.looking_right))
-        return;
+        return false;
     gun = nullptr;
+    return true;
 }
 
 void GunController::fire(DuckStatus &status, Position &position, Map &map,

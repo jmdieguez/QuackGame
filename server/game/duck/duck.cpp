@@ -39,11 +39,13 @@ void Duck::process_shooting(Map &map,
 
         if (gunType == GunType::Grenade)
         {
-            drop_grenade(status, projectiles);
+            if (!drop_grenade(status, projectiles))
+                discard_gun(guns, position, size, status);
         }
         else if (gunType == GunType::Banana)
         {
-            drop_banana(status, projectiles);
+            if (!drop_banana(status, projectiles))
+                discard_gun(guns, position, size, status);
         }
         else
         {

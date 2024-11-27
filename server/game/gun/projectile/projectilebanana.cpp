@@ -95,7 +95,7 @@ void ProjectileBanana::throw_banana(bool &looking_right)
     position = new_position;
 }
 
-void ProjectileBanana::checkCollision(Hitbox duck, DuckStatus &status)
+void ProjectileBanana::check_collision(Hitbox duck, DuckStatus &status)
 {
     if (!intersects(duck))
         return;

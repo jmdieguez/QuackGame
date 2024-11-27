@@ -13,6 +13,6 @@ public:
     explicit ProjectileBanana(DuckStatus &status, const Position &duck_position);
     void move(const std::function<bool(Position &)> &validator) override;
     void throw_banana(bool &looking_right);
-    void checkCollision(Hitbox duck, DuckStatus &status);
+    void check_collision(Hitbox duck, DuckStatus &status);
     ~ProjectileBanana();
 };
