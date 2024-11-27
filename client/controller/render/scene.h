@@ -10,6 +10,7 @@ private:
 public:
     explicit Scene(SDL2pp::Renderer &renderer);
     void render(CameraSnapshot &camera, float &scale_x, float &scale_y);
+    void render();
     ~Scene();
 };
 

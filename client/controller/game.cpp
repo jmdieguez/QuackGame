@@ -23,7 +23,6 @@ void Game::get_and_execute_events()
 
 void Game::update_renderer(int frame_ticks)
 {
-    initializer.get_renderer().Clear();
     set_renderer(frame_ticks);
     initializer.get_renderer().Present();
 }
@@ -32,15 +31,23 @@ void Game::set_renderer(int frame_ticks)
 {
     Snapshot snapshot, latest_snapshot;
     auto &queue = session.get_queue_receiver();
+
+    bool received_snapshot = false;
     while (queue.try_pop(snapshot)) { 
         started = true;
         latest_snapshot = snapshot;
+        received_snapshot = true;
     }
     
-    if (!started) 
+    if (!started) {
+        initializer.get_renderer().Clear();
+        render_storage.get_scene().render();
         loading_screen.render();
-    else {
-        if (latest_snapshot.camera.width > 0 && latest_snapshot.camera.height > 0) {
+    }
+
+    if (received_snapshot) {
+        if (latest_snapshot.camera.width > 0 && latest_snapshot.camera.height > 0 ) {
+            initializer.get_renderer().Clear();
             float scale_x = static_cast<float>(DEFAULT_WINDOW_WIDTH) / latest_snapshot.camera.width;
             float scale_y = static_cast<float>(DEFAULT_WINDOW_HEIGHT) / latest_snapshot.camera.height;
             

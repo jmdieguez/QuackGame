@@ -421,8 +421,7 @@ void Game::spawn_guns()
     }
 }
 
-void Game::update_camera(std::map<uint8_t, Duck &> &ducks)
-{   
+void Game::update_camera(std::map<uint8_t, Duck &> &ducks) {   
     if (ducks.empty()) 
         return;
 
@@ -437,11 +436,14 @@ void Game::update_camera(std::map<uint8_t, Duck &> &ducks)
 
     max_x = std::min(1024, max_x + PADDING);
     camera.x = std::max(0, min_x - PADDING);    
-    camera.width = max_x - camera.x;
-    camera.height = camera.width * 9 / 16;
-    camera.y = (acum_y / ducks.size()) - (camera.height / 2);
+    camera.width = std::max(MIN_CAMERA_WIDTH, max_x - camera.x);
+    camera.height = std::max(MIN_CAMERA_HEIGHT, camera.width * 9 / 16);
+    camera.y = std::max(0, static_cast<int>((acum_y / ducks.size()) - (camera.height / 2)));
+    if (camera.x + camera.width > 1024)
+        camera.x = 1024 - camera.width;
+    if (camera.y + camera.height > 576)
+        camera.y = 576 - camera.height;
 }
-
 
 void Game::step()
 {
