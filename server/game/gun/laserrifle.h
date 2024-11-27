@@ -5,6 +5,7 @@
 #include "dispersion/dispersionlow.h"
 #include "moveback.h"
 #include "positiongun.h"
+#include "projectile/projectilelaser.h"
 
 class LaserRifle : public Gun, public GunAmmo, protected MoveBack
 {

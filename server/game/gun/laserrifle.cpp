@@ -81,7 +81,7 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Las
     Position projectile_position(adjusted_pos_x, adjusted_pos_y);
     std::vector<std::shared_ptr<Projectile>> projectiles;
     Hitbox hitbox(projectile_position, Size(PROJECTILE_WIDTH, PROJECTILE_HEIGHT));
-    projectiles.push_back(std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, TextureFigure::LaserRifleBullet, hitbox, direction, VELOCITY, MAX_DISTANCE, dispersion));
+    projectiles.push_back(std::make_shared<ProjectileLaser>(ProjectileType::CowboyBullet, TextureFigure::LaserRifleBullet, hitbox, direction, VELOCITY, MAX_DISTANCE, dispersion));
     Position new_position = move_back(duck_position, status.looking_right, BACK);
     delay_shooting = DELAY_SHOOTING;
     time_shooting--;
