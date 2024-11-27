@@ -4,12 +4,17 @@
 #define VELOCITY_Y 3
 #define MAX_TRAYECTORY 32 * 2
 
+#define GUN_WIDTH 15
+#define GUN_HEIGHT 15
+
 /***************************************************************************
                               PUBLIC METHODS
 ****************************************************************************/
 
-ProjectileBanana::ProjectileBanana(const Hitbox &h, const std::pair<int, int> &d) : Projectile(ProjectileType::Banana, TextureFigure::BananaFigure, h, d, VELOCITY_X),
-                                                                                    trayectory(0), collide_wall(false)
+ProjectileBanana::ProjectileBanana(DuckStatus &status, const Position &duck_position) : Projectile(ProjectileType::Banana, TextureFigure::None, VELOCITY_X),
+                                                                                        status(status),
+                                                                                        duck_position(duck_position),
+                                                                                        trayectory(0), is_throwing(false), collide_wall(false)
 {
 }
 
@@ -77,6 +82,17 @@ void ProjectileBanana::move(const std::function<bool(Position &)> &validator)
         }
         trayectory += VELOCITY_X;
     }
+}
+
+void ProjectileBanana::throw_banana(bool &looking_right)
+{
+    is_throwing = true;
+    texture = TextureFigure::BananaFigure;
+    size.width = GUN_WIDTH;
+    size.height = GUN_HEIGHT;
+    direction = looking_right ? std::make_pair(1, 0) : std::make_pair(-1, 0);
+    Position new_position(duck_position.x - 10, duck_position.y - 10);
+    position = new_position;
 }
 
 void ProjectileBanana::checkCollision(Hitbox duck, DuckStatus &status)

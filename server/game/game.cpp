@@ -252,7 +252,7 @@ void Game::verify_hits()
         {
             for (auto &[position, box] : boxes)
             {
-                if (verify_hit_box(box, position, p))
+                if (p->get_type() == ProjectileType::Banana || p->get_type() == ProjectileType::Grenade || verify_hit_box(box, position, p))
                     break;
             }
         }
