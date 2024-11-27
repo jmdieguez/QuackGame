@@ -14,7 +14,6 @@
 #define START_MORE_DISPERSION 45
 #define VALUE_DISPERSION 1
 #define VALUE_MORE_DISPERSION 2
-#define BACK 3
 
 #define GUN_WIDTH 25
 #define GUN_HEIGHT 10
@@ -82,10 +81,9 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Las
     std::vector<std::shared_ptr<Projectile>> projectiles;
     Hitbox hitbox(projectile_position, Size(PROJECTILE_WIDTH, PROJECTILE_HEIGHT));
     projectiles.push_back(std::make_shared<ProjectileLaser>(ProjectileType::CowboyBullet, TextureFigure::LaserRifleBullet, hitbox, direction, VELOCITY, MAX_DISTANCE, dispersion));
-    Position new_position = move_back(duck_position, status.looking_right, BACK);
     delay_shooting = DELAY_SHOOTING;
     time_shooting--;
-    return std::make_optional(std::make_pair(projectiles, new_position));
+    return std::make_optional(std::make_pair(projectiles, duck_position));
 }
 
 Position LaserRifle::get_position_in_duck(const uint16_t &height_duck, const Position &duck, const bool &looking_right, const bool &looking_up)

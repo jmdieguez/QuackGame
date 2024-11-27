@@ -13,6 +13,8 @@ private:
     std::vector<std::pair<int, int>> directions;
     uint16_t times_to_collide_wall;
 
+    void set_directions();
+
 public:
     ProjectileLaser(const ProjectileType &t, const TextureFigure &tex, const Hitbox &h, const std::pair<int, int> &d, uint8_t velocity, uint8_t tiles, std::shared_ptr<Dispersion> dispersion);
     ProjectileLaser(const ProjectileType &t, const TextureFigure &tex, const Hitbox &h, const std::pair<int, int> &d, uint8_t velocity, uint8_t tiles);

@@ -1,8 +1,6 @@
 #include "projectilelaser.h"
 
-ProjectileLaser::ProjectileLaser(const ProjectileType &t, const TextureFigure &tex, const Hitbox &h, const std::pair<int, int> &d, uint8_t velocity, uint8_t tiles, std::shared_ptr<Dispersion> dispersion) : Projectile(t, tex, h, d, velocity),
-                                                                                                                                                                                                              dispersion(dispersion), trayectory(0),
-                                                                                                                                                                                                              iterations_left(tiles * TILE_SIZE)
+void ProjectileLaser::set_directions()
 {
     directions = {
         {direction.first, 1},
@@ -10,18 +8,27 @@ ProjectileLaser::ProjectileLaser(const ProjectileType &t, const TextureFigure &t
         {0, 1},
         {(direction.first * -1), -1},
         {0, 1}};
+    if (direction.second != -1)
+        return;
+    directions = {
+        {1, -1},
+        {0, 1},
+        {-1, -1},
+        {0, 1}};
+}
+
+ProjectileLaser::ProjectileLaser(const ProjectileType &t, const TextureFigure &tex, const Hitbox &h, const std::pair<int, int> &d, uint8_t velocity, uint8_t tiles, std::shared_ptr<Dispersion> dispersion) : Projectile(t, tex, h, d, velocity),
+                                                                                                                                                                                                              dispersion(dispersion), trayectory(0),
+                                                                                                                                                                                                              iterations_left(tiles * TILE_SIZE)
+{
+    set_directions();
 }
 
 ProjectileLaser::ProjectileLaser(const ProjectileType &t, const TextureFigure &tex, const Hitbox &h, const std::pair<int, int> &d, uint8_t velocity, uint8_t tiles) : Projectile(t, tex, h, d, velocity),
                                                                                                                                                                       dispersion(nullptr), trayectory(0),
                                                                                                                                                                       iterations_left(tiles * TILE_SIZE)
 {
-    directions = {
-        {direction.first, 1},
-        {direction.first, -1},
-        {0, 1},
-        {(direction.first * -1), -1},
-        {0, 1}};
+    set_directions();
 }
 void ProjectileLaser::move(const std::function<bool(Position &)> &validator)
 {
@@ -53,10 +60,10 @@ void ProjectileLaser::move(const std::function<bool(Position &)> &validator)
             }
             i++;
         }
-
-        if (finish)
-            return;
     }
+
+    if (finish)
+        return;
 
     if (direction.second == -1)
     {
@@ -71,7 +78,8 @@ void ProjectileLaser::move(const std::function<bool(Position &)> &validator)
                 position = new_position;
             else
             {
-                finish = true;
+                directions.erase(directions.begin());
+                directions.push_back(direction_to_move);
                 break;
             }
             i++;

@@ -7,7 +7,7 @@
 #include "positiongun.h"
 #include "projectile/projectilelaser.h"
 
-class LaserRifle : public Gun, public GunAmmo, protected MoveBack
+class LaserRifle : public Gun, public GunAmmo
 {
 private:
     PositionGun position_gun;
