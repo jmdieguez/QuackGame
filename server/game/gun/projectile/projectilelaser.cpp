@@ -11,9 +11,9 @@ void ProjectileLaser::set_directions()
     if (direction.second != -1)
         return;
     directions = {
-        {1, -1},
+        {direction.first, -1},
         {0, 1},
-        {-1, -1},
+        {(direction.first * -1), -1},
         {0, 1}};
 }
 
@@ -30,6 +30,7 @@ ProjectileLaser::ProjectileLaser(const ProjectileType &t, const TextureFigure &t
 {
     set_directions();
 }
+
 void ProjectileLaser::move(const std::function<bool(Position &)> &validator)
 {
     if (iterations_left <= 0)
@@ -40,7 +41,7 @@ void ProjectileLaser::move(const std::function<bool(Position &)> &validator)
 
     std::pair<int, int> direction_to_move = directions.front();
 
-    if (direction.first != 0)
+    if (direction.second != -1)
     {
         int i = 0;
 

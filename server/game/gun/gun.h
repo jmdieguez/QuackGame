@@ -28,13 +28,12 @@ private:
     uint16_t angle;
     TextureFigure texture;
     bool picked_up_once = false;
+
 protected:
     std::pair<int, int> get_direction(bool looking_right, bool looking_up)
     {
         int direction_x = looking_right ? 1 : -1;
         int direction_y = looking_up ? -1 : 0;
-        if (looking_up)
-            direction_x = 0;
         return {direction_x, direction_y};
     }
 
@@ -46,12 +45,13 @@ public:
 
     virtual ~Gun() = default;
 
-    void equipped() { 
+    void equipped()
+    {
         is_equipped = true;
     }
 
     void dropped(const Position duck)
-    {   
+    {
         picked_up_once = true;
         is_equipped = false;
         position.x = duck.x;
@@ -97,8 +97,9 @@ public:
     }
 
     void move(const std::function<bool(Position &)> &validator)
-    {   
-        if (picked_up_once) {
+    {
+        if (picked_up_once)
+        {
             int i = 0;
             while (i <= 1)
             {
