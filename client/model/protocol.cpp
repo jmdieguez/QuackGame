@@ -228,6 +228,13 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
         read_data(y);
         snapshot.map.gun_spawns.push_back(Position(x, y));
     }
+
+    uint16_t camera_x, camera_y, camera_width, camera_height;
+    read_data(camera_x);
+    read_data(camera_y);
+    read_data(camera_width);
+    read_data(camera_height);
+    snapshot.camera = CameraSnapshot(camera_x, camera_y, camera_width, camera_height);
 }
 
 void ClientProtocol::read_data(uint16_t &data)

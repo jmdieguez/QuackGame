@@ -14,6 +14,7 @@
 #include "gun/explosion.h"
 #include "map.h"
 #include "gun_spawn.h"
+#include "camera.h"
 
 class Game
 {
@@ -34,15 +35,14 @@ private:
     std::map<Position, GunSpawn> gun_spawns;
     uint16_t gun_id = 0;
     std::map<uint8_t, std::shared_ptr<Gun>> guns;
-    
     // Random number generator
     std::random_device rd;
     std::mt19937 rng;
     std::uniform_int_distribution<int> dist;
-
     // Gun type to lambda mapping. This calls spawn_gun
     std::vector<std::function<void(const Position&)>> gun_spawners;
-    
+    Camera camera;
+
     bool verify_hit_box(Box &box, const Position &position, std::shared_ptr<Projectile> &projectile);
     bool verify_hit_duck(Duck &duck, std::shared_ptr<Projectile> &projectile);
     void verify_hits();
@@ -50,8 +50,8 @@ private:
     void remove_projectiles();
     void decrement_explosions();
     void spawn_players();
-    int calculate_winner(std::vector<uint8_t> possible_winners);
-    void check_for_winner(const std::vector<uint8_t> &ducks_alive);
+    int calculate_winner(const std::vector<uint8_t> &possible_winners);
+    void check_for_winner(const std::map<uint8_t, Duck&> &ducks_alive);
 
     std::vector<GunNoEquippedSnapshot> get_guns_snapshots();
     template <typename T> void spawn_gun(const Position &position_gun);
@@ -59,6 +59,7 @@ private:
     void move_guns();
     void remove_gun(const uint16_t &id);
     void spawn_guns();
+    void update_camera(std::map<uint8_t, Duck&> &ducks);
 public:
     Game();
     void process(ClientCommand &command);

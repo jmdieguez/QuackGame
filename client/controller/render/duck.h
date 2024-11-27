@@ -8,13 +8,18 @@ class Duck : protected Renderer
 {
 private:
     void set_xywh(const DuckSnapshot &duck, const int &frame_ticks, int &x, int &y, int &w, int &h);
-    void render_helmet_chestplate(DuckSnapshot &duck);
-    void render_weapon(DuckSnapshot &duck);
-    void render_duck(DuckSnapshot &duck, int frame_ticks);
+    void render_helmet_chestplate(DuckSnapshot &duck, CameraSnapshot &camera, 
+                                 float &scale_x, float &scale_y);
+    void render_weapon(DuckSnapshot &duck, CameraSnapshot &camera, 
+                                 float &scale_x, float &scale_y);
+    void render_duck(DuckSnapshot &duck, int frame_ticks, CameraSnapshot &camera, 
+                                 float &scale_x, float &scale_y);
 
 public:
     explicit Duck(SDL2pp::Renderer &renderer);
-    void render(DuckSnapshot &duck, int frame_ticks);
+    void render(DuckSnapshot &duck, int frame_ticks, 
+                                 CameraSnapshot &camera, 
+                                 float &scale_x, float &scale_y);
     ~Duck();
 };
 

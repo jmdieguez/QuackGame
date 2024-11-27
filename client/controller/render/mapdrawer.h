@@ -16,8 +16,15 @@ private:
 
 public:
     explicit MapDrawer(SDL2pp::Renderer &renderer);
-    void render_spawn_in_map(Position &p);
-    void render_component(MapComponent &component, uint16_t &style);
+    
+    void render_spawn_in_map(Position &p, 
+                             CameraSnapshot &camera, 
+                             float &scale_x, float &scale_y);
+
+    void render_component(MapComponent &component,
+                          uint16_t &style, 
+                          CameraSnapshot &camera, 
+                          float &scale_x, float &scale_y);
     ~MapDrawer();
 };
 

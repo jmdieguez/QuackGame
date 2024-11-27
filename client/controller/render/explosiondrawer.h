@@ -11,7 +11,9 @@ private:
 
 public:
     explicit ExplosionDrawer(SDL2pp::Renderer &renderer);
-    void render(ExplosionSnapshot &explosion, int frame_ticks);
+    void render(ExplosionSnapshot &explosion, int frame_ticks, 
+                                 CameraSnapshot &camera, 
+                                 float &scale_x, float &scale_y);
     ~ExplosionDrawer();
 };
 

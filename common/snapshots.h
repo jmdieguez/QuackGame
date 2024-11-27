@@ -126,6 +126,22 @@ public:
     ~MapSnapshot() {}
 };
 
+class CameraSnapshot
+{
+public:
+    uint16_t x, y, width, height;
+
+    CameraSnapshot() : x(0), y(0), width(0), height(0) {}
+
+    CameraSnapshot(const uint16_t &x,
+                   const uint16_t &y,
+                   const uint16_t &w,
+                   const uint16_t &h) : 
+                   x(x), y(y), width(w), height(h) {}
+
+    ~CameraSnapshot() {}
+};
+
 class Snapshot
 {
 public:
@@ -136,6 +152,7 @@ public:
     std::vector<SoundSnapshot> sounds;
     std::vector<BoxSnapshot> boxes;
     MapSnapshot map;
+    CameraSnapshot camera;
 
     Snapshot() : ducks({}), guns({}), projectiles({}), explosions({}), sounds({}) {}
     
@@ -145,10 +162,10 @@ public:
              std::vector<ExplosionSnapshot> &&e,
              std::vector<SoundSnapshot> &&s,
              std::vector<BoxSnapshot> &&b,
-             
-             MapSnapshot &map_snapshot)
+             MapSnapshot &map_snapshot,
+             CameraSnapshot &c)
               : ducks(d_s), guns(g_s), projectiles(p), explosions(e),
-                sounds(s), boxes(b), map(map_snapshot) {}
+                sounds(s), boxes(b), map(map_snapshot), camera(c) {}
 };
 
 #endif // SNAPSHOTS_H

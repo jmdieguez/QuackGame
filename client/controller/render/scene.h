@@ -9,7 +9,7 @@ class Scene : protected Renderer
 private:
 public:
     explicit Scene(SDL2pp::Renderer &renderer);
-    void render();
+    void render(CameraSnapshot &camera, float &scale_x, float &scale_y);
     ~Scene();
 };
 

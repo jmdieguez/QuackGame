@@ -9,7 +9,9 @@ class BoxItem : protected Renderer
 private:
 public:
     explicit BoxItem(SDL2pp::Renderer &renderer);
-    void render(BoxSnapshot &box);
+    void render(BoxSnapshot &box, 
+                                 CameraSnapshot &camera, 
+                                 float &scale_x, float &scale_y);
     ~BoxItem();
 };
 

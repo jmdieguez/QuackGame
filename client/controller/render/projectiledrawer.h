@@ -9,7 +9,9 @@ class ProjectileDrawer : protected Renderer
 private:
 public:
     explicit ProjectileDrawer(SDL2pp::Renderer &renderer);
-    void render(ProjectileSnapshot &projectile);
+    void render(ProjectileSnapshot &projectile, 
+                CameraSnapshot &camera, 
+                float &scale_x, float &scale_y);
     ~ProjectileDrawer();
 };
 

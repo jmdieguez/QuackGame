@@ -210,6 +210,10 @@ void ServerProtocol::send_snapshot(const Snapshot &snapshot)
         send_data(position.x);
         send_data(position.y);
     }
+    send_data(static_cast<uint16_t>(snapshot.camera.x));
+    send_data(static_cast<uint16_t>(snapshot.camera.y));
+    send_data(static_cast<uint16_t>(snapshot.camera.width));
+    send_data(static_cast<uint16_t>(snapshot.camera.height));
 }
 
 void ServerProtocol::send_lobby_info(const std::vector<LobbyMessage> &lobby_info)

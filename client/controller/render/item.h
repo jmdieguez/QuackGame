@@ -10,7 +10,9 @@ class Item : protected Renderer
 private:
 public:
     explicit Item(SDL2pp::Renderer &renderer);
-    void render(GunNoEquippedSnapshot &gun);
+    void render(GunNoEquippedSnapshot &gun, 
+                CameraSnapshot &camera, 
+                float &scale_x, float &scale_y);
     ~Item();
 };
 

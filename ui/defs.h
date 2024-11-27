@@ -1,8 +1,8 @@
 #ifndef UI_DEFS_H
 #define UI_DEFS_H
 
-#define DEFAULT_WINDOW_WIDTH 1024
-#define DEFAULT_WINDOW_HEIGHT 600
+#define DEFAULT_WINDOW_WIDTH 1024 // 16:9 ratio
+#define DEFAULT_WINDOW_HEIGHT 576
 
 struct SDL_Color;
 
