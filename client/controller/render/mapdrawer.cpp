@@ -41,9 +41,9 @@ void MapDrawer::render_spawn_in_map(Position &p, CameraSnapshot &camera, float &
     int x = (p.x * TILE_SIZE) + ((TILE_SIZE - width) / 2);
     int y = (p.y * TILE_SIZE) + (TILE_SIZE - height);
     if (((x + TILE_SIZE) >= camera.x)
-    && ((x + TILE_SIZE) < (camera.x + camera.width))
+    && ((x - TILE_SIZE) < (camera.x + camera.width))
     && ((y + TILE_SIZE) >= camera.y)
-    && ((y + TILE_SIZE) < (camera.y + camera.height)))
+    && ((y - TILE_SIZE) < (camera.y + camera.height)))
     {  
         SDL_Rect src_rect = {0, 0, width, height};
         SDL_Rect dst_rect = {
@@ -65,9 +65,9 @@ void MapDrawer::render_component(MapComponent &component,
     int y = component.y * TILE_SIZE;
 
     if (((x + TILE_SIZE) >= camera.x)
-    && ((x + TILE_SIZE) < (camera.x + camera.width))
+    && ((x - TILE_SIZE) < (camera.x + camera.width))
     && ((y + TILE_SIZE) >= camera.y)
-    && ((y + TILE_SIZE) < (camera.y + camera.height)))
+    && ((y - TILE_SIZE) < (camera.y + camera.height)))
     {   
         std::unique_ptr<Tileset> &tileset = tilesets[style];
         std::shared_ptr<SDL2pp::Texture> &texture = tileset->textures[component.type];

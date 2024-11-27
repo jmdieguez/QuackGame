@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>796</width>
-    <height>490</height>
+    <width>1024</width>
+    <height>576</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Quack Game - Matches List</string>
   </property>
   <widget class="QLabel" name="backgroundLabel">
    <property name="geometry">

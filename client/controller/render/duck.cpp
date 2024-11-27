@@ -124,9 +124,9 @@ void Duck::render_duck(DuckSnapshot &duck, int frame_ticks, CameraSnapshot &came
                                  float &scale_x, float &scale_y)
 {   
     if (((duck.position.x + TILE_SIZE) >= camera.x)
-    && ((duck.position.x + TILE_SIZE) < (camera.x + camera.width))
+    && ((duck.position.x - TILE_SIZE) < (camera.x + camera.width))
     && ((duck.position.y + TILE_SIZE) >= camera.y)
-    && ((duck.position.y + TILE_SIZE) < (camera.y + camera.height)))
+    && ((duck.position.y - TILE_SIZE) < (camera.y + camera.height)))
     {   
         SDL2pp::Texture &duck_texture = get_texture(TextureFigure::DUCK);
         duck_texture.SetColorMod(duck.color.GetRed(), duck.color.GetGreen(), duck.color.GetBlue());
@@ -151,9 +151,9 @@ void Duck::render_weapon(DuckSnapshot &duck, CameraSnapshot &camera,
                                  float &scale_x, float &scale_y)
 {   
     if (((duck.position_gun.x + TILE_SIZE) >= camera.x)
-    && ((duck.position_gun.x + TILE_SIZE) < (camera.x + camera.width))
+    && ((duck.position_gun.x - TILE_SIZE) < (camera.x + camera.width))
     && ((duck.position_gun.y + TILE_SIZE) >= camera.y)
-    && ((duck.position_gun.y + TILE_SIZE) < (camera.y + camera.height)))
+    && ((duck.position_gun.y - TILE_SIZE) < (camera.y + camera.height)))
     {   
         Size size = size_factory.get_size(duck.texture_gun);
         SDL2pp::Texture &texture = get_texture(duck.texture_gun);

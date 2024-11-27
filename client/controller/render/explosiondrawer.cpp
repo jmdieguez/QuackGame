@@ -80,9 +80,9 @@ void ExplosionDrawer::render(ExplosionSnapshot &explosion, int frame_ticks,
                                  float &scale_x, float &scale_y)
 {   
     if (((explosion.position.x + TILE_SIZE) >= camera.x)
-    && ((explosion.position.x + TILE_SIZE) < (camera.x + camera.width))
+    && ((explosion.position.x - TILE_SIZE) < (camera.x + camera.width))
     && ((explosion.position.y + TILE_SIZE) >= camera.y)
-    && ((explosion.position.y + TILE_SIZE) < (camera.y + camera.height)))
+    && ((explosion.position.y - TILE_SIZE) < (camera.y + camera.height)))
     {  
         SDL2pp::Texture &texture = get_texture(explosion.texture);
         int x, y, w, h;

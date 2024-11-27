@@ -26,9 +26,9 @@ void ProjectileDrawer::render(ProjectileSnapshot &projectile,
         return;
     
     if (((projectile.pos_x + TILE_SIZE) >= camera.x)
-    && ((projectile.pos_x + TILE_SIZE) < (camera.x + camera.width))
+    && ((projectile.pos_x - TILE_SIZE) < (camera.x + camera.width))
     && ((projectile.pos_y + TILE_SIZE) >= camera.y)
-    && ((projectile.pos_y + TILE_SIZE) < (camera.y + camera.height)))
+    && ((projectile.pos_y - TILE_SIZE) < (camera.y + camera.height)))
     {   
         Size size = size_factory.get_size(projectile.texture);
         SDL2pp::Texture &texture = get_texture(projectile.texture);

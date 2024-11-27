@@ -19,9 +19,9 @@ void BoxItem::render(BoxSnapshot &box,
     int y = box.pos.y * TILE_SIZE;
 
     if (((x + TILE_SIZE) >= camera.x)
-    && ((x + TILE_SIZE) < (camera.x + camera.width))
+    && ((x - TILE_SIZE) < (camera.x + camera.width))
     && ((y + TILE_SIZE) >= camera.y)
-    && ((y + TILE_SIZE) < (camera.y + camera.height)))
+    && ((y - TILE_SIZE) < (camera.y + camera.height)))
     {  
         SDL2pp::Texture &texture = get_texture(TextureFigure::Box_T);
         int src_x = static_cast<int>(box.status) * texture.GetHeight();
