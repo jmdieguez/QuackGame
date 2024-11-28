@@ -33,30 +33,34 @@ void Game::set_renderer(int frame_ticks)
     auto &queue = session.get_queue_receiver();
 
     bool received_snapshot = false;
-    while (queue.try_pop(snapshot)) { 
+    while (queue.try_pop(snapshot))
+    {
         started = true;
         latest_snapshot = snapshot;
         received_snapshot = true;
     }
-    
-    if (!started) {
+
+    if (!started)
+    {
         initializer.get_renderer().Clear();
         render_storage.get_scene().render();
         loading_screen.render();
     }
 
-    if (received_snapshot) {
-        if (latest_snapshot.camera.width > 0 && latest_snapshot.camera.height > 0 ) {
+    if (received_snapshot)
+    {
+        if (latest_snapshot.camera.width > 0 && latest_snapshot.camera.height > 0)
+        {
             initializer.get_renderer().Clear();
             float scale_x = static_cast<float>(DEFAULT_WINDOW_WIDTH) / latest_snapshot.camera.width;
             float scale_y = static_cast<float>(DEFAULT_WINDOW_HEIGHT) / latest_snapshot.camera.height;
-            
+
             render_storage.get_scene().render(latest_snapshot.camera, scale_x, scale_y);
-            
+
             for (MapComponent &component : latest_snapshot.map.components)
                 render_storage.get_map_drawer().render_component(component,
-                    latest_snapshot.map.style, latest_snapshot.camera, scale_x, scale_y);
-             
+                                                                 latest_snapshot.map.style, latest_snapshot.camera, scale_x, scale_y);
+
             for (BoxSnapshot &box : latest_snapshot.boxes)
                 render_storage.get_box_item().render(box, latest_snapshot.camera, scale_x, scale_y);
 
@@ -74,9 +78,6 @@ void Game::set_renderer(int frame_ticks)
 
             for (ExplosionSnapshot &explosion : latest_snapshot.explosions)
                 render_storage.get_explosion().render(explosion, frame_ticks, latest_snapshot.camera, scale_x, scale_y);
-
-            // for (SoundSnapshot &sound_snapshot : latest_snapshot.sounds)
-            //     music_box.play_sound(sound_snapshot);
         }
     }
 }

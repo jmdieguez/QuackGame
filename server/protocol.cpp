@@ -175,11 +175,6 @@ void ServerProtocol::send_snapshot(const Snapshot &snapshot)
     for (const ExplosionSnapshot &explosion : snapshot.explosions)
         send_explosion(explosion);
 
-    const uint16_t sound_length = static_cast<uint16_t>(snapshot.sounds.size());
-    send_data(sound_length);
-    for (SoundSnapshot sound_snapshot : snapshot.sounds)
-        send_data(static_cast<uint16_t>(sound_snapshot.sound));
-
     send_data(snapshot.map.style);
     send_data(snapshot.map.size_x);
     send_data(snapshot.map.size_y);

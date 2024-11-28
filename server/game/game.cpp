@@ -329,7 +329,7 @@ int Game::calculate_winner(const std::vector<uint8_t> &possible_winners)
     return winners[0];
 }
 
-void Game::check_for_winner(const std::map<uint8_t, Duck&> &ducks_alive)
+void Game::check_for_winner(const std::map<uint8_t, Duck &> &ducks_alive)
 {
     int n_ducks_alive = ducks_alive.size();
     if (n_ducks_alive <= 1)
@@ -337,7 +337,7 @@ void Game::check_for_winner(const std::map<uint8_t, Duck&> &ducks_alive)
         initialize = true;
         current_map = (++round) % maps.size();
         if (n_ducks_alive == 1)
-        {   
+        {
             auto winner = ducks_alive.begin();
             ++victories[winner->first];
             if ((round >= 5) && (round % 5 == 0))
@@ -421,21 +421,25 @@ void Game::spawn_guns()
     }
 }
 
-void Game::update_camera(std::map<uint8_t, Duck &> &ducks) {   
-    if (ducks.empty()) 
+void Game::update_camera(std::map<uint8_t, Duck &> &ducks)
+{
+    if (ducks.empty())
         return;
 
     int min_x = 99999, max_x = 0, acum_y = 0;
 
-    for (const auto &[_, duck] : ducks) {
+    for (const auto &[_, duck] : ducks)
+    {
         Position pos = duck.get_position();
         acum_y += pos.y;
-        if (pos.x > max_x) max_x = pos.x;
-        if (pos.x < min_x) min_x = pos.x;
+        if (pos.x > max_x)
+            max_x = pos.x;
+        if (pos.x < min_x)
+            min_x = pos.x;
     }
 
     max_x = std::min(1024, max_x + PADDING);
-    camera.x = std::max(0, min_x - PADDING);    
+    camera.x = std::max(0, min_x - PADDING);
     camera.width = std::max(MIN_CAMERA_WIDTH, max_x - camera.x);
     camera.height = std::max(MIN_CAMERA_HEIGHT, camera.width * 9 / 16);
     camera.y = std::max(0, static_cast<int>((acum_y / ducks.size()) - (camera.height / 2)));
@@ -470,10 +474,10 @@ void Game::step()
     move_projectiles();
     verify_hits();
     decrement_explosions();
-    std::map<uint8_t, Duck&> ducks_alive;
+    std::map<uint8_t, Duck &> ducks_alive;
     for (auto &[id, duck] : ducks)
     {
-        duck.step(maps[current_map], guns, projectiles, sounds);
+        duck.step(maps[current_map], guns, projectiles);
         if (duck.is_alive())
         {
             ducks_alive.emplace(id, duck);
@@ -490,7 +494,6 @@ Snapshot Game::get_status()
     std::vector<GunNoEquippedSnapshot> guns_snapshots;
     std::vector<DuckSnapshot> duck_snapshots;
     std::vector<ExplosionSnapshot> explosions_snapshots;
-    std::vector<SoundSnapshot> sound_snapshots;
     std::vector<BoxSnapshot> box_snapshots;
     std::vector<ProjectileSnapshot> projectile_snapshots;
     CameraSnapshot camera_snapshot(camera.x, camera.y, camera.width, camera.height);
@@ -513,12 +516,7 @@ Snapshot Game::get_status()
     for (auto &explosion : explosions)
         explosions_snapshots.push_back(explosion.get_status());
 
-    for (auto &sound : sounds)
-        sound_snapshots.push_back(SoundSnapshot(sound));
-
-    sounds.clear();
-
     return Snapshot(std::move(duck_snapshots), std::move(guns_snapshots), std::move(projectile_snapshots),
-                    std::move(explosions_snapshots), std::move(sound_snapshots), std::move(box_snapshots),
+                    std::move(explosions_snapshots), std::move(box_snapshots),
                     map_snapshot, camera_snapshot);
 }

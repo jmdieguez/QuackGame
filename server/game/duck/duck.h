@@ -14,7 +14,6 @@
 #include "../../../common/duck.h"
 #include "../../../common/direction.h"
 #include "../../../common/snapshots.h"
-#include "../../../common/soundtype.h"
 
 class Duck : public Hitbox, public GunController, public MoveController
 {
@@ -28,8 +27,7 @@ private:
     void process_movement(Map &map);
     void process_shooting(Map &map,
                           std::map<uint8_t, std::shared_ptr<Gun>> &guns,
-                          std::vector<std::shared_ptr<Projectile>> &projectiles,
-                          std::vector<SoundType> &sounds);
+                          std::vector<std::shared_ptr<Projectile>> &projectiles);
 
 public:
     explicit Duck(const uint8_t &i, const Position &p, const Color &color);
@@ -58,8 +56,7 @@ public:
     // Simulate an iteration
     void step(Map &map,
               std::map<uint8_t, std::shared_ptr<Gun>> &guns,
-              std::vector<std::shared_ptr<Projectile>> &projectiles,
-              std::vector<SoundType> &sounds);
+              std::vector<std::shared_ptr<Projectile>> &projectiles);
 };
 
 #endif // SERVER_DUCK_H

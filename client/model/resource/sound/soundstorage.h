@@ -10,11 +10,11 @@ class SoundStorage
 {
 private:
     SoundFactory factory;
-    std::map<SoundType, std::shared_ptr<Sound>> sounds_created;
+    std::map<TextureFigure, std::shared_ptr<Sound>> sounds_created;
 
 public:
     static SoundStorage &get_instance();
-    std::shared_ptr<Sound> get_sound(SoundType sound);
+    std::shared_ptr<Sound> get_sound(const TextureFigure &sound);
     ~SoundStorage();
 };
 

@@ -150,17 +150,6 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
         ExplosionSnapshot explosion = read_explosion();
         snapshot.explosions.emplace_back(explosion);
     }
-
-    uint16_t sound_lenght;
-    read_data(sound_lenght);
-    for (uint16_t i = 0; i < sound_lenght; i++)
-    {
-        uint16_t sound_type;
-        read_data(sound_type);
-        SoundType type_value = static_cast<SoundType>(sound_type);
-        snapshot.sounds.emplace_back(type_value);
-    }
-
     uint16_t style, size_x, size_y, components_length;
     read_data(style);
     read_data(size_x);

@@ -4,9 +4,9 @@
                               PRIVATE METHODS
 ****************************************************************************/
 
-std::string SoundFactory::get_path(SoundType sound)
+std::string SoundFactory::get_path(const TextureFigure &texture)
 {
-    if (sound == SoundType::SHOOT)
+    if (texture == TextureFigure::CowboyBullet)
         return SHOOT_SOUND_PATH;
     return SHOOT_SOUND_PATH;
 }
@@ -19,7 +19,7 @@ SoundFactory::SoundFactory()
 {
 }
 
-std::shared_ptr<Sound> SoundFactory::create_texture(SoundType sound)
+std::shared_ptr<Sound> SoundFactory::create_texture(const TextureFigure &sound)
 {
     std::string path = get_path(sound);
     return std::make_shared<Sound>(path);

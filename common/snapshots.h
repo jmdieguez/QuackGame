@@ -9,7 +9,6 @@
 #include "duck.h"
 #include "gun_type.h"
 #include "projectiletype.h"
-#include "soundtype.h"
 #include "position.h"
 #include "projectiledirection.h"
 #include "size.h"
@@ -65,13 +64,6 @@ public:
                                                                                                                                                                                                                                     color(color)
     {
     }
-};
-
-class SoundSnapshot
-{
-public:
-    SoundType sound;
-    explicit SoundSnapshot(const SoundType &sound) : sound(sound) {}
 };
 
 class ExplosionSnapshot
@@ -131,8 +123,7 @@ public:
     CameraSnapshot(const uint16_t &x,
                    const uint16_t &y,
                    const uint16_t &w,
-                   const uint16_t &h) : 
-                   x(x), y(y), width(w), height(h) {}
+                   const uint16_t &h) : x(x), y(y), width(w), height(h) {}
 
     ~CameraSnapshot() {}
 };
@@ -144,23 +135,24 @@ public:
     std::vector<GunNoEquippedSnapshot> guns;
     std::vector<ProjectileSnapshot> projectiles;
     std::vector<ExplosionSnapshot> explosions;
-    std::vector<SoundSnapshot> sounds;
     std::vector<BoxSnapshot> boxes;
     MapSnapshot map;
     CameraSnapshot camera;
 
-    Snapshot() : ducks({}), guns({}), projectiles({}), explosions({}), sounds({}) {}
+    Snapshot() : ducks({}), guns({}), projectiles({}), explosions({}) {}
 
     Snapshot(std::vector<DuckSnapshot> &&d_s,
              std::vector<GunNoEquippedSnapshot> &&g_s,
              std::vector<ProjectileSnapshot> &&p,
              std::vector<ExplosionSnapshot> &&e,
-             std::vector<SoundSnapshot> &&s,
+
              std::vector<BoxSnapshot> &&b,
              MapSnapshot &map_snapshot,
              CameraSnapshot &c)
-              : ducks(d_s), guns(g_s), projectiles(p), explosions(e),
-                sounds(s), boxes(b), map(map_snapshot), camera(c) {}
+        : ducks(d_s), guns(g_s), projectiles(p), explosions(e),
+          boxes(b), map(map_snapshot), camera(c)
+    {
+    }
 };
 
 #endif // SNAPSHOTS_H

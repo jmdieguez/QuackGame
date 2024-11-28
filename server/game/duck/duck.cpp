@@ -23,8 +23,7 @@ void Duck::process_movement(Map &map)
 
 void Duck::process_shooting(Map &map,
                             std::map<uint8_t, std::shared_ptr<Gun>> &guns,
-                            std::vector<std::shared_ptr<Projectile>> &projectiles,
-                            std::vector<SoundType> &sounds)
+                            std::vector<std::shared_ptr<Projectile>> &projectiles)
 {
     if (!status.shooting && !block_shooting_command && gun != nullptr)
         finish_shooting();
@@ -54,7 +53,7 @@ void Duck::process_shooting(Map &map,
     }
 
     if (status.shooting && !block_shooting_command && gun != nullptr)
-        fire(status, position, map, projectiles, sounds);
+        fire(status, position, map, projectiles);
 }
 
 /***************************************************************************
@@ -153,8 +152,7 @@ void Duck::bent_down()
 
 void Duck::step(Map &map,
                 std::map<uint8_t, std::shared_ptr<Gun>> &guns,
-                std::vector<std::shared_ptr<Projectile>> &projectiles,
-                std::vector<SoundType> &sounds)
+                std::vector<std::shared_ptr<Projectile>> &projectiles)
 {
     if (!status.is_alive && !set_is_alive)
     {
@@ -163,7 +161,7 @@ void Duck::step(Map &map,
         set_is_alive = true;
     }
     process_movement(map);
-    process_shooting(map, guns, projectiles, sounds);
+    process_shooting(map, guns, projectiles);
 }
 // true if duck dies after receiving the shot
 void Duck::set_receive_shot()
