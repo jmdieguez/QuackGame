@@ -138,7 +138,9 @@ void GunController::fire(DuckStatus &status, Position &position, Map &map,
         }
     }
     for (std::shared_ptr<Projectile> p : shot_projectile)
+    {
         projectiles.push_back(p);
+    }
 
     if ((gun->get_type() == GunType::Shotgun && !((Shotgun *)gun.get())->is_block_shoot()) ||
         (gun->get_type() == GunType::Sniper && !((Sniper *)gun.get())->is_block_shoot()) ||

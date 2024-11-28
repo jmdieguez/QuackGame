@@ -15,6 +15,7 @@
 class Projectile : public Hitbox
 {
 private:
+    uint16_t id;
     ProjectileType type;
     ProjectileDirection type_direction;
 
@@ -44,6 +45,11 @@ public:
     void destroy()
     {
         finish = true;
+    }
+
+    void set_id(uint16_t value)
+    {
+        id = value;
     }
 
     Position get_position()

@@ -143,7 +143,7 @@ public:
 
     Snapshot(std::vector<DuckSnapshot> &&d_s,
              std::vector<GunNoEquippedSnapshot> &&g_s,
-             std::vector<ProjectileSnapshot> &&p,
+             std::vector<ProjectileSnapshot> &p,
              std::vector<ExplosionSnapshot> &&e,
 
              std::vector<BoxSnapshot> &&b,

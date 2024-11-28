@@ -1,3 +1,6 @@
+#ifndef PROJECTILE_GUN_H
+#define PROJECTILE_GUN_H
+
 #include "projectile.h"
 #include "../dispersion/dispersion.h"
 
@@ -14,3 +17,5 @@ public:
     void move(const std::function<bool(Position &)> &validator) override;
     ~ProjectileGun();
 };
+
+#endif // PROJECTILE_GUN_H

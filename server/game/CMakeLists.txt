@@ -14,3 +14,4 @@ target_sources(quack_game_server
 add_subdirectory(gun/)
 add_subdirectory(duck/)
 add_subdirectory(color/)
+add_subdirectory(manager/)

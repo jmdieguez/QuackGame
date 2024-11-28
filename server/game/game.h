@@ -14,6 +14,7 @@
 #include "map.h"
 #include "gun_spawn.h"
 #include "camera.h"
+#include "manager/projectilemanager.h"
 
 class Game
 {
@@ -25,7 +26,7 @@ private:
     std::vector<Map> maps;
     std::vector<uint8_t> player_ids;
     std::map<uint8_t, Duck> ducks;
-    std::vector<std::shared_ptr<Projectile>> projectiles;
+    ProjectileManager projectiles;
     std::vector<Explosion> explosions;
     std::map<uint8_t, uint8_t> victories;
     std::map<uint16_t, Color> colors;
@@ -41,15 +42,12 @@ private:
     std::vector<std::function<void(const Position &)>> gun_spawners;
     Camera camera;
 
-    bool verify_hit_box(Box &box, const Position &position, std::shared_ptr<Projectile> &projectile);
     bool verify_hit_duck(Duck &duck, std::shared_ptr<Projectile> &projectile);
-    void verify_hits();
-    void move_projectiles();
-    void remove_projectiles();
     void decrement_explosions();
     void spawn_players();
     int calculate_winner(const std::vector<uint8_t> &possible_winners);
     void check_for_winner(const std::map<uint8_t, Duck &> &ducks_alive);
+    void spawn_gun_in_boxes(const Position &position_box, const Position &position_as_pixels);
 
     std::vector<GunNoEquippedSnapshot> get_guns_snapshots();
     template <typename T>

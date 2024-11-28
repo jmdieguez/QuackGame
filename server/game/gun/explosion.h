@@ -1,3 +1,6 @@
+#ifndef EXPLOSION_H
+#define EXPLOSION_H
+
 #include <memory>
 #include <utility>
 
@@ -52,3 +55,5 @@ public:
 
     ~Explosion() {};
 };
+
+#endif // EXPLOSION_H
