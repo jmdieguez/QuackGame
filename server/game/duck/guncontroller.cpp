@@ -64,9 +64,8 @@ void GunController::pick_up(std::map<uint8_t, std::shared_ptr<Gun>> &guns, DuckS
     status.gun_grab = false;
 }
 
-bool GunController::drop_grenade(DuckStatus &status, std::vector<std::shared_ptr<Projectile>> &projectiles)
+bool GunController::drop_grenade(DuckStatus &status)
 {
-    (void)projectiles;
     Grenade *grenade = (Grenade *)gun.get();
     status.gun_drop = false;
     if (!grenade->throw_grenade(status.looking_right))
@@ -75,9 +74,8 @@ bool GunController::drop_grenade(DuckStatus &status, std::vector<std::shared_ptr
     return true;
 }
 
-bool GunController::drop_banana(DuckStatus &status, std::vector<std::shared_ptr<Projectile>> &projectiles)
+bool GunController::drop_banana(DuckStatus &status)
 {
-    (void)projectiles;
     Banana *banana = (Banana *)gun.get();
     status.gun_drop = false;
     if (!banana->throw_banana(status.looking_right))
@@ -86,8 +84,7 @@ bool GunController::drop_banana(DuckStatus &status, std::vector<std::shared_ptr<
     return true;
 }
 
-void GunController::fire(DuckStatus &status, Position &position, Map &map,
-                         std::vector<std::shared_ptr<Projectile>> &projectiles)
+void GunController::fire(DuckStatus &status, Position &position, Map &map, const std::function<void(const std::shared_ptr<Projectile> &)> &callable)
 {
     auto result = gun->shoot(status, position);
     if (!result.has_value())
@@ -137,10 +134,8 @@ void GunController::fire(DuckStatus &status, Position &position, Map &map,
             }
         }
     }
-    for (std::shared_ptr<Projectile> p : shot_projectile)
-    {
-        projectiles.push_back(p);
-    }
+    for (const std::shared_ptr<Projectile> &p : shot_projectile)
+        callable(p);
 
     if ((gun->get_type() == GunType::Shotgun && !((Shotgun *)gun.get())->is_block_shoot()) ||
         (gun->get_type() == GunType::Sniper && !((Sniper *)gun.get())->is_block_shoot()) ||

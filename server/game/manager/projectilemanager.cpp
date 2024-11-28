@@ -63,6 +63,7 @@ ProjectileManager::ProjectileManager() : id_projectiles(0)
 void ProjectileManager::add_projectile(const std::shared_ptr<Projectile> &projectile)
 {
     projectile->set_id(id_projectiles);
+    projectiles.push_back(projectile);
     id_projectiles++;
 }
 

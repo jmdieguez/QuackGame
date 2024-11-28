@@ -402,7 +402,8 @@ void Game::step()
     std::map<uint8_t, Duck &> ducks_alive;
     for (auto &[id, duck] : ducks)
     {
-        duck.step(maps[current_map], guns, projectiles.get_projectiles());
+        duck.step(maps[current_map], guns, [this](const std::shared_ptr<Projectile> &projectile)
+                  { projectiles.add_projectile(projectile); });
         if (duck.is_alive())
         {
             ducks_alive.emplace(id, duck);
