@@ -23,4 +23,5 @@
 #define LASER_RIFLE_BULLET_PATH "/var/quackgame/weapon/laserbullet.png"
 #define SHOOT_SOUND_PATH "/var/quackgame/sound/shoot.mp3"
 #define EXPLOSION_SOUND_PATH "/var/quackgame/sound/explosion.mp3"
+
 #endif // PATH_H

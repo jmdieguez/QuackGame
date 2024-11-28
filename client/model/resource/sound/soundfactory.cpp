@@ -9,7 +9,7 @@ std::string SoundFactory::get_path(const TextureFigure &texture)
     if (texture == TextureFigure::CowboyBullet)
         return SHOOT_SOUND_PATH;
     if (texture == TextureFigure::ExplosionFigure)
-        return EXPLOSION_SOUND_PATH;
+        return SHOOT_SOUND_PATH;
     return SHOOT_SOUND_PATH;
 }
 

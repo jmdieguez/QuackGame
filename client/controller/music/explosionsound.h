@@ -8,7 +8,7 @@
 class ExplosionSound
 {
 private:
-    std::set<uint16_t> ids_projectile;
+    std::set<uint16_t> ids_explosion;
     uint16_t current_quantity_sound;
     MusicBox music_box;
 

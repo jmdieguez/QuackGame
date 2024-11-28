@@ -1,4 +1,5 @@
 #include "musicbox.h"
+#include <iostream>
 
 /***************************************************************************
                               PUBLIC METHODS
