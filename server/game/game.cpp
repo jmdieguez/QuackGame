@@ -389,7 +389,8 @@ void Game::remove_gun(const uint16_t &id)
 }
 
 void Game::spawn_guns()
-{
+{   
+    Size spawn_size(TILE_SIZE, TILE_SIZE);
     for (auto &[position, gun_spawn] : gun_spawns)
     {
         Position position_as_pixels(position.x * TILE_SIZE + 2,
@@ -404,8 +405,8 @@ void Game::spawn_guns()
             {
                 for (auto &[id, gun] : guns)
                 {
-                    // Don't spawn a gun if there's one spawned there already
-                    if (gun->get_position() == position_as_pixels && !gun->has_been_picked_up())
+                    Hitbox h(position, spawn_size);
+                    if (gun->intersects(h) && !gun->has_been_picked_up())
                         continue;
                     spawned = true;
                     break;

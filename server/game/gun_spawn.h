@@ -3,9 +3,9 @@
 
 #include <random>
 
-#define INITIAL_TIME_TO_SPAWN 150  // 5 Seconds
-#define MINIMUM_TIME_TO_SPAWN 900  // 30 Seconds
-#define MAXIMUM_TIME_TO_SPAWN 1800 // 60 Seconds
+#define INITIAL_TIME_TO_SPAWN 90   // 3 Seconds
+#define MINIMUM_TIME_TO_SPAWN 270  // 9 Seconds
+#define MAXIMUM_TIME_TO_SPAWN 810  // 27 Seconds
 
 class GunSpawn {
 private:
