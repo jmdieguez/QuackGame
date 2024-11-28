@@ -3,9 +3,9 @@
 
 #include <random>
 
-#define INITIAL_TIME_TO_SPAWN 150  // 5 Seconds
-#define MINIMUM_TIME_TO_SPAWN 900  // 30 Seconds
-#define MAXIMUM_TIME_TO_SPAWN 1800 // 60 Seconds
+#define INITIAL_TIME_TO_SPAWN 90   // 3 Seconds
+#define MINIMUM_TIME_TO_SPAWN 270  // 9 Seconds
+#define MAXIMUM_TIME_TO_SPAWN 810  // 27 Seconds
 
 class GunSpawn {
 private:
@@ -17,10 +17,11 @@ public:
     // Returns true if iterations_until_spawn gets to 0.
     // Then its value is updated to a random number between MINIMUM_TIME_TO_SPAWN and MAXIMUM_TIME_TO_SPAWN
     bool step() {
-        // Don't decrease the timer if it's already 0.
-        if (iterations_until_spawn == 0)
-            return true;
+        // Restart the timer if it's already 0
+        if (iterations_until_spawn == 0) {
 
+            return true;
+        }
         return (--iterations_until_spawn == 0);
     }
 

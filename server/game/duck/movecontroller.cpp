@@ -5,8 +5,21 @@ MoveController::MoveController() {}
 
 bool MoveController::validate_position(const Map &map, const Size &size, const Position &position)
 {
-    Position end_hitbox(position.x + size.width - 1, position.y + size.height - 1);
-    return map.validate_coordinate(position) && map.validate_coordinate(end_hitbox);
+    for (uint16_t y = position.y; y < position.y + size.height; ++y)
+    {
+        if (!map.validate_coordinate({position.x, y})
+         || !map.validate_coordinate({static_cast<uint16_t>(position.x + size.width - 1), y}))
+            return false;
+    }
+
+    for (uint16_t x = position.x; x < position.x + size.width; ++x)
+    {
+        if (!map.validate_coordinate({x, position.y})
+         || !map.validate_coordinate({x, static_cast<uint16_t>(position.y + size.height - 1)}))
+            return false;
+    }
+
+    return true;
 }
 
 void MoveController::move_horizontal(Position &position, Size &size, DuckStatus &status, Map &map)
@@ -37,7 +50,7 @@ void MoveController::move_horizontal(Position &position, Size &size, DuckStatus 
 void MoveController::collision_detector(Position &position, Size &size, DuckStatus &status, Map &map)
 {
     Position below_left(position.x, position.y + size.height);
-    Position below_right(position.x + size.width - 1, position.y + size.height - 1);
+    Position below_right(position.x + size.width - 1, position.y + size.height);
     status.grounded = map.has_something_in(below_left) || map.has_something_in(below_right);
     status.falling = false;
 }

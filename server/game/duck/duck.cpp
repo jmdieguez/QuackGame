@@ -19,6 +19,11 @@ void Duck::process_movement(Map &map)
 
     if (y_velocity != Y_VELOCITY_INITIAL || status.banana_move)
         move_vertical(position, size, map, y_velocity);
+
+    
+    if (!map.in_range(position))
+        while (status.is_alive)
+            set_receive_shot();
 }
 
 void Duck::process_shooting(Map &map,
