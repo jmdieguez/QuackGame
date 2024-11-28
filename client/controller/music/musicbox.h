@@ -1,3 +1,6 @@
+#ifndef MUSIC_BOX_H
+#define MUSIC_BOX_H
+
 #include "chunk.h"
 #include "../../../common/texturefigure.h"
 
@@ -11,3 +14,5 @@ public:
     void play_sound(const TextureFigure &texture);
     ~MusicBox();
 };
+
+#endif // MUSIC_BOX_H

@@ -46,6 +46,8 @@ DuckStatus ClientProtocol::read_status()
 
 ProjectileSnapshot ClientProtocol::read_projectile()
 {
+    uint16_t id;
+    read_data(id);
     uint16_t type;
     read_data(type);
     uint16_t texture;
@@ -59,7 +61,7 @@ ProjectileSnapshot ClientProtocol::read_projectile()
     ProjectileType type_value = static_cast<ProjectileType>(type);
     TextureFigure texture_value = static_cast<TextureFigure>(texture);
     ProjectileDirection type_direction_value = static_cast<ProjectileDirection>(type_direction);
-    ProjectileSnapshot projectile(pos_x, pos_y, type_value, texture_value, type_direction_value);
+    ProjectileSnapshot projectile(id, pos_x, pos_y, type_value, texture_value, type_direction_value);
     return projectile;
 }
 

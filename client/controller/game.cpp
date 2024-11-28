@@ -27,6 +27,12 @@ void Game::update_renderer(int frame_ticks)
     initializer.get_renderer().Present();
 }
 
+void Game::process_projectile(ProjectileSnapshot &projectile, Snapshot &snapshot, float scale_x, float scale_y)
+{
+    music_storage.get_projectile_sound().sound(projectile.id);
+    render_storage.get_projectile_drawer().render(projectile, snapshot.camera, scale_x, scale_y);
+}
+
 void Game::set_renderer(int frame_ticks)
 {
     Snapshot snapshot, latest_snapshot;
@@ -74,12 +80,13 @@ void Game::set_renderer(int frame_ticks)
                 render_storage.get_item().render(gun, latest_snapshot.camera, scale_x, scale_y);
 
             for (ProjectileSnapshot &projectile : latest_snapshot.projectiles)
-                render_storage.get_projectile_drawer().render(projectile, latest_snapshot.camera, scale_x, scale_y);
+                process_projectile(projectile, latest_snapshot, scale_x, scale_y);
 
             for (ExplosionSnapshot &explosion : latest_snapshot.explosions)
                 render_storage.get_explosion().render(explosion, frame_ticks, latest_snapshot.camera, scale_x, scale_y);
         }
     }
+    music_storage.get_projectile_sound().clear();
 }
 
 void Game::step(unsigned int current_step)
@@ -99,8 +106,8 @@ Game::Game(Socket skt)
                          { this->step(step); }),
       font(FONT_PATH, 32),
       loading_screen(initializer.get_renderer(), font),
-      music_box(initializer.get_mixer()),
       render_storage(initializer.get_renderer()),
+      music_storage(initializer.get_mixer()),
       socket(std::move(skt))
 {
 }

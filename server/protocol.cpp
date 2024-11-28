@@ -106,6 +106,7 @@ void ServerProtocol::send_gun(const GunNoEquippedSnapshot &gun)
 
 void ServerProtocol::send_projectile(const ProjectileSnapshot &projectile)
 {
+    send_data(static_cast<uint16_t>(projectile.id));
     send_data(static_cast<uint16_t>(projectile.type));
     send_data(static_cast<uint16_t>(projectile.texture));
     send_data(static_cast<uint16_t>(projectile.type_direction));

@@ -1,3 +1,5 @@
+#ifndef CHUNK_H
+#define CHUNK_H
 
 #include <SDL2/SDL.h>
 #include <SDL2pp/SDL.hh>
@@ -13,3 +15,5 @@ public:
     SDL2pp::Chunk &get_chunk(const TextureFigure &texture);
     ~Chunk();
 };
+
+#endif // CHUNK_H

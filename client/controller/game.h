@@ -15,6 +15,7 @@
 #include "../../common/socket.h"
 #include "../../common/snapshots.h"
 #include "render/renderstorage.h"
+#include "music/musicboxstorage.h"
 #include "session/sessioncontroller.h"
 #include "music/musicbox.h"
 #include "../view/loading_screen.h"
@@ -28,8 +29,8 @@ private:
     SDL2pp::Font font;
     LoadingScreen loading_screen;
     SessionController session;
-    MusicBox music_box;
     RenderStorage render_storage;
+    MusicBoxStorage music_storage;
     Socket socket;
     bool started = false;
 
@@ -38,6 +39,7 @@ private:
     void update_renderer(int current_step);
     void handle_event(SDL_Event &event);
     void step(unsigned int current_step);
+    void process_projectile(ProjectileSnapshot &projectile, Snapshot &snapshot, float scale_x, float scale_y);
 
 public:
     Game(Socket);
