@@ -70,10 +70,11 @@ public:
 class ExplosionSnapshot
 {
 public:
+    uint16_t id;
     Position position;
     TextureFigure texture;
-    explicit ExplosionSnapshot(const Position &position, const TextureFigure &texture) : position(position),
-                                                                                         texture(texture) {}
+    explicit ExplosionSnapshot(const uint16_t &id, const Position &position, const TextureFigure &texture) : id(id), position(position),
+                                                                                                             texture(texture) {}
 };
 
 class GrenadeSnapshot
@@ -145,7 +146,7 @@ public:
     Snapshot(std::vector<DuckSnapshot> &&d_s,
              std::vector<GunNoEquippedSnapshot> &&g_s,
              std::vector<ProjectileSnapshot> &p,
-             std::vector<ExplosionSnapshot> &&e,
+             std::vector<ExplosionSnapshot> &e,
 
              std::vector<BoxSnapshot> &&b,
              MapSnapshot &map_snapshot,

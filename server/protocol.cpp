@@ -116,6 +116,7 @@ void ServerProtocol::send_projectile(const ProjectileSnapshot &projectile)
 
 void ServerProtocol::send_explosion(const ExplosionSnapshot &explosion)
 {
+    send_data(static_cast<uint16_t>(explosion.id));
     send_data(static_cast<uint16_t>(explosion.texture));
     send_data(static_cast<uint16_t>(explosion.position.x));
     send_data(static_cast<uint16_t>(explosion.position.y));

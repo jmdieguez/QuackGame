@@ -39,6 +39,7 @@ private:
     void update_renderer(int current_step);
     void handle_event(SDL_Event &event);
     void step(unsigned int current_step);
+    void process_explosion(ExplosionSnapshot &explosion, int frame_ticks, Snapshot &snapshot, float scale_x, float scale_y);
     void process_projectile(ProjectileSnapshot &projectile, Snapshot &snapshot, float scale_x, float scale_y);
 
 public:

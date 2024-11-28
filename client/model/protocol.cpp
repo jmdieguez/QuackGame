@@ -67,6 +67,8 @@ ProjectileSnapshot ClientProtocol::read_projectile()
 
 ExplosionSnapshot ClientProtocol::read_explosion()
 {
+    uint16_t id;
+    read_data(id);
     uint16_t texture;
     read_data(texture);
     uint16_t x;
@@ -74,7 +76,7 @@ ExplosionSnapshot ClientProtocol::read_explosion()
     uint16_t y;
     read_data(y);
     TextureFigure texture_value = static_cast<TextureFigure>(texture);
-    ExplosionSnapshot explosion(Position(x, y), texture_value);
+    ExplosionSnapshot explosion(id, Position(x, y), texture_value);
     return explosion;
 }
 

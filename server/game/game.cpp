@@ -207,25 +207,13 @@ void Game::spawn_gun_in_boxes(const Position &position_box, const Position &posi
     boxes.erase(position_box);
 }
 
-void Game::decrement_explosions()
+void Game::check_intersect(Hitbox explosion_hitbox)
 {
-    for (auto it = explosions.begin(); it != explosions.end();)
+    for (auto &[id, duck] : ducks)
     {
-        if (it->is_finish())
-        {
-            for (auto &[id, duck] : ducks)
-            {
-                Hitbox proctile_hitbox = it->get_hitbox();
-                if (!duck.intersects(proctile_hitbox))
-                    continue;
-                duck.set_receive_shot();
-            }
-            it->add_fragments(projectiles.get_projectiles());
-            it = explosions.erase(it);
+        if (!duck.intersects(explosion_hitbox))
             continue;
-        }
-        it->time_decrement();
-        it++;
+        duck.set_receive_shot();
     }
 }
 
@@ -380,7 +368,7 @@ void Game::step()
         guns.clear();
         boxes.clear();
         projectiles.get_projectiles().clear();
-        explosions.clear();
+        explosions.get_explosions().clear();
         gun_spawns.clear();
 
         for (const auto &position : maps[current_map].get_guns_spawns())
@@ -394,11 +382,13 @@ void Game::step()
     }
 
     spawn_guns();
-    projectiles.remove(explosions);
+    projectiles.remove(explosions.get_explosions());
     projectiles.move(maps[current_map]);
     projectiles.verify_hit(ducks, boxes, [this](const Position &p_box, const Position &p_as_pixels)
                            { spawn_gun_in_boxes(p_box, p_as_pixels); });
-    decrement_explosions();
+    explosions.dicrement([this](const std::shared_ptr<Projectile> &projectile)
+                         { projectiles.add_projectile(projectile); }, [this](Hitbox explosion_hitbox)
+                         { check_intersect(explosion_hitbox); });
     std::map<uint8_t, Duck &> ducks_alive;
     for (auto &[id, duck] : ducks)
     {
@@ -419,7 +409,6 @@ Snapshot Game::get_status()
     MapSnapshot map_snapshot = maps[current_map].get_status();
     std::vector<GunNoEquippedSnapshot> guns_snapshots;
     std::vector<DuckSnapshot> duck_snapshots;
-    std::vector<ExplosionSnapshot> explosions_snapshots;
     std::vector<BoxSnapshot> box_snapshots;
     std::vector<ProjectileSnapshot> projectile_snapshots;
     CameraSnapshot camera_snapshot(camera.x, camera.y, camera.width, camera.height);
@@ -436,10 +425,7 @@ Snapshot Game::get_status()
     for (auto &[id, duck] : ducks)
         duck_snapshots.push_back(duck.get_status());
 
-    for (auto &explosion : explosions)
-        explosions_snapshots.push_back(explosion.get_status());
-
     return Snapshot(std::move(duck_snapshots), std::move(guns_snapshots), projectiles.get_status(),
-                    std::move(explosions_snapshots), std::move(box_snapshots),
+                    explosions.get_status(), std::move(box_snapshots),
                     map_snapshot, camera_snapshot);
 }

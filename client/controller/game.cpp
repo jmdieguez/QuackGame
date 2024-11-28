@@ -33,6 +33,12 @@ void Game::process_projectile(ProjectileSnapshot &projectile, Snapshot &snapshot
     render_storage.get_projectile_drawer().render(projectile, snapshot.camera, scale_x, scale_y);
 }
 
+void Game::process_explosion(ExplosionSnapshot &explosion, int frame_ticks, Snapshot &snapshot, float scale_x, float scale_y)
+{
+    music_storage.get_projectile_sound().sound(explosion.id);
+    render_storage.get_explosion().render(explosion, frame_ticks, snapshot.camera, scale_x, scale_y);
+}
+
 void Game::set_renderer(int frame_ticks)
 {
     Snapshot snapshot, latest_snapshot;
@@ -83,7 +89,7 @@ void Game::set_renderer(int frame_ticks)
                 process_projectile(projectile, latest_snapshot, scale_x, scale_y);
 
             for (ExplosionSnapshot &explosion : latest_snapshot.explosions)
-                render_storage.get_explosion().render(explosion, frame_ticks, latest_snapshot.camera, scale_x, scale_y);
+                process_explosion(explosion, frame_ticks, latest_snapshot, scale_x, scale_y);
         }
     }
     music_storage.get_projectile_sound().clear();
