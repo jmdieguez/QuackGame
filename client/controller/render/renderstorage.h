@@ -16,7 +16,7 @@ private:
     MapDrawer map_drawer;
     BoxItem box_item;
     ExplosionDrawer explosion;
-
+    Armor armor;
 public:
     explicit RenderStorage(SDL2pp::Renderer &renderer);
     Duck &get_duck();
@@ -25,6 +25,7 @@ public:
     ProjectileDrawer &get_projectile_drawer();
     MapDrawer &get_map_drawer();
     BoxItem &get_box_item();
+    Armor &get_armor();
     ExplosionDrawer &get_explosion();
     ~RenderStorage();
 };

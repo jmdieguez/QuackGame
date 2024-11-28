@@ -93,6 +93,9 @@ void Game::set_renderer(int frame_ticks)
 
             for (ExplosionSnapshot &explosion : latest_snapshot.explosions)
                 process_explosion(explosion, frame_ticks, latest_snapshot, scale_x, scale_y);
+
+            for (ArmorSnapshot &armor : latest_snapshot.armors)
+                render_storage.get_armor().render(armor, latest_snapshot.camera, scale_x, scale_y);
         }
     }
     music_storage.get_projectile_sound().clear();

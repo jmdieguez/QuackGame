@@ -176,9 +176,7 @@ void Duck::set_receive_shot()
     else if (status.has_helmet)
         status.has_helmet = false;
     else
-    {
         status.is_alive = false;
-    }
 }
 
 bool Duck::is_alive() const

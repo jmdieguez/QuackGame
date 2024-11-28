@@ -203,6 +203,17 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
     read_data(camera_width);
     read_data(camera_height);
     snapshot.camera = CameraSnapshot(camera_x, camera_y, camera_width, camera_height);
+
+    uint16_t armors_length;
+    read_data(armors_length);
+    for (uint16_t i = 0; i < armors_length; i++)
+    {
+        uint16_t pos_x, pos_y, type;
+        read_data(pos_x);
+        read_data(pos_y);
+        read_data(type);
+        snapshot.armors.push_back(ArmorSnapshot(Position(pos_x, pos_y), static_cast<ArmorType>(type)));
+    }
 }
 
 void ClientProtocol::read_data(uint16_t &data)

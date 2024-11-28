@@ -8,12 +8,6 @@
 #define POS_INIT_X_GUN 0
 #define POS_INIT_Y_GUN 0
 
-#define CHESTPLATE_WIDTH 20
-#define CHESTPLATE_HEIGHT 15
-
-#define HELMET_WIDTH 20
-#define HELMET_HEIGHT 20
-
 /***************************************************************************
                               PRIVATE METHODS
 ****************************************************************************/

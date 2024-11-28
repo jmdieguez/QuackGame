@@ -200,6 +200,15 @@ void ServerProtocol::send_snapshot(const Snapshot &snapshot)
     send_data(static_cast<uint16_t>(snapshot.camera.y));
     send_data(static_cast<uint16_t>(snapshot.camera.width));
     send_data(static_cast<uint16_t>(snapshot.camera.height));
+
+    const uint16_t armors_length = static_cast<uint16_t>(snapshot.armors.size());
+    send_data(armors_length);
+    for (const ArmorSnapshot &armor : snapshot.armors)
+    {
+        send_data(armor.position.x);
+        send_data(armor.position.y);
+        send_data(static_cast<int>(armor.type));
+    }
 }
 
 void ServerProtocol::send_lobby_info(const std::vector<LobbyMessage> &lobby_info)

@@ -33,6 +33,7 @@ private:
     std::map<uint16_t, Color> colors;
     std::map<Position, Box> boxes;
     std::map<Position, GunSpawn> gun_spawns;
+    std::map<Position, ArmorType> armor;
     uint16_t gun_id = 0;
     std::map<uint8_t, std::shared_ptr<Gun>> guns;
     // Random number generator

@@ -5,11 +5,11 @@
 
 #define MAPS_PATH "/etc/quackgame/maps"
 #define MIN_ROUNDS_WON 10
-#define N_GUNS 9
+#define N_DROPS 11
 
 namespace fs = std::filesystem;
 
-Game::Game() : rng(rd()), dist(0, N_GUNS - 1)
+Game::Game() : rng(rd()), dist(0, N_DROPS - 1)
 {
 
     try
@@ -41,8 +41,17 @@ Game::Game() : rng(rd()), dist(0, N_GUNS - 1)
     gun_spawners.push_back([this](const Position &pos)
                            { spawn_gun<PewPewLaser>(pos); });
     gun_spawners.push_back([this](const Position &pos)
-                           { spawn_gun<Sniper>(pos); });
-
+                           { spawn_gun<LaserRifle>(pos); });
+    gun_spawners.push_back([this](const Position &pos)
+                           {    
+                                Position aux(pos.x + 2, pos.y - 20);
+                                armor.emplace(aux, ArmorType::Helmet); 
+                            });
+    gun_spawners.push_back([this](const Position &pos)
+                           {
+                            Position aux(pos.x + 2, pos.y - 20); 
+                            armor.emplace(aux, ArmorType::Chestplate);
+                            });
     return;
 }
 
@@ -308,6 +317,7 @@ void Game::spawn_guns()
     {
         Position position_as_pixels(position.x * TILE_SIZE,
                                     position.y * TILE_SIZE);
+        Hitbox gun_spawn_hitbox(position_as_pixels, spawn_size);
         if (gun_spawn.step())
         {
             bool spawn = true;
@@ -315,8 +325,18 @@ void Game::spawn_guns()
             {
                 for (auto &[id, gun] : guns)
                 {
-                    Hitbox h(position_as_pixels, spawn_size);
-                    if (gun->intersects(h) && !gun->has_been_picked_up())
+                    if (gun->intersects(gun_spawn_hitbox) && !gun->has_been_picked_up())
+                    {
+                        gun_spawn.restart();
+                        spawn = false;
+                        break;
+                    }
+                }
+
+                for (auto &[position, type] : armor)
+                {
+                    Hitbox hitbox(position, spawn_size);
+                    if (gun_spawn_hitbox.intersects(hitbox))
                     {
                         gun_spawn.restart();
                         spawn = false;
@@ -414,21 +434,24 @@ Snapshot Game::get_status()
     std::vector<DuckSnapshot> duck_snapshots;
     std::vector<BoxSnapshot> box_snapshots;
     std::vector<ProjectileSnapshot> projectile_snapshots;
+    std::vector<ArmorSnapshot> armor_snapshots;
     CameraSnapshot camera_snapshot(camera.x, camera.y, camera.width, camera.height);
-
     for (auto &[id, gun] : guns)
     {
         if (!gun.get()->has_been_equipped())
             guns_snapshots.push_back(gun->get_status());
     }
 
-    for (auto &[position, box] : boxes)
+    for (const auto &[position, box] : boxes)
         box_snapshots.push_back(BoxSnapshot(position, box));
 
     for (auto &[id, duck] : ducks)
         duck_snapshots.push_back(duck.get_status());
 
+    for (const auto &[position, type] : armor)
+        armor_snapshots.push_back(ArmorSnapshot(position, type));
+
     return Snapshot(std::move(duck_snapshots), std::move(guns_snapshots), projectiles.get_status(),
-                    explosions.get_status(), std::move(box_snapshots),
+                    explosions.get_status(), std::move(box_snapshots), std::move(armor_snapshots),
                     map_snapshot, camera_snapshot);
 }

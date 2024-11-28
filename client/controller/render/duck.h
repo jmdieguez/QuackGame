@@ -1,6 +1,7 @@
 #ifndef DUCK_CLIENT_H
 #define DUCK_CLIENT_H
 
+#include "armor.h"
 #include "renderer.h"
 #include "size/gun/gunsizefactory.h"
 #include "../../../common/snapshots.h"

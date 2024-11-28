@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <vector>
 
+#include "armor.h"
 #include "map.h"
 #include "duck.h"
 #include "gun_type.h"
@@ -14,6 +15,15 @@
 #include "size.h"
 #include "texturefigure.h"
 #include "color.h"
+
+class ArmorSnapshot
+{
+public:
+    Position position;
+    ArmorType type;
+    ArmorSnapshot(const Position &p, const ArmorType &t) : position(p), type(t) {}
+    ArmorSnapshot() : position(0, 0) {}
+};
 
 class GunNoEquippedSnapshot
 {
@@ -138,6 +148,7 @@ public:
     std::vector<ProjectileSnapshot> projectiles;
     std::vector<ExplosionSnapshot> explosions;
     std::vector<BoxSnapshot> boxes;
+    std::vector<ArmorSnapshot> armors;
     MapSnapshot map;
     CameraSnapshot camera;
 
@@ -147,12 +158,12 @@ public:
              std::vector<GunNoEquippedSnapshot> &&g_s,
              std::vector<ProjectileSnapshot> &p,
              std::vector<ExplosionSnapshot> &e,
-
              std::vector<BoxSnapshot> &&b,
+             std::vector<ArmorSnapshot> &&a,
              MapSnapshot &map_snapshot,
              CameraSnapshot &c)
         : ducks(d_s), guns(g_s), projectiles(p), explosions(e),
-          boxes(b), map(map_snapshot), camera(c)
+          boxes(b), armors(a), map(map_snapshot), camera(c)
     {
     }
 };
