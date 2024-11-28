@@ -393,6 +393,7 @@ void Game::step()
         projectiles.get_projectiles().clear();
         explosions.get_explosions().clear();
         gun_spawns.clear();
+        armor.clear();
 
         for (const auto &position : maps[current_map].get_guns_spawns())
             gun_spawns.emplace(position, GunSpawn());
