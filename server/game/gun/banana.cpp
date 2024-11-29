@@ -34,6 +34,8 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Ban
 
     (void)duck_position;
     (void)status;
+    if (peeled_banana)
+        return std::nullopt;
     peeled_banana = true;
     std::vector<std::shared_ptr<Projectile>> projectiles;
     projectile_banana = std::make_shared<ProjectileBanana>(status, duck_position);
