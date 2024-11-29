@@ -20,7 +20,6 @@ void Duck::process_movement(Map &map)
     if (y_velocity != Y_VELOCITY_INITIAL || status.banana_move)
         move_vertical(position, size, map, y_velocity);
 
-    
     if (!map.in_range(position))
         while (status.is_alive)
             set_receive_shot();
@@ -28,7 +27,7 @@ void Duck::process_movement(Map &map)
 
 void Duck::process_shooting(Map &map,
                             std::map<uint8_t, std::shared_ptr<Gun>> &guns,
-                            const std::function<void(const std::shared_ptr<Projectile> &)> &callable)
+                            const std::function<void(const std::shared_ptr<Projectile> &)> &add_projectile)
 {
     if (!status.shooting && !block_shooting_command && gun != nullptr)
         finish_shooting();
@@ -58,7 +57,7 @@ void Duck::process_shooting(Map &map,
     }
 
     if (status.shooting && !block_shooting_command && gun != nullptr)
-        fire(status, position, map, callable);
+        fire(status, position, map, add_projectile);
 }
 
 /***************************************************************************
@@ -157,7 +156,7 @@ void Duck::bent_down()
 
 void Duck::step(Map &map,
                 std::map<uint8_t, std::shared_ptr<Gun>> &guns,
-                const std::function<void(const std::shared_ptr<Projectile> &)> &callable)
+                const std::function<void(const std::shared_ptr<Projectile> &)> &add_projectile)
 {
     if (!status.is_alive && !set_is_alive)
     {
@@ -166,7 +165,7 @@ void Duck::step(Map &map,
         set_is_alive = true;
     }
     process_movement(map);
-    process_shooting(map, guns, callable);
+    process_shooting(map, guns, add_projectile);
 }
 // true if duck dies after receiving the shot
 void Duck::set_receive_shot()

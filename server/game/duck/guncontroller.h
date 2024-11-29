@@ -30,7 +30,7 @@ public:
     bool drop_grenade(DuckStatus &status);
     bool drop_banana(DuckStatus &status);
     void pick_up(std::map<uint8_t, std::shared_ptr<Gun>> &guns, DuckStatus &status, const std::function<bool(const Hitbox &)> &func);
-    void fire(DuckStatus &status, Position &position, Map &map, const std::function<void(const std::shared_ptr<Projectile> &)> &callable);
+    void fire(DuckStatus &status, Position &position, Map &map, const std::function<void(const std::shared_ptr<Projectile> &)> &add_projectile);
 
     ~GunController();
 };

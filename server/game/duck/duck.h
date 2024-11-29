@@ -27,7 +27,7 @@ private:
     void process_movement(Map &map);
     void process_shooting(Map &map,
                           std::map<uint8_t, std::shared_ptr<Gun>> &guns,
-                          const std::function<void(const std::shared_ptr<Projectile> &)> &callable);
+                          const std::function<void(const std::shared_ptr<Projectile> &)> &add_projectile);
 
 public:
     explicit Duck(const uint8_t &i, const Position &p, const Color &color);
@@ -56,7 +56,7 @@ public:
     // Simulate an iteration
     void step(Map &map,
               std::map<uint8_t, std::shared_ptr<Gun>> &guns,
-              const std::function<void(const std::shared_ptr<Projectile> &)> &callable);
+              const std::function<void(const std::shared_ptr<Projectile> &)> &add_projectile);
 };
 
 #endif // SERVER_DUCK_H

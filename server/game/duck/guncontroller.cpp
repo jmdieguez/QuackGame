@@ -84,7 +84,7 @@ bool GunController::drop_banana(DuckStatus &status)
     return true;
 }
 
-void GunController::fire(DuckStatus &status, Position &position, Map &map, const std::function<void(const std::shared_ptr<Projectile> &)> &callable)
+void GunController::fire(DuckStatus &status, Position &position, Map &map, const std::function<void(const std::shared_ptr<Projectile> &)> &add_projectile)
 {
     auto result = gun->shoot(status, position);
     if (!result.has_value())
@@ -135,7 +135,7 @@ void GunController::fire(DuckStatus &status, Position &position, Map &map, const
         }
     }
     for (const std::shared_ptr<Projectile> &p : shot_projectile)
-        callable(p);
+        add_projectile(p);
 
     if ((gun->get_type() == GunType::Shotgun && !((Shotgun *)gun.get())->is_block_shoot()) ||
         (gun->get_type() == GunType::Sniper && !((Sniper *)gun.get())->is_block_shoot()) ||

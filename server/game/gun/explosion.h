@@ -49,7 +49,7 @@ public:
         id = value;
     }
 
-    void add_fragments(const std::function<void(std::shared_ptr<Projectile> &projectile)> &callable2)
+    void add_fragments(const std::function<void(std::shared_ptr<Projectile> &projectile)> &add_projectile)
     {
         std::vector<std::pair<int, int>> directions = {std::make_pair(-1, 0), std::make_pair(1, 0)};
         uint16_t x = position.x + size.width / 2;
@@ -58,7 +58,7 @@ public:
         for (std::pair<int, int> direction : directions)
         {
             std::shared_ptr<Projectile> projectile = std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, TextureFigure::CowboyBullet, hitbox_projectile, direction, VELOCITY, MAX_DISTANCE);
-            callable2(projectile);
+            add_projectile(projectile);
         }
     };
 

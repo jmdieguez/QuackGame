@@ -1,6 +1,6 @@
 #include "projectilemanager.h"
 
-bool ProjectileManager::verify_hit_box(Box &box, const Position &position, std::shared_ptr<Projectile> &projectile, const std::function<void(const Position &, const Position &)> &callable)
+bool ProjectileManager::verify_hit_box(Box &box, const Position &position, std::shared_ptr<Projectile> &projectile, const std::function<void(const Position &, const Position &)> &spawn_gun)
 {
     Hitbox projectile_hitbox = projectile->get_hitbox();
     Size size(TILE_SIZE, TILE_SIZE);
@@ -10,7 +10,7 @@ bool ProjectileManager::verify_hit_box(Box &box, const Position &position, std::
     {
         if (box == Box::BOX_1_HP)
         { // Refactorizar en clase
-            callable(position, position_as_pixels);
+            spawn_gun(position, position_as_pixels);
         }
         else if (box == Box::BOX_2_HP)
         {
@@ -87,7 +87,7 @@ void ProjectileManager::move(Map &map)
                 { return map.validate_coordinate(p); });
 }
 
-void ProjectileManager::verify_hit(std::map<uint8_t, Duck> &ducks, std::map<Position, Box> &boxes, const std::function<void(const Position &, const Position &)> &callable)
+void ProjectileManager::verify_hit(std::map<uint8_t, Duck> &ducks, std::map<Position, Box> &boxes, const std::function<void(const Position &, const Position &)> &spawn_gun)
 {
     for (std::shared_ptr<Projectile> &p : projectiles)
     {
@@ -107,7 +107,7 @@ void ProjectileManager::verify_hit(std::map<uint8_t, Duck> &ducks, std::map<Posi
         {
             for (auto &[position, box] : boxes)
             {
-                if (p->get_type() == ProjectileType::Banana || p->get_type() == ProjectileType::Grenade || verify_hit_box(box, position, p, callable))
+                if (p->get_type() == ProjectileType::Banana || p->get_type() == ProjectileType::Grenade || verify_hit_box(box, position, p, spawn_gun))
                     break;
             }
         }
