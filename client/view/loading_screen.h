@@ -25,7 +25,7 @@ public:
     {
     }
 
-    void set_texts(SDL2pp::Font &font)
+    void set_text_loading(SDL2pp::Font &font)
     {
         SDL2pp::Texture text(renderer, font.RenderText_Blended("THE GAME IS ABOUT TO START...", WHITE));
         SDL_Rect text_src = {0, 0, text.GetWidth(), text.GetHeight()};
@@ -35,6 +35,27 @@ public:
             text.GetWidth() / 2,
             text.GetHeight() / 2};
         renderer.Copy(text, text_src, text_dst);
+    }
+
+    void set_text_color(SDL2pp::Font &font, std::string &color)
+    {
+        std::string player_color("Player 1: " + color);
+        SDL2pp::Texture text(renderer, font.RenderText_Blended(player_color, WHITE));
+        SDL_Rect text_src = {0, 0, text.GetWidth(), text.GetHeight()};
+        SDL_Rect text_dst = {
+            (DEFAULT_WINDOW_WIDTH - text.GetWidth() / 2) / 2,
+            dst.y + ICON_SIZE + 32 + text.GetHeight() / 2 + 16,
+            text.GetWidth() / 2,
+            text.GetHeight() / 2};
+
+        renderer.Copy(text, text_src, text_dst);
+    }
+
+    void set_texts(SDL2pp::Font &font)
+    {
+        std::string color("Red");
+        set_text_loading(font);
+        set_text_color(font, color);
     }
 
     void render(SDL2pp::Font &font)
