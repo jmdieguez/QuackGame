@@ -11,7 +11,7 @@ private:
 
 public:
     explicit MusicBox(SDL2pp::Mixer &mixer);
-    void play_sound(const TextureFigure &texture);
+    void play_sound(const int &volume, const TextureFigure &texture);
     ~MusicBox();
 };
 

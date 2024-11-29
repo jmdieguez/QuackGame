@@ -1,22 +1,13 @@
 #ifndef EXPLOSION_SOUND_H
 #define EXPLOSION_SOUND_H
 
-#include <set>
-#include <cstdint>
-#include "musicbox.h"
+#include "soundmanager.h"
 
-class ExplosionSound
+class ExplosionSound : public SoundManager
 {
 private:
-    std::set<uint16_t> ids_explosion;
-    uint16_t current_quantity_sound;
-    MusicBox music_box;
-
 public:
     explicit ExplosionSound(SDL2pp::Mixer &mixer);
-    bool listened(uint16_t id);
-    void sound(uint16_t id);
-    void clear();
     ~ExplosionSound();
 };
 
