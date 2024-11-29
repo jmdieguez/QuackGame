@@ -4,10 +4,10 @@
 #include "../../../common/snapshots.h"
 #include "renderer.h"
 
-#define CHESTPLATE_WIDTH 20
-#define CHESTPLATE_HEIGHT 15
-#define HELMET_WIDTH 20
-#define HELMET_HEIGHT 20
+#define CHESTPLATE_WIDTH 16
+#define CHESTPLATE_HEIGHT 12
+#define HELMET_WIDTH 16
+#define HELMET_HEIGHT 16
 
 class Armor : protected Renderer
 {
