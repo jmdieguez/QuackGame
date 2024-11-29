@@ -98,7 +98,7 @@ void Game::set_renderer(int frame_ticks)
                 render_storage.get_armor().render(armor, latest_snapshot.camera, scale_x, scale_y);
         }
     }
-    music_storage.get_projectile_sound().clear();
+    music_storage.clear_sounds();
 }
 
 void Game::step(unsigned int current_step)

@@ -19,7 +19,6 @@ bool SoundManager::listened(uint16_t id)
 
 void SoundManager::sound(uint16_t id)
 {
-    std::cout << "El id es " << (int)id << std::endl;
     if (listened(id) || current_quantity_sound >= MAX_QUANTITY_SOUNDS)
         return;
     music_box.play_sound(volume, texture);

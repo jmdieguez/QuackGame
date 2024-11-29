@@ -114,14 +114,14 @@ void ProjectileManager::verify_hit(std::map<uint8_t, Duck> &ducks, std::map<Posi
     }
 }
 
-void ProjectileManager::remove(std::vector<Explosion> &explosions)
+void ProjectileManager::remove(const std::function<void(std::vector<std::shared_ptr<Projectile>>::iterator it)> &add_explosion)
 {
     for (auto it = projectiles.begin(); it != projectiles.end();)
     {
         if (it->get()->is_finish())
         {
             if (it->get()->get_type() == ProjectileType::Grenade)
-                explosions.emplace_back(((ProjectileGrenade *)it->get())->get_position_to_explosion());
+                add_explosion(it);
             it = projectiles.erase(it);
             continue;
         }

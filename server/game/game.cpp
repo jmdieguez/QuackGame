@@ -45,13 +45,11 @@ Game::Game() : rng(rd()), dist(0, N_DROPS - 1)
     gun_spawners.push_back([this](const Position &pos)
                            {    
                                 Position aux(pos.x + 2, pos.y - 20);
-                                armor.emplace(aux, ArmorType::Helmet); 
-                            });
+                                armor.emplace(aux, ArmorType::Helmet); });
     gun_spawners.push_back([this](const Position &pos)
                            {
                             Position aux(pos.x + 2, pos.y - 20); 
-                            armor.emplace(aux, ArmorType::Chestplate);
-                            });
+                            armor.emplace(aux, ArmorType::Chestplate); });
     return;
 }
 
@@ -406,7 +404,9 @@ void Game::step()
     }
 
     spawn_guns();
-    projectiles.remove(explosions.get_explosions());
+    projectiles.remove([this](std::vector<std::shared_ptr<Projectile>>::iterator it)
+                       { Explosion explosion(((ProjectileGrenade *)it->get())->get_position_to_explosion());
+                        explosions.add_explosion(explosion); });
     projectiles.move(maps[current_map]);
     projectiles.verify_hit(ducks, boxes, [this](const Position &p_box, const Position &p_as_pixels)
                            { spawn_gun_in_boxes(p_box, p_as_pixels); });

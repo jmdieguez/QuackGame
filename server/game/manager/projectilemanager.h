@@ -25,7 +25,7 @@ public:
     void add_projectile(const std::shared_ptr<Projectile> &projectiles);
     std::vector<std::shared_ptr<Projectile>> &get_projectiles();
     void move(Map &map);
-    void remove(std::vector<Explosion> &explosions);
+    void remove(const std::function<void(std::vector<std::shared_ptr<Projectile>>::iterator it)> &add_explosion);
     void verify_hit(std::map<uint8_t, Duck> &ducks, std::map<Position, Box> &boxes, const std::function<void(const Position &, const Position &)> &callable);
     std::vector<ProjectileSnapshot> &get_status();
     ~ProjectileManager();
