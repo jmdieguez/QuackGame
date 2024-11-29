@@ -3,22 +3,23 @@
 
 #include <memory>
 
-#include "../common/queue.h"
-#include "../common/socket.h"
-#include "../common/thread.h"
-#include "../common/snapshots.h"
+#include "../../common/queue.h"
+#include "../../common/socket.h"
+#include "../../common/thread.h"
+#include "../../common/snapshots.h"
 #include "protocol.h"
 
-class Receiver: public Thread {
+class Receiver : public Thread
+{
 private:
     ClientProtocol protocol;
-    Queue<Snapshot>& recv_queue;
+    Queue<Snapshot> &recv_queue;
 
 public:
-    explicit Receiver(Socket& skt, Queue<Snapshot>& recv_q);
+    explicit Receiver(Socket &skt, Queue<Snapshot> &recv_q);
     ~Receiver();
     void run() override;
     void stop() override;
 };
 
-#endif  // RECEIVER_H
+#endif // RECEIVER_H
