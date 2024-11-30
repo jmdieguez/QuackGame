@@ -158,12 +158,11 @@ void ServerProtocol::send_box(const BoxSnapshot &box)
 
 void ServerProtocol::send_snapshot(const Snapshot &snapshot)
 {
-    const uint16_t game_state = snapshot.is_ended;
-    send_data(game_state);
+    send_data(snapshot.is_ended);
     if (snapshot.is_ended) {
-        const uint16_t result = static_cast<uint16_t>(snapshot.game_result);
-        send_data(result);
+        send_data(static_cast<uint16_t>(snapshot.game_result));
     }
+    send_data(static_cast<uint16_t>(snapshot.round));
     const uint16_t ducks_length = static_cast<uint16_t>(snapshot.ducks.size());
     send_data(ducks_length);
     for (const DuckSnapshot &duck : snapshot.ducks)

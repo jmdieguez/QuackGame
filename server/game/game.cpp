@@ -4,7 +4,7 @@
 #include <filesystem>
 
 #define MAPS_PATH "/etc/quackgame/maps"
-#define MIN_ROUNDS_WON 10
+#define MIN_ROUNDS_WON 6
 #define N_DROPS 11
 
 namespace fs = std::filesystem;
@@ -487,5 +487,5 @@ Snapshot Game::get_status()
 
     return Snapshot(std::move(duck_snapshots), std::move(guns_snapshots), projectiles.get_status(),
                     explosions.get_status(), std::move(box_snapshots), std::move(armor_snapshots),
-                    map_snapshot, camera_snapshot, ended, winner_id);
+                    map_snapshot, camera_snapshot, ended, winner_id, round);
 }
