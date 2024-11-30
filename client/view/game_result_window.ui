@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>GameResultWindow</class>
+ <widget class="QDialog" name="GameResultWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QPushButton" name="exitButton">
+   <property name="geometry">
+    <rect>
+     <x>310</x>
+     <y>540</y>
+     <width>151</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+            background-color: #994d28;
+            color: white; 
+            font-size: 16px; 
+            border: 2px solid #2C6B43; 
+            border-radius: 15px; 
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+        QPushButton:pressed {
+            background-color: #3E7F58;
+        }
+
+        QPushButton:hover {
+            background-color: #3E7F58;
+            border: 2px solid #A1D0B1;
+        }</string>
+   </property>
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

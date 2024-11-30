@@ -49,6 +49,7 @@ private:
     // Gun type to lambda mapping. This calls spawn_gun
     std::vector<std::function<void(const Position &)>> gun_spawners;
     Camera camera;
+    uint8_t winner_id = 0;
 
     bool verify_hit_duck(Duck &duck, std::shared_ptr<Projectile> &projectile);
     void spawn_players();

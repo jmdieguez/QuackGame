@@ -287,6 +287,7 @@ void Game::check_for_winner(const std::map<uint8_t, Duck &> &ducks_alive)
 
                     if (winner != -1)
                     {
+                        winner_id = winner;
                         ended = true;
                     }
                 }
@@ -486,5 +487,5 @@ Snapshot Game::get_status()
 
     return Snapshot(std::move(duck_snapshots), std::move(guns_snapshots), projectiles.get_status(),
                     explosions.get_status(), std::move(box_snapshots), std::move(armor_snapshots),
-                    map_snapshot, camera_snapshot);
+                    map_snapshot, camera_snapshot, ended, winner_id);
 }

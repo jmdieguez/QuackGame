@@ -14,5 +14,10 @@ struct SDL_Color;
 #define ICON_SIZE 256
 #define CLICK_SOUND "/var/quackgame/sound/click_sound.wav"
 #define MUSIC_SOUND "/var/quackgame/sound/click_sound.wav"
+#define BACKGROUND  "/var/quackgame/background_menu.jpg"
+#define VICTORY_BACKGROUND  "/var/quackgame/victory.jpg"
+#define DEFEAT_BACKGROUND  "/var/quackgame/game_over.jpg"
+#define VICTORY_SOUND "/var/quackgame/sound/victory_sound.wav"
+#define DEFEAT_SOUND "/var/quackgame/sound/game_over_sound.wav"
 
 #endif // UI_DEFS_H

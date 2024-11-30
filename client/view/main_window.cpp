@@ -10,7 +10,7 @@ MainWindow::MainWindow(Lobby* lobby, QWidget *parent)
     ui->setupUi(this);
 
     WindowUtils::setFixedSize(this, 800, 600);
-    WindowUtils::centerWindow(this);
+    WindowUtils::centerWindow(this, BACKGROUND);
 
     connect(ui->createButton, &QPushButton::clicked, this, [this]() {
         SoundPlayer::instance()->playSound(CLICK_SOUND, false);
