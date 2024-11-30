@@ -50,13 +50,10 @@ ActionLobby ServerProtocol::read_lobby()
     }
     else if (action == ClientActionType::CREATE_GAME)
     {
-        std::cout << "Estoy aca" << std::endl;
         uint16_t num_players;
         read_data(num_players);
-        std::cout << "El numero de jugadores es: " << (int)num_players << std::endl;
         std::string name = "";
         read_name(name);
-        std::cout << "El nombre de la partida es: " << name << std::endl;
         //   return ActionLobby(action, 0, name);
         return ActionLobby(action, 0, num_players, name);
     }
@@ -252,18 +249,12 @@ void ServerProtocol::send_lobby_info(const std::vector<LobbyMessage> &lobby_info
 void ServerProtocol::send_create_game_info(std::vector<UserLobbyInfo> &users)
 {
     const uint16_t users_length = static_cast<uint16_t>(users.size());
-    std::cout << "El largo es: " << (int)users_length << std::endl;
-    std::cout << "Voy a enviar el largo" << std::endl;
     send_data(users_length);
-    std::cout << "Ya envie el largo" << std::endl;
     for (UserLobbyInfo &user : users)
     {
         std::string color = user.get_color();
         send_data(user.get_id());
-        std::cout << "El id es: " << (int)user.get_id() << std::endl;
         send_data(color.size());
-        std::cout << "El largo del color es: " << (int)color.size() << std::endl;
-        std::cout << "El nombre del color es: " << color << std::endl;
         std::vector<unsigned char> name_color(color.begin(), color.end());
         send_name(name_color);
     }

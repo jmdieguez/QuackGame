@@ -15,13 +15,10 @@ void LobbySession::run()
     while (_keep_running)
     {
         ActionLobby action = protocol.read_lobby();
-        std::cout << "Lei algo del lobby" << std::endl;
         switch (action.type)
         {
         case ClientActionType::CREATE_GAME:
-            std::cout << "Voy a crear algo del lobby" << std::endl;
             users = matches.create_game(id, action.game_name, action.num_players, socket);
-            std::cout << "Pude crear algo ahora voy a enviar info" << std::endl;
             protocol.send_create_game_info(users);
             break;
 

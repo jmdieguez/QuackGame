@@ -62,7 +62,6 @@ Color Gameloop::add_new_player(Socket &skt, const uint16_t &id)
     handler.add(skt, id);
     game.add_player(id, color);
     number_of_players++;
-    std::cout << "El color es " << color.get_text() << std::endl;
     return color;
 }
 

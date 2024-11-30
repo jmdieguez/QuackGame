@@ -307,17 +307,13 @@ std::vector<UserLobbyInfo> ClientProtocol::read_create_game_info()
 {
     uint16_t users_length;
     read_data(users_length);
-    std::cout << "El largo es :" << (int)users_length << std::endl;
     std::vector<UserLobbyInfo> users;
-
     for (int i = 0; i < users_length; i++)
     {
         uint16_t id;
         read_data(id);
-        std::cout << "El id es: " << (int)id << std::endl;
         std::string color_name;
         read_string(color_name);
-        std::cout << "El nombre es: " << color_name << std::endl;
         UserLobbyInfo user(id, color_name);
         users.push_back(user);
     }
