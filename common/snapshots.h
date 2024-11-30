@@ -15,11 +15,20 @@
 #include "size.h"
 #include "texturefigure.h"
 #include "color.h"
+
 enum class GameResult : uint16_t
 {
     VICTORY,
     DEFEAT
 };
+
+class DuckScore {
+public:
+    uint16_t victories;
+    Color color;
+    DuckScore(const uint16_t& v, const Color &c) : vicotries(v), color(c) {}
+    DuckScore() : v(0), color("")
+}
 
 class ArmorSnapshot
 {
@@ -154,6 +163,7 @@ public:
     std::vector<ExplosionSnapshot> explosions;
     std::vector<BoxSnapshot> boxes;
     std::vector<ArmorSnapshot> armors;
+    std::vector<DuckScore> scores;
     MapSnapshot map;
     CameraSnapshot camera;
     bool is_ended = false;
@@ -161,7 +171,7 @@ public:
     uint8_t winner_id = 0;
     unsigned round = 0;
 
-    Snapshot() : ducks({}), guns({}), projectiles({}), explosions({}) {}
+    Snapshot() : ducks({}), guns({}), projectiles({}), explosions({}), scores({}) {}
 
     Snapshot(std::vector<DuckSnapshot> &&d_s,
              std::vector<GunNoEquippedSnapshot> &&g_s,
@@ -169,13 +179,14 @@ public:
              std::vector<ExplosionSnapshot> &e,
              std::vector<BoxSnapshot> &&b,
              std::vector<ArmorSnapshot> &&a,
+             std::vector<DuckScore> &&s,
              MapSnapshot &map_snapshot,
              CameraSnapshot &c,
              bool state,
              uint8_t id,
              unsigned round)
         : ducks(d_s), guns(g_s), projectiles(p), explosions(e),
-          boxes(b), armors(a), map(map_snapshot), camera(c), is_ended(state), winner_id(id), round(round)
+          boxes(b), armors(a), scores(s), map(map_snapshot), camera(c), is_ended(state), winner_id(id), round(round)
     {
     }
 };

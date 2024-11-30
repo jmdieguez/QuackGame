@@ -91,9 +91,13 @@ void ServerProtocol::send_duck(const DuckSnapshot &duck)
     send_data(static_cast<uint16_t>(duck.position_gun.y));
     send_data(static_cast<uint16_t>(duck.angle_gun));
     send_duck_status(duck.status);
-    send_data(static_cast<uint16_t>(duck.color.GetRed()));
-    send_data(static_cast<uint16_t>(duck.color.GetGreen()));
-    send_data(static_cast<uint16_t>(duck.color.GetBlue()));
+    send_duck_color(duck.color);
+}
+
+void ServerProtocol::send_duck_color(Color color) {
+    send_data(static_cast<uint16_t>(color.GetRed()));
+    send_data(static_cast<uint16_t>(color.GetGreen()));
+    send_data(static_cast<uint16_t>(color.GetBlue()));
 }
 
 void ServerProtocol::send_gun(const GunNoEquippedSnapshot &gun)
@@ -213,6 +217,14 @@ void ServerProtocol::send_snapshot(const Snapshot &snapshot)
         send_data(armor.position.x);
         send_data(armor.position.y);
         send_data(static_cast<int>(armor.type));
+    }
+
+    const uint16_t scores_size = static_cast<uint16_t>(snapshot.scores.size());
+    send_data(scores_size);
+    for (const DuckScore &score : snapshot.scores)
+    {
+        send_data(score.victories);
+        send_duck_color(score.color);
     }
 }
 

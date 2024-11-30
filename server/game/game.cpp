@@ -469,6 +469,7 @@ Snapshot Game::get_status()
     std::vector<BoxSnapshot> box_snapshots;
     std::vector<ProjectileSnapshot> projectile_snapshots;
     std::vector<ArmorSnapshot> armor_snapshots;
+    std::vector<DuckScore> scores;
     CameraSnapshot camera_snapshot(camera.x, camera.y, camera.width, camera.height);
     for (auto &[id, gun] : guns)
     {
@@ -482,10 +483,17 @@ Snapshot Game::get_status()
     for (auto &[id, duck] : ducks)
         duck_snapshots.push_back(duck.get_status());
 
-    for (const auto &[position, type] : armor)
-        armor_snapshots.push_back(ArmorSnapshot(position, type));
+    for (const auto& victory : victories) {
+        uint8_t playerId = victory.first;
+        uint8_t victoryCount = victory.second;
+
+        auto colorIt = colors.find(playerId);
+        if (colorIt != colors.end()) {
+            scores.push_back(DuckScore(victoryCount, colorIt->second));
+        }
+    }
 
     return Snapshot(std::move(duck_snapshots), std::move(guns_snapshots), projectiles.get_status(),
-                    explosions.get_status(), std::move(box_snapshots), std::move(armor_snapshots),
+                    explosions.get_status(), std::move(box_snapshots), std::move(armor_snapshots), std::move(scores),
                     map_snapshot, camera_snapshot, ended, winner_id, round);
 }
