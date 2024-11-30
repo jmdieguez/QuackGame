@@ -156,9 +156,10 @@ public:
     std::vector<ArmorSnapshot> armors;
     MapSnapshot map;
     CameraSnapshot camera;
-    bool is_ended;
-    GameResult game_result;
+    bool is_ended = false;
+    GameResult game_result = GameResult::DEFEAT;
     uint8_t winner_id = 0;
+    unsigned round = 0;
 
     Snapshot() : ducks({}), guns({}), projectiles({}), explosions({}) {}
 
@@ -171,9 +172,10 @@ public:
              MapSnapshot &map_snapshot,
              CameraSnapshot &c,
              bool state,
-             uint8_t id)
+             uint8_t id,
+             unsigned round)
         : ducks(d_s), guns(g_s), projectiles(p), explosions(e),
-          boxes(b), armors(a), map(map_snapshot), camera(c), is_ended(state), winner_id(id)
+          boxes(b), armors(a), map(map_snapshot), camera(c), is_ended(state), winner_id(id), round(round)
     {
     }
 };
