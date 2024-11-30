@@ -7,16 +7,27 @@
 #include "../ui/defs.h"
 #include <QMessageBox>
 
-StartGame::StartGame(Lobby* lobby, QWidget *parent)
+void StartGame::set_info_user()
+{
+    QLabel *text = new QLabel(tr("Bienvenido al lobby del juego"), this);
+    text->setAlignment(Qt::AlignCenter);
+    text->setGeometry(0, 150, 780, 60);
+    text->setStyleSheet("color: white;");
+}
+
+StartGame::StartGame(Lobby *lobby, QWidget *parent)
     : QDialog(parent), ui(new Ui::StartGame), lobby(lobby)
 {
     ui->setupUi(this);
     WindowUtils::setFixedSize(this, 800, 600);
     WindowUtils::centerWindow(this);
-    connect(ui->startButton, &QPushButton::clicked, this, [this]() {
+
+    set_info_user();
+
+    connect(ui->startButton, &QPushButton::clicked, this, [this]()
+            {
         SoundPlayer::instance()->playSound(CLICK_SOUND, false);
-        onStartButtonClicked();
-    });
+        onStartButtonClicked(); });
 }
 
 StartGame::~StartGame()
@@ -28,15 +39,18 @@ void StartGame::onStartButtonClicked()
 {
     bool start;
     lobby->start_game(start);
-    if (start) {
+    if (start)
+    {
         closeAll();
-    } else {
+    }
+    else
+    {
         QMessageBox::warning(this, tr("Game can not start."),
                              tr("Wait until other players join."));
-
     }
 }
 
-void StartGame::closeAll() {
+void StartGame::closeAll()
+{
     QApplication::closeAllWindows();
 }
