@@ -10,11 +10,13 @@
 #include "../common/socket.h"
 #include "session.h"
 #include "client_command.h"
+#include <unordered_map>
+
 
 class SessionsHandler
 {
 private:
-    std::vector<std::shared_ptr<Session>> sessions;
+    std::unordered_map<uint16_t, std::shared_ptr<Session>> sessions;
     std::shared_ptr<Queue<ClientCommand>> recv_queue;
     std::mutex mtx;
 

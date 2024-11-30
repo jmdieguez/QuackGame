@@ -96,6 +96,12 @@ void Game::set_renderer(int frame_ticks)
 
             for (ArmorSnapshot &armor : latest_snapshot.armors)
                 render_storage.get_armor().render(armor, latest_snapshot.camera, scale_x, scale_y);
+            if (latest_snapshot.is_ended) {
+                victory = snapshot.game_result == GameResult::VICTORY;
+                initializer.get_renderer().Clear();
+                keep_running = false;
+                SDL_Quit();
+            }
         }
     }
     music_storage.clear_sounds();
@@ -124,7 +130,7 @@ Game::Game(Socket skt)
 {
 }
 
-void Game::run()
+bool Game::run()
 {
     Receiver receiver(socket, session.get_queue_receiver());
     Sender sender(socket, session.get_queue_sender());
@@ -133,8 +139,11 @@ void Game::run()
     constant_rate_loop.execute();
     receiver.stop();
     sender.stop();
+    socket.shutdown(2);
+    socket.close();
     receiver.join();
     sender.join();
+    return victory;
 }
 
 Game::~Game() {}

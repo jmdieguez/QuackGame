@@ -33,6 +33,7 @@ private:
     MusicBoxStorage music_storage;
     Socket socket;
     bool started = false;
+    bool victory;
 
     void get_and_execute_events();
     void set_renderer(int current_step);
@@ -44,7 +45,7 @@ private:
 
 public:
     Game(Socket);
-    void run();
+    bool run();
     ~Game();
 };
 

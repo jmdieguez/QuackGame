@@ -14,39 +14,62 @@ void SessionsHandler::add(Socket &client, const uint16_t &id)
     std::lock_guard<std::mutex> lock(mtx);
     std::shared_ptr<Session> session = std::make_shared<Session>(client, recv_queue, id);
     session->run();
-    sessions.emplace_back(session);
+    sessions[id] = session;
 }
 
 void SessionsHandler::remove_closed_sessions()
 {
     std::lock_guard<std::mutex> lock(mtx);
-    sessions.erase(std::remove_if(sessions.begin(), sessions.end(),
-                                  [](const std::shared_ptr<Session> &session)
-                                  {
-                                      return session == nullptr || session->has_finished();
-                                  }),
-                   sessions.end());
+    for (auto it = sessions.begin(); it != sessions.end();)
+    {
+        if (it->second == nullptr || it->second->has_finished())
+        {
+            it = sessions.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
+    }
 }
 
 void SessionsHandler::remove_all_sessions()
 {
     std::lock_guard<std::mutex> lock(mtx);
     recv_queue->close();
-    for (auto &session : sessions)
+    for (auto &[id, session] : sessions)
     {
         session->stop();
     }
+    sessions.clear();
 }
 
 void SessionsHandler::broadcast(const Snapshot &msg)
 {
     std::lock_guard<std::mutex> lock(mtx);
-    for (auto &session : sessions)
-        session->send(msg);
+    if (msg.is_ended)
+    {
+        for (auto &[id, session] : sessions)
+        {
+            Snapshot personalized_msg = msg;
+            personalized_msg.game_result =
+                (id == msg.winner_id) ? GameResult::VICTORY : GameResult::DEFEAT;
+
+            session->send(personalized_msg);
+        }
+    }
+    else
+    {
+        for (auto &[id, session] : sessions)
+        {
+            session->send(msg);
+        }
+    }
 }
 
 bool SessionsHandler::has_clients()
 {
     std::lock_guard<std::mutex> lock(mtx);
-    return (sessions.size() > 0);
+    return !sessions.empty();
+    ;
 }

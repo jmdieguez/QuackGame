@@ -15,7 +15,7 @@
 
 class WindowUtils {
 public:
-    static void centerWindow(QWidget* window) {
+    static void centerWindow(QWidget* window, const QString& backgroundPath) {
         QList<QScreen *> screens = QGuiApplication::screens();
         QScreen *screen = screens.isEmpty() ? nullptr : screens[0];
 
@@ -25,9 +25,8 @@ public:
             int y = (screenRect.height() - window->height()) / 2;
             window->move(x, y);
         }
-
         QLabel* backgroundLabel = new QLabel(window);
-        QPixmap backgroundPixmap("/var/quackgame/background_menu.jpg");
+        QPixmap backgroundPixmap(backgroundPath);
         backgroundLabel->setPixmap(backgroundPixmap);
         backgroundLabel->setScaledContents(true);
         backgroundLabel->setGeometry(0, 0, window->width(), window->height());

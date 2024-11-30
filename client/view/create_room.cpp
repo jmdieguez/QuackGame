@@ -12,7 +12,7 @@ CreateRoom::CreateRoom(Lobby *lobby, QWidget *parent)
 {
     ui->setupUi(this);
     WindowUtils::setFixedSize(this, 800, 600);
-    WindowUtils::centerWindow(this);
+    WindowUtils::centerWindow(this, BACKGROUND);
 
     connect(ui->backButton, &QPushButton::clicked, this, [this]()
             {

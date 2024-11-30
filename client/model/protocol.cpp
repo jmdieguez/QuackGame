@@ -84,6 +84,19 @@ ClientProtocol::ClientProtocol(Socket &skt) : skt(skt) {}
 
 void ClientProtocol::read_snapshot(Snapshot &snapshot)
 {
+    uint16_t game_state;
+    read_data(game_state);
+    snapshot.is_ended = game_state;
+    if (game_state == 1) {
+        uint16_t game_result;
+        read_data(game_result);
+        snapshot.game_result = static_cast<GameResult>(game_result);
+    }
+
+    uint16_t next_round;
+    read_data(next_round);
+    snapshot.round = next_round;
+
     uint16_t duck_length;
     read_data(duck_length);
     for (uint16_t i = 0; i < duck_length; i++)

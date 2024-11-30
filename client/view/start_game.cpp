@@ -22,7 +22,7 @@ StartGame::StartGame(Lobby *lobby, std::vector<UserLobbyInfo> &users, QWidget *p
 {
     ui->setupUi(this);
     WindowUtils::setFixedSize(this, 800, 600);
-    WindowUtils::centerWindow(this);
+    //    WindowUtils::centerWindow(this);
 
     int y_position = 150;
     int x_spacing = 250;
@@ -37,6 +37,8 @@ StartGame::StartGame(Lobby *lobby, std::vector<UserLobbyInfo> &users, QWidget *p
 
     connect(ui->startButton, &QPushButton::clicked, this, [this]()
             {
+    WindowUtils::centerWindow(this, BACKGROUND);
+
         SoundPlayer::instance()->playSound(CLICK_SOUND, false);
         onStartButtonClicked(); });
 }
