@@ -47,10 +47,11 @@ enum class ClientActionType : uint16_t
 class ActionMessage
 {
 public:
+    uint16_t id;
     ClientActionType type;
     std::string opt_message;
 
-    ActionMessage(const ClientActionType &t, const std::string &m) : type(t), opt_message(m) {}
+    ActionMessage(const uint16_t id, ClientActionType &t, const std::string &m) : id(id), type(t), opt_message(m) {}
     ActionMessage() : type(ClientActionType::UNDEFINED) {}
     ~ActionMessage() {}
 };

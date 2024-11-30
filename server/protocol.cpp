@@ -11,6 +11,9 @@ ActionMessage ServerProtocol::read_action()
     ClientActionType action;
     bool was_closed = false;
 
+    uint16_t id;
+    read_data(id);
+
     uint16_t info;
     skt.recvall(&info, sizeof(info), &was_closed);
     if (was_closed)
@@ -18,7 +21,7 @@ ActionMessage ServerProtocol::read_action()
         throw LibError(errno, "Error al intentar enviar datos a cliente");
     }
     action = static_cast<ClientActionType>(ntohs(info));
-    return ActionMessage(action, "");
+    return ActionMessage(id, action, "");
 }
 
 ActionLobby ServerProtocol::read_lobby()
