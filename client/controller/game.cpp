@@ -1,4 +1,5 @@
 #include "game.h"
+#include "render/transitionmanager.h"
 
 /***************************************************************************
                               PRIVATE METHODS
@@ -66,6 +67,18 @@ void Game::set_renderer(int frame_ticks)
     {
         if (latest_snapshot.camera.width > 0 && latest_snapshot.camera.height > 0)
         {
+            if (round != latest_snapshot.round) {
+                TransitionManager transitionManager(initializer.get_renderer());
+                transitionManager.fadeTransition(60, true);
+                SDL_Delay(500);
+                transitionManager.fadeTransition(60, false);
+                round = latest_snapshot.round;
+                std::cout << round << std::endl;
+                if (round % 5 == 0) {
+                    std::cout << "multiplo de cinco" << std::endl;
+                }
+            }
+
             initializer.get_renderer().Clear();
             float scale_x = static_cast<float>(DEFAULT_WINDOW_WIDTH) / latest_snapshot.camera.width;
             float scale_y = static_cast<float>(DEFAULT_WINDOW_HEIGHT) / latest_snapshot.camera.height;
@@ -98,6 +111,8 @@ void Game::set_renderer(int frame_ticks)
                 render_storage.get_armor().render(armor, latest_snapshot.camera, scale_x, scale_y);
             if (latest_snapshot.is_ended) {
                 victory = snapshot.game_result == GameResult::VICTORY;
+                std::cout << victory << std::endl;
+
                 initializer.get_renderer().Clear();
                 keep_running = false;
                 SDL_Quit();

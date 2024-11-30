@@ -23,7 +23,6 @@ void Launcher::run_game() {
     if (app.exec() == SUCCESS) {
         Game game(std::move(skt));
         result = game.run();
-
         GameResultWindow resultWindow(result);
         resultWindow.exec();
     }

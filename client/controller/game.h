@@ -34,6 +34,7 @@ private:
     Socket socket;
     bool started = false;
     bool victory;
+    uint16_t round = 0;
 
     void get_and_execute_events();
     void set_renderer(int current_step);
