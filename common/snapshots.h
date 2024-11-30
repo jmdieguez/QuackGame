@@ -15,6 +15,11 @@
 #include "size.h"
 #include "texturefigure.h"
 #include "color.h"
+enum class GameResult
+{
+    VICTORY,
+    DEFEAT
+};
 
 class ArmorSnapshot
 {
@@ -151,6 +156,8 @@ public:
     std::vector<ArmorSnapshot> armors;
     MapSnapshot map;
     CameraSnapshot camera;
+    bool is_ended;
+    GameResult game_result;
 
     Snapshot() : ducks({}), guns({}), projectiles({}), explosions({}) {}
 
@@ -161,9 +168,11 @@ public:
              std::vector<BoxSnapshot> &&b,
              std::vector<ArmorSnapshot> &&a,
              MapSnapshot &map_snapshot,
-             CameraSnapshot &c)
+             CameraSnapshot &c,
+             bool state,
+             GameResult result)
         : ducks(d_s), guns(g_s), projectiles(p), explosions(e),
-          boxes(b), armors(a), map(map_snapshot), camera(c)
+          boxes(b), armors(a), map(map_snapshot), camera(c), is_ended(state), game_result(result)
     {
     }
 };
