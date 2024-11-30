@@ -20,21 +20,23 @@ void SessionsHandler::add(Socket &client, const uint16_t &id)
 void SessionsHandler::remove_closed_sessions()
 {
     std::lock_guard<std::mutex> lock(mtx);
-    sessions.erase(std::remove_if(sessions.begin(), sessions.end(),
-                                  [](const std::shared_ptr<Session> &session)
-                                  {
-                                      return session == nullptr || session->has_finished();
-                                  }),
-                   sessions.end());
+    for (auto it = sessions.begin(); it != sessions.end();) {
+        if (it->second == nullptr || it->second->has_finished()) {
+            it = sessions.erase(it);
+        } else {
+            ++it;
+        }
+    }
 }
 
 void SessionsHandler::remove_all_sessions()
 {
     std::lock_guard<std::mutex> lock(mtx);
     recv_queue->close();
-    for (auto &session : sessions) {
+    for (auto &[id, session] : sessions) {
         session->stop();
     }
+    sessions.clear();
 }
 
 void SessionsHandler::broadcast(const Snapshot &msg)

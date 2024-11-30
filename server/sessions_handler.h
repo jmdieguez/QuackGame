@@ -10,6 +10,8 @@
 #include "../common/socket.h"
 #include "session.h"
 #include "client_command.h"
+#include <unordered_map>
+
 
 class SessionsHandler {
 private:
