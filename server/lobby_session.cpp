@@ -12,13 +12,14 @@ void LobbySession::run()
     ServerProtocol protocol(socket);
     std::vector<LobbyMessage> messages;
     std::vector<UserLobbyInfo> users;
+
     while (_keep_running)
     {
         ActionLobby action = protocol.read_lobby();
         switch (action.type)
         {
         case ClientActionType::CREATE_GAME:
-            users = matches.create_game(id, action.game_name, action.num_players, socket);
+            users = matches.create_game(id, action.game_name, action.num_players);
             protocol.send_create_game_info(users);
             game_joined = matches.get_id_counter();
             break;
@@ -40,7 +41,7 @@ void LobbySession::run()
                 if (players > 1)
                 {
                     protocol.send_ready();
-                    matches.start_game(id, game_joined);
+                    matches.start_game(id, game_joined, users.size(), socket);
                     _keep_running = false;
                 }
                 else

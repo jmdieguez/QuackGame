@@ -4,7 +4,7 @@ Lobby::Lobby(ClientProtocol &protocol) : protocol(protocol) {}
 
 std::vector<UserLobbyInfo> Lobby::create_room(const std::string &name)
 {
-    protocol.send_create_game(2, name);
+    protocol.send_create_game(1, name);
     return protocol.read_create_game_info();
 }
 

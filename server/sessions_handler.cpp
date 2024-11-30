@@ -32,7 +32,8 @@ void SessionsHandler::remove_all_sessions()
 {
     std::lock_guard<std::mutex> lock(mtx);
     recv_queue->close();
-    for (auto &session : sessions) {
+    for (auto &session : sessions)
+    {
         session->stop();
     }
 }
@@ -44,7 +45,8 @@ void SessionsHandler::broadcast(const Snapshot &msg)
         session->send(msg);
 }
 
-bool SessionsHandler::has_clients() {
+bool SessionsHandler::has_clients()
+{
     std::lock_guard<std::mutex> lock(mtx);
-    return (sessions.size() > 0); 
+    return (sessions.size() > 0);
 }

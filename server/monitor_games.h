@@ -20,10 +20,11 @@ private:
 public:
     MonitorGames();
 
-    std::vector<UserLobbyInfo> create_game(const uint16_t &creator_id, const std::string &name, const uint16_t &num_players, Socket &skt);
+    std::vector<UserLobbyInfo> create_game(const uint16_t &creator_id, const std::string &name, const uint16_t &num_players);
+    void set_session(const uint16_t &creator_id, const uint16_t &num_players, Socket &skt);
     void join_game(const uint16_t &player_id, const uint16_t &game_id, Socket &skt);
     std::vector<LobbyMessage> list_games();
-    void start_game(const uint16_t &creator_id, const int &game_id);
+    void start_game(const uint16_t &creator_id, const int &game_id, const uint16_t &num_players, Socket &skt);
     uint16_t get_id_counter() const;
     void remove_finished_matches();
     void remove_all_matches();

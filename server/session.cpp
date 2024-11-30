@@ -2,7 +2,7 @@
 
 #include <utility>
 
-Session::Session(Socket &client, std::shared_ptr<Queue<ClientCommand>> &recv_q, const uint16_t &i) : id(i), socket(client), sender(socket, id), receiver(socket, recv_q, id) {}
+Session::Session(Socket &client, std::shared_ptr<Queue<ClientCommand>> &recv_q, const uint16_t i) : id(i), socket(std::move(client)), sender(socket, id), receiver(socket, recv_q, id) {}
 
 Session::~Session() {}
 
