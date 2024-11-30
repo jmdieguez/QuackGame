@@ -19,15 +19,14 @@ public:
         return instance;
     }
 
-    // Reproducir música o sonido con opción de loop
     void playSound(const QString& filePath, bool loop = false) {
-        stopMusic();  // Detener cualquier sonido previo si ya se está reproduciendo
+        stopMusic();
         soundFilePath = filePath;
 
         if (loop) {
-            playLoop();  // Reproducir en loop
+            playLoop();
         } else {
-            playOnce();  // Reproducir una sola vez
+            playOnce();
         }
     }
 

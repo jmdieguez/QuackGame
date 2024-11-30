@@ -1,10 +1,11 @@
 #include <iostream>
-#include "launcher.h"
+#include "controller/launcher.h"
 
 #define OK 0
 #define HOST 1
 #define PORT 2
 #define MIN_ARGS 3
+#define ERROR -1
 
 int main(int argc, const char *argv[])
 {
@@ -13,9 +14,8 @@ int main(int argc, const char *argv[])
 
     try
     {
-        const char *host = argv[HOST];
-        const char *port = argv[PORT];
-        Launcher launcher(host, port);
+
+        Launcher launcher(argc, argv);
         launcher.run_game();
     }
     catch (const std::exception &err)
