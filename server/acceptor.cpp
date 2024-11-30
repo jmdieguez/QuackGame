@@ -3,7 +3,7 @@
 #include "../common/liberror.h"
 
 Acceptor::Acceptor(const char *port) :
-    socket(port), session_id(0) {}
+    socket(port), session_id(1) {}
 
 Acceptor::~Acceptor() {}
 
