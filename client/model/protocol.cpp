@@ -227,6 +227,21 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
         read_data(type);
         snapshot.armors.push_back(ArmorSnapshot(Position(pos_x, pos_y), static_cast<ArmorType>(type)));
     }
+
+    uint16_t scores_length;
+    read_data(scores_length);
+    for (uint16_t i = 0; i < scores_length; i++)
+    {
+        uint16_t victories;
+        read_data(victories);
+        uint16_t red;
+        read_data(red);
+        uint16_t green;
+        read_data(green);
+        uint16_t blue;
+        Color color(red, green, blue);
+        snapshot.scores.push_back(DuckScore(victories, color));
+    }
 }
 
 void ClientProtocol::read_data(uint16_t &data)
