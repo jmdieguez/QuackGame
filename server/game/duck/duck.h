@@ -57,6 +57,14 @@ public:
     void step(Map &map,
               std::map<uint8_t, std::shared_ptr<Gun>> &guns,
               const std::function<void(const std::shared_ptr<Projectile> &)> &add_projectile);
+
+    void give_helmet() {
+        status.has_helmet = true;
+    }
+
+    void give_chestplate() {
+        status.has_chestplate = true;
+    }
 };
 
 #endif // SERVER_DUCK_H

@@ -25,6 +25,12 @@ Game::Game() : rng(rd()), dist(0, N_DROPS - 1)
     }
 
     gun_spawners.push_back([this](const Position &pos)
+                           { Position aux(pos.x + 2, pos.y - 20);
+                             armor.emplace(aux, ArmorType::Helmet); });
+    gun_spawners.push_back([this](const Position &pos)
+                           { Position aux(pos.x + 2, pos.y - 20); 
+                             armor.emplace(aux, ArmorType::Chestplate); });
+    gun_spawners.push_back([this](const Position &pos)
                            { spawn_gun<AK>(pos); });
     gun_spawners.push_back([this](const Position &pos)
                            { spawn_gun<Shotgun>(pos); });
@@ -42,14 +48,6 @@ Game::Game() : rng(rd()), dist(0, N_DROPS - 1)
                            { spawn_gun<PewPewLaser>(pos); });
     gun_spawners.push_back([this](const Position &pos)
                            { spawn_gun<LaserRifle>(pos); });
-    gun_spawners.push_back([this](const Position &pos)
-                           {    
-                                Position aux(pos.x + 2, pos.y - 20);
-                                armor.emplace(aux, ArmorType::Helmet); });
-    gun_spawners.push_back([this](const Position &pos)
-                           {
-                            Position aux(pos.x + 2, pos.y - 20); 
-                            armor.emplace(aux, ArmorType::Chestplate); });
     return;
 }
 
@@ -207,10 +205,25 @@ bool Game::verify_hit_duck(Duck &duck, std::shared_ptr<Projectile> &projectile)
     return false;
 }
 
-void Game::spawn_gun_in_boxes(const Position &position_box, const Position &position_as_pixels)
-{
-    Position gun_position(position_as_pixels.x, position_as_pixels.y + TILE_SIZE);
-    spawn_random_gun(gun_position);
+void Game::spawn_in_boxes(const Position &position_box, const Position &position_as_pixels)
+{   
+
+    Position position(position_as_pixels.x, position_as_pixels.y + TILE_SIZE);
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> distrib(0, 2); // Range [0, 2]
+    RandomSelection random_selection = static_cast<RandomSelection>(distrib(gen));
+    switch (random_selection) {
+        case RandomSelection::Nothing:
+            break;
+        case RandomSelection::SpawnGun:
+            spawn_random_gun(position);
+            break;
+        case RandomSelection::Explode:
+            Explosion explosion(position_as_pixels);
+            explosions.add_explosion(explosion);
+            break;
+    }
     boxes.erase(position_box);
 }
 
@@ -409,10 +422,12 @@ void Game::step()
                         explosions.add_explosion(explosion); });
     projectiles.move(maps[current_map]);
     projectiles.verify_hit(ducks, boxes, [this](const Position &p_box, const Position &p_as_pixels)
-                           { spawn_gun_in_boxes(p_box, p_as_pixels); });
+                           { spawn_in_boxes(p_box, p_as_pixels); });
     explosions.dicrement([this](const std::shared_ptr<Projectile> &projectile)
                          { projectiles.add_projectile(projectile); }, [this](Hitbox explosion_hitbox)
                          { check_intersect(explosion_hitbox); });
+    
+    Size size(TILE_SIZE, TILE_SIZE); // Ajustar
     std::map<uint8_t, Duck &> ducks_alive;
     for (auto &[id, duck] : ducks)
     {
@@ -421,6 +436,23 @@ void Game::step()
         if (duck.is_alive())
         {
             ducks_alive.emplace(id, duck);
+            for (auto it = armor.begin(); it != armor.end(); )
+            {
+                const auto& position = it->first;
+                const auto& an_armor = it->second;
+
+                Hitbox armor_hitbox(position, size);
+                if (duck.get_hitbox().intersects(armor_hitbox))
+                {   
+                    if (an_armor == ArmorType::Helmet)
+                        duck.give_helmet();
+                    else if (an_armor == ArmorType::Chestplate)
+                        duck.give_chestplate();
+                    it = armor.erase(it);
+                }
+                else
+                    ++it;
+            }
         }
     }
     update_camera(ducks_alive);

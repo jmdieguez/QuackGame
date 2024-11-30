@@ -84,14 +84,13 @@ void Duck::set_xywh(const DuckSnapshot &duck, const int &frame_ticks, int &x, in
 void Duck::render_helmet_chestplate(DuckSnapshot &duck, CameraSnapshot &camera,
                                     float &scale_x, float &scale_y)
 {
-    int dst_x = duck.position.x + (duck.status.looking_right ? 3 : 8);
     if (duck.status.has_chestplate)
     {
         SDL2pp::Texture &chestplate_texture = get_texture(TextureFigure::Chestplate);
         SDL_Rect src_rect = {0, 0, 78, 60};
         SDL_Rect dst_rect = {
-            static_cast<int>((dst_x - camera.x) * scale_x),
-            static_cast<int>((duck.position.y + 15 - camera.y) * scale_y),
+            static_cast<int>((duck.position.x - camera.x) * scale_x),
+            static_cast<int>((duck.position.y - camera.y + 8) * scale_y),
             static_cast<int>(CHESTPLATE_WIDTH * scale_x),
             static_cast<int>(CHESTPLATE_HEIGHT * scale_y)};
         SDL_RendererFlip flip = duck.status.looking_right ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
@@ -102,8 +101,8 @@ void Duck::render_helmet_chestplate(DuckSnapshot &duck, CameraSnapshot &camera,
         SDL2pp::Texture &helmet = get_texture(TextureFigure::Helmet);
         SDL_Rect src_rect = {0, 0, 76, 89};
         SDL_Rect dst_rect = {
-            static_cast<int>((dst_x - camera.x) * scale_x),
-            static_cast<int>((duck.position.y - 2 - camera.y) * scale_y),
+            static_cast<int>((duck.position.x - camera.x) * scale_x),
+            static_cast<int>((duck.position.y - camera.y - 4) * scale_y),
             static_cast<int>(HELMET_WIDTH * scale_x),
             static_cast<int>(HELMET_HEIGHT * scale_y)};
 
@@ -132,6 +131,7 @@ void Duck::render_duck(DuckSnapshot &duck, int frame_ticks, CameraSnapshot &came
 
         SDL_RendererFlip flip = duck.status.looking_right ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
         SDL_RenderCopyEx(renderer.Get(), duck_texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, flip);
+        render_helmet_chestplate(duck, camera, scale_x, scale_y);
     }
 }
 
@@ -152,7 +152,6 @@ void Duck::render_weapon(DuckSnapshot &duck, CameraSnapshot &camera,
             static_cast<int>(size.height * scale_y)};
 
         SDL_RenderCopyEx(renderer.Get(), texture.Get(), &src_rect, &dst_rect, duck.angle_gun, nullptr, flip);
-        render_helmet_chestplate(duck, camera, scale_x, scale_y);
     }
 }
 

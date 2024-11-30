@@ -17,6 +17,12 @@
 #include "manager/projectilemanager.h"
 #include "manager/explosionmanager.h"
 
+enum class RandomSelection {
+    SpawnGun = 0,
+    Explode,
+    Nothing
+};
+
 class Game
 {
 private:
@@ -49,7 +55,7 @@ private:
     void check_intersect(Hitbox explosion_hitbox);
     int calculate_winner(const std::vector<uint8_t> &possible_winners);
     void check_for_winner(const std::map<uint8_t, Duck &> &ducks_alive);
-    void spawn_gun_in_boxes(const Position &position_box, const Position &position_as_pixels);
+    void spawn_in_boxes(const Position &position_box, const Position &position_as_pixels);
 
     std::vector<GunNoEquippedSnapshot> get_guns_snapshots();
     template <typename T>
