@@ -20,6 +20,7 @@ void LobbySession::run()
         case ClientActionType::CREATE_GAME:
             users = matches.create_game(id, action.game_name, action.num_players, socket);
             protocol.send_create_game_info(users);
+            game_joined = matches.get_id_counter();
             break;
 
         case ClientActionType::JOIN_GAME:

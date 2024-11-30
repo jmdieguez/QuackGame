@@ -16,6 +16,7 @@ std::vector<UserLobbyInfo> MonitorGames::create_game(const uint16_t &creator_id,
         color = new_game->add_new_player(skt, creator_id + 1);
         users.push_back(UserLobbyInfo((creator_id + 1), color.get_text()));
     }
+    id_counter++;
     games[id_counter] = new_game;
     return users;
 }
@@ -49,6 +50,11 @@ void MonitorGames::start_game(const uint16_t &creator_id, const int &game_id)
     {
         game->second->start_game(creator_id);
     }
+}
+
+uint16_t MonitorGames::get_id_counter() const
+{
+    return id_counter;
 }
 
 void MonitorGames::remove_finished_matches()

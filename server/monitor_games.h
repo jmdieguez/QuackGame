@@ -24,6 +24,7 @@ public:
     void join_game(const uint16_t &player_id, const uint16_t &game_id, Socket &skt);
     std::vector<LobbyMessage> list_games();
     void start_game(const uint16_t &creator_id, const int &game_id);
+    uint16_t get_id_counter() const;
     void remove_finished_matches();
     void remove_all_matches();
     void number_of_players(const uint16_t &game_id, uint16_t &amount_of_players);
