@@ -7,7 +7,7 @@ Gameloop::Gameloop(const uint16_t &id, const std::string &name, const uint16_t &
                                                                                                                  { this->step(step); }),
                                                                                               recv_queue(std::make_shared<Queue<ClientCommand>>(10000)),
                                                                                               handler(recv_queue),
-                                                                                              number_of_players(1)
+                                                                                              number_of_players(0)
 {
 }
 
@@ -56,12 +56,14 @@ void Gameloop::start_game(const uint16_t &id)
     }
 }
 
-void Gameloop::add_new_player(Socket &skt, const uint16_t &id)
+Color Gameloop::add_new_player(Socket &skt, const uint16_t &id)
 {
     Color color = color_storage.get_color();
     handler.add(skt, id);
     game.add_player(id, color);
     number_of_players++;
+    std::cout << "El color es " << color.get_text() << std::endl;
+    return color;
 }
 
 const std::string &Gameloop::get_name()

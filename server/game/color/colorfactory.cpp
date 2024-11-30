@@ -5,15 +5,15 @@
 ****************************************************************************/
 ColorFactory::ColorFactory() {}
 
-Color ColorFactory::Red() const { return Color(255, 0, 0); }
-Color ColorFactory::Green() const { return Color(0, 255, 0); }
-Color ColorFactory::Blue() const { return Color(0, 0, 255); }
-Color ColorFactory::Yellow() const { return Color(255, 255, 0); }
-Color ColorFactory::Cyan() const { return Color(0, 255, 255); }
-Color ColorFactory::Magenta() const { return Color(255, 0, 255); }
-Color ColorFactory::White() const { return Color(255, 255, 255); }
-Color ColorFactory::Black() const { return Color(0, 0, 0); }
-Color ColorFactory::Gray() const { return Color(128, 128, 128); }
-Color ColorFactory::Orange() const { return Color(255, 165, 0); }
+Color ColorFactory::red() const { return Color(255, 0, 0, "Red"); }
+Color ColorFactory::green() const { return Color(0, 255, 0, "Green"); }
+Color ColorFactory::blue() const { return Color(0, 0, 255, "Blue"); }
+Color ColorFactory::yellow() const { return Color(255, 255, 0, "Yellow"); }
+Color ColorFactory::cyan() const { return Color(0, 255, 255, "Cyan"); }
+Color ColorFactory::magenta() const { return Color(255, 0, 255, "Magenta"); }
+Color ColorFactory::white() const { return Color(255, 255, 255, "White"); }
+Color ColorFactory::black() const { return Color(0, 0, 0, "Black"); }
+Color ColorFactory::gray() const { return Color(128, 128, 128, "Gray"); }
+Color ColorFactory::orange() const { return Color(255, 165, 0, "Orange"); }
 
 ColorFactory::~ColorFactory() {}

@@ -17,7 +17,7 @@ class StartGame : public QDialog
     Q_OBJECT
 
 public:
-    explicit StartGame(Lobby *lobby, QWidget *parent = nullptr);
+    explicit StartGame(Lobby *lobby, std::vector<UserLobbyInfo> &users, QWidget *parent = nullptr);
     ~StartGame();
 
 signals:
@@ -32,7 +32,7 @@ private:
     Ui::StartGame *ui;
     Lobby *lobby;
 
-    void set_info_user();
+    void set_info_user(size_t &id, std::string &color, int x_position, int y_position);
 };
 
 #endif // START_GAME_H

@@ -8,6 +8,8 @@ enum class ClientActionType : uint16_t
 {
     UNDEFINED = 0,
     CREATE_GAME,
+    ADD_ONE_PLAYER,
+    ADD_TWO_PLAYERS,
     JOIN_GAME,
     SEND_MESSAGE,
     MOVE_RIGHT,

@@ -7,23 +7,22 @@
 #include "window_utils.h"
 #include "../ui/defs.h"
 
-CreateRoom::CreateRoom(Lobby* lobby, QWidget *parent)
+CreateRoom::CreateRoom(Lobby *lobby, QWidget *parent)
     : QDialog(parent), ui(new Ui::CreateRoom), lobby(lobby)
 {
     ui->setupUi(this);
     WindowUtils::setFixedSize(this, 800, 600);
     WindowUtils::centerWindow(this);
 
-
-    connect(ui->backButton, &QPushButton::clicked, this, [this]() {
+    connect(ui->backButton, &QPushButton::clicked, this, [this]()
+            {
         SoundPlayer::instance()->playSound(CLICK_SOUND, false);
-        onBackButtonClicked();
-    });
+        onBackButtonClicked(); });
 
-    connect(ui->createButton, &QPushButton::clicked, this, [this]() {
+    connect(ui->createButton, &QPushButton::clicked, this, [this]()
+            {
         SoundPlayer::instance()->playSound(CLICK_SOUND, false);
-        onCreateRoomButtonClicked();
-    });
+        onCreateRoomButtonClicked(); });
 }
 
 CreateRoom::~CreateRoom()
@@ -36,12 +35,12 @@ void CreateRoom::onBackButtonClicked()
     emit goBack();
 }
 
-
-void CreateRoom::onCreateRoomButtonClicked() {
+void CreateRoom::onCreateRoomButtonClicked()
+{
     QString roomName = ui->textBoxName->text();
-    lobby->create_room(roomName.toStdString());
+    auto result = lobby->create_room(roomName.toStdString());
     this->hide();
-    StartGame startDialog(lobby, nullptr);
+    StartGame startDialog(lobby, result, nullptr);
     startDialog.exec();
 
     QApplication::closeAllWindows();

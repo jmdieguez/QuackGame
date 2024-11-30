@@ -19,9 +19,10 @@ public:
     void stop();
     void send(const Snapshot &msg);
     bool has_finished() const;
+
 private:
     bool finished = false;
-    Socket socket;
+    Socket &socket;
     Sender sender;
     Receiver receiver;
 

@@ -43,15 +43,26 @@ ActionLobby ServerProtocol::read_lobby()
             throw LibError(errno, "Error al intentar enviar datos a cliente");
         }
         game_id = ntohs(game_id);
-        return ActionLobby(action, game_id);
+        uint16_t num_players;
+        read_data(num_players);
+        // return ActionLobby(action, game_id);
+        return ActionLobby(action, game_id, num_players);
     }
     else if (action == ClientActionType::CREATE_GAME)
     {
+        std::cout << "Estoy aca" << std::endl;
+        uint16_t num_players;
+        read_data(num_players);
+        std::cout << "El numero de jugadores es: " << (int)num_players << std::endl;
         std::string name = "";
         read_name(name);
-        return ActionLobby(action, 0, name);
+        std::cout << "El nombre de la partida es: " << name << std::endl;
+        //   return ActionLobby(action, 0, name);
+        return ActionLobby(action, 0, num_players, name);
     }
-    return ActionLobby(action);
+
+    //   return ActionLobby(action);
+    return ActionLobby(action, game_id, game_id);
 }
 
 void ServerProtocol::send_data(const uint16_t &data)
@@ -63,6 +74,18 @@ void ServerProtocol::send_data(const uint16_t &data)
     {
         throw LibError(errno, "Error al intentar enviar datos a cliente");
     }
+}
+
+void ServerProtocol::read_data(uint16_t &data)
+{
+    bool was_closed = false;
+    uint16_t info;
+    skt.recvall(&info, sizeof(uint16_t), &was_closed);
+    if (was_closed)
+    {
+        throw LibError(errno, "Error al intentar recibir datos del cliente");
+    }
+    data = ntohs(info);
 }
 
 void ServerProtocol::send_data_float(const float &data)
@@ -91,9 +114,9 @@ void ServerProtocol::send_duck(const DuckSnapshot &duck)
     send_data(static_cast<uint16_t>(duck.position_gun.y));
     send_data(static_cast<uint16_t>(duck.angle_gun));
     send_duck_status(duck.status);
-    send_data(static_cast<uint16_t>(duck.color.GetRed()));
-    send_data(static_cast<uint16_t>(duck.color.GetGreen()));
-    send_data(static_cast<uint16_t>(duck.color.GetBlue()));
+    send_data(static_cast<uint16_t>(duck.color.get_red()));
+    send_data(static_cast<uint16_t>(duck.color.get_green()));
+    send_data(static_cast<uint16_t>(duck.color.get_blue()));
 }
 
 void ServerProtocol::send_gun(const GunNoEquippedSnapshot &gun)
@@ -223,6 +246,40 @@ void ServerProtocol::send_lobby_info(const std::vector<LobbyMessage> &lobby_info
         send_data(msg.game_id);
         send_data(msg.name.length());
         send_name(std::vector<unsigned char>(msg.name.begin(), msg.name.end()));
+    }
+}
+
+void ServerProtocol::send_create_game_info(std::vector<UserLobbyInfo> &users)
+{
+    const uint16_t users_length = static_cast<uint16_t>(users.size());
+    std::cout << "El largo es: " << (int)users_length << std::endl;
+    std::cout << "Voy a enviar el largo" << std::endl;
+    send_data(users_length);
+    std::cout << "Ya envie el largo" << std::endl;
+    for (UserLobbyInfo &user : users)
+    {
+        std::string color = user.get_color();
+        send_data(user.get_id());
+        std::cout << "El id es: " << (int)user.get_id() << std::endl;
+        send_data(color.size());
+        std::cout << "El largo del color es: " << (int)color.size() << std::endl;
+        std::cout << "El nombre del color es: " << color << std::endl;
+        std::vector<unsigned char> name_color(color.begin(), color.end());
+        send_name(name_color);
+    }
+}
+
+void ServerProtocol::send_join_game_info(std::vector<UserLobbyInfo> &users)
+{
+    const uint16_t users_length = static_cast<uint16_t>(users.size());
+    send_data(users_length);
+    for (UserLobbyInfo &user : users)
+    {
+        std::string color = user.get_color();
+        send_data(user.get_id());
+        send_data(user.get_color().size());
+        std::vector<unsigned char> name_color(user.get_color().begin(), user.get_color().end());
+        send_name(name_color);
     }
 }
 
