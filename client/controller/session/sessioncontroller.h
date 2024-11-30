@@ -4,6 +4,7 @@
 #include "cheat/cheatstorage.h"
 #include "command/inputhandler.h"
 #include "command/gamecontext.h"
+#include "command/playerkeyconfigmanager.h"
 #include "../../../common/queue.h"
 #include "../../../common/snapshots.h"
 
@@ -13,8 +14,12 @@ private:
     CheatStorage cheat_storage;
     Queue<Snapshot> queue_receiver;
     Queue<ClientActionType> queue_sender;
-    InputHandler input;
+    PlayerKeyConfigManager config_manager;
+    InputHandler player_one_input;
+    InputHandler player_two_input;
     GameContext game_context;
+
+    bool is_player1_input(const SDL_Keycode &key, const PlayerKeyConfigManager &config_manager);
 
 public:
     SessionController();

@@ -3,6 +3,8 @@ target_sources(quack_game_client
     # .cpp files
     gamecontext.cpp
     inputhandler.cpp
+    playerkeyconfig.cpp
+    playerkeyconfigmanager.cpp
     movebentdown.cpp
     moveleft.cpp
     moveright.cpp
@@ -17,6 +19,8 @@ target_sources(quack_game_client
     gamecontext.h
     command.h
     inputhandler.h
+    playerkeyconfig.h
+    playerkeyconfigmanager.h
     movebentdown.h
     moveleft.h
     moveright.h
