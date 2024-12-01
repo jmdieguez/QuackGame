@@ -5,7 +5,6 @@
 #include "defminvalue.h"
 #include "projectile/projectilegun.h"
 
-#define MAX_DISTANCE 13
 #define TIME_SHOOTING 60
 #define DELAY_SHOOTING 2
 #define START_DISPERSION 55
@@ -75,7 +74,8 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Las
     std::vector<std::shared_ptr<Projectile>> projectiles;
     Hitbox hitbox(projectile_position, Size(PROJECTILE_WIDTH, PROJECTILE_HEIGHT));
     int velocity = Config::getInstance()["gun"]["velocity_projectile"]["laser_rifle"].as<int>();
-    projectiles.push_back(std::make_shared<ProjectileLaser>(ProjectileType::CowboyBullet, TextureFigure::LaserRifleBullet, hitbox, direction, velocity, MAX_DISTANCE, dispersion));
+    int max_distance = Config::getInstance()["gun"]["scope"]["laser_rifle"].as<int>();
+    projectiles.push_back(std::make_shared<ProjectileLaser>(ProjectileType::CowboyBullet, TextureFigure::LaserRifleBullet, hitbox, direction, velocity, max_distance, dispersion));
     delay_shooting = DELAY_SHOOTING;
     time_shooting--;
     return std::make_optional(std::make_pair(projectiles, duck_position));

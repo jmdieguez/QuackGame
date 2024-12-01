@@ -5,7 +5,6 @@
 #include "defminvalue.h"
 #include "projectile/projectilegun.h"
 
-#define MAX_DISTANCE 13
 #define TIME_SHOOTING 60
 #define DELAY_SHOOTING 2
 #define START_DISPERSION 55
@@ -76,7 +75,8 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> AK:
     std::vector<std::shared_ptr<Projectile>> projectiles;
     Hitbox hitbox(projectile_position, Size(PROJECTILE_WIDTH, PROJECTILE_HEIGHT));
     int velocity = Config::getInstance()["gun"]["velocity_projectile"]["ak"].as<int>();
-    projectiles.push_back(std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, TextureFigure::CowboyBullet, hitbox, direction, velocity, MAX_DISTANCE, dispersion));
+    int max_distance = Config::getInstance()["gun"]["scope"]["ak"].as<int>();
+    projectiles.push_back(std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, TextureFigure::CowboyBullet, hitbox, direction, velocity, max_distance, dispersion));
     Position new_position = move_back(duck_position, status.looking_right, BACK);
     delay_shooting = DELAY_SHOOTING;
     time_shooting--;

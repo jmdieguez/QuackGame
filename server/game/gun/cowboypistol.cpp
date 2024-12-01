@@ -2,8 +2,6 @@
 #include "defminvalue.h"
 #include "projectile/projectilegun.h"
 
-#define MAX_DISTANCE 20
-
 #define GUN_WIDTH 20
 #define GUN_HEIGHT 10
 
@@ -41,8 +39,9 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Cow
     Position projectile_position(adjusted_pos_x, adjusted_pos_y);
     Hitbox hitbox(projectile_position, Size(PROJECTILE_WIDTH, PROJECTILE_HEIGHT));
     int velocity = Config::getInstance()["gun"]["velocity_projectile"]["cowboy_pistol"].as<int>();
+    int max_distance = Config::getInstance()["gun"]["scope"]["cowboy_pistol"].as<int>();
     std::vector<std::shared_ptr<Projectile>> projectiles = {
-        std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, TextureFigure::CowboyBullet, hitbox, direction, velocity, MAX_DISTANCE)};
+        std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, TextureFigure::CowboyBullet, hitbox, direction, velocity, max_distance)};
     return std::make_optional(std::make_pair(projectiles, duck_position));
 }
 Position CowboyPistol::get_position_in_duck(const uint16_t &height_duck, const Position &duck, const bool &looking_right, const bool &looking_up)

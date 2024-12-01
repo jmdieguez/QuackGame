@@ -56,8 +56,9 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Mag
     Position projectile_position(adjusted_pos_x, adjusted_pos_y);
     Hitbox hitbox(projectile_position, Size(PROJECTILE_WIDTH, PROJECTILE_HEIGHT));
     int velocity = Config::getInstance()["gun"]["velocity_projectile"]["magnum"].as<int>();
+    int max_distance = Config::getInstance()["gun"]["scope"]["magnum"].as<int>();
     std::vector<std::shared_ptr<Projectile>> projectiles = {
-        std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, TextureFigure::CowboyBullet, hitbox, direction, velocity, MAX_DISTANCE, dispersion)};
+        std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, TextureFigure::CowboyBullet, hitbox, direction, velocity, max_distance, dispersion)};
     Position new_position = move_back(duck_position, status.looking_right, BACK);
     return std::make_optional(std::make_pair(projectiles, new_position));
 }

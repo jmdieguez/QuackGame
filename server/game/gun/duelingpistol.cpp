@@ -5,8 +5,6 @@
 #include "defminvalue.h"
 #include "projectile/projectilegun.h"
 
-#define MAX_DISTANCE 5
-
 #define GUN_WIDTH 20
 #define GUN_HEIGHT 10
 
@@ -55,8 +53,9 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Due
     std::shared_ptr<Dispersion> dispersion = std::make_shared<DispersionMedium>(random());
     Hitbox hitbox(projectile_position, Size(PROJECTILE_WIDTH, PROJECTILE_HEIGHT));
     int velocity = Config::getInstance()["gun"]["velocity_projectile"]["dueling_pistol"].as<int>();
+    int max_distance = Config::getInstance()["gun"]["scope"]["dueling_pistol"].as<int>();
     std::vector<std::shared_ptr<Projectile>> projectiles = {
-        std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, TextureFigure::CowboyBullet, hitbox, direction, velocity, MAX_DISTANCE, dispersion)};
+        std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, TextureFigure::CowboyBullet, hitbox, direction, velocity, max_distance, dispersion)};
     return std::make_optional(std::make_pair(projectiles, duck_position));
 }
 

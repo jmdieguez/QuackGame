@@ -18,3 +18,11 @@ gun:
     magnum: 10
     shotgun: 10
     sniper: 10
+
+  scope:
+    laser_rifle: 30
+    ak: 13
+    dueling_pistol: 5
+    cowboy_pistol: 20
+    magnum: 20
+    sniper: 64

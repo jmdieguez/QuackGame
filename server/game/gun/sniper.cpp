@@ -74,7 +74,8 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Sni
     std::vector<std::shared_ptr<Projectile>> projectiles;
     ProjectileType type = ProjectileType::CowboyBullet;
     int velocity = Config::getInstance()["gun"]["velocity_projectile"]["sniper"].as<int>();
-    projectiles.push_back(std::make_shared<ProjectileGun>(type, TextureFigure::CowboyBullet, hitbox, direction, velocity, MAX_DISTANCE));
+    int max_distance = Config::getInstance()["gun"]["scope"]["sniper"].as<int>();
+    projectiles.push_back(std::make_shared<ProjectileGun>(type, TextureFigure::CowboyBullet, hitbox, direction, velocity, max_distance));
     need_reload = true;
     block_shoot = true;
     time_to_reaload = TIME_TO_REALOAD;
