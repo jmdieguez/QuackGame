@@ -11,6 +11,7 @@
 #include "../../../common/size.h"
 #include "../../../common/texturefigure.h"
 #include "../../../common/duck.h"
+#include "../../../common/config.h"
 #include "../hitbox.h"
 #include "../duck/defs.h"
 #include "projectile/projectile.h"

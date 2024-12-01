@@ -40,7 +40,7 @@ bool DuelingPistol::random()
 ****************************************************************************/
 
 DuelingPistol::DuelingPistol(const uint16_t &id, const Position &position) : Gun(id, GunType::DuelingPistol, Position(position), Size(GUN_WIDTH, GUN_HEIGHT), TextureFigure::DuelingPistolFigure),
-                                                                             GunAmmo(MAX_AMMO),
+                                                                             GunAmmo(Config::getInstance()["gun"]["ammo"]["dueling_pistol"].as<int>()),
                                                                              position_gun(HORIZONTAL_Y, HORIZONTAL_RIGHT, HORIZONTAL_LEFT, VERTICAL_RIGHT, VERTICAL_LEFT)
 {
 }

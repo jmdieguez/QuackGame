@@ -5,7 +5,6 @@
 #include "projectile/projectilegun.h"
 
 #define VELOCITY 10
-#define MAX_AMMO 6
 #define MAX_DISTANCE 20
 #define DISPERSION_VALUE 1
 #define BACK 5
@@ -41,7 +40,7 @@ bool Magnum::random()
 ****************************************************************************/
 
 Magnum::Magnum(const uint16_t &id, const Position &position) : Gun(id, GunType::Magnum, Position(position), Size(GUN_WIDTH, GUN_HEIGHT), TextureFigure::MagnumFigure),
-                                                               GunAmmo(MAX_AMMO),
+                                                               GunAmmo(Config::getInstance()["gun"]["ammo"]["magnum"].as<int>()),
                                                                position_gun(HORIZONTAL_Y, HORIZONTAL_RIGHT, HORIZONTAL_LEFT, VERTICAL_RIGHT, VERTICAL_LEFT)
 {
 }

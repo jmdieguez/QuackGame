@@ -3,7 +3,6 @@
 #include "projectile/projectilegun.h"
 
 #define VELOCITY 10
-#define MAX_AMMO 2
 #define MAX_SHOT 6
 #define MIN_DISTANCE 7
 #define MAX_DISTANCE 9
@@ -40,7 +39,7 @@ void Shotgun::reset()
 ****************************************************************************/
 
 Shotgun::Shotgun(const uint16_t &id, const Position &position) : Gun(id, GunType::Shotgun, Position(position), Size(GUN_WIDTH, GUN_HEIGHT), TextureFigure::ShotgunFigure),
-                                                                 GunAmmo(MAX_AMMO),
+                                                                 GunAmmo(Config::getInstance()["gun"]["ammo"]["shotgun"].as<int>()),
                                                                  position_gun(HORIZONTAL_Y, HORIZONTAL_RIGHT, HORIZONTAL_LEFT, VERTICAL_RIGHT, VERTICAL_LEFT),
                                                                  time_to_shoot(TIME_TO_SHOOT),
                                                                  need_reload(false), block_shoot(false)

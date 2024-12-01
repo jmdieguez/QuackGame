@@ -3,7 +3,6 @@
 #include "projectile/projectilegun.h"
 
 #define VELOCITY 10
-#define MAX_AMMO 3
 #define MAX_DISTANCE 20
 #define TIME_TO_SHOOT 20
 #define TIME_TO_REALOAD 5
@@ -38,7 +37,7 @@ void Sniper::reset()
                               PUBLIC METHODS
 ****************************************************************************/
 Sniper::Sniper(const uint16_t &id, const Position &position) : Gun(id, GunType::Sniper, Position(position), Size(GUN_WIDTH, GUN_HEIGHT), TextureFigure::SniperFigure),
-                                                               GunAmmo(MAX_AMMO),
+                                                               GunAmmo(Config::getInstance()["gun"]["ammo"]["sniper"].as<int>()),
                                                                position_gun(HORIZONTAL_Y, HORIZONTAL_RIGHT, HORIZONTAL_LEFT, VERTICAL_RIGHT, VERTICAL_LEFT),
                                                                time_to_reaload(TIME_TO_REALOAD), time_to_shoot(TIME_TO_SHOOT), need_reload(false), block_shoot(false)
 {

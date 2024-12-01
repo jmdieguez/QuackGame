@@ -53,7 +53,7 @@ bool LaserRifle::random()
 ****************************************************************************/
 
 LaserRifle::LaserRifle(const uint16_t &id, const Position &position) : Gun(id, GunType::LaserRifle, Position(position), Size(GUN_WIDTH, GUN_HEIGHT), TextureFigure::LaserRifleFigure),
-                                                                       GunAmmo(MAX_AMMO),
+                                                                       GunAmmo(Config::getInstance()["gun"]["ammo"]["laser_rifle"].as<int>()),
                                                                        position_gun(HORIZONTAL_Y, HORIZONTAL_RIGHT, HORIZONTAL_LEFT, VERTICAL_RIGHT, VERTICAL_LEFT),
                                                                        time_shooting(TIME_SHOOTING), delay_shooting(DELAY_SHOOTING)
 {

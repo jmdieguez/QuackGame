@@ -3,7 +3,6 @@
 #include "projectile/projectilegun.h"
 
 #define VELOCITY 10
-#define MAX_AMMO 12
 #define MAX_DISTANCE 38
 #define MIN_DISTANCE 35
 
@@ -30,7 +29,7 @@
 ****************************************************************************/
 
 PewPewLaser::PewPewLaser(const uint16_t &id, const Position &position) : Gun(id, GunType::PewPewLaser, Position(position), Size(GUN_WIDTH, GUN_HEIGHT), TextureFigure::PewPewLaserFigure),
-                                                                         GunAmmo(MAX_AMMO),
+                                                                         GunAmmo(Config::getInstance()["gun"]["ammo"]["pew_pew_laser"].as<int>()),
                                                                          position_gun(HORIZONTAL_Y, HORIZONTAL_RIGHT, HORIZONTAL_LEFT, VERTICAL_RIGHT, VERTICAL_LEFT)
 {
 }

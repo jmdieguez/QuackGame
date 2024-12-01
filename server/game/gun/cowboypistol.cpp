@@ -3,7 +3,6 @@
 #include "projectile/projectilegun.h"
 
 #define VELOCITY 10
-#define MAX_AMMO 6
 #define MAX_DISTANCE 20
 
 #define GUN_WIDTH 20
@@ -27,7 +26,7 @@
 ****************************************************************************/
 
 CowboyPistol::CowboyPistol(const uint16_t &id, const Position &position) : Gun(id, GunType::CowboyPistol, Position(position), Size(GUN_WIDTH, GUN_HEIGHT), TextureFigure::CowboyPistolFigure),
-                                                                           GunAmmo(MAX_AMMO),
+                                                                           GunAmmo(Config::getInstance()["gun"]["ammo"]["cowboy_pistol"].as<int>()),
                                                                            position_gun(HORIZONTAL_Y, HORIZONTAL_RIGHT, HORIZONTAL_LEFT, VERTICAL_RIGHT, VERTICAL_LEFT)
 {
 }

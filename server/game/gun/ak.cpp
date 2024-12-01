@@ -6,7 +6,6 @@
 #include "projectile/projectilegun.h"
 
 #define VELOCITY 20
-#define MAX_AMMO 30
 #define MAX_DISTANCE 13
 #define TIME_SHOOTING 60
 #define DELAY_SHOOTING 2
@@ -50,7 +49,7 @@ bool AK::random()
 ****************************************************************************/
 
 AK::AK(const uint16_t &id, const Position &position) : Gun(id, GunType::AK, Position(position), Size(GUN_WIDTH, GUN_HEIGHT), TextureFigure::AKFigure),
-                                                       GunAmmo(MAX_AMMO),
+                                                       GunAmmo(Config::getInstance()["gun"]["ammo"]["ak"].as<int>()),
                                                        position_gun(HORIZONTAL_Y, HORIZONTAL_RIGHT, HORIZONTAL_LEFT, VERTICAL_RIGHT, VERTICAL_LEFT),
                                                        time_shooting(TIME_SHOOTING), delay_shooting(DELAY_SHOOTING)
 {
