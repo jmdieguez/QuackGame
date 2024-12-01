@@ -11,6 +11,7 @@ target_sources(quack_game_client
     start_game.cpp
     game_result_window.cpp
 
+
     PUBLIC
     # .h files
     SDLInitializer.h
@@ -22,4 +23,5 @@ target_sources(quack_game_client
     sound_player.h
     window_utils.h
     game_result_window.h
+    table_screen.h
 )

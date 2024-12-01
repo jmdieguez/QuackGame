@@ -19,6 +19,7 @@
 #include "session/sessioncontroller.h"
 #include "music/musicbox.h"
 #include "../view/loading_screen.h"
+#include "../view/table_screen.h"
 
 class Game
 {
@@ -28,6 +29,7 @@ private:
     ConstantRateLoop constant_rate_loop;
     SDL2pp::Font font;
     LoadingScreen loading_screen;
+    TableScreen table_screen;
     SessionController session;
     std::vector<UserLobbyInfo> users;
     RenderStorage render_storage;

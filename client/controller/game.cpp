@@ -24,6 +24,53 @@ void Game::get_and_execute_events()
 
 void Game::update_renderer(int frame_ticks)
 {
+    // if (true)
+    // {
+    //     Ejemplos para mostrar en la tabla
+    //     UserTable user1, user2, user3, user4, user5, user6, user7, user8, user9, user10;
+    //     user1.color_name = "Rojo";
+    //     user1.round_wins = 5;
+
+    //     user2.color_name = "Azul";
+    //     user2.round_wins = 3;
+
+    //     user3.color_name = "Verde";
+    //     user3.round_wins = 8;
+
+    //     user4.color_name = "Amarillo";
+    //     user4.round_wins = 6;
+
+    //     user5.color_name = "Naranja";
+    //     user5.round_wins = 4;
+
+    //     user6.color_name = "Rosa";
+    //     user6.round_wins = 2;
+
+    //     user7.color_name = "Morado";
+    //     user7.round_wins = 7;
+
+    //     user8.color_name = "Cyan";
+    //     user8.round_wins = 9;
+
+    //     user9.color_name = "Blanco";
+    //     user9.round_wins = 1;
+
+    //     user10.color_name = "Negro";
+    //     user10.round_wins = 3;
+
+    //     std::vector<UserTable> user_list = {user1, user2, user3, user4, user5, user6, user7, user8, user9, user10};
+    //     UserTableSnapshot snapshot_table(user_list);
+
+    //     Codigo  de la tabla (ubicarla donde de va ir)
+
+    //     initializer.get_renderer().Clear();
+    //     render_storage.get_scene().render();
+    //     table_screen.render(font, snapshot_table);
+
+    //     initializer.get_renderer().Present();
+    //     return;
+    // }
+
     set_renderer(frame_ticks);
     initializer.get_renderer().Present();
 }
@@ -127,6 +174,7 @@ Game::Game(Socket skt, std::vector<UserLobbyInfo> users)
                          { this->step(step); }),
       font(FONT_PATH, 32),
       loading_screen(initializer.get_renderer()),
+      table_screen(initializer.get_renderer(), font),
       session(users),
       users(users),
       render_storage(initializer.get_renderer()),
