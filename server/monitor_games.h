@@ -22,7 +22,8 @@ public:
 
     std::vector<UserLobbyInfo> create_game(const uint16_t &creator_id, const std::string &name, const uint16_t &num_players);
     void set_session(const uint16_t &creator_id, const uint16_t &num_players, Socket &skt);
-    void join_game(const uint16_t &player_id, const uint16_t &game_id, Socket &skt);
+    void add_session(const uint16_t &session_id, const uint16_t &num_players, Socket &skt);
+    std::vector<UserLobbyInfo> join_game(const uint16_t &game_id, const uint16_t &num_players);
     std::vector<LobbyMessage> list_games();
     void start_game(const uint16_t &creator_id, const int &game_id, const uint16_t &num_players, Socket &skt);
     uint16_t get_id_counter() const;

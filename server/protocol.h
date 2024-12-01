@@ -31,7 +31,7 @@ public:
     ActionMessage read_action();
     ActionLobby read_lobby();
     void send_snapshot(const Snapshot &snapshot);
-    void send_create_game_info(std::vector<UserLobbyInfo> &users);
+    void send_users(std::vector<UserLobbyInfo> &users);
     void send_join_game_info(std::vector<UserLobbyInfo> &users);
     void send_lobby_info(const std::vector<LobbyMessage> &lobby_info);
     void send_not_ready();

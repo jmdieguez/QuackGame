@@ -255,7 +255,7 @@ void ServerProtocol::send_lobby_info(const std::vector<LobbyMessage> &lobby_info
     }
 }
 
-void ServerProtocol::send_create_game_info(std::vector<UserLobbyInfo> &users)
+void ServerProtocol::send_users(std::vector<UserLobbyInfo> &users)
 {
     const uint16_t users_length = static_cast<uint16_t>(users.size());
     send_data(users_length);

@@ -32,8 +32,8 @@ public:
     void run() override;
     void stop() override;
     void step(unsigned int current_step);
-    std::vector<Color> add_new_player(std::vector<uint16_t> &ids);
-    void set_session(Socket &skt, std::vector<uint16_t> &ids);
+    Color add_new_player(uint16_t &id);
+    void set_session(Socket &skt, const uint16_t &player_id_creator);
     void start_game(const uint16_t &game_id);
     const std::string &get_name();
     void game_state(std::atomic<bool> &);

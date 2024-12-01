@@ -25,7 +25,7 @@ private:
 public:
     explicit ClientProtocol(Socket &);
     void read_snapshot(Snapshot &);
-    std::vector<UserLobbyInfo> read_create_game_info();
+    std::vector<UserLobbyInfo> read_users_info();
     void send_action(const ClientActionType &, bool &);
     void send_id_action(const ClientIdAction &action, bool &was_closed);
     void get_game_list(uint16_t &game_id, std::string &name);

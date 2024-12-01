@@ -20,14 +20,18 @@ void LobbySession::run()
         {
         case ClientActionType::CREATE_GAME:
             users = matches.create_game(id, action.game_name, action.num_players);
-            protocol.send_create_game_info(users);
+            protocol.send_users(users);
             game_joined = matches.get_id_counter();
             break;
 
         case ClientActionType::JOIN_GAME:
-            matches.join_game(id, action.game_id, socket);
+            std::cout << "Ingrese a join" << std::endl;
+            users = matches.join_game(action.game_id, action.num_players);
             game_joined = action.game_id;
+            protocol.send_users(users);
+            matches.add_session(id, action.num_players, socket);
             _keep_running = false;
+            std::cout << "Sali" << std::endl;
             break;
         case ClientActionType::GAME_LIST:
             messages = matches.list_games();

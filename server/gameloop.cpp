@@ -56,23 +56,17 @@ void Gameloop::start_game(const uint16_t &id)
     }
 }
 
-std::vector<Color> Gameloop::add_new_player(std::vector<uint16_t> &ids)
+Color Gameloop::add_new_player(uint16_t &id)
 {
-    std::vector<Color> colors;
-    for (uint16_t &id : ids)
-    {
-        Color color = color_storage.get_color();
-        game.add_player(id, color);
-        number_of_players++;
-        colors.push_back(color);
-    }
-    return colors;
+    Color color = color_storage.get_color();
+    game.add_player(id, color);
+    number_of_players++;
+    return color;
 }
 
-void Gameloop::set_session(Socket &skt, std::vector<uint16_t> &ids)
+void Gameloop::set_session(Socket &skt, const uint16_t &player_id_creator)
 {
-    uint16_t id = ids[0];
-    handler.add(skt, id);
+    handler.add(skt, player_id_creator);
 }
 
 const std::string &Gameloop::get_name()

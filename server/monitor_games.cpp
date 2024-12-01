@@ -10,33 +10,47 @@ std::vector<UserLobbyInfo> MonitorGames::create_game(const uint16_t &creator_id,
     id_counter++;
     std::vector<UserLobbyInfo> users;
     auto new_game = std::make_shared<Gameloop>(id_counter, name, creator_id);
-    std::vector<uint16_t> ids = (num_players == 1)
-                                    ? std::vector<uint16_t>{creator_id}
-                                    : std::vector<uint16_t>{creator_id, static_cast<uint16_t>(creator_id + 1)};
-    std::vector<Color> colors = new_game->add_new_player(ids);
-    for (int i = 0; i < num_players; i++)
-        users.push_back(UserLobbyInfo(ids[i], colors[i].get_text()));
+    for (size_t index = 0; index < num_players; index++)
+    {
+        uint16_t id_player;
+        new_game->get_number_of_players(id_player);
+        Color color = new_game->add_new_player(id_player);
+        users.push_back(UserLobbyInfo(id_player, color.get_text()));
+    }
     games[id_counter] = new_game;
     return users;
 }
 
 void MonitorGames::set_session(const uint16_t &creator_id, const uint16_t &num_players, Socket &skt)
 {
-    std::vector<uint16_t> ids = (num_players == 1)
-                                    ? std::vector<uint16_t>{creator_id}
-                                    : std::vector<uint16_t>{creator_id, static_cast<uint16_t>(creator_id + 1)};
-    games[id_counter]->set_session(skt, ids);
+
+    games[id_counter]->set_session(skt, creator_id);
 }
 
-void MonitorGames::join_game(const uint16_t &player_id, const uint16_t &game_id, Socket &skt)
+void MonitorGames::add_session(const uint16_t &session_id, const uint16_t &num_players, Socket &skt)
 {
     std::lock_guard<std::mutex> lock(mtx);
-    std::vector<uint16_t> ids = {player_id};
+    set_session(session_id, num_players, skt);
+}
+
+std::vector<UserLobbyInfo> MonitorGames::join_game(const uint16_t &game_id, const uint16_t &num_players)
+{
+    std::lock_guard<std::mutex> lock(mtx);
+    std::vector<UserLobbyInfo> users;
     auto it = games.find(game_id);
-    if (it != games.end())
+    if (it == games.end())
+        return users;
+    std::cout << "Estoy aca" << std::endl;
+    for (size_t index = 0; index < num_players; index++)
     {
-        it->second->add_new_player(ids);
+        uint16_t id_player;
+        it->second->get_number_of_players(id_player);
+        std::cout << "El id es: " << (int)id_player << std::endl;
+        Color color = it->second->add_new_player(id_player);
+        std::cout << "El color elegido es: " << color.get_text() << std::endl;
+        users.push_back(UserLobbyInfo(id_player, color.get_text()));
     }
+    return users;
 }
 
 std::vector<LobbyMessage> MonitorGames::list_games()
