@@ -1,0 +1,14 @@
+effect:
+  mute: No
+  type:
+    laser: 2
+    explosion: 4
+    projectile_gun: 1
+
+music:
+  mute: No
+  volume: 3
+
+settings:
+  width: 1280
+  height: 720

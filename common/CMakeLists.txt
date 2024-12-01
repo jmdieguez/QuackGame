@@ -34,4 +34,5 @@ target_sources(quack_game_common
     color.h
     clientidaction.h
     userlobbyinfo.h
+    config.h
 )
