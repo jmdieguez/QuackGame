@@ -1,6 +1,3 @@
-//
-// Created by trini-taller on 11/30/24.
-//
 
 #ifndef TRANSITIONMANAGER_H
 #define TRANSITIONMANAGER_H
@@ -11,7 +8,7 @@
 class TransitionManager {
 public:
     TransitionManager(SDL2pp::Renderer &renderer, SDL2pp::Font &font);
-    void fadeTransition(bool fadeOut);
+    void fadeTransition();
     void drawTransitionOverlay();
 
 private:

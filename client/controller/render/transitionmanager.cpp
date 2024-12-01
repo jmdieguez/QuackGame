@@ -14,11 +14,8 @@ TransitionManager::TransitionManager(SDL2pp::Renderer &renderer, SDL2pp::Font &f
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 }
 
-void TransitionManager::fadeTransition(bool fadeOut) {
-    // Renderiza el texto usando el método correcto de SDL2pp::Font
+void TransitionManager::fadeTransition() {
     SDL2pp::Surface textSurface = font.RenderText_Blended("Next level!", SDL2pp::Color(255, 255, 255));
-
-    // Crea la textura directamente desde el objeto SDL2pp::Surface
     SDL2pp::Texture textTexture(renderer, textSurface);
 
     int textWidth = textSurface.GetWidth();
@@ -34,7 +31,6 @@ void TransitionManager::fadeTransition(bool fadeOut) {
         textHeight
     };
 
-    // Cargar y reproducir el sonido
     Mix_Chunk* sound = Mix_LoadWAV(NEXT_LEVEL);
     if (!sound) {
         throw std::runtime_error("Failed to load sound: " + std::string(Mix_GetError()));
@@ -42,11 +38,28 @@ void TransitionManager::fadeTransition(bool fadeOut) {
     Mix_PlayChannel(-1, sound, 0);
 
     Uint32 startTicks = SDL_GetTicks();
-    Uint32 endTicks = startTicks + 150 * 16;
+    Uint32 fadeDuration = 50 * 16;
+
+    Uint32 endTicks = startTicks + fadeDuration;
 
     while (SDL_GetTicks() < endTicks) {
         Uint32 elapsed = SDL_GetTicks() - startTicks;
-        alpha = fadeOut ? 255 - (elapsed * 255 / (150 * 16)) : (elapsed * 255 / (150 * 16));
+        alpha = elapsed * 255 / fadeDuration;
+        if (alpha < 0) alpha = 0;
+        if (alpha > 255) alpha = 255;
+
+        SDL_SetRenderDrawColor(renderer.Get(), 0, 0, 0, alpha);
+        SDL_RenderClear(renderer.Get());
+        SDL_RenderCopy(renderer.Get(), textTexture.Get(), nullptr, &textRect);
+        SDL_RenderPresent(renderer.Get());
+    }
+
+    startTicks = SDL_GetTicks();
+    endTicks = startTicks + fadeDuration;
+
+    while (SDL_GetTicks() < endTicks) {
+        Uint32 elapsed = SDL_GetTicks() - startTicks;
+        alpha = 255 - (elapsed * 255 / fadeDuration);
         if (alpha < 0) alpha = 0;
         if (alpha > 255) alpha = 255;
 
@@ -58,6 +71,7 @@ void TransitionManager::fadeTransition(bool fadeOut) {
 
     Mix_FreeChunk(sound);
 }
+
 
 
 void TransitionManager::drawTransitionOverlay() {
