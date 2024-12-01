@@ -31,7 +31,7 @@ void Game::update_renderer(int frame_ticks)
 void Game::process_projectile(ProjectileSnapshot &projectile, Snapshot &snapshot, float scale_x, float scale_y)
 {
     bool result = Config::getInstance()["effect"]["mute"].as<bool>();
-    if (!result && projectile.texture != TextureFigure::None && projectile.texture != TextureFigure::GrenadeFigure && projectile.texture != TextureFigure::BananaFigure && projectile.texture != TextureFigure::BananaFigure)
+    if (!result && projectile.texture != TextureFigure::None && projectile.texture != TextureFigure::GrenadeFigure && projectile.texture != TextureFigure::BananaFigure && projectile.texture != TextureFigure::BananaThrown)
         music_storage.get_projectile_sound().sound(projectile.id);
     render_storage.get_projectile_drawer().render(projectile, snapshot.camera, scale_x, scale_y);
 }
@@ -83,6 +83,12 @@ void Game::set_renderer(int frame_ticks)
             for (BoxSnapshot &box : latest_snapshot.boxes)
                 render_storage.get_box_item().render(box, latest_snapshot.camera, scale_x, scale_y);
 
+            for (ProjectileSnapshot &projectile : latest_snapshot.projectiles)
+                process_projectile(projectile, latest_snapshot, scale_x, scale_y);
+
+            for (ExplosionSnapshot &explosion : latest_snapshot.explosions)
+                process_explosion(explosion, frame_ticks, latest_snapshot, scale_x, scale_y);
+
             for (Position &position : latest_snapshot.map.gun_spawns)
                 render_storage.get_map_drawer().render_spawn_in_map(position, latest_snapshot.camera, scale_x, scale_y);
 
@@ -91,12 +97,6 @@ void Game::set_renderer(int frame_ticks)
 
             for (GunNoEquippedSnapshot &gun : latest_snapshot.guns)
                 render_storage.get_item().render(gun, latest_snapshot.camera, scale_x, scale_y);
-
-            for (ProjectileSnapshot &projectile : latest_snapshot.projectiles)
-                process_projectile(projectile, latest_snapshot, scale_x, scale_y);
-
-            for (ExplosionSnapshot &explosion : latest_snapshot.explosions)
-                process_explosion(explosion, frame_ticks, latest_snapshot, scale_x, scale_y);
 
             for (ArmorSnapshot &armor : latest_snapshot.armors)
                 render_storage.get_armor().render(armor, latest_snapshot.camera, scale_x, scale_y);
