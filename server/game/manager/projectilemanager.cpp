@@ -87,7 +87,7 @@ void ProjectileManager::move(Map &map)
                 { return map.validate_coordinate(p); });
 }
 
-void ProjectileManager::verify_hit(std::map<uint8_t, Duck> &ducks, std::map<Position, Box> &boxes, const std::function<void(const Position &, const Position &)> &spawn_gun)
+void ProjectileManager::verify_hit(std::map<uint16_t, Duck> &ducks, std::map<Position, Box> &boxes, const std::function<void(const Position &, const Position &)> &spawn_gun)
 {
     for (std::shared_ptr<Projectile> &p : projectiles)
     {

@@ -4,22 +4,23 @@
 #include "../../common/queue.h"
 #include "../../common/socket.h"
 #include "../../common/thread.h"
-#include "../common/snapshots.h"
-#include "../common/client_actions.h"
+#include "../../common/snapshots.h"
+#include "../../common/client_actions.h"
 
 #include "protocol.h"
 
-class Sender : public Thread {
+class Sender : public Thread
+{
 private:
     ClientProtocol protocol;
-    Queue<ClientActionType>&  queue_sender;
+    Queue<ClientIdAction> &queue_sender;
     bool closed = false;
 
 public:
-    explicit Sender(Socket& skt, Queue<ClientActionType>&);
+    explicit Sender(Socket &skt, Queue<ClientIdAction> &);
     ~Sender();
     void run() override;
     void stop() override;
 };
 
-#endif  // SENDER_H
+#endif // SENDER_H

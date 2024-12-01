@@ -24,15 +24,16 @@ private:
     std::shared_ptr<Queue<ClientCommand>> recv_queue;
     Game game;
     SessionsHandler handler;
-    uint16_t number_of_players = 0;
+    uint16_t number_of_players;
 
 public:
-    Gameloop(const uint16_t &id, const std::string &, const uint16_t &creator_id);
+    Gameloop(const uint16_t &id, const std::string &name, const uint16_t &creator_id);
     ~Gameloop() {}
     void run() override;
     void stop() override;
     void step(unsigned int current_step);
-    void add_new_player(Socket &skt, const uint16_t &id);
+    Color add_new_player(uint16_t &id);
+    void set_session(Socket &skt, const uint16_t &player_id_creator);
     void start_game(const uint16_t &game_id);
     const std::string &get_name();
     void game_state(std::atomic<bool> &);

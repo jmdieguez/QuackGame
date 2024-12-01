@@ -1,0 +1,33 @@
+gun:
+  ammo:
+    pew_pew_laser: 12
+    laser_rifle: 10
+    ak: 30
+    dueling_pistol: 1
+    cowboy_pistol: 6
+    magnum: 6
+    shotgun: 2
+    sniper: 3
+
+  velocity_projectile:
+    pew_pew_laser: 10
+    laser_rifle: 20
+    ak: 20
+    dueling_pistol: 10
+    cowboy_pistol: 10
+    magnum: 10
+    shotgun: 10
+    sniper: 10
+
+  scope:
+    laser_rifle: 30
+    ak: 13
+    dueling_pistol: 5
+    cowboy_pistol: 20
+    magnum: 20
+    sniper: 64
+
+settings:
+  check_won: 5
+  min_round_to_win: 6
+  max_message_receiver: 10000

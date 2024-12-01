@@ -20,10 +20,14 @@ void SessionsHandler::add(Socket &client, const uint16_t &id)
 void SessionsHandler::remove_closed_sessions()
 {
     std::lock_guard<std::mutex> lock(mtx);
-    for (auto it = sessions.begin(); it != sessions.end();) {
-        if (it->second == nullptr || it->second->has_finished()) {
+    for (auto it = sessions.begin(); it != sessions.end();)
+    {
+        if (it->second == nullptr || it->second->has_finished())
+        {
             it = sessions.erase(it);
-        } else {
+        }
+        else
+        {
             ++it;
         }
     }
@@ -33,7 +37,8 @@ void SessionsHandler::remove_all_sessions()
 {
     std::lock_guard<std::mutex> lock(mtx);
     recv_queue->close();
-    for (auto &[id, session] : sessions) {
+    for (auto &[id, session] : sessions)
+    {
         session->stop();
     }
     sessions.clear();
@@ -42,22 +47,29 @@ void SessionsHandler::remove_all_sessions()
 void SessionsHandler::broadcast(const Snapshot &msg)
 {
     std::lock_guard<std::mutex> lock(mtx);
-    if (msg.is_ended) {
-        for (auto &[id, session] : sessions) {
+    if (msg.is_ended)
+    {
+        for (auto &[id, session] : sessions)
+        {
             Snapshot personalized_msg = msg;
             personalized_msg.game_result =
                 (id == msg.winner_id) ? GameResult::VICTORY : GameResult::DEFEAT;
 
             session->send(personalized_msg);
         }
-    } else {
-        for (auto &[id, session] : sessions) {
+    }
+    else
+    {
+        for (auto &[id, session] : sessions)
+        {
             session->send(msg);
         }
     }
 }
 
-bool SessionsHandler::has_clients() {
+bool SessionsHandler::has_clients()
+{
     std::lock_guard<std::mutex> lock(mtx);
-    return !sessions.empty();;
+    return !sessions.empty();
+    ;
 }

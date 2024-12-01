@@ -87,7 +87,8 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
     uint16_t game_state;
     read_data(game_state);
     snapshot.is_ended = game_state;
-    if (game_state == 1) {
+    if (game_state == 1)
+    {
         uint16_t game_result;
         read_data(game_result);
         snapshot.game_result = static_cast<GameResult>(game_result);
@@ -248,7 +249,7 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
 void ClientProtocol::read_data(uint16_t &data)
 {
     bool was_closed = false;
-    uint16_t data_received = 0;
+    uint16_t data_received;
     skt.recvall(&data_received, sizeof(uint16_t), &was_closed);
     if (was_closed)
     {
@@ -279,6 +280,17 @@ void ClientProtocol::send_action(const ClientActionType &action, bool &was_close
     skt.sendall(&data_converted, sizeof(data_converted), &was_closed);
 }
 
+void ClientProtocol::send_id_action(const ClientIdAction &action, bool &was_closed)
+{
+
+    uint16_t id_to_send = static_cast<uint16_t>(action.get_id());
+    uint16_t id_converted = htons(id_to_send);
+    skt.sendall(&id_converted, sizeof(id_converted), &was_closed);
+    uint16_t action_to_send = static_cast<uint16_t>(action.get_action());
+    uint16_t data_converted = htons(action_to_send);
+    skt.sendall(&data_converted, sizeof(data_converted), &was_closed);
+}
+
 void ClientProtocol::get_game_list(uint16_t &game_id, std::string &name)
 {
     uint16_t game_id_network_order;
@@ -304,10 +316,17 @@ void ClientProtocol::recv(void *data, size_t size)
     }
 }
 
-void ClientProtocol::send_create_game(const std::string &name)
+void ClientProtocol::send_create_game(const uint16_t &num_player, const std::string &name)
 {
     bool was_closed = false;
     send_action(ClientActionType::CREATE_GAME, was_closed);
+    if (was_closed)
+    {
+        throw LibError(errno, "Error al intentar enviar datos del servidor");
+    }
+
+    uint16_t num_player_converted = htons(num_player);
+    skt.sendall(&num_player_converted, sizeof(uint16_t), &was_closed);
     if (was_closed)
     {
         throw LibError(errno, "Error al intentar enviar datos del servidor");
@@ -325,6 +344,33 @@ void ClientProtocol::send_create_game(const std::string &name)
     send_name(nameBytes);
 }
 
+std::vector<UserLobbyInfo> ClientProtocol::read_users_info()
+{
+    uint16_t users_length;
+    read_data(users_length);
+    std::vector<UserLobbyInfo> users;
+    for (int i = 0; i < users_length; i++)
+    {
+        uint16_t id;
+        read_data(id);
+        std::string color_name;
+        read_string(color_name);
+        UserLobbyInfo user(id, color_name);
+        users.push_back(user);
+    }
+    return users;
+}
+
+void ClientProtocol::read_string(std::string &string)
+{
+    uint16_t length;
+    read_data(length);
+    std::vector<unsigned char> buffer(length);
+    bool was_closed = false;
+    size_t bytes_read = skt.recvall(buffer.data(), length, &was_closed);
+    string.assign(buffer.begin(), buffer.begin() + bytes_read);
+}
+
 void ClientProtocol::send_name(const std::vector<unsigned char> &data)
 {
     bool was_closed = false;
@@ -335,7 +381,7 @@ void ClientProtocol::send_name(const std::vector<unsigned char> &data)
     }
 }
 
-void ClientProtocol::send_join_game(const uint16_t &id)
+void ClientProtocol::send_join_game(const uint16_t &id, const uint16_t &num_player)
 {
     bool was_closed = false;
     send_action(ClientActionType::JOIN_GAME, was_closed);
@@ -349,8 +395,13 @@ void ClientProtocol::send_join_game(const uint16_t &id)
     {
         throw LibError(errno, "Error al intentar enviar datos del servidor");
     }
+    uint16_t num_player_converted = htons(num_player);
+    skt.sendall(&num_player_converted, sizeof(uint16_t), &was_closed);
+    if (was_closed)
+    {
+        throw LibError(errno, "Error al intentar enviar datos del servidor");
+    }
 }
-
 void ClientProtocol::send_start_game()
 {
     bool was_closed = false;

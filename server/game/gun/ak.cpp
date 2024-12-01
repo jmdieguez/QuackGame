@@ -5,9 +5,6 @@
 #include "defminvalue.h"
 #include "projectile/projectilegun.h"
 
-#define VELOCITY 20
-#define MAX_AMMO 30
-#define MAX_DISTANCE 13
 #define TIME_SHOOTING 60
 #define DELAY_SHOOTING 2
 #define START_DISPERSION 55
@@ -50,7 +47,7 @@ bool AK::random()
 ****************************************************************************/
 
 AK::AK(const uint16_t &id, const Position &position) : Gun(id, GunType::AK, Position(position), Size(GUN_WIDTH, GUN_HEIGHT), TextureFigure::AKFigure),
-                                                       GunAmmo(MAX_AMMO),
+                                                       GunAmmo(Config::getInstance()["gun"]["ammo"]["ak"].as<int>()),
                                                        position_gun(HORIZONTAL_Y, HORIZONTAL_RIGHT, HORIZONTAL_LEFT, VERTICAL_RIGHT, VERTICAL_LEFT),
                                                        time_shooting(TIME_SHOOTING), delay_shooting(DELAY_SHOOTING)
 {
@@ -77,7 +74,9 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> AK:
     Position projectile_position(adjusted_pos_x, adjusted_pos_y);
     std::vector<std::shared_ptr<Projectile>> projectiles;
     Hitbox hitbox(projectile_position, Size(PROJECTILE_WIDTH, PROJECTILE_HEIGHT));
-    projectiles.push_back(std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, TextureFigure::CowboyBullet, hitbox, direction, VELOCITY, MAX_DISTANCE, dispersion));
+    int velocity = Config::getInstance()["gun"]["velocity_projectile"]["ak"].as<int>();
+    int max_distance = Config::getInstance()["gun"]["scope"]["ak"].as<int>();
+    projectiles.push_back(std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, TextureFigure::CowboyBullet, hitbox, direction, velocity, max_distance, dispersion));
     Position new_position = move_back(duck_position, status.looking_right, BACK);
     delay_shooting = DELAY_SHOOTING;
     time_shooting--;

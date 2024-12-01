@@ -2,9 +2,6 @@
 #include "shotgun.h"
 #include "projectile/projectilegun.h"
 
-#define VELOCITY 10
-#define MAX_AMMO 2
-#define MAX_SHOT 6
 #define MIN_DISTANCE 7
 #define MAX_DISTANCE 9
 #define TIME_TO_SHOOT 20
@@ -40,7 +37,7 @@ void Shotgun::reset()
 ****************************************************************************/
 
 Shotgun::Shotgun(const uint16_t &id, const Position &position) : Gun(id, GunType::Shotgun, Position(position), Size(GUN_WIDTH, GUN_HEIGHT), TextureFigure::ShotgunFigure),
-                                                                 GunAmmo(MAX_AMMO),
+                                                                 GunAmmo(Config::getInstance()["gun"]["ammo"]["shotgun"].as<int>()),
                                                                  position_gun(HORIZONTAL_Y, HORIZONTAL_RIGHT, HORIZONTAL_LEFT, VERTICAL_RIGHT, VERTICAL_LEFT),
                                                                  time_to_shoot(TIME_TO_SHOOT),
                                                                  need_reload(false), block_shoot(false)
@@ -80,8 +77,9 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Sho
         std::make_shared<DispersionHigh>(),
         std::make_shared<DispersionHigh>(true)};
 
+    int velocity = Config::getInstance()["gun"]["velocity_projectile"]["shotgun"].as<int>();
     for (auto &dispersion : dispersions)
-        projectiles.push_back(std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, TextureFigure::CowboyBullet, hitbox, direction, VELOCITY, MAX_DISTANCE, dispersion));
+        projectiles.push_back(std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, TextureFigure::CowboyBullet, hitbox, direction, velocity, MAX_DISTANCE, dispersion));
 
     need_reload = true;
     block_shoot = true;

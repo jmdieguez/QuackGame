@@ -6,12 +6,14 @@
 #include "../common/lobby_messages.h"
 #include "../common/socket.h"
 #include "../common/queue.h"
+#include "../common/userlobbyinfo.h"
 #include <vector>
 
 class ServerProtocol
 {
 private:
     Socket &skt;
+    void read_data(uint16_t &data);
     void send_data(const uint16_t &data);
     void send_data_float(const float &data);
     void send_duck_status(const DuckStatus &status);
@@ -30,6 +32,8 @@ public:
     ActionMessage read_action();
     ActionLobby read_lobby();
     void send_snapshot(const Snapshot &snapshot);
+    void send_users(std::vector<UserLobbyInfo> &users);
+    void send_join_game_info(std::vector<UserLobbyInfo> &users);
     void send_lobby_info(const std::vector<LobbyMessage> &lobby_info);
     void send_not_ready();
     void send_ready();

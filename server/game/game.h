@@ -17,7 +17,8 @@
 #include "manager/projectilemanager.h"
 #include "manager/explosionmanager.h"
 
-enum class RandomSelection {
+enum class RandomSelection
+{
     SpawnGun = 0,
     Explode,
     Nothing
@@ -30,9 +31,11 @@ private:
     unsigned current_map = 0;
     unsigned round = 0;
     bool initialize = true;
+    unsigned check_won;
+    unsigned min_round_to_win;
     std::vector<Map> maps;
     std::vector<uint8_t> player_ids;
-    std::map<uint8_t, Duck> ducks;
+    std::map<uint16_t, Duck> ducks;
     ExplosionManager explosions;
     ProjectileManager projectiles;
     std::map<uint8_t, uint8_t> victories;

@@ -26,16 +26,16 @@ void CheatStorage::add_input(std::string input)
         cheat_build.erase(0, 1);
 }
 
-void CheatStorage::active_cheat(Queue<ClientActionType> &queue_sender)
+void CheatStorage::active_cheat(GameContext &game_context)
 {
     for (auto &[cheat, value] : cheats)
         if (cheat == cheat_build)
-            send_message(queue_sender, value);
+            send_message(game_context, value);
 }
 
-void CheatStorage::send_message(Queue<ClientActionType> &queue_sender, ClientActionType &value)
+void CheatStorage::send_message(GameContext &game_context, ClientActionType &value)
 {
-    queue_sender.try_push(value);
+    game_context.push_message(value);
 }
 
 CheatStorage::~CheatStorage()

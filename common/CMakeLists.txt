@@ -32,4 +32,7 @@ target_sources(quack_game_common
     tiles.h
     size.h
     color.h
+    clientidaction.h
+    userlobbyinfo.h
+    config.h
 )

@@ -8,16 +8,16 @@
 ColorStorage::ColorStorage()
 {
     ColorFactory factory;
-    availableColors.push_back(factory.Red());
-    availableColors.push_back(factory.Green());
-    availableColors.push_back(factory.Blue());
-    availableColors.push_back(factory.Yellow());
-    availableColors.push_back(factory.Cyan());
-    availableColors.push_back(factory.Magenta());
-    availableColors.push_back(factory.White());
-    availableColors.push_back(factory.Black());
-    availableColors.push_back(factory.Gray());
-    availableColors.push_back(factory.Orange());
+    availableColors.push_back(factory.red());
+    availableColors.push_back(factory.green());
+    availableColors.push_back(factory.blue());
+    availableColors.push_back(factory.yellow());
+    availableColors.push_back(factory.cyan());
+    availableColors.push_back(factory.magenta());
+    availableColors.push_back(factory.white());
+    availableColors.push_back(factory.black());
+    availableColors.push_back(factory.gray());
+    availableColors.push_back(factory.orange());
 }
 
 Color ColorStorage::get_color()

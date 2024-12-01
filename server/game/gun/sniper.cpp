@@ -2,8 +2,6 @@
 #include "defminvalue.h"
 #include "projectile/projectilegun.h"
 
-#define VELOCITY 10
-#define MAX_AMMO 3
 #define MAX_DISTANCE 20
 #define TIME_TO_SHOOT 20
 #define TIME_TO_REALOAD 5
@@ -38,7 +36,7 @@ void Sniper::reset()
                               PUBLIC METHODS
 ****************************************************************************/
 Sniper::Sniper(const uint16_t &id, const Position &position) : Gun(id, GunType::Sniper, Position(position), Size(GUN_WIDTH, GUN_HEIGHT), TextureFigure::SniperFigure),
-                                                               GunAmmo(MAX_AMMO),
+                                                               GunAmmo(Config::getInstance()["gun"]["ammo"]["sniper"].as<int>()),
                                                                position_gun(HORIZONTAL_Y, HORIZONTAL_RIGHT, HORIZONTAL_LEFT, VERTICAL_RIGHT, VERTICAL_LEFT),
                                                                time_to_reaload(TIME_TO_REALOAD), time_to_shoot(TIME_TO_SHOOT), need_reload(false), block_shoot(false)
 {
@@ -75,7 +73,9 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Sni
     Hitbox hitbox(projectile_position, Size(PROJECTILE_WIDTH, PROJECTILE_HEIGHT));
     std::vector<std::shared_ptr<Projectile>> projectiles;
     ProjectileType type = ProjectileType::CowboyBullet;
-    projectiles.push_back(std::make_shared<ProjectileGun>(type, TextureFigure::CowboyBullet, hitbox, direction, VELOCITY, MAX_DISTANCE));
+    int velocity = Config::getInstance()["gun"]["velocity_projectile"]["sniper"].as<int>();
+    int max_distance = Config::getInstance()["gun"]["scope"]["sniper"].as<int>();
+    projectiles.push_back(std::make_shared<ProjectileGun>(type, TextureFigure::CowboyBullet, hitbox, direction, velocity, max_distance));
     need_reload = true;
     block_shoot = true;
     time_to_reaload = TIME_TO_REALOAD;

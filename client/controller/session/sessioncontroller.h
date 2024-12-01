@@ -4,6 +4,8 @@
 #include "cheat/cheatstorage.h"
 #include "command/inputhandler.h"
 #include "command/gamecontext.h"
+#include "command/playerkeyconfigmanager.h"
+#include "../../../common/userlobbyinfo.h"
 #include "../../../common/queue.h"
 #include "../../../common/snapshots.h"
 
@@ -12,16 +14,18 @@ class SessionController
 private:
     CheatStorage cheat_storage;
     Queue<Snapshot> queue_receiver;
-    Queue<ClientActionType> queue_sender;
-    InputHandler input;
-    GameContext game_context;
+    Queue<ClientIdAction> queue_sender;
+    PlayerKeyConfigManager config_manager;
+    InputHandler player_one_input;
+    InputHandler player_two_input;
+    uint16_t num_players;
 
 public:
-    SessionController();
+    explicit SessionController(std::vector<UserLobbyInfo> &users);
     Queue<Snapshot> &get_queue_receiver();
     void process_input(SDL_Event &event);
     void revert_command(SDL_Event &event);
-    Queue<ClientActionType> &get_queue_sender();
+    Queue<ClientIdAction> &get_queue_sender();
     ~SessionController();
 };
 

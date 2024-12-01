@@ -11,6 +11,9 @@ ActionMessage ServerProtocol::read_action()
     ClientActionType action;
     bool was_closed = false;
 
+    uint16_t id;
+    read_data(id);
+
     uint16_t info;
     skt.recvall(&info, sizeof(info), &was_closed);
     if (was_closed)
@@ -18,7 +21,7 @@ ActionMessage ServerProtocol::read_action()
         throw LibError(errno, "Error al intentar enviar datos a cliente");
     }
     action = static_cast<ClientActionType>(ntohs(info));
-    return ActionMessage(action, "");
+    return ActionMessage(id, action, "");
 }
 
 ActionLobby ServerProtocol::read_lobby()
@@ -43,15 +46,23 @@ ActionLobby ServerProtocol::read_lobby()
             throw LibError(errno, "Error al intentar enviar datos a cliente");
         }
         game_id = ntohs(game_id);
-        return ActionLobby(action, game_id);
+        uint16_t num_players;
+        read_data(num_players);
+        // return ActionLobby(action, game_id);
+        return ActionLobby(action, game_id, num_players);
     }
     else if (action == ClientActionType::CREATE_GAME)
     {
+        uint16_t num_players;
+        read_data(num_players);
         std::string name = "";
         read_name(name);
-        return ActionLobby(action, 0, name);
+        //   return ActionLobby(action, 0, name);
+        return ActionLobby(action, 0, num_players, name);
     }
-    return ActionLobby(action);
+
+    //   return ActionLobby(action);
+    return ActionLobby(action, game_id, game_id);
 }
 
 void ServerProtocol::send_data(const uint16_t &data)
@@ -63,6 +74,18 @@ void ServerProtocol::send_data(const uint16_t &data)
     {
         throw LibError(errno, "Error al intentar enviar datos a cliente");
     }
+}
+
+void ServerProtocol::read_data(uint16_t &data)
+{
+    bool was_closed = false;
+    uint16_t info;
+    skt.recvall(&info, sizeof(uint16_t), &was_closed);
+    if (was_closed)
+    {
+        throw LibError(errno, "Error al intentar recibir datos del cliente");
+    }
+    data = ntohs(info);
 }
 
 void ServerProtocol::send_data_float(const float &data)
@@ -240,6 +263,34 @@ void ServerProtocol::send_lobby_info(const std::vector<LobbyMessage> &lobby_info
         send_data(msg.game_id);
         send_data(msg.name.length());
         send_name(std::vector<unsigned char>(msg.name.begin(), msg.name.end()));
+    }
+}
+
+void ServerProtocol::send_users(std::vector<UserLobbyInfo> &users)
+{
+    const uint16_t users_length = static_cast<uint16_t>(users.size());
+    send_data(users_length);
+    for (UserLobbyInfo &user : users)
+    {
+        std::string color = user.get_color();
+        send_data(user.get_id());
+        send_data(color.size());
+        std::vector<unsigned char> name_color(color.begin(), color.end());
+        send_name(name_color);
+    }
+}
+
+void ServerProtocol::send_join_game_info(std::vector<UserLobbyInfo> &users)
+{
+    const uint16_t users_length = static_cast<uint16_t>(users.size());
+    send_data(users_length);
+    for (UserLobbyInfo &user : users)
+    {
+        std::string color = user.get_color();
+        send_data(user.get_id());
+        send_data(user.get_color().size());
+        std::vector<unsigned char> name_color(user.get_color().begin(), user.get_color().end());
+        send_name(name_color);
     }
 }
 

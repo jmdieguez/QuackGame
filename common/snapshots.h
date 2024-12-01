@@ -15,6 +15,7 @@
 #include "size.h"
 #include "texturefigure.h"
 #include "color.h"
+#include "usertable.h"
 
 enum class GameResult : uint16_t
 {
@@ -63,6 +64,13 @@ public:
                                                                                                                                                                                                 texture(texture), type_direction(type_direction)
     {
     }
+};
+
+class UserTableSnapshot
+{
+public:
+    std::vector<UserTable> users;
+    explicit UserTableSnapshot(const std::vector<UserTable> &users) : users(users) {};
 };
 
 class DuckSnapshot

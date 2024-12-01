@@ -1,4 +1,5 @@
 #include "game.h"
+#include "../../common/config.h"
 #include "render/transitionmanager.h"
 
 /***************************************************************************
@@ -24,13 +25,60 @@ void Game::get_and_execute_events()
 
 void Game::update_renderer(int frame_ticks)
 {
+    // if (true)
+    // {
+    //     Ejemplos para mostrar en la tabla
+    //     UserTable user1, user2, user3, user4, user5, user6, user7, user8, user9, user10;
+    //     user1.color_name = "Rojo";
+    //     user1.round_wins = 5;
+
+    //     user2.color_name = "Azul";
+    //     user2.round_wins = 3;
+
+    //     user3.color_name = "Verde";
+    //     user3.round_wins = 8;
+
+    //     user4.color_name = "Amarillo";
+    //     user4.round_wins = 6;
+
+    //     user5.color_name = "Naranja";
+    //     user5.round_wins = 4;
+
+    //     user6.color_name = "Rosa";
+    //     user6.round_wins = 2;
+
+    //     user7.color_name = "Morado";
+    //     user7.round_wins = 7;
+
+    //     user8.color_name = "Cyan";
+    //     user8.round_wins = 9;
+
+    //     user9.color_name = "Blanco";
+    //     user9.round_wins = 1;
+
+    //     user10.color_name = "Negro";
+    //     user10.round_wins = 3;
+
+    //     std::vector<UserTable> user_list = {user1, user2, user3, user4, user5, user6, user7, user8, user9, user10};
+    //     UserTableSnapshot snapshot_table(user_list);
+
+    //     Codigo  de la tabla (ubicarla donde de va ir)
+
+    //     initializer.get_renderer().Clear();
+    //     render_storage.get_scene().render();
+    //     table_screen.render(font, snapshot_table);
+
+    //     initializer.get_renderer().Present();
+    //     return;
+    // }
+
     set_renderer(frame_ticks);
     initializer.get_renderer().Present();
 }
 
 void Game::process_projectile(ProjectileSnapshot &projectile, Snapshot &snapshot, float scale_x, float scale_y)
 {
-    if (projectile.texture != TextureFigure::None && projectile.texture != TextureFigure::GrenadeFigure)
+    if (!mute_effect && projectile.texture != TextureFigure::None && projectile.texture != TextureFigure::GrenadeFigure && projectile.texture != TextureFigure::BananaFigure && projectile.texture != TextureFigure::BananaThrown)
         music_storage.get_projectile_sound().sound(projectile.id);
     render_storage.get_projectile_drawer().render(projectile, snapshot.camera, scale_x, scale_y);
 }
@@ -39,7 +87,8 @@ void Game::process_explosion(ExplosionSnapshot &explosion, int frame_ticks, Snap
 {
     if (explosion.texture == TextureFigure::None)
         return;
-    music_storage.get_explosion_sound().sound(explosion.id);
+    if (!mute_effect)
+        music_storage.get_explosion_sound().sound(explosion.id);
     render_storage.get_explosion().render(explosion, frame_ticks, snapshot.camera, scale_x, scale_y);
 }
 
@@ -60,7 +109,7 @@ void Game::set_renderer(int frame_ticks)
     {
         initializer.get_renderer().Clear();
         render_storage.get_scene().render();
-        loading_screen.render();
+        loading_screen.render(font, users);
     }
 
     if (received_snapshot)
@@ -80,6 +129,12 @@ void Game::set_renderer(int frame_ticks)
             for (BoxSnapshot &box : latest_snapshot.boxes)
                 render_storage.get_box_item().render(box, latest_snapshot.camera, scale_x, scale_y);
 
+            for (ProjectileSnapshot &projectile : latest_snapshot.projectiles)
+                process_projectile(projectile, latest_snapshot, scale_x, scale_y);
+
+            for (ExplosionSnapshot &explosion : latest_snapshot.explosions)
+                process_explosion(explosion, frame_ticks, latest_snapshot, scale_x, scale_y);
+
             for (Position &position : latest_snapshot.map.gun_spawns)
                 render_storage.get_map_drawer().render_spawn_in_map(position, latest_snapshot.camera, scale_x, scale_y);
 
@@ -89,15 +144,10 @@ void Game::set_renderer(int frame_ticks)
             for (GunNoEquippedSnapshot &gun : latest_snapshot.guns)
                 render_storage.get_item().render(gun, latest_snapshot.camera, scale_x, scale_y);
 
-            for (ProjectileSnapshot &projectile : latest_snapshot.projectiles)
-                process_projectile(projectile, latest_snapshot, scale_x, scale_y);
-
-            for (ExplosionSnapshot &explosion : latest_snapshot.explosions)
-                process_explosion(explosion, frame_ticks, latest_snapshot, scale_x, scale_y);
-
             for (ArmorSnapshot &armor : latest_snapshot.armors)
                 render_storage.get_armor().render(armor, latest_snapshot.camera, scale_x, scale_y);
-            if (latest_snapshot.is_ended) {
+            if (latest_snapshot.is_ended)
+            {
                 victory = snapshot.game_result == GameResult::VICTORY;
 
                 initializer.get_renderer().Clear();
@@ -125,14 +175,19 @@ void Game::step(unsigned int current_step)
                               PUBLIC METHODS
 ****************************************************************************/
 
-Game::Game(Socket skt)
+Game::Game(Socket skt, std::vector<UserLobbyInfo> users)
     : keep_running(true),
       constant_rate_loop(keep_running, [this](unsigned int step)
                          { this->step(step); }),
       font(FONT_PATH, 32),
-      loading_screen(initializer.get_renderer(), font),
+      loading_screen(initializer.get_renderer()),
+      table_screen(initializer.get_renderer(), font),
+      session(users),
+      users(users),
       render_storage(initializer.get_renderer()),
       music_storage(initializer.get_mixer()),
+      mute_effect(Config::getInstance()["effect"]["mute"].as<bool>()),
+      mute_music(Config::getInstance()["effect"]["mute"].as<bool>()),
       socket(std::move(skt))
 {
 }

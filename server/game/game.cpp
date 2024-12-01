@@ -1,4 +1,5 @@
 #include "game.h"
+#include "../../common/config.h"
 #include "gun/projectile/projectilegrenade.h"
 
 #include <filesystem>
@@ -9,7 +10,9 @@
 
 namespace fs = std::filesystem;
 
-Game::Game() : rng(rd()), dist(0, N_DROPS - 1)
+Game::Game() : check_won(Config::getInstance()["settings"]["check_won"].as<unsigned>()),
+               min_round_to_win(Config::getInstance()["settings"]["min_round_to_win"].as<unsigned>()),
+               rng(rd()), dist(0, N_DROPS - 1)
 {
 
     try
@@ -78,7 +81,6 @@ void Game::process(ClientCommand &command)
         Duck &duck = ducks.at(command.player_id);
         if (!duck.get_status().status.is_alive)
             return;
-
         Position duck_position = duck.get_position();
         Position below_duck(duck_position.x, duck_position.y + 16);
         switch (command.message.type)
@@ -206,23 +208,24 @@ bool Game::verify_hit_duck(Duck &duck, std::shared_ptr<Projectile> &projectile)
 }
 
 void Game::spawn_in_boxes(const Position &position_box, const Position &position_as_pixels)
-{   
+{
 
     Position position(position_as_pixels.x, position_as_pixels.y + TILE_SIZE);
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> distrib(0, 2); // Range [0, 2]
     RandomSelection random_selection = static_cast<RandomSelection>(distrib(gen));
-    switch (random_selection) {
-        case RandomSelection::Nothing:
-            break;
-        case RandomSelection::SpawnGun:
-            spawn_random_gun(position);
-            break;
-        case RandomSelection::Explode:
-            Explosion explosion(position_as_pixels);
-            explosions.add_explosion(explosion);
-            break;
+    switch (random_selection)
+    {
+    case RandomSelection::Nothing:
+        break;
+    case RandomSelection::SpawnGun:
+        spawn_random_gun(position);
+        break;
+    case RandomSelection::Explode:
+        Explosion explosion(position_as_pixels);
+        explosions.add_explosion(explosion);
+        break;
     }
     boxes.erase(position_box);
 }
@@ -272,12 +275,12 @@ void Game::check_for_winner(const std::map<uint8_t, Duck &> &ducks_alive)
         {
             auto winner = ducks_alive.begin();
             ++victories[winner->first];
-            if ((round >= 5) && (round % 5 == 0))
+            if ((round >= check_won) && (round % check_won == 0))
             { // Check if somebody won every five rounds
                 std::vector<uint8_t> possible_winners;
                 for (const auto &[id, n_victories] : victories)
                 {
-                    if (n_victories >= MIN_ROUNDS_WON)
+                    if (n_victories >= min_round_to_win)
                         possible_winners.push_back(id);
                 }
 
@@ -427,7 +430,7 @@ void Game::step()
     explosions.dicrement([this](const std::shared_ptr<Projectile> &projectile)
                          { projectiles.add_projectile(projectile); }, [this](Hitbox explosion_hitbox)
                          { check_intersect(explosion_hitbox); });
-    
+
     Size size(TILE_SIZE, TILE_SIZE); // Ajustar
     std::map<uint8_t, Duck &> ducks_alive;
     for (auto &[id, duck] : ducks)
@@ -437,14 +440,14 @@ void Game::step()
         if (duck.is_alive())
         {
             ducks_alive.emplace(id, duck);
-            for (auto it = armor.begin(); it != armor.end(); )
+            for (auto it = armor.begin(); it != armor.end();)
             {
-                const auto& position = it->first;
-                const auto& an_armor = it->second;
+                const auto &position = it->first;
+                const auto &an_armor = it->second;
 
                 Hitbox armor_hitbox(position, size);
                 if (duck.get_hitbox().intersects(armor_hitbox))
-                {   
+                {
                     if (an_armor == ArmorType::Helmet)
                         duck.give_helmet();
                     else if (an_armor == ArmorType::Chestplate)

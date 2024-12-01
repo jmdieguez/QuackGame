@@ -1,8 +1,7 @@
 #include "explosionsound.h"
+#include "../../../common/config.h"
 
-#define VOLUME 3
-
-ExplosionSound::ExplosionSound(SDL2pp::Mixer &mixer) : SoundManager(mixer, VOLUME, TextureFigure::ExplosionFigure)
+ExplosionSound::ExplosionSound(SDL2pp::Mixer &mixer) : SoundManager(mixer, Config::getInstance()["effect"]["type"]["explosion"].as<int>(), TextureFigure::ExplosionFigure)
 {
 }
 

@@ -8,10 +8,12 @@
 #include <QApplication>
 #define HOST 1
 #define PORT 2
-Launcher::Launcher(int argc, const char *argv[]): argc(argc), argv(argv) {
+Launcher::Launcher(int argc, const char *argv[]) : argc(argc), argv(argv)
+{
 }
 
-void Launcher::run_game() {
+void Launcher::run_game()
+{
     QApplication app(argc, const_cast<char **>(argv));
     Socket skt(argv[HOST], argv[PORT]);
     ClientProtocol protocol(skt);
@@ -20,8 +22,9 @@ void Launcher::run_game() {
     MainWindow w(&lobby);
     w.show();
     bool result;
-    if (app.exec() == SUCCESS) {
-        Game game(std::move(skt));
+    if (app.exec() == SUCCESS)
+    {
+        Game game(std::move(skt), lobby.get_users());
         result = game.run();
         GameResultWindow resultWindow(result);
         resultWindow.exec();

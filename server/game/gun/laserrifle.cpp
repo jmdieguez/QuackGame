@@ -5,9 +5,6 @@
 #include "defminvalue.h"
 #include "projectile/projectilegun.h"
 
-#define VELOCITY 20
-#define MAX_AMMO 30
-#define MAX_DISTANCE 13
 #define TIME_SHOOTING 60
 #define DELAY_SHOOTING 2
 #define START_DISPERSION 55
@@ -48,12 +45,8 @@ bool LaserRifle::random()
                               PUBLIC METHODS
 ****************************************************************************/
 
-/***************************************************************************
-                              PUBLIC METHODS
-****************************************************************************/
-
 LaserRifle::LaserRifle(const uint16_t &id, const Position &position) : Gun(id, GunType::LaserRifle, Position(position), Size(GUN_WIDTH, GUN_HEIGHT), TextureFigure::LaserRifleFigure),
-                                                                       GunAmmo(MAX_AMMO),
+                                                                       GunAmmo(Config::getInstance()["gun"]["ammo"]["laser_rifle"].as<int>()),
                                                                        position_gun(HORIZONTAL_Y, HORIZONTAL_RIGHT, HORIZONTAL_LEFT, VERTICAL_RIGHT, VERTICAL_LEFT),
                                                                        time_shooting(TIME_SHOOTING), delay_shooting(DELAY_SHOOTING)
 {
@@ -80,7 +73,9 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Las
     Position projectile_position(adjusted_pos_x, adjusted_pos_y);
     std::vector<std::shared_ptr<Projectile>> projectiles;
     Hitbox hitbox(projectile_position, Size(PROJECTILE_WIDTH, PROJECTILE_HEIGHT));
-    projectiles.push_back(std::make_shared<ProjectileLaser>(ProjectileType::CowboyBullet, TextureFigure::LaserRifleBullet, hitbox, direction, VELOCITY, MAX_DISTANCE, dispersion));
+    int velocity = Config::getInstance()["gun"]["velocity_projectile"]["laser_rifle"].as<int>();
+    int max_distance = Config::getInstance()["gun"]["scope"]["laser_rifle"].as<int>();
+    projectiles.push_back(std::make_shared<ProjectileLaser>(ProjectileType::CowboyBullet, TextureFigure::LaserRifleBullet, hitbox, direction, velocity, max_distance, dispersion));
     delay_shooting = DELAY_SHOOTING;
     time_shooting--;
     return std::make_optional(std::make_pair(projectiles, duck_position));

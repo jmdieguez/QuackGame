@@ -5,9 +5,9 @@
 Gameloop::Gameloop(const uint16_t &id, const std::string &name, const uint16_t &creator_id) : game_id(id), creator_id(creator_id), name(name), started(false),
                                                                                               constant_rate_loop(_keep_running, [this](unsigned int step)
                                                                                                                  { this->step(step); }),
-                                                                                              recv_queue(std::make_shared<Queue<ClientCommand>>(10000)),
+                                                                                              recv_queue(std::make_shared<Queue<ClientCommand>>(Config::getInstance()["settings"]["max_message_receiver"].as<unsigned>())),
                                                                                               handler(recv_queue),
-                                                                                              number_of_players(1)
+                                                                                              number_of_players(0)
 {
 }
 
@@ -56,12 +56,17 @@ void Gameloop::start_game(const uint16_t &id)
     }
 }
 
-void Gameloop::add_new_player(Socket &skt, const uint16_t &id)
+Color Gameloop::add_new_player(uint16_t &id)
 {
     Color color = color_storage.get_color();
-    handler.add(skt, id);
     game.add_player(id, color);
     number_of_players++;
+    return color;
+}
+
+void Gameloop::set_session(Socket &skt, const uint16_t &player_id_creator)
+{
+    handler.add(skt, player_id_creator);
 }
 
 const std::string &Gameloop::get_name()

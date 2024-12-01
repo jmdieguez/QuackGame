@@ -8,14 +8,21 @@ Color::Color()
 {
 }
 
-Color::Color(int red, int green, int blue)
-    : r(red), g(green), b(blue) {}
+Color::Color(int red, int green, int blue) : r(red), g(green), b(blue) {}
 
-int Color::GetRed() const { return r; }
+Color::Color(int red, int green, int blue, std::string text)
+    : r(red), g(green), b(blue), text(text) {}
 
-int Color::GetGreen() const { return g; }
+int Color::get_red() const { return r; }
 
-int Color::GetBlue() const { return b; }
+int Color::get_green() const { return g; }
+
+int Color::get_blue() const { return b; }
+
+std::string Color::get_text() const
+{
+    return text;
+}
 
 bool Color::operator==(const Color &other) const
 {

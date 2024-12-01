@@ -19,6 +19,7 @@
 #include "session/sessioncontroller.h"
 #include "music/musicbox.h"
 #include "../view/loading_screen.h"
+#include "../view/table_screen.h"
 
 class Game
 {
@@ -28,9 +29,13 @@ private:
     ConstantRateLoop constant_rate_loop;
     SDL2pp::Font font;
     LoadingScreen loading_screen;
+    TableScreen table_screen;
     SessionController session;
+    std::vector<UserLobbyInfo> users;
     RenderStorage render_storage;
     MusicBoxStorage music_storage;
+    bool mute_effect;
+    bool mute_music;
     Socket socket;
     bool started = false;
     bool victory;
@@ -45,7 +50,7 @@ private:
     void process_projectile(ProjectileSnapshot &projectile, Snapshot &snapshot, float scale_x, float scale_y);
 
 public:
-    Game(Socket);
+    Game(Socket, std::vector<UserLobbyInfo> users);
     bool run();
     ~Game();
 };
