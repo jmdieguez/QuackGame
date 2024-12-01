@@ -4,7 +4,6 @@
 #include "defminvalue.h"
 #include "projectile/projectilegun.h"
 
-#define VELOCITY 10
 #define MAX_DISTANCE 20
 #define DISPERSION_VALUE 1
 #define BACK 5
@@ -56,8 +55,9 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Mag
     uint16_t adjusted_pos_y = duck_position.y + (status.looking_up ? -GUN_WIDTH : HORIZONTAL_Y);
     Position projectile_position(adjusted_pos_x, adjusted_pos_y);
     Hitbox hitbox(projectile_position, Size(PROJECTILE_WIDTH, PROJECTILE_HEIGHT));
+    int velocity = Config::getInstance()["gun"]["velocity_projectile"]["magnum"].as<int>();
     std::vector<std::shared_ptr<Projectile>> projectiles = {
-        std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, TextureFigure::CowboyBullet, hitbox, direction, VELOCITY, MAX_DISTANCE, dispersion)};
+        std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, TextureFigure::CowboyBullet, hitbox, direction, velocity, MAX_DISTANCE, dispersion)};
     Position new_position = move_back(duck_position, status.looking_right, BACK);
     return std::make_optional(std::make_pair(projectiles, new_position));
 }

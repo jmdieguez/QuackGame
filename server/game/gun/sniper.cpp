@@ -2,7 +2,6 @@
 #include "defminvalue.h"
 #include "projectile/projectilegun.h"
 
-#define VELOCITY 10
 #define MAX_DISTANCE 20
 #define TIME_TO_SHOOT 20
 #define TIME_TO_REALOAD 5
@@ -74,7 +73,8 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Sni
     Hitbox hitbox(projectile_position, Size(PROJECTILE_WIDTH, PROJECTILE_HEIGHT));
     std::vector<std::shared_ptr<Projectile>> projectiles;
     ProjectileType type = ProjectileType::CowboyBullet;
-    projectiles.push_back(std::make_shared<ProjectileGun>(type, TextureFigure::CowboyBullet, hitbox, direction, VELOCITY, MAX_DISTANCE));
+    int velocity = Config::getInstance()["gun"]["velocity_projectile"]["sniper"].as<int>();
+    projectiles.push_back(std::make_shared<ProjectileGun>(type, TextureFigure::CowboyBullet, hitbox, direction, velocity, MAX_DISTANCE));
     need_reload = true;
     block_shoot = true;
     time_to_reaload = TIME_TO_REALOAD;

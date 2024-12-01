@@ -8,3 +8,13 @@ gun:
     magnum: 6
     shotgun: 2
     sniper: 3
+
+  velocity_projectile:
+    pew_pew_laser: 10
+    laser_rifle: 20
+    ak: 20
+    dueling_pistol: 10
+    cowboy_pistol: 10
+    magnum: 10
+    shotgun: 10
+    sniper: 10

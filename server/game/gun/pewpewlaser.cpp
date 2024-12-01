@@ -2,7 +2,6 @@
 #include "defminvalue.h"
 #include "projectile/projectilegun.h"
 
-#define VELOCITY 10
 #define MAX_DISTANCE 38
 #define MIN_DISTANCE 35
 
@@ -49,9 +48,9 @@ std::optional<std::pair<std::vector<std::shared_ptr<Projectile>>, Position>> Pew
         nullptr,
         std::make_shared<DispersionHigh>(true),
         std::make_shared<DispersionHigh>()};
-
+    int velocity = Config::getInstance()["gun"]["velocity_projectile"]["pew_pew_laser"].as<int>();
     for (auto &dispersion : dispersions)
-        projectiles.push_back(std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, TextureFigure::CowboyBullet, hitbox, direction, VELOCITY, MAX_DISTANCE, dispersion));
+        projectiles.push_back(std::make_shared<ProjectileGun>(ProjectileType::CowboyBullet, TextureFigure::CowboyBullet, hitbox, direction, velocity, MAX_DISTANCE, dispersion));
 
     return std::make_optional(std::make_pair(projectiles, duck_position));
 }
