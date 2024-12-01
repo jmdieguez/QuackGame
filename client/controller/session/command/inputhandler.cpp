@@ -23,23 +23,23 @@ InputHandler::InputHandler(Queue<ClientIdAction> &queue_sender, const PlayerKeyC
 
 void InputHandler::execute_command(SDL_Event &event, CheatStorage &cheats)
 {
-    if (event.type == SDL_KEYDOWN)
-    {
-        process_cheat(event, cheats);
-        Command *command = key_config.get_command(event.key.keysym.sym);
-        if (command)
-            command->execute(game_context);
-    }
+    if (event.type != SDL_KEYDOWN)
+        return;
+    process_cheat(event, cheats);
+    Command *command = key_config.get_command(event.key.keysym.sym);
+    if (!command)
+        return;
+    command->execute(game_context);
 }
 
 void InputHandler::undo_command(SDL_Event &event)
 {
-    if (event.type == SDL_KEYUP)
-    {
-        Command *command = key_config.get_command(event.key.keysym.sym);
-        if (command)
-            command->undo(game_context);
-    }
+    if (event.type != SDL_KEYUP)
+        return;
+    Command *command = key_config.get_command(event.key.keysym.sym);
+    if (!command)
+        return;
+    command->undo(game_context);
 }
 
 void InputHandler::set_id(uint16_t new_id)
