@@ -5,7 +5,7 @@
 #include <filesystem>
 
 #define MAPS_PATH "/etc/quackgame/maps"
-#define MIN_ROUNDS_WON 6
+#define MIN_ROUNDS_WON 10
 #define N_DROPS 11
 
 namespace fs = std::filesystem;
