@@ -10,5 +10,5 @@ music:
   volume: 3
 
 settings:
-  width: 1280
-  height: 720
+  max_message_sender: 10000
+  max_message_receiver: 10000

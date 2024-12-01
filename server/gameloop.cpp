@@ -5,7 +5,7 @@
 Gameloop::Gameloop(const uint16_t &id, const std::string &name, const uint16_t &creator_id) : game_id(id), creator_id(creator_id), name(name), started(false),
                                                                                               constant_rate_loop(_keep_running, [this](unsigned int step)
                                                                                                                  { this->step(step); }),
-                                                                                              recv_queue(std::make_shared<Queue<ClientCommand>>(10000)),
+                                                                                              recv_queue(std::make_shared<Queue<ClientCommand>>(Config::getInstance()["settings"]["max_message_receiver"].as<unsigned>())),
                                                                                               handler(recv_queue),
                                                                                               number_of_players(0)
 {

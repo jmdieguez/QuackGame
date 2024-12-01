@@ -1,14 +1,12 @@
 #include "sessioncontroller.h"
-
-#define MAX_MESSAGES_QUEUE_RECEIVER 100000
-#define MAX_MESSAGES_QUEUE_SENDER 100000
+#include "../../../common/config.h"
 
 /***************************************************************************
                               PUBLIC METHODS
 ****************************************************************************/
 
-SessionController::SessionController(std::vector<UserLobbyInfo> &users) : queue_receiver(MAX_MESSAGES_QUEUE_RECEIVER),
-                                                                          queue_sender(MAX_MESSAGES_QUEUE_SENDER),
+SessionController::SessionController(std::vector<UserLobbyInfo> &users) : queue_receiver(Config::getInstance()["settings"]["max_message_receiver"].as<unsigned>()),
+                                                                          queue_sender(Config::getInstance()["settings"]["max_message_sender"].as<unsigned>()),
                                                                           player_one_input(queue_sender, config_manager.get_player_config(0)),
                                                                           player_two_input(queue_sender, config_manager.get_player_config(1)),
                                                                           num_players(users.size())
