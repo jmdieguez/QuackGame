@@ -5,6 +5,7 @@
 #include <string>
 #include <map>
 #include <cctype>
+#include "../command/gamecontext.h"
 #include "../../../../common/client_actions.h"
 #include "../../../../common/queue.h"
 
@@ -13,12 +14,12 @@ class CheatStorage
 private:
     std::string cheat_build;
     std::map<std::string, ClientActionType> cheats;
+    void send_message(GameContext &game_context, ClientActionType &value);
 
 public:
     CheatStorage();
     void add_input(std::string input);
-    void active_cheat(Queue<ClientActionType> &queue_sender);
-    void send_message(Queue<ClientActionType> &queue_sender, ClientActionType &value);
+    void active_cheat(GameContext &game_context);
     ~CheatStorage();
 };
 

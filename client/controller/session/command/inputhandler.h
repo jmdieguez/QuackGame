@@ -24,6 +24,8 @@ private:
     GameContext game_context;
     const PlayerKeyConfig &key_config;
 
+    void process_cheat(SDL_Event &event, CheatStorage &cheats);
+
 public:
     InputHandler(Queue<ClientIdAction> &queue_sender, const PlayerKeyConfig &key_config);
     void execute_command(SDL_Event &event, CheatStorage &cheats);

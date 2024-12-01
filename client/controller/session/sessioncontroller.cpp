@@ -4,16 +4,6 @@
 #define MAX_MESSAGES_QUEUE_SENDER 100000
 
 /***************************************************************************
-                              PRIVATE METHODS
-****************************************************************************/
-
-bool SessionController::is_player1_input(const SDL_Keycode &key, const PlayerKeyConfigManager &config_manager)
-{
-    const auto &player1_keys = config_manager.get_player_config(0).get_key_command_map();
-    return player1_keys.find(key) != player1_keys.end();
-}
-
-/***************************************************************************
                               PUBLIC METHODS
 ****************************************************************************/
 
@@ -36,12 +26,18 @@ Queue<Snapshot> &SessionController::get_queue_receiver()
 
 void SessionController::process_input(SDL_Event &event)
 {
-    is_player1_input(event.key.keysym.sym, config_manager) || num_players == 1 ? player_one_input.execute_command(event, cheat_storage) : player_two_input.execute_command(event, cheat_storage);
+    player_one_input.execute_command(event, cheat_storage);
+    if (num_players == 1)
+        return;
+    player_two_input.execute_command(event, cheat_storage);
 }
 
 void SessionController::revert_command(SDL_Event &event)
 {
-    is_player1_input(event.key.keysym.sym, config_manager) || num_players == 1 ? player_one_input.undo_command(event) : player_two_input.undo_command(event);
+    player_one_input.undo_command(event);
+    if (num_players == 1)
+        return;
+    player_two_input.undo_command(event);
 }
 
 Queue<ClientIdAction> &SessionController::get_queue_sender()

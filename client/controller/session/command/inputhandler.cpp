@@ -1,6 +1,17 @@
 #include "inputhandler.h"
 
 /***************************************************************************
+                              PRIVATE METHODS
+****************************************************************************/
+
+void InputHandler::process_cheat(SDL_Event &event, CheatStorage &cheats)
+{
+    std::string key_name = SDL_GetKeyName(event.key.keysym.sym);
+    cheats.add_input(key_name);
+    cheats.active_cheat(game_context);
+}
+
+/***************************************************************************
                               PUBLIC METHODS
 ****************************************************************************/
 
@@ -14,6 +25,7 @@ void InputHandler::execute_command(SDL_Event &event, CheatStorage &cheats)
 {
     if (event.type == SDL_KEYDOWN)
     {
+        process_cheat(event, cheats);
         Command *command = key_config.get_command(event.key.keysym.sym);
         if (command)
             command->execute(game_context);

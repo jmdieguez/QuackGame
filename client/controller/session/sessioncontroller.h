@@ -20,8 +20,6 @@ private:
     InputHandler player_two_input;
     uint16_t num_players;
 
-    bool is_player1_input(const SDL_Keycode &key, const PlayerKeyConfigManager &config_manager);
-
 public:
     explicit SessionController(std::vector<UserLobbyInfo> &users);
     Queue<Snapshot> &get_queue_receiver();
