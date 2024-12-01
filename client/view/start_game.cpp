@@ -14,7 +14,7 @@ void StartGame::set_info_user(size_t &index, std::string &color, int x_position,
     QLabel *text = new QLabel(tr(text_color_index_name.c_str()), this);
     text->setAlignment(Qt::AlignCenter);
     text->setGeometry(x_position, y_position, 200, 60);
-    text->setStyleSheet("color: white;");
+    text->setStyleSheet("color: black;");
 }
 
 StartGame::StartGame(Lobby *lobby, std::vector<UserLobbyInfo> &users, QWidget *parent)

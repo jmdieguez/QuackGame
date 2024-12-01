@@ -59,7 +59,7 @@ void Game::set_renderer(int frame_ticks)
     {
         initializer.get_renderer().Clear();
         render_storage.get_scene().render();
-        loading_screen.render(font);
+        loading_screen.render(font, users);
     }
 
     if (received_snapshot)
@@ -126,6 +126,7 @@ Game::Game(Socket skt, std::vector<UserLobbyInfo> users)
       font(FONT_PATH, 32),
       loading_screen(initializer.get_renderer()),
       session(users),
+      users(users),
       render_storage(initializer.get_renderer()),
       music_storage(initializer.get_mixer()),
       socket(std::move(skt))

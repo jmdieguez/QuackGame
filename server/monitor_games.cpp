@@ -40,14 +40,11 @@ std::vector<UserLobbyInfo> MonitorGames::join_game(const uint16_t &game_id, cons
     auto it = games.find(game_id);
     if (it == games.end())
         return users;
-    std::cout << "Estoy aca" << std::endl;
     for (size_t index = 0; index < num_players; index++)
     {
         uint16_t id_player;
         it->second->get_number_of_players(id_player);
-        std::cout << "El id es: " << (int)id_player << std::endl;
         Color color = it->second->add_new_player(id_player);
-        std::cout << "El color elegido es: " << color.get_text() << std::endl;
         users.push_back(UserLobbyInfo(id_player, color.get_text()));
     }
     return users;

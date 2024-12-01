@@ -3,6 +3,8 @@
 
 #include "../ui/defs.h"
 
+#include <vector>
+#include "../../common/userlobbyinfo.h"
 #include <SDL2pp/SDL2pp.hh>
 
 class LoadingScreen
@@ -37,35 +39,48 @@ public:
         renderer.Copy(text, text_src, text_dst);
     }
 
-    void set_text_color(SDL2pp::Font &font, std::string &color)
+    void set_text_color(SDL2pp::Font &font, std::vector<UserLobbyInfo> &users)
     {
-        std::string player_color("Player 1: " + color);
-        SDL2pp::Texture text(renderer, font.RenderText_Blended(player_color, WHITE));
-        SDL_Rect text_src = {0, 0, text.GetWidth(), text.GetHeight()};
-        SDL_Rect text_dst = {
-            (DEFAULT_WINDOW_WIDTH - text.GetWidth() / 2) / 2,
-            dst.y + ICON_SIZE + 32 + text.GetHeight() / 2 + 16,
-            text.GetWidth() / 2,
-            text.GetHeight() / 2};
+        int base_y = dst.y + ICON_SIZE + 32 + 32;
+        int text_spacing_x = 150;
 
-        renderer.Copy(text, text_src, text_dst);
+        for (int index = 0; index < (int)users.size(); index++)
+        {
+            std::string player("Player ");
+            std::string player_num = player + std::to_string(index + 1) + ": " + users[index].get_color();
+            SDL2pp::Texture text(renderer, font.RenderText_Blended(player_num, WHITE));
+            SDL_Rect text_src = {0, 0, text.GetWidth(), text.GetHeight()};
+
+            int text_width = text.GetWidth() / 2;
+            int text_height = text.GetHeight() / 2;
+
+            int x_position = (DEFAULT_WINDOW_WIDTH - text_width) / 2;
+            if (users.size() == 2)
+                x_position += (index == 0) ? -text_spacing_x : text_spacing_x;
+            SDL_Rect text_dst = {
+                x_position,
+                base_y,
+                text_width,
+                text_height};
+
+            renderer.Copy(text, text_src, text_dst);
+        }
     }
 
-    void set_texts(SDL2pp::Font &font)
+    void set_texts(SDL2pp::Font &font, std::vector<UserLobbyInfo> &users)
     {
-        std::string color("Red");
         set_text_loading(font);
-        set_text_color(font, color);
+        set_text_color(font, users);
     }
 
-    void render(SDL2pp::Font &font)
+    void render(SDL2pp::Font &font, std::vector<UserLobbyInfo> &users)
     {
         renderer.SetDrawBlendMode(SDL_BLENDMODE_BLEND);
         renderer.SetDrawColor(0, 0, 0, 128);
         renderer.FillRect(tint_rect);
         renderer.SetDrawColor(255, 255, 255, 255);
         renderer.SetDrawBlendMode(SDL_BLENDMODE_NONE);
-        set_texts(font);
+        set_texts(font, users);
         renderer.Copy(icon, src, dst);
     }
 };
