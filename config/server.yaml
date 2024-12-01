@@ -26,3 +26,7 @@ gun:
     cowboy_pistol: 20
     magnum: 20
     sniper: 64
+
+settings:
+  check_won: 5
+  min_round_to_win: 6

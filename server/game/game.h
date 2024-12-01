@@ -31,6 +31,8 @@ private:
     unsigned current_map = 0;
     unsigned round = 0;
     bool initialize = true;
+    unsigned check_won;
+    unsigned min_round_to_win;
     std::vector<Map> maps;
     std::vector<uint8_t> player_ids;
     std::map<uint16_t, Duck> ducks;

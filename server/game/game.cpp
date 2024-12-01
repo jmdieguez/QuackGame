@@ -1,15 +1,17 @@
 #include "game.h"
+#include "../../common/config.h"
 #include "gun/projectile/projectilegrenade.h"
 
 #include <filesystem>
 
 #define MAPS_PATH "/etc/quackgame/maps"
-#define MIN_ROUNDS_WON 6
 #define N_DROPS 11
 
 namespace fs = std::filesystem;
 
-Game::Game() : rng(rd()), dist(0, N_DROPS - 1)
+Game::Game() : check_won(Config::getInstance()["settings"]["check_won"].as<unsigned>()),
+               min_round_to_win(Config::getInstance()["settings"]["min_round_to_win"].as<unsigned>()),
+               rng(rd()), dist(0, N_DROPS - 1)
 {
 
     try
@@ -272,12 +274,12 @@ void Game::check_for_winner(const std::map<uint8_t, Duck &> &ducks_alive)
         {
             auto winner = ducks_alive.begin();
             ++victories[winner->first];
-            if ((round >= 5) && (round % 5 == 0))
+            if ((round >= check_won) && (round % check_won == 0))
             { // Check if somebody won every five rounds
                 std::vector<uint8_t> possible_winners;
                 for (const auto &[id, n_victories] : victories)
                 {
-                    if (n_victories >= MIN_ROUNDS_WON)
+                    if (n_victories >= min_round_to_win)
                         possible_winners.push_back(id);
                 }
 
