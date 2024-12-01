@@ -68,7 +68,7 @@ void Game::set_renderer(int frame_ticks)
         if (latest_snapshot.camera.width > 0 && latest_snapshot.camera.height > 0)
         {
             if (round != latest_snapshot.round) {
-                TransitionManager transitionManager(initializer.get_renderer());
+                TransitionManager transitionManager(initializer.get_renderer(), font);
                 round = latest_snapshot.round;
                 transitionManager.fadeTransition(latest_snapshot.round);
             }

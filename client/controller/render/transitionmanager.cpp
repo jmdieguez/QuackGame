@@ -15,19 +15,14 @@ TransitionManager::TransitionManager(SDL2pp::Renderer &renderer, SDL2pp::Font &f
 }
 
 void TransitionManager::fadeTransition(bool fadeOut) {
+    // Renderiza el texto usando el método correcto de SDL2pp::Font
+    SDL2pp::Surface textSurface = font.RenderText_Blended("Next level!", SDL2pp::Color(255, 255, 255));
 
-    SDL_Color white = {255, 255, 255, 255};
-    SDL_Surface* textSurface = TTF_RenderText_Blended(font, "Next level!", white);
+    // Crea la textura directamente desde el objeto SDL2pp::Surface
+    SDL2pp::Texture textTexture(renderer, textSurface);
 
-    SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer.Get(), textSurface);
-    if (!textTexture) {
-        SDL_FreeSurface(textSurface);
-        throw std::runtime_error("Failed to create texture from text: " + std::string(SDL_GetError()));
-    }
-
-    int textWidth = textSurface->w;
-    int textHeight = textSurface->h;
-    SDL_FreeSurface(textSurface);
+    int textWidth = textSurface.GetWidth();
+    int textHeight = textSurface.GetHeight();
 
     int windowWidth, windowHeight;
     SDL_GetRendererOutputSize(renderer.Get(), &windowWidth, &windowHeight);
@@ -39,11 +34,11 @@ void TransitionManager::fadeTransition(bool fadeOut) {
         textHeight
     };
 
+    // Cargar y reproducir el sonido
     Mix_Chunk* sound = Mix_LoadWAV(NEXT_LEVEL);
     if (!sound) {
-        SDL_DestroyTexture(textTexture);
+        throw std::runtime_error("Failed to load sound: " + std::string(Mix_GetError()));
     }
-
     Mix_PlayChannel(-1, sound, 0);
 
     Uint32 startTicks = SDL_GetTicks();
@@ -57,12 +52,10 @@ void TransitionManager::fadeTransition(bool fadeOut) {
 
         SDL_SetRenderDrawColor(renderer.Get(), 0, 0, 0, alpha);
         SDL_RenderClear(renderer.Get());
-        SDL_RenderCopy(renderer.Get(), textTexture, nullptr, &textRect);
+        SDL_RenderCopy(renderer.Get(), textTexture.Get(), nullptr, &textRect);
         SDL_RenderPresent(renderer.Get());
     }
 
-    SDL_DestroyTexture(textTexture);
-    TTF_CloseFont(font);
     Mix_FreeChunk(sound);
 }
 
