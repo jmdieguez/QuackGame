@@ -30,8 +30,7 @@ void Game::update_renderer(int frame_ticks)
 
 void Game::process_projectile(ProjectileSnapshot &projectile, Snapshot &snapshot, float scale_x, float scale_y)
 {
-    bool result = Config::getInstance()["effect"]["mute"].as<bool>();
-    if (!result && projectile.texture != TextureFigure::None && projectile.texture != TextureFigure::GrenadeFigure && projectile.texture != TextureFigure::BananaFigure && projectile.texture != TextureFigure::BananaThrown)
+    if (!mute_effect && projectile.texture != TextureFigure::None && projectile.texture != TextureFigure::GrenadeFigure && projectile.texture != TextureFigure::BananaFigure && projectile.texture != TextureFigure::BananaThrown)
         music_storage.get_projectile_sound().sound(projectile.id);
     render_storage.get_projectile_drawer().render(projectile, snapshot.camera, scale_x, scale_y);
 }
@@ -40,8 +39,7 @@ void Game::process_explosion(ExplosionSnapshot &explosion, int frame_ticks, Snap
 {
     if (explosion.texture == TextureFigure::None)
         return;
-    bool result = Config::getInstance()["effect"]["mute"].as<bool>();
-    if (!result)
+    if (!mute_effect)
         music_storage.get_explosion_sound().sound(explosion.id);
     render_storage.get_explosion().render(explosion, frame_ticks, snapshot.camera, scale_x, scale_y);
 }
@@ -133,6 +131,8 @@ Game::Game(Socket skt, std::vector<UserLobbyInfo> users)
       users(users),
       render_storage(initializer.get_renderer()),
       music_storage(initializer.get_mixer()),
+      mute_effect(Config::getInstance()["effect"]["mute"].as<bool>()),
+      mute_music(Config::getInstance()["effect"]["mute"].as<bool>()),
       socket(std::move(skt))
 {
 }

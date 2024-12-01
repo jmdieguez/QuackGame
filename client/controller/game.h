@@ -32,6 +32,8 @@ private:
     std::vector<UserLobbyInfo> users;
     RenderStorage render_storage;
     MusicBoxStorage music_storage;
+    bool mute_effect;
+    bool mute_music;
     Socket socket;
     bool started = false;
     bool victory;
