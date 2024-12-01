@@ -75,16 +75,9 @@ void Game::process(ClientCommand &command)
 {
     try
     {
-        std::cout << "El id del jugador a leer es: " << (int)command.player_id << std::endl;
-        std::cout << "La cantidad de patos es: " << (int)ducks.size() << std::endl;
-        for (auto &values : ducks)
-        {
-            std::cout << "El id es: " << (int)values.first << std::endl;
-        }
         Duck &duck = ducks.at(command.player_id);
         if (!duck.get_status().status.is_alive)
             return;
-        std::cout << "Si pude" << std::endl;
         Position duck_position = duck.get_position();
         Position below_duck(duck_position.x, duck_position.y + 16);
         switch (command.message.type)
@@ -186,7 +179,6 @@ void Game::process(ClientCommand &command)
     }
     catch (const std::out_of_range &e)
     {
-        std::cout << "Terrible excepcion" << std::endl;
     }
 }
 

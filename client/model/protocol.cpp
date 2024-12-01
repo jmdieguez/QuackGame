@@ -339,7 +339,6 @@ std::vector<UserLobbyInfo> ClientProtocol::read_create_game_info()
         read_data(id);
         std::string color_name;
         read_string(color_name);
-        std::cout << "El id que recibo es: " << (int)id << std::endl;
         UserLobbyInfo user(id, color_name);
         users.push_back(user);
     }

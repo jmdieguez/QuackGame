@@ -14,8 +14,6 @@ ActionMessage ServerProtocol::read_action()
     uint16_t id;
     read_data(id);
 
-    std::cout << "El id recibido es: " << (int)id << std::endl;
-
     uint16_t info;
     skt.recvall(&info, sizeof(info), &was_closed);
     if (was_closed)
@@ -265,7 +263,6 @@ void ServerProtocol::send_create_game_info(std::vector<UserLobbyInfo> &users)
     {
         std::string color = user.get_color();
         send_data(user.get_id());
-        std::cout << "Estoy enviando el id: " << (int)user.get_id() << std::endl;
         send_data(color.size());
         std::vector<unsigned char> name_color(color.begin(), color.end());
         send_name(name_color);

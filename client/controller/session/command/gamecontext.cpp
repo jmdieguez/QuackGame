@@ -15,7 +15,6 @@ GameContext::GameContext(uint16_t &id, Queue<ClientIdAction> &queue_sender) : id
 void GameContext::push_message(ClientActionType action)
 {
     ClientIdAction client_id_action(id, action);
-    std::cout << "Estoy enviando con el id: " << (int)client_id_action.get_id() << std::endl;
     queue_sender.try_push(client_id_action);
 }
 

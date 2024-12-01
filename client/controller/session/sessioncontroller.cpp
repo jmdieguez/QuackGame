@@ -23,12 +23,9 @@ SessionController::SessionController(std::vector<UserLobbyInfo> &users) : queue_
                                                                           player_two_input(queue_sender, config_manager.get_player_config(1)),
                                                                           num_players(users.size())
 {
-    std::cout << "La cantidad de usuarios es " << users.size() << std::endl;
     player_one_input.set_id(users[0].get_id());
-    std::cout << "El id del player 1 es " << users[0].get_id() << std::endl;
     if (users.size() == 1)
         return;
-    std::cout << "El id del player 2 es " << users[1].get_id() << std::endl;
     player_two_input.set_id(users[1].get_id());
 }
 
