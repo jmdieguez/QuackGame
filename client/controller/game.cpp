@@ -1,4 +1,5 @@
 #include "game.h"
+#include "../../common/config.h"
 
 /***************************************************************************
                               PRIVATE METHODS
@@ -29,7 +30,8 @@ void Game::update_renderer(int frame_ticks)
 
 void Game::process_projectile(ProjectileSnapshot &projectile, Snapshot &snapshot, float scale_x, float scale_y)
 {
-    if (projectile.texture != TextureFigure::None && projectile.texture != TextureFigure::GrenadeFigure)
+    bool result = Config::getInstance()["effect"]["mute"].as<bool>();
+    if (!result && projectile.texture != TextureFigure::None && projectile.texture != TextureFigure::GrenadeFigure && projectile.texture != TextureFigure::BananaFigure && projectile.texture != TextureFigure::BananaFigure)
         music_storage.get_projectile_sound().sound(projectile.id);
     render_storage.get_projectile_drawer().render(projectile, snapshot.camera, scale_x, scale_y);
 }
@@ -38,7 +40,9 @@ void Game::process_explosion(ExplosionSnapshot &explosion, int frame_ticks, Snap
 {
     if (explosion.texture == TextureFigure::None)
         return;
-    music_storage.get_explosion_sound().sound(explosion.id);
+    bool result = Config::getInstance()["effect"]["mute"].as<bool>();
+    if (!result)
+        music_storage.get_explosion_sound().sound(explosion.id);
     render_storage.get_explosion().render(explosion, frame_ticks, snapshot.camera, scale_x, scale_y);
 }
 
