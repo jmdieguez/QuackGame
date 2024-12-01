@@ -69,14 +69,8 @@ void Game::set_renderer(int frame_ticks)
         {
             if (round != latest_snapshot.round) {
                 TransitionManager transitionManager(initializer.get_renderer());
-                transitionManager.fadeTransition(60, true);
-                SDL_Delay(500);
-                transitionManager.fadeTransition(60, false);
                 round = latest_snapshot.round;
-                std::cout << round << std::endl;
-                if (round % 5 == 0) {
-                    std::cout << "multiplo de cinco" << std::endl;
-                }
+                transitionManager.fadeTransition(latest_snapshot.round);
             }
 
             initializer.get_renderer().Clear();

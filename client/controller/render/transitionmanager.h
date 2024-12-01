@@ -11,11 +11,12 @@
 class TransitionManager {
 public:
     TransitionManager(SDL2pp::Renderer &renderer);
-    void fadeTransition(int duration, bool fadeOut);
+    void fadeTransition(bool fadeOut);
     void drawTransitionOverlay();
 
 private:
     SDL2pp::Renderer &renderer;
+    SDL2pp::Font& font;
     SDL2pp::Texture transitionTexture;
     int alpha;
     void render_next_level_text();

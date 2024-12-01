@@ -239,6 +239,7 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
         uint16_t green;
         read_data(green);
         uint16_t blue;
+        read_data(blue);
         Color color(red, green, blue);
         snapshot.scores.push_back(DuckScore(victories, color));
     }

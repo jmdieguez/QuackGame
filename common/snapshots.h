@@ -26,9 +26,9 @@ class DuckScore {
 public:
     uint16_t victories;
     Color color;
-    DuckScore(const uint16_t& v, const Color &c) : vicotries(v), color(c) {}
-    DuckScore() : v(0), color("")
-}
+    DuckScore(const uint16_t& v, const Color &c) : victories(v), color(c) {}
+    DuckScore() : victories(0), color(0,0,0) {}
+};
 
 class ArmorSnapshot
 {
