@@ -7,6 +7,7 @@ std::vector<UserLobbyInfo> MonitorGames::create_game(const uint16_t &creator_id,
 {
     // TODO: Chequear que no existe una partida con mismo nombre
     std::lock_guard<std::mutex> lock(mtx);
+    std::cout << "La cantidad de players es: " << (int)num_players << std::endl;
     id_counter++;
     std::vector<UserLobbyInfo> users;
     auto new_game = std::make_shared<Gameloop>(id_counter, name, creator_id);
@@ -14,8 +15,8 @@ std::vector<UserLobbyInfo> MonitorGames::create_game(const uint16_t &creator_id,
                                     ? std::vector<uint16_t>{creator_id}
                                     : std::vector<uint16_t>{creator_id, static_cast<uint16_t>(creator_id + 1)};
     std::vector<Color> colors = new_game->add_new_player(ids);
-    for (Color &color : colors)
-        users.push_back(UserLobbyInfo(creator_id, color.get_text()));
+    for (int i = 0; i < num_players; i++)
+        users.push_back(UserLobbyInfo(ids[i], colors[i].get_text()));
     games[id_counter] = new_game;
     return users;
 }

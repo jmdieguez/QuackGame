@@ -19,13 +19,16 @@
 class InputHandler
 {
 private:
-    Queue<ClientActionType> &queue_sender;
+    uint16_t id;
+    Queue<ClientIdAction> &queue_sender;
+    GameContext game_context;
     const PlayerKeyConfig &key_config;
 
 public:
-    InputHandler(Queue<ClientActionType> &queue_sender, const PlayerKeyConfig &key_config);
-    void execute_command(SDL_Event &event, GameContext &game_context, CheatStorage &cheats);
-    void undo_command(SDL_Event &event, GameContext &game_context);
+    InputHandler(Queue<ClientIdAction> &queue_sender, const PlayerKeyConfig &key_config);
+    void execute_command(SDL_Event &event, CheatStorage &cheats);
+    void undo_command(SDL_Event &event);
+    void set_id(uint16_t new_id);
     ~InputHandler();
 };
 #endif // INPUT_HANDLER_H

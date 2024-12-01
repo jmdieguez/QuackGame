@@ -96,7 +96,8 @@ void Game::set_renderer(int frame_ticks)
 
             for (ArmorSnapshot &armor : latest_snapshot.armors)
                 render_storage.get_armor().render(armor, latest_snapshot.camera, scale_x, scale_y);
-            if (latest_snapshot.is_ended) {
+            if (latest_snapshot.is_ended)
+            {
                 victory = snapshot.game_result == GameResult::VICTORY;
                 initializer.get_renderer().Clear();
                 keep_running = false;
@@ -118,12 +119,13 @@ void Game::step(unsigned int current_step)
                               PUBLIC METHODS
 ****************************************************************************/
 
-Game::Game(Socket skt)
+Game::Game(Socket skt, std::vector<UserLobbyInfo> users)
     : keep_running(true),
       constant_rate_loop(keep_running, [this](unsigned int step)
                          { this->step(step); }),
       font(FONT_PATH, 32),
       loading_screen(initializer.get_renderer()),
+      session(users),
       render_storage(initializer.get_renderer()),
       music_storage(initializer.get_mixer()),
       socket(std::move(skt))

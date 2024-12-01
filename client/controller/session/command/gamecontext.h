@@ -2,12 +2,13 @@
 #define GAME_CONTEXT_H
 
 #include "../../common/queue.h"
-#include "../../common/client_actions.h"
+#include "../../common/clientidaction.h"
 
 class GameContext
 {
 private:
-    Queue<ClientActionType> &queue_sender;
+    uint16_t &id;
+    Queue<ClientIdAction> &queue_sender;
 
 public:
     bool looking_up;
@@ -19,7 +20,7 @@ public:
     bool is_grabing;
     bool is_jumping;
 
-    explicit GameContext(Queue<ClientActionType> &queue_sender);
+    explicit GameContext(uint16_t &id, Queue<ClientIdAction> &queue_sender);
     void push_message(ClientActionType action);
     ~GameContext();
 };

@@ -87,7 +87,8 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
     uint16_t game_state;
     read_data(game_state);
     snapshot.is_ended = game_state;
-    if (game_state == 1) {
+    if (game_state == 1)
+    {
         uint16_t game_result;
         read_data(game_result);
         snapshot.game_result = static_cast<GameResult>(game_result);
@@ -263,6 +264,17 @@ void ClientProtocol::send_action(const ClientActionType &action, bool &was_close
     skt.sendall(&data_converted, sizeof(data_converted), &was_closed);
 }
 
+void ClientProtocol::send_id_action(const ClientIdAction &action, bool &was_closed)
+{
+
+    uint16_t id_to_send = static_cast<uint16_t>(action.get_id());
+    uint16_t id_converted = htons(id_to_send);
+    skt.sendall(&id_converted, sizeof(id_converted), &was_closed);
+    uint16_t action_to_send = static_cast<uint16_t>(action.get_action());
+    uint16_t data_converted = htons(action_to_send);
+    skt.sendall(&data_converted, sizeof(data_converted), &was_closed);
+}
+
 void ClientProtocol::get_game_list(uint16_t &game_id, std::string &name)
 {
     uint16_t game_id_network_order;
@@ -327,6 +339,7 @@ std::vector<UserLobbyInfo> ClientProtocol::read_create_game_info()
         read_data(id);
         std::string color_name;
         read_string(color_name);
+        std::cout << "El id que recibo es: " << (int)id << std::endl;
         UserLobbyInfo user(id, color_name);
         users.push_back(user);
     }

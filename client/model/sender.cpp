@@ -3,16 +3,16 @@
 #include "protocol.h"
 #include <cstdint>
 
-Sender::Sender(Socket &skt, Queue<ClientActionType> &queue) : protocol(skt), queue_sender(queue), closed(false) {}
+Sender::Sender(Socket &skt, Queue<ClientIdAction> &queue) : protocol(skt), queue_sender(queue), closed(false) {}
 
 void Sender::run()
 {
     try
-    {   
+    {
         while (!closed && _keep_running)
         {
-            ClientActionType action = queue_sender.pop();
-            protocol.send_action(action, closed);
+            ClientIdAction action = queue_sender.pop();
+            protocol.send_id_action(action, closed);
         }
     }
     catch (LibError &e)

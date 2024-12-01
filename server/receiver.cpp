@@ -14,10 +14,13 @@ void Receiver::run()
     {
         while (!closed && _keep_running)
         {
+            std::cout << "Estoy por leer algo" << std::endl;
             ActionMessage message = protocol.read_action();
             if (!closed)
             {
                 ClientCommand command(session_id, message);
+
+                std::cout << "Lo pusheo: " << std::endl;
                 recv_queue->push(command);
             }
         }

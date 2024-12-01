@@ -44,7 +44,7 @@ private:
     void process_projectile(ProjectileSnapshot &projectile, Snapshot &snapshot, float scale_x, float scale_y);
 
 public:
-    Game(Socket);
+    Game(Socket, std::vector<UserLobbyInfo> users);
     bool run();
     ~Game();
 };
