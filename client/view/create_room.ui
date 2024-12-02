@@ -24,9 +24,9 @@
   <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>280</x>
-     <y>80</y>
-     <width>210</width>
+     <x>270</x>
+     <y>140</y>
+     <width>231</width>
      <height>311</height>
     </rect>
    </property>
@@ -38,6 +38,12 @@
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777210</width>
+        <height>16777215</height>
+       </size>
       </property>
       <property name="font">
        <font>

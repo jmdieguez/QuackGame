@@ -19,7 +19,7 @@ std::vector<UserLobbyInfo> Lobby::get_users()
 
 void Lobby::join_room(const uint16_t& id)
 {
-    protocol.send_join_game(id, 1);
+    protocol.send_join_game(id, game_mode);
     users = protocol.read_users_info();
 
 }
