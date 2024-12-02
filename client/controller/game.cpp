@@ -78,7 +78,7 @@ void Game::update_renderer(int frame_ticks)
 void Game::process_projectile(ProjectileSnapshot &projectile, Snapshot &snapshot, float scale_x, float scale_y)
 {
     if (!mute_effect && projectile.texture != TextureFigure::None && projectile.texture != TextureFigure::GrenadeFigure && projectile.texture != TextureFigure::BananaFigure && projectile.texture != TextureFigure::BananaThrown)
-        music_storage.get_projectile_sound().sound(projectile.id);
+        sound_storage.get_projectile_sound().sound(projectile.id);
     render_storage.get_projectile_drawer().render(projectile, snapshot.camera, scale_x, scale_y);
 }
 
@@ -87,7 +87,7 @@ void Game::process_explosion(ExplosionSnapshot &explosion, int frame_ticks, Snap
     if (explosion.texture == TextureFigure::None)
         return;
     if (!mute_effect)
-        music_storage.get_explosion_sound().sound(explosion.id);
+        sound_storage.get_explosion_sound().sound(explosion.id);
     render_storage.get_explosion().render(explosion, frame_ticks, snapshot.camera, scale_x, scale_y);
 }
 
@@ -154,7 +154,7 @@ void Game::set_renderer(int frame_ticks)
             }
         }
     }
-    music_storage.clear_sounds();
+    sound_storage.clear_sounds();
 }
 
 void Game::step(unsigned int current_step)
@@ -180,7 +180,7 @@ Game::Game(Socket skt, std::vector<UserLobbyInfo> users)
       session(users),
       users(users),
       render_storage(initializer.get_renderer()),
-      music_storage(initializer.get_mixer()),
+      sound_storage(initializer.get_mixer()),
       music(initializer.get_mixer()),
       mute_effect(Config::getInstance()["effect"]["mute"].as<bool>()),
       volume_music(Config::getInstance()["music"]["volume"].as<unsigned>()),

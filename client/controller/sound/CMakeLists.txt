@@ -2,8 +2,8 @@ target_sources(quack_game_client
     PRIVATE
     # .cpp files
     chunk.cpp 
-    musicbox.cpp
-    musicboxstorage.cpp
+    soundbox.cpp
+    soundboxstorage.cpp
     projectilesound.cpp
     explosionsound.cpp
     soundmanager.cpp
@@ -11,8 +11,8 @@ target_sources(quack_game_client
     PUBLIC
     # .h files
     chunk.h
-    musicbox.h
-    musicboxstorage.h
+    soundbox.h
+    soundboxstorage.h
     projectilesound.h
     explosionsound.h
     soundmanager.h

@@ -7,7 +7,7 @@
 #include <SDL2pp/Mixer.hh>
 #include <SDL2pp/Music.hh>
 
-class GameMusic
+class MusicBox
 {
 private:
     std::vector<std::string> paths;
@@ -17,9 +17,9 @@ private:
     void play_next();
 
 public:
-    explicit GameMusic(SDL2pp::Mixer &mixer);
+    explicit MusicBox(SDL2pp::Mixer &mixer);
     void start(unsigned volume);
-    ~GameMusic();
+    ~MusicBox();
 };
 
 #endif // GAME_MUSIC_H

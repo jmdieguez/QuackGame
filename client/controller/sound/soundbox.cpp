@@ -1,15 +1,14 @@
-#include "musicbox.h"
-#include <iostream>
+#include "soundbox.h"
 
 /***************************************************************************
                               PUBLIC METHODS
 ****************************************************************************/
 
-MusicBox::MusicBox(SDL2pp::Mixer &mixer) : mixer(mixer)
+SoundBox::SoundBox(SDL2pp::Mixer &mixer) : mixer(mixer)
 {
 }
 
-void MusicBox::play_sound(const int &volume, const TextureFigure &texture)
+void SoundBox::play_sound(const int &volume, const TextureFigure &texture)
 {
     SDL2pp::Chunk &sound = get_chunk(texture);
     sound.SetVolume(volume);
@@ -22,6 +21,6 @@ void MusicBox::play_sound(const int &volume, const TextureFigure &texture)
     }
 }
 
-MusicBox::~MusicBox()
+SoundBox::~SoundBox()
 {
 }

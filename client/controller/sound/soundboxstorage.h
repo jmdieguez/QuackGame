@@ -1,21 +1,21 @@
-#ifndef MUSIC_BOX_STORAGE
-#define MUSIC_BOX_STORAGE
+#ifndef SOUND_BOX_STORAGE
+#define SOUND_BOX_STORAGE
 
 #include "explosionsound.h"
 #include "projectilesound.h"
 
-class MusicBoxStorage
+class SoundBoxStorage
 {
 private:
     ExplosionSound explosion;
     ProjectileGunSound projectile;
 
 public:
-    explicit MusicBoxStorage(SDL2pp::Mixer &mixer);
+    explicit SoundBoxStorage(SDL2pp::Mixer &mixer);
     ProjectileGunSound &get_projectile_sound();
     ExplosionSound &get_explosion_sound();
     void clear_sounds();
-    ~MusicBoxStorage();
+    ~SoundBoxStorage();
 };
 
-#endif // MUSIC_BOX_STORAGE
+#endif // SOUND_BOX_STORAGE

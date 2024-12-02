@@ -15,10 +15,9 @@
 #include "../../common/socket.h"
 #include "../../common/snapshots.h"
 #include "render/renderstorage.h"
-#include "sound/musicboxstorage.h"
+#include "sound/soundboxstorage.h"
 #include "session/sessioncontroller.h"
-#include "sound/musicbox.h"
-#include "music/gamemusic.h"
+#include "music/musicbox.h"
 #include "../view/loading_screen.h"
 #include "../view/table_screen.h"
 
@@ -34,8 +33,8 @@ private:
     SessionController session;
     std::vector<UserLobbyInfo> users;
     RenderStorage render_storage;
-    MusicBoxStorage music_storage;
-    GameMusic music;
+    SoundBoxStorage sound_storage;
+    MusicBox music;
     bool mute_effect;
     unsigned volume_music;
     bool mute_music;

@@ -4,7 +4,7 @@
 #include <set>
 #include <cstdint>
 
-#include "musicbox.h"
+#include "soundbox.h"
 #include "../../../common/texturefigure.h"
 
 class SoundManager
@@ -13,7 +13,7 @@ private:
     int volume;
     TextureFigure texture;
     std::set<uint16_t> ids;
-    MusicBox music_box;
+    SoundBox music_box;
     uint16_t current_quantity_sound;
 
 public:
