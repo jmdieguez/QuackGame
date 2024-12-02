@@ -71,23 +71,20 @@ Duck::Duck(const uint8_t &i, const Position &p, const Color &color) : Hitbox(p, 
 
 Duck::~Duck() {}
 
-void Duck::move(Direction direction)
+void Duck::move_right()
 {
     if (status.banana_move || status.bent_down)
         return;
-    switch (direction)
-    {
-    case Direction::RIGHT:
-        status.mooving = true;
-        status.looking_right = true;
-        break;
-    case Direction::LEFT:
-        status.mooving = true;
-        status.looking_right = false;
-        break;
-    default:
-        break;
-    }
+    status.mooving = true;
+    status.looking_right = true;
+}
+
+void Duck::move_left()
+{
+    if (status.banana_move || status.bent_down)
+        return;
+    status.mooving = true;
+    status.looking_right = false;
 }
 
 void Duck::stop_moving()

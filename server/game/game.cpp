@@ -85,11 +85,11 @@ void Game::process(ClientCommand &command)
         switch (command.message.type)
         {
         case ClientActionType::MOVE_RIGHT:
-            duck.move(Direction::RIGHT);
+            duck.move_right();
             break;
 
         case ClientActionType::MOVE_LEFT:
-            duck.move(Direction::LEFT);
+            duck.move_left();
             break;
 
         case ClientActionType::STOP_MOVING_LEFT:
