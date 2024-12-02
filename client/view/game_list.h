@@ -7,7 +7,7 @@
 #include <map>
 #include <string>
 #include "../model/lobby/lobby.h"
-#include "game_mode.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
     class GameList;
@@ -38,8 +38,6 @@ private:
     Ui::GameList *ui;
     Lobby* lobby;
     std::map<QString, uint16_t> nameToIdMap;
-    GameMode* gameModeWindow = nullptr;
-
 };
 
 #endif //GAME_LIST_H

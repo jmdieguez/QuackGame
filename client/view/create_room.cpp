@@ -4,6 +4,7 @@
 #include <QThread>
 #include "sound_player.h"
 #include "window_utils.h"
+#include "start_game.h"
 #include "../ui/defs.h"
 
 CreateRoom::CreateRoom(Lobby *lobby, QWidget *parent)
@@ -41,8 +42,8 @@ void CreateRoom::onBackButtonClicked()
 
 void CreateRoom::onCreatSinglePlayerClicked() {
     QString roomName = ui->textBoxName->text();
-       lobby->prepare_single_player_game();
-    lobby->create_room(roomName.toStdString());
+    lobby->prepare_single_player_game();
+    std::vector<UserLobbyInfo> result = lobby->create_room(roomName.toStdString());
     this->hide();
     StartGame startDialog(lobby, result, nullptr);
     startDialog.exec();
@@ -53,7 +54,7 @@ void CreateRoom::onCreatSinglePlayerClicked() {
 void CreateRoom::onCreateMUltiplayerButtonClicked() {
     QString roomName = ui->textBoxName->text();
     lobby->prepare_multiplayer_game();
-    lobby->create_room(roomName.toStdString());
+    std::vector<UserLobbyInfo> result = lobby->create_room(roomName.toStdString());
     this->hide();
     StartGame startDialog(lobby, result, nullptr);
     startDialog.exec();

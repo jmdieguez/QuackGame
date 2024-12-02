@@ -65,8 +65,8 @@
   <widget class="QPushButton" name="back">
    <property name="geometry">
     <rect>
-     <x>270</x>
-     <y>470</y>
+     <x>280</x>
+     <y>400</y>
      <width>211</width>
      <height>43</height>
     </rect>
@@ -94,74 +94,6 @@
    </property>
    <property name="text">
     <string>Back</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="joinMultiplayer">
-   <property name="geometry">
-    <rect>
-     <x>270</x>
-     <y>410</y>
-     <width>211</width>
-     <height>43</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true"> QPushButton {
-            background-color: #994d28;
-            color: white; 
-            font-size: 16px; 
-            border: 2px solid #2C6B43; 
-            border-radius: 15px; 
-            padding: 10px 20px;
-            text-align: center;
-        }
-
-        QPushButton:pressed {
-            background-color: #3E7F58;
-        }
-
-        QPushButton:hover {
-            background-color: #3E7F58;
-            border: 2px solid #A1D0B1;
-
-        }</string>
-   </property>
-   <property name="text">
-    <string>Join as Multiplayer </string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="back_3">
-   <property name="geometry">
-    <rect>
-     <x>270</x>
-     <y>350</y>
-     <width>211</width>
-     <height>43</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true"> QPushButton {
-            background-color: #994d28;
-            color: white; 
-            font-size: 16px; 
-            border: 2px solid #2C6B43; 
-            border-radius: 15px; 
-            padding: 10px 20px;
-            text-align: center;
-        }
-
-        QPushButton:pressed {
-            background-color: #3E7F58;
-        }
-
-        QPushButton:hover {
-            background-color: #3E7F58;
-            border: 2px solid #A1D0B1;
-
-        }</string>
-   </property>
-   <property name="text">
-    <string>Join as Single Player</string>
    </property>
   </widget>
  </widget>

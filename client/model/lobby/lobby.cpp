@@ -5,10 +5,11 @@
 
 Lobby::Lobby(ClientProtocol &protocol) : protocol(protocol) {}
 
-void Lobby::create_room(const std::string &name)
+std::vector<UserLobbyInfo> Lobby::create_room(const std::string &name)
 {
     protocol.send_create_game(game_mode, name);
     users = protocol.read_users_info();
+    return users;
 }
 
 std::vector<UserLobbyInfo> Lobby::get_users()
@@ -16,12 +17,11 @@ std::vector<UserLobbyInfo> Lobby::get_users()
     return users;
 }
 
-void Lobby::join_room()
+void Lobby::join_room(const uint16_t& id)
 {
-    protocol.send_join_game(game_id, game_mode);
-    if (users.empty()) {
-        users = protocol.read_users_info();
-    }
+    protocol.send_join_game(id, 1);
+    users = protocol.read_users_info();
+
 }
 
 void Lobby::select_game(const uint16_t &id)
