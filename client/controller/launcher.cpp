@@ -22,12 +22,15 @@ void Launcher::run_game()
     MainWindow w(&lobby);
     w.show();
     bool result;
+
     if (app.exec() == SUCCESS)
     {
-        Game game(std::move(skt), lobby.get_users());
-        result = game.run();
-
-        GameResultWindow resultWindow(result);
-        resultWindow.exec();
+        std::vector<UserLobbyInfo> users = lobby.get_users();
+        if (!users.empty()) {
+            Game game(std::move(skt), users);
+            result = game.run();
+            GameResultWindow resultWindow(result);
+            resultWindow.exec();
+        }
     }
 }

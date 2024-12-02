@@ -148,10 +148,15 @@ void Game::set_renderer(int frame_ticks)
             if (latest_snapshot.is_ended)
             {
                 victory = snapshot.game_result == GameResult::VICTORY;
+
                 initializer.get_renderer().Clear();
                 keep_running = false;
                 SDL_Quit();
             }
+        }
+        if (round != latest_snapshot.round) {
+            round = latest_snapshot.round;
+            round_controller.handle_round_change(round, latest_snapshot.scores);
         }
     }
     sound_storage.clear_sounds();
@@ -176,6 +181,7 @@ Game::Game(Socket skt, std::vector<UserLobbyInfo> users)
                          { this->step(step); }),
       font(FONT_PATH, 32),
       loading_screen(initializer.get_renderer()),
+      round_controller(initializer.get_renderer(), font),
       table_screen(initializer.get_renderer(), font),
       session(users),
       users(users),
@@ -191,6 +197,7 @@ Game::Game(Socket skt, std::vector<UserLobbyInfo> users)
 
 bool Game::run()
 {
+
     Receiver receiver(socket, session.get_queue_receiver());
     Sender sender(socket, session.get_queue_sender());
     receiver.start();

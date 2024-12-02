@@ -29,7 +29,7 @@ private:
     Ui::MainWindow *ui;
     Lobby* lobby;
     CreateRoom* create_room;
-    GameList*  gameListWindow;
+    GameList*  gameListWindow = nullptr;
 };
 
 #endif // MAIN_WINDOW_H

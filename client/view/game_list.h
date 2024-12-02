@@ -7,6 +7,7 @@
 #include <map>
 #include <string>
 #include "../model/lobby/lobby.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
     class GameList;

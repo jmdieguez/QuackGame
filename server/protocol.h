@@ -25,6 +25,7 @@ private:
     void send_box(const BoxSnapshot &box);
     void send_name(const std::vector<unsigned char> &);
     void read_name(std::string &name);
+    void send_duck_color(Color color);
 
 public:
     explicit ServerProtocol(Socket &);

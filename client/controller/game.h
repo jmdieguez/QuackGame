@@ -20,6 +20,7 @@
 #include "music/musicbox.h"
 #include "../view/loading_screen.h"
 #include "../view/table_screen.h"
+#include "round/roundcontroller.h"
 
 class Game
 {
@@ -29,6 +30,7 @@ private:
     ConstantRateLoop constant_rate_loop;
     SDL2pp::Font font;
     LoadingScreen loading_screen;
+    RoundController round_controller;
     TableScreen table_screen;
     SessionController session;
     std::vector<UserLobbyInfo> users;
@@ -41,6 +43,7 @@ private:
     Socket socket;
     bool started = false;
     bool victory;
+    uint16_t round = 0;
 
     void get_and_execute_events();
     void set_renderer(int current_step);
