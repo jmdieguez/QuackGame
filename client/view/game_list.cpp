@@ -16,15 +16,15 @@ GameList::GameList(Lobby *lobby, QWidget *parent) : QWidget(parent),
     WindowUtils::setFixedSize(this, 800, 600);
     WindowUtils::centerWindow(this, BACKGROUND);
 
-    connect(ui->listWidget, &QListWidget::itemClicked, this, [this](QListWidgetItem *item)
-            {
+    connect(ui->listWidget, &QListWidget::itemClicked, this, [this](QListWidgetItem *item) {
         SoundPlayer::instance()->playSound(CLICK_SOUND, false);
-        onItemClicked(item); });
+        onItemClicked(item);
+    });
 
-    connect(ui->back, &QPushButton::clicked, this, [this]()
-            {
+    connect(ui->back, &QPushButton::clicked, this, [this]() {
         SoundPlayer::instance()->playSound(CLICK_SOUND, false);
-        onBackButtonClicked(); });
+        onBackButtonClicked();
+    });
 }
 
 void GameList::setGameList(const std::map<uint16_t, std::string> &games)
@@ -58,11 +58,10 @@ void GameList::onItemClicked(QListWidgetItem *item)
 {
     QString gameName = item->text();
     if (nameToIdMap.count(gameName) > 0) {
-        uint16_t gameId = nameToIdMap[gameName];
-        lobby->select_game(gameId);
-        this->hide();
-
         if (!gameModeWindow) {
+            uint16_t gameId = nameToIdMap[gameName];
+            lobby->select_game(gameId);
+            this->hide();
             gameModeWindow = new GameMode(lobby, false, nullptr);
             gameModeWindow->setAttribute(Qt::WA_DeleteOnClose);
 

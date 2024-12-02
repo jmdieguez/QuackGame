@@ -41,20 +41,19 @@ void GameMode::on_multiplayerButton_clicked() {
 void GameMode::display_start_game() {
     if (create_game) {
         create_new_game();
-    } else {
+    } else if (!create_game) {
         join_existing_game();
     }
 }
 
 void GameMode::create_new_game() {
-    std::vector<UserLobbyInfo> result = lobby->send_create_game();
-    if (result.empty()) {
-        return;
-    }
-
-    this->hide();
 
     if (!startGameWindow) {
+        std::vector<UserLobbyInfo> result = lobby->send_create_game();
+        if (result.empty()) {
+            return;
+        }
+        this->hide();
         startGameWindow = new StartGame(lobby, result, nullptr);
         startGameWindow->setAttribute(Qt::WA_DeleteOnClose);
 

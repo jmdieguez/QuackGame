@@ -24,6 +24,7 @@ void Lobby::join_room()
 {
     protocol.send_join_game(game_id, game_mode);
     users = protocol.read_users_info();
+    std::cout  <<  users.empty() << std::endl;
 }
 
 void Lobby::select_game(const uint16_t &id)
