@@ -24,7 +24,8 @@ public:
 
     private slots:
         void onBackButtonClicked();
-        void onCreateRoomButtonClicked();
+        void onCreatSinglePlayerClicked();
+        void onCreateMUltiplayerButtonClicked();
 
 private:
     Ui::CreateRoom *ui;

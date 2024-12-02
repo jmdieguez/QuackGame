@@ -4,6 +4,8 @@
 
 #include <QDialog>
 #include "../model/lobby/lobby.h"
+#include <vector>
+#include <string>
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -17,11 +19,9 @@ class StartGame : public QDialog
     Q_OBJECT
 
 public:
-    explicit StartGame(Lobby *lobby, std::vector<UserLobbyInfo> &users, QWidget *parent = nullptr);
+    explicit StartGame(Lobby *lobby, std::vector<UserLobbyInfo>& users, QWidget* parent = nullptr);
     ~StartGame();
 
-signals:
-    void goBack();
 
 private slots:
     void onStartButtonClicked();
@@ -31,8 +31,6 @@ private slots:
 private:
     Ui::StartGame *ui;
     Lobby *lobby;
-
-    void set_info_user(size_t &id, std::string &color, int x_position, int y_position);
 };
 
 #endif // START_GAME_H

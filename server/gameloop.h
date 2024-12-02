@@ -24,7 +24,7 @@ private:
     std::shared_ptr<Queue<ClientCommand>> recv_queue;
     Game game;
     SessionsHandler handler;
-    uint16_t number_of_players;
+    uint16_t number_of_players = 0;
 
 public:
     Gameloop(const uint16_t &id, const std::string &name, const uint16_t &creator_id);

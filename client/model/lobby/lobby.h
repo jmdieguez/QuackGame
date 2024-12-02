@@ -11,14 +11,19 @@ class Lobby
 private:
     ClientProtocol &protocol;
     std::vector<UserLobbyInfo> users;
-
+    std::string room_name;
+    uint16_t game_mode = 0;
+    uint16_t game_id = 0;
 public:
     explicit Lobby(ClientProtocol &);
     ~Lobby();
-    std::vector<UserLobbyInfo> create_room(const std::string &);
-    std::vector<UserLobbyInfo> join_room(const uint16_t &);
+    std::vector<UserLobbyInfo>  create_room(const std::string&);
+    void join_room(const uint16_t& id);
     std::vector<UserLobbyInfo> get_users();
+    void prepare_multiplayer_game();
+    void prepare_single_player_game();
     void start_game(bool &);
+    void select_game(const uint16_t &);
     void get_game_list(std::map<uint16_t, std::string> &games);
 };
 

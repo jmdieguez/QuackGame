@@ -16,15 +16,23 @@ GameList::GameList(Lobby *lobby, QWidget *parent) : QWidget(parent),
     WindowUtils::setFixedSize(this, 800, 600);
     WindowUtils::centerWindow(this, BACKGROUND);
 
-    connect(ui->listWidget, &QListWidget::itemClicked, this, [this](QListWidgetItem *item)
-            {
+    connect(ui->listWidget, &QListWidget::itemClicked, this, [this](QListWidgetItem *item) {
         SoundPlayer::instance()->playSound(CLICK_SOUND, false);
-        onItemClicked(item); });
+        onItemClicked(item);
+    });
 
-    connect(ui->back, &QPushButton::clicked, this, [this]()
-            {
+    connect(ui->BackButton, &QPushButton::clicked, this, [this]() {
         SoundPlayer::instance()->playSound(CLICK_SOUND, false);
-        onBackButtonClicked(); });
+        onBackButtonClicked();
+    });
+
+    connect(ui->JoinMultiplayer, &QPushButton::clicked, this, [this]() {
+        onJoinMultiplayerClicked();
+    });
+
+    connect(ui->JoinSinglePlayer, &QPushButton::clicked, this, [this]() {
+        onJoinSinglePlayerClicked();
+    });
 }
 
 void GameList::setGameList(const std::map<uint16_t, std::string> &games)
@@ -59,7 +67,28 @@ void GameList::onItemClicked(QListWidgetItem *item)
     QString gameName = item->text();
     if (nameToIdMap.count(gameName) > 0)
     {
-        uint16_t gameId = nameToIdMap[gameName];
+        this->selectedGame = gameName; // Guarda el juego seleccionado
+        ui->listWidget->setCurrentItem(item); // Asegura que quede seleccionado visualmente
+    }
+}
+
+void GameList::onJoinSinglePlayerClicked()
+{
+    if (nameToIdMap.count(selectedGame) > 0)
+    {
+        uint16_t gameId = nameToIdMap[selectedGame];
+        lobby->prepare_single_player_game();
+        lobby->join_room(gameId);
+        QApplication::closeAllWindows();
+    }
+}
+
+void GameList::onJoinMultiplayerClicked()
+{
+    if (nameToIdMap.count(selectedGame) > 0)
+    {
+        uint16_t gameId = nameToIdMap[selectedGame];
+        lobby->prepare_multiplayer_game();
         lobby->join_room(gameId);
         QApplication::closeAllWindows();
     }
@@ -70,7 +99,7 @@ void GameList::onBackButtonClicked()
     emit goBack();
 }
 
-void GameList::closeEvent(QCloseEvent *event)
+void GameList::closeEvent(QCloseEvent* event)
 {
     emit closed();
     event->accept();

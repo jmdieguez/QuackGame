@@ -7,6 +7,7 @@
 #include <map>
 #include <string>
 #include "../model/lobby/lobby.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
     class GameList;
@@ -31,12 +32,15 @@ protected:
     void closeEvent(QCloseEvent* event) override;
 
 private slots:
-        void onItemClicked(QListWidgetItem* item);
-        void onBackButtonClicked();
+    void onItemClicked(QListWidgetItem *item);
+    void onBackButtonClicked();
+    void onJoinSinglePlayerClicked();
+    void onJoinMultiplayerClicked();
 private:
     Ui::GameList *ui;
     Lobby* lobby;
     std::map<QString, uint16_t> nameToIdMap;
+    QString selectedGame;
 };
 
 #endif //GAME_LIST_H

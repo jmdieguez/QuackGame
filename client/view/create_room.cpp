@@ -2,9 +2,9 @@
 #include <QPushButton>
 #include "ui_create_room.h"
 #include <QThread>
-#include "start_game.h"
 #include "sound_player.h"
 #include "window_utils.h"
+#include "start_game.h"
 #include "../ui/defs.h"
 
 CreateRoom::CreateRoom(Lobby *lobby, QWidget *parent)
@@ -19,10 +19,14 @@ CreateRoom::CreateRoom(Lobby *lobby, QWidget *parent)
         SoundPlayer::instance()->playSound(CLICK_SOUND, false);
         onBackButtonClicked(); });
 
-    connect(ui->createButton, &QPushButton::clicked, this, [this]()
-            {
+    connect(ui->createMUltiplayerButton, &QPushButton::clicked, this, [this]() {
         SoundPlayer::instance()->playSound(CLICK_SOUND, false);
-        onCreateRoomButtonClicked(); });
+        onCreateMUltiplayerButtonClicked();
+    });
+    connect(ui->creatSinglePlayer, &QPushButton::clicked, this, [this]() {
+        SoundPlayer::instance()->playSound(CLICK_SOUND, false);
+        onCreatSinglePlayerClicked();
+    });
 }
 
 CreateRoom::~CreateRoom()
@@ -35,13 +39,26 @@ void CreateRoom::onBackButtonClicked()
     emit goBack();
 }
 
-void CreateRoom::onCreateRoomButtonClicked()
-{
+
+void CreateRoom::onCreatSinglePlayerClicked() {
     QString roomName = ui->textBoxName->text();
-    auto result = lobby->create_room(roomName.toStdString());
+    lobby->prepare_single_player_game();
+    std::vector<UserLobbyInfo> result = lobby->create_room(roomName.toStdString());
     this->hide();
     StartGame startDialog(lobby, result, nullptr);
     startDialog.exec();
 
     QApplication::closeAllWindows();
 }
+
+void CreateRoom::onCreateMUltiplayerButtonClicked() {
+    QString roomName = ui->textBoxName->text();
+    lobby->prepare_multiplayer_game();
+    std::vector<UserLobbyInfo> result = lobby->create_room(roomName.toStdString());
+    this->hide();
+    StartGame startDialog(lobby, result, nullptr);
+    startDialog.exec();
+
+    QApplication::closeAllWindows();
+}
+
