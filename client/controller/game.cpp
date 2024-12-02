@@ -159,6 +159,8 @@ void Game::set_renderer(int frame_ticks)
 
 void Game::step(unsigned int current_step)
 {
+    if (!mute_music)
+        music.start(volume_music);
     unsigned int frame_ticks = current_step;
     get_and_execute_events();
     update_renderer(frame_ticks);
@@ -179,8 +181,10 @@ Game::Game(Socket skt, std::vector<UserLobbyInfo> users)
       users(users),
       render_storage(initializer.get_renderer()),
       music_storage(initializer.get_mixer()),
+      music(initializer.get_mixer()),
       mute_effect(Config::getInstance()["effect"]["mute"].as<bool>()),
-      mute_music(Config::getInstance()["effect"]["mute"].as<bool>()),
+      volume_music(Config::getInstance()["music"]["volume"].as<unsigned>()),
+      mute_music(Config::getInstance()["music"]["mute"].as<bool>()),
       socket(std::move(skt))
 {
 }
