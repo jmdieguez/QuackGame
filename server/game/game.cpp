@@ -153,27 +153,27 @@ void Game::process(ClientCommand &command)
             break;
 
         case ClientActionType::SPAWN_COWBOY_PISTOL:
-            spawn_gun<CowboyPistol>(duck.get_position());
+            spawn_gun<CowboyPistol>(below_duck);
             break;
 
         case ClientActionType::SPAWN_DUELING_PISTOL:
-            spawn_gun<DuelingPistol>(duck.get_position());
+            spawn_gun<DuelingPistol>(below_duck);
             break;
 
         case ClientActionType::SPAWN_MAGNUM:
-            spawn_gun<Magnum>(duck.get_position());
+            spawn_gun<Magnum>(below_duck);
             break;
 
         case ClientActionType::SPAWN_PEW_PEW_LASER:
-            spawn_gun<PewPewLaser>(duck.get_position());
+            spawn_gun<PewPewLaser>(below_duck);
             break;
 
         case ClientActionType::SPAWN_SNIPER:
-            spawn_gun<Sniper>(duck.get_position());
+            spawn_gun<Sniper>(below_duck);
             break;
 
         case ClientActionType::SPAWN_LASER_RIFLE:
-            spawn_gun<LaserRifle>(duck.get_position());
+            spawn_gun<LaserRifle>(below_duck);
             break;
         default:
             break;
