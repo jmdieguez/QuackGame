@@ -14,7 +14,8 @@ TransitionManager::TransitionManager(SDL2pp::Renderer &renderer, SDL2pp::Font &f
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 }
 
-void TransitionManager::fadeTransition() {
+
+void TransitionManager::fade_transition() {
     SDL2pp::Surface textSurface = font.RenderText_Blended("Next level!", SDL2pp::Color(255, 255, 255));
     SDL2pp::Texture textTexture(renderer, textSurface);
 
@@ -74,7 +75,7 @@ void TransitionManager::fadeTransition() {
 
 
 
-void TransitionManager::drawTransitionOverlay() {
+void TransitionManager::draw_transition_overlay() {
     SDL_SetRenderDrawColor(renderer.Get(), 0, 0, 0, alpha);
     SDL_RenderFillRect(renderer.Get(), nullptr);
     SDL_RenderPresent(renderer.Get());

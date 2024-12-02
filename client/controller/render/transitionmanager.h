@@ -8,9 +8,8 @@
 class TransitionManager {
 public:
     TransitionManager(SDL2pp::Renderer &renderer, SDL2pp::Font &font);
-    void fadeTransition();
-    void drawTransitionOverlay();
-
+    void draw_transition_overlay();
+    void fade_transition();
 private:
     SDL2pp::Renderer &renderer;
     SDL2pp::Font& font;

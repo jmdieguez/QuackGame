@@ -1,6 +1,5 @@
 #include "game.h"
 #include "../../common/config.h"
-#include "render/transitionmanager.h"
 
 /***************************************************************************
                               PRIVATE METHODS
@@ -156,9 +155,8 @@ void Game::set_renderer(int frame_ticks)
             }
         }
         if (round != latest_snapshot.round) {
-            TransitionManager transitionManager(initializer.get_renderer(), font);
             round = latest_snapshot.round;
-            transitionManager.fadeTransition();
+            round_controller.handle_round_change(round, latest_snapshot.scores);
         }
     }
     music_storage.clear_sounds();
@@ -181,6 +179,7 @@ Game::Game(Socket skt, std::vector<UserLobbyInfo> users)
                          { this->step(step); }),
       font(FONT_PATH, 32),
       loading_screen(initializer.get_renderer()),
+      round_controller(initializer.get_renderer(), font),
       table_screen(initializer.get_renderer(), font),
       session(users),
       users(users),
