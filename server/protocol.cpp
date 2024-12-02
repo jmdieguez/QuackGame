@@ -27,28 +27,16 @@ ActionMessage ServerProtocol::read_action()
 ActionLobby ServerProtocol::read_lobby()
 {
     ClientActionType action;
-    bool was_closed = false;
-
     uint16_t info;
-    skt.recvall(&info, sizeof(info), &was_closed);
-    if (was_closed)
-    {
-        throw LibError(errno, "Error al intentar leer datos a cliente1");
-    }
-    action = static_cast<ClientActionType>(ntohs(info));
+    read_data(info);
+    action = static_cast<ClientActionType>(info);
 
     uint16_t game_id = 0;
     if (action == ClientActionType::JOIN_GAME)
     {
-        skt.recvall(&game_id, sizeof(game_id), &was_closed);
-        if (was_closed)
-        {
-            throw LibError(errno, "Error al intentar leer datos a cliente2");
-        }
-        game_id = ntohs(game_id);
+        read_data(game_id);
         uint16_t num_players;
         read_data(num_players);
-        // return ActionLobby(action, game_id);
         return ActionLobby(action, game_id, num_players);
     }
     else if (action == ClientActionType::CREATE_GAME)
@@ -57,11 +45,9 @@ ActionLobby ServerProtocol::read_lobby()
         read_data(num_players);
         std::string name = "";
         read_name(name);
-        //   return ActionLobby(action, 0, name);
         return ActionLobby(action, 0, num_players, name);
     }
 
-    //   return ActionLobby(action);
     return ActionLobby(action, game_id, game_id);
 }
 
