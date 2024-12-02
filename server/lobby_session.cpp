@@ -23,7 +23,6 @@ void LobbySession::run()
             protocol.send_users(users);
             game_joined = matches.get_id_counter();
             break;
-
         case ClientActionType::JOIN_GAME:
             users = matches.join_game(action.game_id, action.num_players);
             game_joined = action.game_id;

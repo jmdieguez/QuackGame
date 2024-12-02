@@ -20,7 +20,6 @@ public:
     void create_room(const std::string&);
     void join_room();
     std::vector<UserLobbyInfo> get_users();
-    std::vector<UserLobbyInfo> send_create_game();
     void prepare_multiplayer_game();
     void prepare_single_player_game();
     void start_game(bool &);

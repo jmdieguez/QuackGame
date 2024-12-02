@@ -13,14 +13,18 @@ CreateRoom::CreateRoom(Lobby *lobby, QWidget *parent)
     WindowUtils::setFixedSize(this, 800, 600);
     WindowUtils::centerWindow(this, BACKGROUND);
 
-    connect(ui->backButton, &QPushButton::clicked, this, [this]() {
+    connect(ui->backButton, &QPushButton::clicked, this, [this]()
+            {
         SoundPlayer::instance()->playSound(CLICK_SOUND, false);
-        onBackButtonClicked();
-    });
+        onBackButtonClicked(); });
 
-    connect(ui->createButton, &QPushButton::clicked, this, [this]() {
+    connect(ui->createMUltiplayerButton, &QPushButton::clicked, this, [this]() {
         SoundPlayer::instance()->playSound(CLICK_SOUND, false);
-        onCreateRoomButtonClicked();
+        onCreateMUltiplayerButtonClicked();
+    });
+    connect(ui->creatSinglePlayer, &QPushButton::clicked, this, [this]() {
+        SoundPlayer::instance()->playSound(CLICK_SOUND, false);
+        onCreatSinglePlayerClicked();
     });
 }
 
@@ -34,21 +38,26 @@ void CreateRoom::onBackButtonClicked()
     emit goBack();
 }
 
-void CreateRoom::onCreateRoomButtonClicked()
-{
+
+void CreateRoom::onCreatSinglePlayerClicked() {
     QString roomName = ui->textBoxName->text();
+       lobby->prepare_single_player_game();
     lobby->create_room(roomName.toStdString());
     this->hide();
+    StartGame startDialog(lobby, result, nullptr);
+    startDialog.exec();
 
-    if (!gameModeWindow) {
-        gameModeWindow = new GameMode(lobby, true, nullptr);
-        gameModeWindow->setAttribute(Qt::WA_DeleteOnClose);
-
-        connect(gameModeWindow, &QDialog::finished, this, [this]() {
-            gameModeWindow->deleteLater();
-            gameModeWindow = nullptr;
-        });
-    }
-
-    gameModeWindow->show();
+    QApplication::closeAllWindows();
 }
+
+void CreateRoom::onCreateMUltiplayerButtonClicked() {
+    QString roomName = ui->textBoxName->text();
+    lobby->prepare_multiplayer_game();
+    lobby->create_room(roomName.toStdString());
+    this->hide();
+    StartGame startDialog(lobby, result, nullptr);
+    startDialog.exec();
+
+    QApplication::closeAllWindows();
+}
+

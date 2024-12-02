@@ -22,6 +22,7 @@ void Launcher::run_game()
     MainWindow w(&lobby);
     w.show();
     bool result;
+
     if (app.exec() == SUCCESS)
     {
         std::vector<UserLobbyInfo> users = lobby.get_users();
