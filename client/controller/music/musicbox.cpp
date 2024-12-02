@@ -1,25 +1,23 @@
 #include "musicbox.h"
-#include <iostream>
+#include "pathmusic.h"
 
-/***************************************************************************
-                              PUBLIC METHODS
-****************************************************************************/
-
-MusicBox::MusicBox(SDL2pp::Mixer &mixer) : mixer(mixer)
+void MusicBox::play_next()
 {
 }
 
-void MusicBox::play_sound(const int &volume, const TextureFigure &texture)
+MusicBox::MusicBox(SDL2pp::Mixer &mixer) : paths({MUSIC_ONE_PATH, MUSIC_TWO_PATH, MUSIC_THREE_PATH}),
+                                           mixer(mixer), current_index(0)
 {
-    SDL2pp::Chunk &sound = get_chunk(texture);
-    sound.SetVolume(volume);
-    for (int i = 0; i < 8; i++)
-    {
-        if (mixer.IsChannelPlaying(i))
-            continue;
-        mixer.PlayChannel(i, sound);
-        break;
-    }
+}
+
+void MusicBox::start(unsigned volume)
+{
+    if (Mix_PlayingMusic() == 1)
+        return;
+    current_music = std::make_unique<SDL2pp::Music>(paths[current_index]);
+    Mix_VolumeMusic(volume);
+    Mix_PlayMusic(current_music->Get(), 1);
+    current_index = (current_index + 1) % paths.size();
 }
 
 MusicBox::~MusicBox()

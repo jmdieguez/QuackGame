@@ -10,10 +10,18 @@
 #include "grid.h"
 #include "buttons.h"
 
-#define SINGLE_DUCK_TEXTURE "/var/quackgame/duck/single_duck.png"
-#define SPAWN_TEXTURE "/var/quackgame/spawn.png"
-#define BOX_TEXTURE "/var/quackgame/box.png"
-#define TILESETS "/var/quackgame/tiles.png"
+#ifdef GLOBAL_INSTALL
+    #define SINGLE_DUCK_TEXTURE "/var/quackgame/duck/single_duck.png"
+    #define SPAWN_TEXTURE "/var/quackgame/spawn.png"
+    #define BOX_TEXTURE "/var/quackgame/box.png"
+    #define TILESETS "/var/quackgame/tiles.png"
+#else // LOCAL_INSTALL
+    #define SINGLE_DUCK_TEXTURE "assets/duck/single_duck.png"
+    #define SPAWN_TEXTURE "assets/spawn.png"
+    #define BOX_TEXTURE "assets/box.png"
+    #define TILESETS "assets/tiles.png"
+#endif
+
 #define N_TILESETS 5
 
 enum class EditorState {

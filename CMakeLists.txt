@@ -28,6 +28,14 @@ option(TALLER_SERVER "Enable / disable server program." ON)
 option(TALLER_EDITOR "Enable / disable editor program." ON)
 option(TALLER_MAKE_WARNINGS_AS_ERRORS "Enable / disable warnings as errors." ON)
 
+
+if(DEFINED ENV{GLOBAL_INSTALL} AND "$ENV{GLOBAL_INSTALL}" STREQUAL "true")
+    message(STATUS "Compilando para instalación global.")
+    add_compile_definitions(GLOBAL_INSTALL)
+else()
+    message(STATUS "Compilando para uso local.")
+endif()
+
 message(CMAKE_CXX_COMPILER_ID="${CMAKE_CXX_COMPILER_ID}")
 
 # Define target: lib common between client, server and editor programs

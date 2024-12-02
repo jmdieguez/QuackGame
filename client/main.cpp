@@ -7,7 +7,12 @@
 #define PORT 2
 #define MIN_ARGS 3
 #define ERROR -1
-#define CONFIG_PATH "config/client.yaml"
+
+#ifdef GLOBAL_INSTALL
+    #define CONFIG_PATH "/etc/quackgame/client.yaml"
+#else // LOCAL_INSTALL
+    #define CONFIG_PATH "config/client.yaml"
+#endif
 
 int main(int argc, const char *argv[])
 {

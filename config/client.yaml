@@ -7,7 +7,7 @@ effect:
 
 music:
   mute: No
-  volume: 3
+  volume: 2
 
 settings:
   max_message_sender: 10000

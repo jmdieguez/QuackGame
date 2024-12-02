@@ -1,18 +1,25 @@
-#ifndef MUSIC_BOX_H
-#define MUSIC_BOX_H
+#ifndef GAME_MUSIC_H
+#define GAME_MUSIC_H
 
-#include "chunk.h"
-#include "../../../common/texturefigure.h"
+#include <string>
+#include <vector>
+#include <memory>
+#include <SDL2pp/Mixer.hh>
+#include <SDL2pp/Music.hh>
 
-class MusicBox : protected Chunk
+class MusicBox
 {
 private:
+    std::vector<std::string> paths;
     SDL2pp::Mixer &mixer;
+    std::unique_ptr<SDL2pp::Music> current_music;
+    size_t current_index;
+    void play_next();
 
 public:
     explicit MusicBox(SDL2pp::Mixer &mixer);
-    void play_sound(const int &volume, const TextureFigure &texture);
+    void start(unsigned volume);
     ~MusicBox();
 };
 
-#endif // MUSIC_BOX_H
+#endif // GAME_MUSIC_H

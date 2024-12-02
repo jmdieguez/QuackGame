@@ -7,7 +7,7 @@ class ExplosionSound : public SoundManager
 {
 private:
 public:
-    explicit ExplosionSound(SDL2pp::Mixer &mixer);
+    explicit ExplosionSound(SDL2pp::Mixer &mixer, unsigned &volume);
     ~ExplosionSound();
 };
 

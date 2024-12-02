@@ -159,7 +159,7 @@ void Editor::save() {
     YAML::Node root;
     root["n_tiles_x"] = 32;
     root["n_tiles_y"] = 16;
-    root["tileset"] = current_style;
+    root["tileset"] = static_cast<int>(current_style);
     
     root["components"] = YAML::Node(YAML::NodeType::Sequence);
     for (auto& [coord, tile] : tiles.tiles_map) {

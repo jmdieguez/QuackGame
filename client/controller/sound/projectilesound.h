@@ -7,7 +7,7 @@ class ProjectileGunSound : public SoundManager
 {
 private:
 public:
-    explicit ProjectileGunSound(SDL2pp::Mixer &mixer);
+    explicit ProjectileGunSound(SDL2pp::Mixer &mixer, unsigned &volume);
     ~ProjectileGunSound();
 };
 

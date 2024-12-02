@@ -34,7 +34,8 @@ public:
     ~Duck();
 
     // Actions
-    void move(Direction d);
+    void move_right();
+    void move_left();
     void stop_moving();
     void look_up();
     void stop_looking_up();
@@ -58,11 +59,13 @@ public:
               std::map<uint8_t, std::shared_ptr<Gun>> &guns,
               const std::function<void(const std::shared_ptr<Projectile> &)> &add_projectile);
 
-    void give_helmet() {
+    void give_helmet()
+    {
         status.has_helmet = true;
     }
 
-    void give_chestplate() {
+    void give_chestplate()
+    {
         status.has_chestplate = true;
     }
 };
