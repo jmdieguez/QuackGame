@@ -10,6 +10,7 @@ target_sources(quack_game_client
     game_list.cpp
     start_game.cpp
     game_result_window.cpp
+        game_mode.cpp
 
 
     PUBLIC
@@ -24,4 +25,5 @@ target_sources(quack_game_client
     window_utils.h
     game_result_window.h
     table_screen.h
+        game_mode.h
 )

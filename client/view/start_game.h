@@ -4,6 +4,9 @@
 
 #include <QDialog>
 #include "../model/lobby/lobby.h"
+#include <QVBoxLayout> // Añade esta línea
+#include <vector>
+#include <string>
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -17,7 +20,7 @@ class StartGame : public QDialog
     Q_OBJECT
 
 public:
-    explicit StartGame(Lobby *lobby, std::vector<UserLobbyInfo> &users, QWidget *parent = nullptr);
+    explicit StartGame(Lobby *lobby, std::vector<UserLobbyInfo>& users, QWidget *parent = nullptr);
     ~StartGame();
 
 signals:
@@ -32,7 +35,7 @@ private:
     Ui::StartGame *ui;
     Lobby *lobby;
 
-    void set_info_user(size_t &id, std::string &color, int x_position, int y_position);
+    void set_info_user(size_t index, const std::string &color, QVBoxLayout *layout);
 };
 
 #endif // START_GAME_H

@@ -57,8 +57,7 @@ void GameList::setGameList(const std::map<uint16_t, std::string> &games)
 void GameList::onItemClicked(QListWidgetItem *item)
 {
     QString gameName = item->text();
-    if (nameToIdMap.count(gameName) > 0)
-    {
+    if (nameToIdMap.count(gameName) > 0) {
         uint16_t gameId = nameToIdMap[gameName];
         lobby->join_room(gameId);
         QApplication::closeAllWindows();
@@ -70,7 +69,7 @@ void GameList::onBackButtonClicked()
     emit goBack();
 }
 
-void GameList::closeEvent(QCloseEvent *event)
+void GameList::closeEvent(QCloseEvent* event)
 {
     emit closed();
     event->accept();

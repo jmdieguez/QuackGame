@@ -33,7 +33,7 @@ ActionLobby ServerProtocol::read_lobby()
     skt.recvall(&info, sizeof(info), &was_closed);
     if (was_closed)
     {
-        throw LibError(errno, "Error al intentar enviar datos a cliente");
+        throw LibError(errno, "Error al intentar leer datos a cliente1");
     }
     action = static_cast<ClientActionType>(ntohs(info));
 
@@ -43,7 +43,7 @@ ActionLobby ServerProtocol::read_lobby()
         skt.recvall(&game_id, sizeof(game_id), &was_closed);
         if (was_closed)
         {
-            throw LibError(errno, "Error al intentar enviar datos a cliente");
+            throw LibError(errno, "Error al intentar leer datos a cliente2");
         }
         game_id = ntohs(game_id);
         uint16_t num_players;

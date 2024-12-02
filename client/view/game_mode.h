@@ -1,0 +1,35 @@
+
+#ifndef GAME_MODE_H
+#define GAME_MODE_H
+
+#include <QDialog>
+#include "../model/lobby/lobby.h"
+
+QT_BEGIN_NAMESPACE
+namespace Ui
+{
+    class GameMode;
+}
+QT_END_NAMESPACE
+
+class GameMode : public QDialog {
+    Q_OBJECT
+
+public:
+    explicit GameMode(Lobby* lobby, QWidget* parent = nullptr);
+    ~GameMode();
+
+    private slots:
+    void on_singlePlayerButton_clicked();
+    void on_multiplayerButton_clicked();
+
+private:
+    Ui::GameMode* ui;
+    Lobby* lobby;
+
+    void display_start_game();
+};
+
+
+
+#endif //GAME_MODE_H

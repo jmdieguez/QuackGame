@@ -5,7 +5,6 @@ MonitorGames::MonitorGames()
 
 std::vector<UserLobbyInfo> MonitorGames::create_game(const uint16_t &creator_id, const std::string &name, const uint16_t &num_players)
 {
-    // TODO: Chequear que no existe una partida con mismo nombre
     std::lock_guard<std::mutex> lock(mtx);
     id_counter++;
     std::vector<UserLobbyInfo> users;

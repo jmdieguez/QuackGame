@@ -2,7 +2,7 @@
 #include <QPushButton>
 #include "ui_create_room.h"
 #include <QThread>
-#include "start_game.h"
+#include "game_mode.h"
 #include "sound_player.h"
 #include "window_utils.h"
 #include "../ui/defs.h"
@@ -14,15 +14,15 @@ CreateRoom::CreateRoom(Lobby *lobby, QWidget *parent)
     WindowUtils::setFixedSize(this, 800, 600);
     WindowUtils::centerWindow(this, BACKGROUND);
 
-    connect(ui->backButton, &QPushButton::clicked, this, [this]()
-            {
+    connect(ui->backButton, &QPushButton::clicked, this, [this]() {
         SoundPlayer::instance()->playSound(CLICK_SOUND, false);
-        onBackButtonClicked(); });
+        onBackButtonClicked();
+    });
 
-    connect(ui->createButton, &QPushButton::clicked, this, [this]()
-            {
+    connect(ui->createButton, &QPushButton::clicked, this, [this]() {
         SoundPlayer::instance()->playSound(CLICK_SOUND, false);
-        onCreateRoomButtonClicked(); });
+        onCreateRoomButtonClicked();
+    });
 }
 
 CreateRoom::~CreateRoom()
@@ -38,9 +38,9 @@ void CreateRoom::onBackButtonClicked()
 void CreateRoom::onCreateRoomButtonClicked()
 {
     QString roomName = ui->textBoxName->text();
-    auto result = lobby->create_room(roomName.toStdString());
+    lobby->create_room(roomName.toStdString());
     this->hide();
-    StartGame startDialog(lobby, result, nullptr);
+    GameMode startDialog(lobby, nullptr);
     startDialog.exec();
 
     QApplication::closeAllWindows();

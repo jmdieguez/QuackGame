@@ -368,6 +368,10 @@ void ClientProtocol::read_string(std::string &string)
     std::vector<unsigned char> buffer(length);
     bool was_closed = false;
     size_t bytes_read = skt.recvall(buffer.data(), length, &was_closed);
+    if (was_closed)
+    {
+        throw LibError(errno, "Error al intentar leer datos a servidor");
+    }
     string.assign(buffer.begin(), buffer.begin() + bytes_read);
 }
 
@@ -387,7 +391,7 @@ void ClientProtocol::send_join_game(const uint16_t &id, const uint16_t &num_play
     send_action(ClientActionType::JOIN_GAME, was_closed);
     if (was_closed)
     {
-        throw LibError(errno, "Error al intentar enviar datos a cliente");
+        throw LibError(errno, "Error al intentar enviar datos a servidor");
     }
     uint16_t id_converted = htons(id);
     skt.sendall(&id_converted, sizeof(uint16_t), &was_closed);
@@ -434,7 +438,7 @@ void ClientProtocol::read_list(std::map<uint16_t, std::string> &games)
         skt.recvall(reinterpret_cast<char *>(&nameLength), sizeof(nameLength), &was_closed);
         if (was_closed)
         {
-            throw LibError(errno, "Error al intentar leer datos a cliente");
+            throw LibError(errno, "Error al intentar leer datos a servidor");
         }
 
         uint16_t length = ntohs(nameLength);
@@ -442,7 +446,7 @@ void ClientProtocol::read_list(std::map<uint16_t, std::string> &games)
         skt.recvall(nameBuffer.data(), length, &was_closed);
         if (was_closed)
         {
-            throw LibError(errno, "Error al intentar leer datos a cliente");
+            throw LibError(errno, "Error al intentar leer datos a servidor");
         }
         std::string name;
         name.assign(nameBuffer.begin(), nameBuffer.end());
@@ -456,7 +460,7 @@ void ClientProtocol::send_game_list()
     send_action(ClientActionType::GAME_LIST, was_closed);
     if (was_closed)
     {
-        throw LibError(errno, "Error al intentar enviar datos a cliente");
+        throw LibError(errno, "Error al intentar enviar datos a servidor");
     }
 }
 
