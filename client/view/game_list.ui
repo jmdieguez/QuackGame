@@ -65,9 +65,9 @@
   <widget class="QPushButton" name="JoinMultiplayer">
    <property name="geometry">
     <rect>
-     <x>280</x>
+     <x>270</x>
      <y>400</y>
-     <width>231</width>
+     <width>251</width>
      <height>43</height>
     </rect>
    </property>
@@ -99,9 +99,9 @@
   <widget class="QPushButton" name="JoinSinglePlayer">
    <property name="geometry">
     <rect>
-     <x>280</x>
+     <x>270</x>
      <y>450</y>
-     <width>231</width>
+     <width>251</width>
      <height>43</height>
     </rect>
    </property>
