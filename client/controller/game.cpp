@@ -78,7 +78,7 @@ void Game::update_renderer(int frame_ticks)
 void Game::process_projectile(ProjectileSnapshot &projectile, Snapshot &snapshot, float scale_x, float scale_y)
 {
     if (!mute_effect && projectile.texture != TextureFigure::None && projectile.texture != TextureFigure::GrenadeFigure && projectile.texture != TextureFigure::BananaFigure && projectile.texture != TextureFigure::BananaThrown)
-        sound_storage.get_projectile_sound().sound(projectile.id);
+        projectile.texture == TextureFigure::LaserRifleBullet ? sound_storage.get_projectile_laser_sound().sound(projectile.id) : sound_storage.get_projectile_sound().sound(projectile.id);
     render_storage.get_projectile_drawer().render(projectile, snapshot.camera, scale_x, scale_y);
 }
 

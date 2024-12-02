@@ -1,7 +1,6 @@
 #include "projectilesound.h"
-#include "../../../common/config.h"
 
-ProjectileGunSound::ProjectileGunSound(SDL2pp::Mixer &mixer) : SoundManager(mixer, Config::getInstance()["effect"]["type"]["projectile_gun"].as<int>(), TextureFigure::CowboyBullet)
+ProjectileGunSound::ProjectileGunSound(SDL2pp::Mixer &mixer, unsigned &volume) : SoundManager(mixer, volume, TextureFigure::CowboyBullet)
 {
 }
 

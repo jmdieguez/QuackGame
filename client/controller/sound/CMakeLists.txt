@@ -7,6 +7,7 @@ target_sources(quack_game_client
     projectilesound.cpp
     explosionsound.cpp
     soundmanager.cpp
+    projectilelasersound.cpp
 
     PUBLIC
     # .h files
@@ -16,4 +17,6 @@ target_sources(quack_game_client
     projectilesound.h
     explosionsound.h
     soundmanager.h
+    projectilelasersound.h
+
 )
