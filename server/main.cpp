@@ -4,7 +4,13 @@
 // Uso: ./server <puerto>
 #define PORT 1
 #define SERVER_N_ARGS 2
-#define CONFIG_PATH "config/server.yaml"
+
+#ifdef GLOBAL_INSTALL
+    #define CONFIG_PATH "/etc/quackgame/server.yaml"
+#else // LOCAL_INSTALL
+    #define CONFIG_PATH "config/server.yaml"
+#endif
+
 
 int main(int argc, char *argv[])
 {

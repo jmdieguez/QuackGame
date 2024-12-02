@@ -4,7 +4,12 @@
 
 #include <filesystem>
 
-#define MAPS_PATH "/etc/quackgame/maps"
+#ifdef GLOBAL_INSTALL
+    #define MAPS_PATH "/etc/quackgame/maps"
+#else // LOCAL_INSTALL
+    #define MAPS_PATH "server/game/maps"
+#endif
+
 #define N_DROPS 11
 
 namespace fs = std::filesystem;

@@ -20,7 +20,7 @@ printf '%*s\n' "$(tput cols)" | tr ' ' '-'
 
 # 2. Compilar el proyecto
 echo -e "${GREEN}Compilando el proyecto...${RESET}"
-make
+make GLOBAL_INSTALL=true
 
 printf '%*s\n' "$(tput cols)" | tr ' ' '-'
 
