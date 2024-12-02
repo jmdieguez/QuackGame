@@ -118,9 +118,9 @@ void ServerProtocol::send_duck(const DuckSnapshot &duck)
 }
 
 void ServerProtocol::send_duck_color(Color color) {
-    send_data(static_cast<uint16_t>(color.GetRed()));
-    send_data(static_cast<uint16_t>(color.GetGreen()));
-    send_data(static_cast<uint16_t>(color.GetBlue()));
+    send_data(static_cast<uint16_t>(color.get_red()));
+    send_data(static_cast<uint16_t>(color.get_green()));
+    send_data(static_cast<uint16_t>(color.get_blue()));
 }
 
 void ServerProtocol::send_gun(const GunNoEquippedSnapshot &gun)
