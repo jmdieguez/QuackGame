@@ -20,7 +20,7 @@
 #include "music/musicbox.h"
 #include "../view/loading_screen.h"
 #include "../view/table_screen.h"
-#include "roundcontroller.h"
+#include "round/roundcontroller.h"
 
 class Game
 {

@@ -10,7 +10,7 @@ target_sources(quack_game_client
     explosiondrawer.cpp
     renderer.cpp
     renderstorage.cpp
-        transitionmanager.cpp
+    transitionmanager.cpp
 
     PUBLIC
     # .h files
@@ -23,7 +23,7 @@ target_sources(quack_game_client
     explosiondrawer.h
     renderer.h 
     renderstorage.h
-        transitionmanager.h
+    transitionmanager.h
 )
 
 add_subdirectory(size/)

@@ -12,3 +12,4 @@ target_sources(quack_game_client
 add_subdirectory(session/)
 add_subdirectory(music/)
 add_subdirectory(render/)
+add_subdirectory(round/)
