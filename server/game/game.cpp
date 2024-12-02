@@ -274,7 +274,6 @@ void Game::check_for_winner(const std::map<uint8_t, Duck &> &ducks_alive)
     if (n_ducks_alive <= 1)
     {
         initialize = true;
-        current_map = (++round) % maps.size();
         if (n_ducks_alive == 1)
         {
             auto winner = ducks_alive.begin();
@@ -413,6 +412,11 @@ void Game::step()
         explosions.get_explosions().clear();
         gun_spawns.clear();
         armor.clear();
+
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> dis(0, maps.size() - 1); // Range [0, maps.size() - 1]
+        current_map = dis(gen);
 
         for (const auto &position : maps[current_map].get_guns_spawns())
             gun_spawns.emplace(position, GunSpawn());
