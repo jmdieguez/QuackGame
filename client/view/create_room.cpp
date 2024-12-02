@@ -42,7 +42,7 @@ void CreateRoom::onCreateRoomButtonClicked()
     this->hide();
 
     if (!gameModeWindow) {
-        gameModeWindow = new GameMode(lobby, nullptr);
+        gameModeWindow = new GameMode(lobby, true, nullptr);
         gameModeWindow->setAttribute(Qt::WA_DeleteOnClose);
 
         connect(gameModeWindow, &QDialog::finished, this, [this]() {

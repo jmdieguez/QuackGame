@@ -59,8 +59,20 @@ void GameList::onItemClicked(QListWidgetItem *item)
     QString gameName = item->text();
     if (nameToIdMap.count(gameName) > 0) {
         uint16_t gameId = nameToIdMap[gameName];
-        lobby->join_room(gameId);
-        QApplication::closeAllWindows();
+        lobby->select_game(gameId);
+        this->hide();
+
+        if (!gameModeWindow) {
+            gameModeWindow = new GameMode(lobby, false, nullptr);
+            gameModeWindow->setAttribute(Qt::WA_DeleteOnClose);
+
+            connect(gameModeWindow, &QDialog::finished, this, [this]() {
+                gameModeWindow->deleteLater();
+                gameModeWindow = nullptr;
+            });
+        }
+
+        gameModeWindow->show();
     }
 }
 

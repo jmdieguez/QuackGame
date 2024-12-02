@@ -15,17 +15,22 @@ std::vector<UserLobbyInfo> Lobby::get_users()
     return users;
 }
 
- std::vector<UserLobbyInfo> Lobby::send_create_game() {
+std::vector<UserLobbyInfo> Lobby::send_create_game() {
     protocol.send_create_game(game_mode, room_name);
     users = protocol.read_users_info();
     return users;
 }
-std::vector<UserLobbyInfo> Lobby::join_room(const uint16_t &id)
+void Lobby::join_room()
 {
-    protocol.send_join_game(id, game_mode);
+    protocol.send_join_game(game_id, game_mode);
     users = protocol.read_users_info();
-    return users;
 }
+
+void Lobby::select_game(const uint16_t &id)
+{
+    game_id = id;
+}
+
 
 void Lobby::start_game(bool &start)
 {

@@ -14,13 +14,15 @@ StartGame::StartGame(Lobby *lobby, std::vector<UserLobbyInfo>& users, QWidget *p
 
     WindowUtils::setFixedSize(this, 800, 600);
     WindowUtils::centerWindow(this, BACKGROUND);
-    ui->userListWidget->clear();  // Limpiar la lista de usuarios
+    ui->userListWidget->clear();
     for (size_t i = 0; i < users.size(); ++i) {
         std::string userInfo = "Player " + std::to_string(i + 1) + ": " + users[i].get_color();
         QString qUserInfo = QString::fromStdString(userInfo);
 
         ui->userListWidget->addItem(qUserInfo);
     }
+
+    ui->userListWidget->update();
 
     connect(ui->startButton, &QPushButton::clicked, this, [this]() {
         onStartButtonClicked();
@@ -31,7 +33,7 @@ void StartGame::onStartButtonClicked() {
     bool start;
     lobby->start_game(start);
     if (start) {
-        close(); // Cierra solo la ventana actual
+        close();
     } else {
         QMessageBox::warning(this, tr("Game cannot start."),
                              tr("Wait until other players join."));

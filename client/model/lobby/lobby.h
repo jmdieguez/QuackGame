@@ -12,17 +12,19 @@ private:
     ClientProtocol &protocol;
     std::vector<UserLobbyInfo> users;
     std::string room_name;
-    uint16_t game_mode;
+    uint16_t game_mode = 0;
+    uint16_t game_id = 0;
 public:
     explicit Lobby(ClientProtocol &);
     ~Lobby();
     void create_room(const std::string&);
-    std::vector<UserLobbyInfo> join_room(const uint16_t &);
+    void join_room();
     std::vector<UserLobbyInfo> get_users();
     std::vector<UserLobbyInfo> send_create_game();
     void prepare_multiplayer_game();
     void prepare_single_player_game();
     void start_game(bool &);
+    void select_game(const uint16_t &);
     void get_game_list(std::map<uint16_t, std::string> &games);
 };
 

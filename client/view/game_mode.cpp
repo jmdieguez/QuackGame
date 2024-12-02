@@ -7,10 +7,11 @@
 #include "ui_game_mode.h"
 #include <vector>
 
-GameMode::GameMode(Lobby* lobby, QWidget* parent)
+GameMode::GameMode(Lobby* lobby, const bool& create, QWidget* parent)
     : QDialog(parent),
       ui(new Ui::GameMode),
-      lobby(lobby)
+      lobby(lobby),
+      create_game(create)
 {
     ui->setupUi(this);
     WindowUtils::setFixedSize(this, 800, 600);
@@ -38,13 +39,18 @@ void GameMode::on_multiplayerButton_clicked() {
 }
 
 void GameMode::display_start_game() {
+    if (create_game) {
+        create_new_game();
+    } else {
+        join_existing_game();
+    }
+}
+
+void GameMode::create_new_game() {
     std::vector<UserLobbyInfo> result = lobby->send_create_game();
     if (result.empty()) {
-        std::cout << "llega vacia" << std::endl;
         return;
     }
-
-    this->hide(); // Ocultar GameMode antes de mostrar StartGame
 
     this->hide();
 
@@ -61,6 +67,10 @@ void GameMode::display_start_game() {
     startGameWindow->show();
 }
 
+void GameMode::join_existing_game() {
+    lobby->join_room();
+    QApplication::closeAllWindows();
+}
 
 GameMode::~GameMode() {
     delete ui;

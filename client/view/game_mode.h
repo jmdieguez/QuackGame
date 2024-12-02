@@ -17,7 +17,7 @@ class GameMode : public QDialog {
     Q_OBJECT
 
 public:
-    explicit GameMode(Lobby* lobby, QWidget* parent = nullptr);
+    explicit GameMode(Lobby* lobby, const bool& create, QWidget* parent = nullptr);
     ~GameMode();
 
     private slots:
@@ -27,8 +27,11 @@ public:
 private:
     Ui::GameMode* ui;
     Lobby* lobby;
+    bool create_game = false;
     StartGame* startGameWindow = nullptr;
     void display_start_game();
+    void create_new_game();
+    void join_existing_game();
 };
 
 
