@@ -11,8 +11,41 @@
 ```
     git clone git@github.com:jmdieguez/QuackGame.git
     cd QuackGame
+```
+
+## Instalar globalmente (recomendado)
+
+``` 
     ./install.sh
 ```
+
+Esto te permitirá correr los programas de la siguiente manera:
+
+```
+    quack_game_server <puerto>
+
+    quack_game_client <servidor> <puerto>
+
+    quack_game_editor <archivo>.yaml
+```
+
+## Compilar y correr desde el directorio del juego
+
+```
+    make
+```
+
+Esto te permitirá correr los programas desde la raíz del directorio QuackGame de la siguiente manera:
+
+```
+    ./build/quack_game_server <puerto>
+
+    ./build/quack_game_client <servidor> <puerto>
+
+    ./build/quack_game_editor <archivo>.yaml
+```
+
+
 
 # Controles
 
