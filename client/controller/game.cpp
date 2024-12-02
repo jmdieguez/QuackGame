@@ -193,12 +193,9 @@ Game::Game(Socket skt, std::vector<UserLobbyInfo> users)
 
 bool Game::run()
 {
-    std::cout << "hola?" << std::endl;
 
     Receiver receiver(socket, session.get_queue_receiver());
-    std::cout << "hola?" << std::endl;
     Sender sender(socket, session.get_queue_sender());
-    std::cout << "hola?" << std::endl;
     receiver.start();
     sender.start();
     constant_rate_loop.execute();

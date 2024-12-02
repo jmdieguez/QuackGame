@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "../model/lobby/lobby.h"
+#include "game_mode.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -29,6 +30,7 @@ public:
 private:
     Ui::CreateRoom *ui;
     Lobby* lobby;
+    GameMode* gameModeWindow = nullptr;
 };
 
 #endif // CREATE_ROOM_H

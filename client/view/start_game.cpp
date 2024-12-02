@@ -31,7 +31,7 @@ void StartGame::onStartButtonClicked() {
     bool start;
     lobby->start_game(start);
     if (start) {
-        closeAll();
+        close(); // Cierra solo la ventana actual
     } else {
         QMessageBox::warning(this, tr("Game cannot start."),
                              tr("Wait until other players join."));

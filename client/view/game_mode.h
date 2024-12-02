@@ -4,6 +4,7 @@
 
 #include <QDialog>
 #include "../model/lobby/lobby.h"
+#include "start_game.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -26,7 +27,7 @@ public:
 private:
     Ui::GameMode* ui;
     Lobby* lobby;
-
+    StartGame* startGameWindow = nullptr;
     void display_start_game();
 };
 

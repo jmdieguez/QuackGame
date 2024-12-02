@@ -5,6 +5,7 @@
 #include "sound_player.h"
 #include "../ui/defs.h"
 #include "ui_game_mode.h"
+#include <vector>
 
 GameMode::GameMode(Lobby* lobby, QWidget* parent)
     : QDialog(parent),
@@ -15,8 +16,11 @@ GameMode::GameMode(Lobby* lobby, QWidget* parent)
     WindowUtils::setFixedSize(this, 800, 600);
     WindowUtils::centerWindow(this, BACKGROUND);
 
-    connect(ui->singlePlayerButton, &QPushButton::clicked, this, &GameMode::on_singlePlayerButton_clicked);
 
+    connect(ui->singlePlayerButton, &QPushButton::clicked, this, [this]() {
+         SoundPlayer::instance()->playSound(CLICK_SOUND, false);
+         on_singlePlayerButton_clicked();
+     });
     connect(ui->multiplayerButton, &QPushButton::clicked, this, [this]() {
         SoundPlayer::instance()->playSound(CLICK_SOUND, false);
         on_multiplayerButton_clicked();
@@ -34,17 +38,27 @@ void GameMode::on_multiplayerButton_clicked() {
 }
 
 void GameMode::display_start_game() {
-    try {
-        std::vector<UserLobbyInfo>& result = lobby->send_create_game();
-        if (result.empty()) {
-            std::cout << "llega vacia" << std::endl;
-            return;
-        }
-        StartGame* startGameDialog = new StartGame(lobby, result, this);
-        this->hide();
-        startGameDialog->exec();
-    } catch (const std::exception& e) {
+    std::vector<UserLobbyInfo> result = lobby->send_create_game();
+    if (result.empty()) {
+        std::cout << "llega vacia" << std::endl;
+        return;
     }
+
+    this->hide(); // Ocultar GameMode antes de mostrar StartGame
+
+    this->hide();
+
+    if (!startGameWindow) {
+        startGameWindow = new StartGame(lobby, result, nullptr);
+        startGameWindow->setAttribute(Qt::WA_DeleteOnClose);
+
+        connect(startGameWindow, &QDialog::finished, this, [this]() {
+            startGameWindow->deleteLater();
+            startGameWindow = nullptr;
+        });
+    }
+
+    startGameWindow->show();
 }
 
 

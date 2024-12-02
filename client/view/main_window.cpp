@@ -35,7 +35,7 @@ void MainWindow::onCreateButtonClicked()
 
     connect(create_room, &CreateRoom::goBack, this, [this]() {
     this->onBackToMainWindow(create_room);
-});
+    });
 
     this->hide();
     create_room->show();

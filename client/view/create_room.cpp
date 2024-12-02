@@ -2,7 +2,6 @@
 #include <QPushButton>
 #include "ui_create_room.h"
 #include <QThread>
-#include "game_mode.h"
 #include "sound_player.h"
 #include "window_utils.h"
 #include "../ui/defs.h"
@@ -39,9 +38,18 @@ void CreateRoom::onCreateRoomButtonClicked()
 {
     QString roomName = ui->textBoxName->text();
     lobby->create_room(roomName.toStdString());
+    lobby->create_room(roomName.toStdString());
     this->hide();
-    GameMode startDialog(lobby, nullptr);
-    startDialog.exec();
 
-    QApplication::closeAllWindows();
+    if (!gameModeWindow) {
+        gameModeWindow = new GameMode(lobby, nullptr);
+        gameModeWindow->setAttribute(Qt::WA_DeleteOnClose);
+
+        connect(gameModeWindow, &QDialog::finished, this, [this]() {
+            gameModeWindow->deleteLater();
+            gameModeWindow = nullptr;
+        });
+    }
+
+    gameModeWindow->show();
 }

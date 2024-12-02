@@ -17,9 +17,9 @@ public:
     explicit Lobby(ClientProtocol &);
     ~Lobby();
     void create_room(const std::string&);
-    std::vector<UserLobbyInfo>& join_room(const uint16_t &);
+    std::vector<UserLobbyInfo> join_room(const uint16_t &);
     std::vector<UserLobbyInfo> get_users();
-    std::vector<UserLobbyInfo>& send_create_game();
+    std::vector<UserLobbyInfo> send_create_game();
     void prepare_multiplayer_game();
     void prepare_single_player_game();
     void start_game(bool &);

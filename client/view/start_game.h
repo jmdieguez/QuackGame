@@ -4,7 +4,6 @@
 
 #include <QDialog>
 #include "../model/lobby/lobby.h"
-#include <QVBoxLayout> // Añade esta línea
 #include <vector>
 #include <string>
 
@@ -20,11 +19,9 @@ class StartGame : public QDialog
     Q_OBJECT
 
 public:
-    explicit StartGame(Lobby *lobby, std::vector<UserLobbyInfo>& users, QWidget *parent = nullptr);
+    explicit StartGame(Lobby *lobby, std::vector<UserLobbyInfo>& users, QWidget* parent = nullptr);
     ~StartGame();
 
-signals:
-    void goBack();
 
 private slots:
     void onStartButtonClicked();
@@ -34,8 +31,6 @@ private slots:
 private:
     Ui::StartGame *ui;
     Lobby *lobby;
-
-    void set_info_user(size_t index, const std::string &color, QVBoxLayout *layout);
 };
 
 #endif // START_GAME_H
