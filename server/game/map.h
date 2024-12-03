@@ -149,6 +149,8 @@ public:
 
     bool validate_coordinate(const Position &p) const
     {
+        if ((p.x - 1) == 0 || (p.x + 1) == 1024 || (p.y - 24) == 0)
+            return false;
         return !has_something_in(p);
     }
 

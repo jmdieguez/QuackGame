@@ -7,15 +7,13 @@ bool MoveController::validate_position(const Map &map, const Size &size, const P
 {
     for (uint16_t y = position.y; y < position.y + size.height; ++y)
     {
-        if (!map.validate_coordinate({position.x, y})
-         || !map.validate_coordinate({static_cast<uint16_t>(position.x + size.width - 1), y}))
+        if (!map.validate_coordinate({position.x, y}) || !map.validate_coordinate({static_cast<uint16_t>(position.x + size.width - 1), y}))
             return false;
     }
 
     for (uint16_t x = position.x; x < position.x + size.width; ++x)
     {
-        if (!map.validate_coordinate({x, position.y})
-         || !map.validate_coordinate({x, static_cast<uint16_t>(position.y + size.height - 1)}))
+        if (!map.validate_coordinate({x, position.y}) || !map.validate_coordinate({x, static_cast<uint16_t>(position.y + size.height - 1)}))
             return false;
     }
 
