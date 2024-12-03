@@ -21,7 +21,6 @@ void Sender::run()
     catch (ClosedQueue &e)
     {
     }
-    _is_alive = false;
 }
 
 void Sender::send(const Snapshot &snapshot)

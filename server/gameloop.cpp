@@ -1,5 +1,6 @@
 #include "gameloop.h"
 #include "../common/defs.h"
+#include "../common/liberror.h"
 #include "client_command.h"
 
 Gameloop::Gameloop(const uint16_t &id, const std::string &name, const uint16_t &creator_id) : game_id(id), creator_id(creator_id), name(name), started(false),
@@ -28,6 +29,7 @@ void Gameloop::step([[maybe_unused]] unsigned int current_step)
     {
         _keep_running = false;
         finished = true;
+        handler.remove_all_sessions();
         return;
     }
 
@@ -43,8 +45,10 @@ void Gameloop::step([[maybe_unused]] unsigned int current_step)
         handler.remove_closed_sessions();
         handler.broadcast(snapshot);
     }
+
     catch (ClosedQueue &e)
-    {
+    {   
+        game.ended = true;
     }
 }
 

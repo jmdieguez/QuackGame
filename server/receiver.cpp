@@ -28,5 +28,4 @@ void Receiver::run()
     catch (ClosedQueue &e)
     {
     }
-    _is_alive = false;
 }
