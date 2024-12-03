@@ -87,11 +87,10 @@ void ClientProtocol::read_snapshot(Snapshot &snapshot)
     uint16_t game_state;
     read_data(game_state);
     snapshot.is_ended = game_state;
-    if (game_state == 1)
-    {
-        uint16_t game_result;
-        read_data(game_result);
-        snapshot.game_result = static_cast<GameResult>(game_result);
+    if (game_state == 1) {
+        std::string winning_color;
+        read_string(winning_color);
+        snapshot.winning_color = winning_color;
     }
 
     uint16_t next_round;
@@ -428,23 +427,8 @@ void ClientProtocol::read_list(std::map<uint16_t, std::string> &games)
     {
         uint16_t game_id;
         read_data(game_id);
-        bool was_closed = false;
-        uint16_t nameLength;
-        skt.recvall(reinterpret_cast<char *>(&nameLength), sizeof(nameLength), &was_closed);
-        if (was_closed)
-        {
-            throw LibError(errno, "Error al intentar leer datos a servidor");
-        }
-
-        uint16_t length = ntohs(nameLength);
-        std::vector<char> nameBuffer(length);
-        skt.recvall(nameBuffer.data(), length, &was_closed);
-        if (was_closed)
-        {
-            throw LibError(errno, "Error al intentar leer datos a servidor");
-        }
         std::string name;
-        name.assign(nameBuffer.begin(), nameBuffer.end());
+        read_string(name);
         games[game_id] = name;
     }
 }

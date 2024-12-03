@@ -510,8 +510,13 @@ Snapshot Game::get_status()
             scores.push_back(DuckScore(victoryCount, text));
         }
     }
+    std::string winning_color = "";
+    if (ended) {
+        auto colorIt = colors.find(winner_id);
+        winning_color = colorIt->second.get_text();
+    }
 
     return Snapshot(std::move(duck_snapshots), std::move(guns_snapshots), projectiles.get_status(),
                     explosions.get_status(), std::move(box_snapshots), std::move(armor_snapshots), std::move(scores),
-                    map_snapshot, camera_snapshot, ended, winner_id, round);
+                    map_snapshot, camera_snapshot, ended, round, winning_color);
 }

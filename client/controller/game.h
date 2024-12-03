@@ -44,7 +44,7 @@ private:
     bool mute_music;
     Socket socket;
     bool started = false;
-    bool victory;
+    std::string winner;
     uint16_t round = 0;
 
     void get_and_execute_events();
@@ -57,7 +57,7 @@ private:
 
 public:
     Game(Socket, std::vector<UserLobbyInfo> users);
-    bool run();
+    void run(std::string&);
     ~Game();
 };
 

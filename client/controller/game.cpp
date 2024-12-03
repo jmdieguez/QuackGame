@@ -151,9 +151,7 @@ void Game::set_renderer(int frame_ticks)
                 render_storage.get_armor().render(armor, latest_snapshot.camera, scale_x, scale_y);
             if (latest_snapshot.is_ended)
             {
-                victory = snapshot.game_result == GameResult::VICTORY;
-
-                initializer.get_renderer().Clear();
+                winner = latest_snapshot.winning_color;
                 keep_running = false;
                 SDL_Quit();
             }
@@ -209,7 +207,7 @@ Game::Game(Socket skt, std::vector<UserLobbyInfo> users)
 {
 }
 
-bool Game::run()
+void Game::run(std::string& winner)
 {
     Receiver receiver(socket, session.get_queue_receiver());
     Sender sender(socket, session.get_queue_sender());
@@ -222,7 +220,7 @@ bool Game::run()
     socket.close();
     receiver.join();
     sender.join();
-    return victory;
+    winner = this->winner;
 }
 
 Game::~Game() {}

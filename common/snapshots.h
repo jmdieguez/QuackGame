@@ -17,11 +17,6 @@
 #include "color.h"
 #include "usertable.h"
 
-enum class GameResult : uint16_t
-{
-    VICTORY,
-    DEFEAT
-};
 
 class DuckScore
 {
@@ -176,9 +171,8 @@ public:
     MapSnapshot map;
     CameraSnapshot camera;
     bool is_ended = false;
-    GameResult game_result = GameResult::DEFEAT;
-    uint8_t winner_id = 0;
     unsigned round = 0;
+    std::string winning_color;
 
     Snapshot() : ducks({}), guns({}), projectiles({}), explosions({}), scores({}) {}
 
@@ -192,10 +186,10 @@ public:
              MapSnapshot &map_snapshot,
              CameraSnapshot &c,
              bool state,
-             uint8_t id,
-             unsigned round)
+             unsigned round,
+             const std::string& color)
         : ducks(d_s), guns(g_s), projectiles(p), explosions(e),
-          boxes(b), armors(a), scores(s), map(map_snapshot), camera(c), is_ended(state), winner_id(id), round(round)
+          boxes(b), armors(a), scores(s), map(map_snapshot), camera(c), is_ended(state), round(round), winning_color(color)
     {
     }
 };

@@ -47,24 +47,11 @@ void SessionsHandler::remove_all_sessions()
 void SessionsHandler::broadcast(const Snapshot &msg)
 {
     std::lock_guard<std::mutex> lock(mtx);
-    if (msg.is_ended)
+    for (auto &[id, session] : sessions)
     {
-        for (auto &[id, session] : sessions)
-        {
-            Snapshot personalized_msg = msg;
-            personalized_msg.game_result =
-                (id == msg.winner_id) ? GameResult::VICTORY : GameResult::DEFEAT;
+        session->send(msg);
+    }
 
-            session->send(personalized_msg);
-        }
-    }
-    else
-    {
-        for (auto &[id, session] : sessions)
-        {
-            session->send(msg);
-        }
-    }
 }
 
 bool SessionsHandler::has_clients()

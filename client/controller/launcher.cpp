@@ -21,15 +21,15 @@ void Launcher::run_game()
 
     MainWindow w(&lobby);
     w.show();
-    bool result;
 
+    std::string winning_color;
     if (app.exec() == SUCCESS)
     {
         std::vector<UserLobbyInfo> users = lobby.get_users();
         if (!users.empty()) {
             Game game(std::move(skt), users);
-            result = game.run();
-            GameResultWindow resultWindow(result);
+            game.run(winning_color);
+            GameResultWindow resultWindow(winning_color);
             resultWindow.exec();
         }
     }
