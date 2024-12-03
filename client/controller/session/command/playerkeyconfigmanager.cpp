@@ -18,7 +18,7 @@ PlayerKeyConfigManager::PlayerKeyConfigManager()
         {SDLK_w, new LookingUp()}, {SDLK_a, new MoveLeft()}, {SDLK_d, new MoveRight()}, {SDLK_s, new MoveBentDown()}, {SDLK_t, new Shoot()}, {SDLK_g, new Drop()}, {SDLK_e, new Grab()}, {SDLK_SPACE, new Jump()}};
 
     std::unordered_map<SDL_Keycode, Command *> player2_keys = {
-        {SDLK_UP, new LookingUp()}, {SDLK_LEFT, new MoveLeft()}, {SDLK_RIGHT, new MoveRight()}, {SDLK_DOWN, new MoveBentDown()}, {SDLK_p, new Shoot()}, {SDLK_l, new Drop()}, {SDLK_o, new Grab()}, {SDLK_RSHIFT, new Jump()}};
+        {SDLK_UP, new LookingUp()}, {SDLK_LEFT, new MoveLeft()}, {SDLK_RIGHT, new MoveRight()}, {SDLK_DOWN, new MoveBentDown()}, {SDLK_o, new Shoot()}, {SDLK_l, new Drop()}, {SDLK_i, new Grab()}, {SDLK_RSHIFT, new Jump()}};
 
     player_configs.emplace_back(player1_keys);
     player_configs.emplace_back(player2_keys);

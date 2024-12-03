@@ -24,8 +24,10 @@ void Receiver::run()
     }
     catch (LibError &e)
     {
+        _keep_running = false;
     }
     catch (ClosedQueue &e)
     {
+        _keep_running = false;
     }
 }
