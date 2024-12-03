@@ -33,6 +33,12 @@ void Item::render(GunNoEquippedSnapshot &gun,
             static_cast<int>(size.width * scale_x), 
             static_cast<int>(size.height * scale_y)
         };
+
+        if (gun.texture == TextureFigure::BananaFigure || gun.texture == TextureFigure::GrenadeFigure) {
+            dst_rect.x += 8 * scale_x;
+            dst_rect.y -= 4 * scale_y; 
+        }
+
         SDL_RenderCopyEx(renderer.Get(), texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, SDL_FLIP_NONE);
     }
 }

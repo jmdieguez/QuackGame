@@ -24,8 +24,8 @@ public:
             SDL_Rect dst_rect = {
                 static_cast<int>((armor.position.x - camera.x) * scale_x),
                 static_cast<int>((armor.position.y - camera.y) * scale_y),
-                static_cast<int>(CHESTPLATE_WIDTH * scale_x),
-                static_cast<int>(CHESTPLATE_HEIGHT * scale_y)
+                static_cast<int>((CHESTPLATE_WIDTH + 4) * scale_x),
+                static_cast<int>((CHESTPLATE_HEIGHT + 4) * scale_y)
             };
             SDL_RenderCopyEx(renderer.Get(), chestplate_texture.Get(), &src_rect, &dst_rect, 0.0, nullptr, SDL_FLIP_NONE);
         }
