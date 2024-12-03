@@ -28,53 +28,6 @@ void Game::get_and_execute_events()
 
 void Game::update_renderer(int frame_ticks)
 {
-    // if (true)
-    // {
-    //     Ejemplos para mostrar en la tabla
-    //     UserTable user1, user2, user3, user4, user5, user6, user7, user8, user9, user10;
-    //     user1.color_name = "Rojo";
-    //     user1.round_wins = 5;
-
-    //     user2.color_name = "Azul";
-    //     user2.round_wins = 3;
-
-    //     user3.color_name = "Verde";
-    //     user3.round_wins = 8;
-
-    //     user4.color_name = "Amarillo";
-    //     user4.round_wins = 6;
-
-    //     user5.color_name = "Naranja";
-    //     user5.round_wins = 4;
-
-    //     user6.color_name = "Rosa";
-    //     user6.round_wins = 2;
-
-    //     user7.color_name = "Morado";
-    //     user7.round_wins = 7;
-
-    //     user8.color_name = "Cyan";
-    //     user8.round_wins = 9;
-
-    //     user9.color_name = "Blanco";
-    //     user9.round_wins = 1;
-
-    //     user10.color_name = "Negro";
-    //     user10.round_wins = 3;
-
-    //     std::vector<UserTable> user_list = {user1, user2, user3, user4, user5, user6, user7, user8, user9, user10};
-    //     UserTableSnapshot snapshot_table(user_list);
-
-    //     Codigo  de la tabla (ubicarla donde de va ir)
-
-    //     initializer.get_renderer().Clear();
-    //     render_storage.get_scene().render();
-    //     table_screen.render(font, snapshot_table);
-
-    //     initializer.get_renderer().Present();
-    //     return;
-    // }
-
     set_renderer(frame_ticks);
     initializer.get_renderer().Present();
 }
@@ -143,9 +96,9 @@ void Game::set_renderer(int frame_ticks)
 
             unsigned ducks_alive = 0;
             for (DuckSnapshot &duck_snapshot : latest_snapshot.ducks)
-            {   
+            {
                 if (duck_snapshot.status.is_alive)
-                    ducks_alive++;    
+                    ducks_alive++;
                 render_storage.get_duck().render(duck_snapshot, frame_ticks, latest_snapshot.camera, scale_x,
                                                  scale_y);
             }
@@ -154,8 +107,9 @@ void Game::set_renderer(int frame_ticks)
 
             for (ArmorSnapshot &armor : latest_snapshot.armors)
                 render_storage.get_armor().render(armor, latest_snapshot.camera, scale_x, scale_y);
-            
-            if (ducks_alive <= 1) {
+
+            if (ducks_alive <= 1)
+            {
                 SDL2pp::Texture text(initializer.get_renderer(), font.RenderText_Blended("THE NEXT ROUND IS ABOUT TO START...", WHITE));
                 SDL_Rect text_src = {0, 0, text.GetWidth(), text.GetHeight()};
                 SDL_Rect text_dst = {
@@ -224,7 +178,7 @@ Game::Game(Socket skt, std::vector<UserLobbyInfo> users)
 {
 }
 
-void Game::run(std::string& winner)
+void Game::run(std::string &winner)
 {
     Receiver receiver(socket, session.get_queue_receiver());
     Sender sender(socket, session.get_queue_sender());
