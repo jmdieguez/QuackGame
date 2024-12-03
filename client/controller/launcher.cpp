@@ -27,9 +27,16 @@ void Launcher::run_game()
         std::vector<UserLobbyInfo> users = lobby.get_users();
         if (!users.empty()) {
             Game game(std::move(skt), users);
-            game.run(winning_color);
-            GameResultWindow resultWindow(winning_color);
-            resultWindow.exec();
+            game.run(winner);
         }
+        show_result();
+    }
+    return;
+}
+
+void Launcher::show_result() {
+    if (!winner.empty()) {
+        GameResultWindow resultWindow(winner);
+        resultWindow.exec();
     }
 }

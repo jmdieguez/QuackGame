@@ -11,9 +11,8 @@ GameResultWindow::GameResultWindow(const std::string& playerColor, QWidget *pare
     ui(new Ui::GameResultWindow) {
     ui->setupUi(this);
     connect(ui->exitButton, &QPushButton::clicked, this, &GameResultWindow::onExitButtonClicked);
-    if (!playerColor.empty()) {
-        displayResult(QString::fromStdString(playerColor));
-    }
+    displayResult(QString::fromStdString(playerColor));
+
 }
 
 void GameResultWindow::displayResult(const QString &playerColor) {
@@ -22,7 +21,7 @@ void GameResultWindow::displayResult(const QString &playerColor) {
     WindowUtils::setFixedSize(this, 800, 600);
     WindowUtils::centerWindow(this, VICTORY_BACKGROUND);
 
-    QString resultText = QString("Jugador: %1").arg(playerColor);
+    QString resultText = QString("Player: %1").arg(playerColor);
     ui->resultLabel->setText(resultText);
 
     int fontId = QFontDatabase::addApplicationFont(FONT_PATH);
