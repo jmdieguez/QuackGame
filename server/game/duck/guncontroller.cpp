@@ -109,7 +109,7 @@ void GunController::fire(DuckStatus &status, Position &position, Map &map, const
                  status.looking_right ? x >= start_x : x <= end_x;
                  status.looking_right ? --x : ++x)
             {
-                Position new_position(x, position.y);
+                Position new_position(x + (status.looking_right ? 0 : 15), position.y);
                 if (map.validate_coordinate(new_position))
                 {
                     position.x = (uint16_t)x;
