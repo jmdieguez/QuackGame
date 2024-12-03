@@ -164,7 +164,7 @@ Realizado por
 
 [libSDL2pp](https://github.com/libSDL2pp/libSDL2pp)
 
-Tileset extraído del juego OpenSource [Tonde Iko](git@github.com:greggman/hft-tonde-iko.git) (BSD-3-Clause license)
+Tileset extraído del juego OpenSource [Tonde Iko](https://github.com/greggman/hft-tonde-iko) (BSD-3-Clause license)
 
 # Documentación
 
