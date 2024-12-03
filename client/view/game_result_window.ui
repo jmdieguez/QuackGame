@@ -49,14 +49,17 @@
   <widget class="QLabel" name="resultLabel">
    <property name="geometry">
     <rect>
-     <x>180</x>
+     <x>70</x>
      <y>30</y>
-     <width>371</width>
+     <width>671</width>
      <height>51</height>
     </rect>
    </property>
    <property name="text">
     <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
  </widget>

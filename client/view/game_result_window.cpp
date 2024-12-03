@@ -36,9 +36,6 @@ void GameResultWindow::displayResult(const QString &playerColor) {
     } else {
         qWarning("Failed to load font from %s", FONT_PATH);
     }
-
-    // Optional: Align text to the center
-    ui->resultLabel->setAlignment(Qt::AlignCenter);
 }
 
 GameResultWindow::~GameResultWindow() {
