@@ -48,9 +48,12 @@ void MainWindow::onBackToMainWindow(QWidget* window)
     }
     this->show();
 }
+
 void MainWindow::onExitButtonClicked()
 {
     close();
+    QApplication::exit(9);
+    QApplication::closeAllWindows();
 }
 
 void MainWindow::onJoinButtonClicked()
@@ -69,12 +72,14 @@ void MainWindow::onJoinButtonClicked()
         gameListWindow->show();
     }
 }
+
 void MainWindow::onGameListClosed()
 {
     this->show();
     delete gameListWindow;
     gameListWindow = nullptr;
 }
+
 MainWindow::~MainWindow()
 {
     delete ui;
