@@ -43,7 +43,8 @@ void Gameloop::step([[maybe_unused]] unsigned int current_step)
         game.step();
         Snapshot snapshot = game.get_status();
         handler.remove_closed_sessions();
-        handler.broadcast(snapshot);
+        if (!finished)
+            handler.broadcast(snapshot);
     }
 
     catch (ClosedQueue &e)
