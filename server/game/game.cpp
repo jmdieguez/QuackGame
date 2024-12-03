@@ -429,62 +429,61 @@ void Game::initialize()
 }
 
 void Game::step()
-{
-    if (has_to_initialize) {
-        if (end_of_round_timer == 0) {
-            end_of_round_timer = end_of_round_time;
-            initialize();
-        } else
-        {
-            end_of_round_timer--;
+{   
+    if (!ended) {
+        if (has_to_initialize) {
+            if (end_of_round_timer == 0) {
+                end_of_round_timer = end_of_round_time;
+                initialize();
+            } else end_of_round_timer--;
         }
-    }
 
-    projectiles.remove([this](std::vector<std::shared_ptr<Projectile>>::iterator it)
-                       { Explosion explosion(((ProjectileGrenade *)it->get())->get_position_to_explosion());
-                        explosions.add_explosion(explosion); });
-    projectiles.move(maps[current_map]);
-    projectiles.verify_hit(ducks, boxes, [this](const Position &p_box, const Position &p_as_pixels)
-                           { spawn_in_boxes(p_box, p_as_pixels); });
-    explosions.dicrement([this](const std::shared_ptr<Projectile> &projectile)
-                         { projectiles.add_projectile(projectile); }, [this](Hitbox explosion_hitbox)
-                         { check_intersect(explosion_hitbox); });
+        projectiles.remove([this](std::vector<std::shared_ptr<Projectile>>::iterator it)
+                        { Explosion explosion(((ProjectileGrenade *)it->get())->get_position_to_explosion());
+                            explosions.add_explosion(explosion); });
+        projectiles.move(maps[current_map]);
+        projectiles.verify_hit(ducks, boxes, [this](const Position &p_box, const Position &p_as_pixels)
+                            { spawn_in_boxes(p_box, p_as_pixels); });
+        explosions.dicrement([this](const std::shared_ptr<Projectile> &projectile)
+                            { projectiles.add_projectile(projectile); }, [this](Hitbox explosion_hitbox)
+                            { check_intersect(explosion_hitbox); });
 
-    Size size(TILE_SIZE, TILE_SIZE); // Ajustar
-    std::map<uint8_t, Duck &> ducks_alive;
-    for (auto &[id, duck] : ducks)
-    {
-        duck.step(maps[current_map], guns, [this](const std::shared_ptr<Projectile> &projectile)
-                  { projectiles.add_projectile(projectile); });
-        if (duck.is_alive())
+        Size size(TILE_SIZE, TILE_SIZE); // Ajustar
+        std::map<uint8_t, Duck &> ducks_alive;
+        for (auto &[id, duck] : ducks)
         {
-            ducks_alive.emplace(id, duck);
-            for (auto it = armor.begin(); it != armor.end();)
+            duck.step(maps[current_map], guns, [this](const std::shared_ptr<Projectile> &projectile)
+                    { projectiles.add_projectile(projectile); });
+            if (duck.is_alive())
             {
-                const auto &position = it->first;
-                const auto &an_armor = it->second;
-
-                Hitbox armor_hitbox(position, size);
-                if (duck.get_hitbox().intersects(armor_hitbox))
+                ducks_alive.emplace(id, duck);
+                for (auto it = armor.begin(); it != armor.end();)
                 {
-                    if (an_armor == ArmorType::Helmet)
-                        duck.give_helmet();
-                    else if (an_armor == ArmorType::Chestplate)
-                        duck.give_chestplate();
-                    it = armor.erase(it);
+                    const auto &position = it->first;
+                    const auto &an_armor = it->second;
+
+                    Hitbox armor_hitbox(position, size);
+                    if (duck.get_hitbox().intersects(armor_hitbox))
+                    {
+                        if (an_armor == ArmorType::Helmet)
+                            duck.give_helmet();
+                        else if (an_armor == ArmorType::Chestplate)
+                            duck.give_chestplate();
+                        it = armor.erase(it);
+                    }
+                    else
+                        ++it;
                 }
-                else
-                    ++it;
             }
         }
-    }
 
-    if (!has_to_initialize) {
-        check_for_winner(ducks_alive);
-        spawn_guns();
+        if (!has_to_initialize) {
+            check_for_winner(ducks_alive);
+            spawn_guns();
+        }
+        update_camera(ducks_alive);
+        move_guns();
     }
-    update_camera(ducks_alive);
-    move_guns();
 }
 
 Snapshot Game::get_status()
