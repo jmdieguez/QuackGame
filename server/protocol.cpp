@@ -62,6 +62,17 @@ void ServerProtocol::send_data(const uint16_t &data)
     }
 }
 
+void ServerProtocol::send_buffer(const std::vector<uint16_t>& buffer)
+{
+    bool was_closed = false;
+
+    skt.sendall(buffer.data(), buffer.size() * sizeof(uint16_t), &was_closed);
+    if (was_closed)
+    {
+        throw LibError(errno, "Error al intentar enviar buffer a cliente");
+    }
+}
+
 void ServerProtocol::read_data(uint16_t &data)
 {
     bool was_closed = false;
@@ -92,82 +103,122 @@ void ServerProtocol::send_data_float(const float &data)
 void ServerProtocol::send_duck(const DuckSnapshot &duck)
 {
     send_data(duck.id);
-    send_data(duck.position.x);
-    send_data(duck.position.y);
-    send_data(static_cast<uint16_t>(duck.type_gun));
-    send_data(static_cast<uint16_t>(duck.texture_gun));
-    send_data(static_cast<uint16_t>(duck.position_gun.x));
-    send_data(static_cast<uint16_t>(duck.position_gun.y));
-    send_data(static_cast<uint16_t>(duck.angle_gun));
-    send_duck_status(duck.status);
-    send_duck_color(duck.color);
+
+    std::vector<uint16_t> duck_poisitions;
+    create_buffer_duck_positions(duck, duck_poisitions);
+    send_buffer(duck_poisitions);
+
+    std::vector<uint16_t> duck_status;
+    create_buffer_duck_status(duck.status, duck_status);
+    create_buffer_duck_status(duck.status, duck_status);
+    send_buffer(duck_status);
+
+    std::vector<uint16_t> colors;
+    create_buffer_duck_color(duck.color, colors);
+    send_buffer(colors);
 }
 
-void ServerProtocol::send_duck_color(Color color)
+void ServerProtocol::create_buffer_duck_positions(const DuckSnapshot &duck, std::vector<uint16_t> &buffer)
 {
-    send_data(static_cast<uint16_t>(color.get_red()));
-    send_data(static_cast<uint16_t>(color.get_green()));
-    send_data(static_cast<uint16_t>(color.get_blue()));
+    buffer.clear();
+
+    buffer.push_back(htons(static_cast<uint16_t>(duck.position.x)));
+    buffer.push_back(htons(static_cast<uint16_t>(duck.position.y)));
+    buffer.push_back(htons(static_cast<uint16_t>(duck.type_gun)));
+    buffer.push_back(htons(static_cast<uint16_t>(duck.texture_gun)));
+    buffer.push_back(htons(static_cast<uint16_t>(duck.position_gun.x)));
+    buffer.push_back(htons(static_cast<uint16_t>(duck.position_gun.y)));
+    buffer.push_back(htons(static_cast<uint16_t>(duck.angle_gun)));
+}
+
+void ServerProtocol::create_buffer_duck_status(const DuckStatus &status, std::vector<uint16_t> &buffer)
+{
+    buffer.clear();
+    buffer.push_back(htons(static_cast<uint16_t>(status.mooving)));
+    buffer.push_back(htons(static_cast<uint16_t>(status.shooting)));
+    buffer.push_back(htons(static_cast<uint16_t>(status.jumping)));
+    buffer.push_back(htons(static_cast<uint16_t>(status.start_jumping)));
+    buffer.push_back(htons(static_cast<uint16_t>(status.falling)));
+    buffer.push_back(htons(static_cast<uint16_t>(status.flapping)));
+    buffer.push_back(htons(static_cast<uint16_t>(status.bent_down)));
+    buffer.push_back(htons(static_cast<uint16_t>(status.grounded)));
+    buffer.push_back(htons(static_cast<uint16_t>(status.looking_up)));
+    buffer.push_back(htons(static_cast<uint16_t>(status.looking_right)));
+    buffer.push_back(htons(static_cast<uint16_t>(status.has_helmet)));
+    buffer.push_back(htons(static_cast<uint16_t>(status.has_chestplate)));
+    buffer.push_back(htons(static_cast<uint16_t>(status.is_alive)));
+    buffer.push_back(htons(static_cast<uint16_t>(status.gun_drop)));
+    buffer.push_back(htons(static_cast<uint16_t>(status.gun_grab)));
+    buffer.push_back(htons(static_cast<uint16_t>(status.banana_move)));
+}
+
+void ServerProtocol::create_buffer_duck_color(const Color& color, std::vector<uint16_t>& buffer)
+{
+    buffer.clear();
+    buffer.push_back(htons(static_cast<uint16_t>(color.get_red())));
+    buffer.push_back(htons(static_cast<uint16_t>(color.get_green())));
+    buffer.push_back(htons(static_cast<uint16_t>(color.get_blue())));
 }
 
 void ServerProtocol::send_gun(const GunNoEquippedSnapshot &gun)
 {
-    send_data(static_cast<uint16_t>(gun.texture));
-    send_data(static_cast<uint16_t>(gun.position.x));
-    send_data(static_cast<uint16_t>(gun.position.y));
-    send_data(static_cast<uint16_t>(gun.angle));
+    std::vector<uint16_t> gun_buffer;
+    create_buffer_gun(gun, gun_buffer);
+    send_buffer(gun_buffer);
 }
+
+void ServerProtocol::create_buffer_gun(const GunNoEquippedSnapshot& gun, std::vector<uint16_t>& buffer)
+{
+    buffer.clear();
+    buffer.push_back(htons(static_cast<uint16_t>(gun.texture)));
+    buffer.push_back(htons(static_cast<uint16_t>(gun.position.x)));
+    buffer.push_back(htons(static_cast<uint16_t>(gun.position.y)));
+    buffer.push_back(htons(static_cast<uint16_t>(gun.angle)));
+}
+
 
 void ServerProtocol::send_projectile(const ProjectileSnapshot &projectile)
 {
-    send_data(static_cast<uint16_t>(projectile.id));
-    send_data(static_cast<uint16_t>(projectile.type));
-    send_data(static_cast<uint16_t>(projectile.texture));
-    send_data(static_cast<uint16_t>(projectile.type_direction));
-    send_data(static_cast<uint16_t>(projectile.pos_x));
-    send_data(static_cast<uint16_t>(projectile.pos_y));
+    std::vector<uint16_t> projectiles;
+    create_buffer_projectile(projectile, projectiles);
+    send_buffer(projectiles);
 }
+
+void ServerProtocol::create_buffer_projectile(const ProjectileSnapshot& projectile, std::vector<uint16_t>& buffer)
+{
+    buffer.clear();
+
+    buffer.push_back(htons(static_cast<uint16_t>(projectile.id)));
+    buffer.push_back(htons(static_cast<uint16_t>(projectile.type)));
+    buffer.push_back(htons(static_cast<uint16_t>(projectile.texture)));
+    buffer.push_back(htons(static_cast<uint16_t>(projectile.type_direction)));
+    buffer.push_back(htons(static_cast<uint16_t>(projectile.pos_x)));
+    buffer.push_back(htons(static_cast<uint16_t>(projectile.pos_y)));
+}
+
 
 void ServerProtocol::send_explosion(const ExplosionSnapshot &explosion)
 {
-    send_data(static_cast<uint16_t>(explosion.id));
-    send_data(static_cast<uint16_t>(explosion.texture));
-    send_data(static_cast<uint16_t>(explosion.position.x));
-    send_data(static_cast<uint16_t>(explosion.position.y));
+    std::vector<uint16_t> explosions;
+    create_buffer_explosion(explosion, explosions);
+    send_buffer(explosions);
 }
 
-void ServerProtocol::send_duck_status(const DuckStatus &status)
+void ServerProtocol::create_buffer_explosion(const ExplosionSnapshot& explosion, std::vector<uint16_t>& buffer)
 {
-    send_data(static_cast<uint16_t>(status.mooving));
-    send_data(static_cast<uint16_t>(status.shooting));
-    send_data(static_cast<uint16_t>(status.jumping));
-    send_data(static_cast<uint16_t>(status.start_jumping));
-    send_data(static_cast<uint16_t>(status.falling));
-    send_data(static_cast<uint16_t>(status.flapping));
-    send_data(static_cast<uint16_t>(status.bent_down));
-    send_data(static_cast<uint16_t>(status.grounded));
-    send_data(static_cast<uint16_t>(status.looking_up));
-    send_data(static_cast<uint16_t>(status.looking_right));
-    send_data(static_cast<uint16_t>(status.has_helmet));
-    send_data(static_cast<uint16_t>(status.has_chestplate));
-    send_data(static_cast<uint16_t>(status.is_alive));
-    send_data(static_cast<uint16_t>(status.gun_drop));
-    send_data(static_cast<uint16_t>(status.gun_grab));
-    send_data(static_cast<uint16_t>(status.banana_move));
+    buffer.clear();
+    buffer.push_back(htons(static_cast<uint16_t>(explosion.id)));
+    buffer.push_back(htons(static_cast<uint16_t>(explosion.texture)));
+    buffer.push_back(htons(static_cast<uint16_t>(explosion.position.x)));
+    buffer.push_back(htons(static_cast<uint16_t>(explosion.position.y)));
 }
 
-void ServerProtocol::send_map_component(const MapComponent &component)
-{
-    send_data(static_cast<uint16_t>(component.type));
-    send_data(component.x);
-    send_data(component.y);
-}
 
 void ServerProtocol::send_box(const BoxSnapshot &box)
 {
-    send_data(box.pos.x);
-    send_data(box.pos.y);
-    send_data(static_cast<uint16_t>(box.status));
+    std::vector<uint16_t> buffer;
+    create_buffer_box(box, buffer);
+    send_buffer(buffer);
 }
 
 void ServerProtocol::send_snapshot(const Snapshot &snapshot)
@@ -178,16 +229,18 @@ void ServerProtocol::send_snapshot(const Snapshot &snapshot)
         std::vector<unsigned char> name_color(snapshot.winning_color.begin(), snapshot.winning_color.end());
         send_name(name_color);
     }
-
     send_data(static_cast<uint16_t>(snapshot.round));
+
     const uint16_t ducks_length = static_cast<uint16_t>(snapshot.ducks.size());
     send_data(ducks_length);
     for (const DuckSnapshot &duck : snapshot.ducks)
         send_duck(duck);
+
     const uint16_t guns_length = static_cast<uint16_t>(snapshot.guns.size());
     send_data(guns_length);
     for (const GunNoEquippedSnapshot &gun : snapshot.guns)
         send_gun(gun);
+
     const uint16_t projectile_length = static_cast<uint16_t>(snapshot.projectiles.size());
     send_data(projectile_length);
     for (const ProjectileSnapshot &projectile : snapshot.projectiles)
@@ -195,7 +248,6 @@ void ServerProtocol::send_snapshot(const Snapshot &snapshot)
 
     const uint16_t explosion_length = static_cast<uint16_t>(snapshot.explosions.size());
     send_data(explosion_length);
-
     for (const ExplosionSnapshot &explosion : snapshot.explosions)
         send_explosion(explosion);
 
@@ -242,9 +294,32 @@ void ServerProtocol::send_snapshot(const Snapshot &snapshot)
     }
 }
 
+void ServerProtocol::create_buffer_map_component(const MapComponent &component, std::vector<uint16_t> &buffer) {
+    buffer.clear();
+
+    buffer.push_back(htons(static_cast<uint16_t>(component.type)));
+    buffer.push_back(htons(static_cast<uint16_t>(component.x)));
+    buffer.push_back(htons(static_cast<uint16_t>(component.y)));
+}
+
+void ServerProtocol::send_map_component(const MapComponent &component)
+{
+    std::vector<uint16_t> buffer;
+    create_buffer_map_component(component, buffer);
+    send_buffer(buffer);
+}
+
+
+void ServerProtocol::create_buffer_box(const BoxSnapshot &box, std::vector<uint16_t> &buffer) {
+    buffer.clear();
+
+    buffer.push_back(htons(static_cast<uint16_t>(box.pos.x)));
+    buffer.push_back(htons(static_cast<uint16_t>(box.pos.y)));
+    buffer.push_back(htons(static_cast<uint16_t>(box.status)));
+}
+
 void ServerProtocol::send_lobby_info(const std::vector<LobbyMessage> &lobby_info)
 {
-
     send_data(static_cast<uint16_t>(ClientActionType::GAME_LIST));
     uint16_t size = lobby_info.size();
     send_data(size);

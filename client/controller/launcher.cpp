@@ -18,7 +18,6 @@ void Launcher::run_game()
     Socket skt(argv[HOST], argv[PORT]);
     ClientProtocol protocol(skt);
     Lobby lobby(protocol);
-
     MainWindow w(&lobby);
     w.show();
 

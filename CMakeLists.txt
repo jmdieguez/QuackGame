@@ -149,7 +149,7 @@ if(TALLER_TESTS)
     FetchContent_MakeAvailable(googletest)
     include(GoogleTest)
 
-    add_executable(quack_game_tests)
+    add_executable(quack_game_tests  tests/testProtocolServer.cpp server/protocol.cpp)
     add_dependencies(quack_game_tests quack_game_common)
     target_include_directories(quack_game_tests PUBLIC .)
     add_subdirectory(tests/)
@@ -164,5 +164,6 @@ if(TALLER_TESTS)
     target_link_libraries(quack_game_tests
         quack_game_common
         GTest::gtest_main
+        GTest::gmock
     )
 endif()
