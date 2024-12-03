@@ -161,10 +161,9 @@ void Duck::render_weapon(DuckSnapshot &duck, CameraSnapshot &camera,
 
 Duck::Duck(SDL2pp::Renderer &renderer) : Renderer(renderer) {}
 
-void Duck::render(DuckSnapshot &duck, int frame_ticks,
-                  CameraSnapshot &camera,
+void Duck::render(DuckSnapshot &duck, int frame_ticks, CameraSnapshot &camera,
                   float &scale_x, float &scale_y)
-{
+{   
     render_duck(duck, frame_ticks, camera, scale_x, scale_y);
     if (duck.type_gun != GunType::None && duck.status.is_alive)
         render_weapon(duck, camera, scale_x, scale_y);

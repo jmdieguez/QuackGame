@@ -21,9 +21,8 @@ private:
 
 public:
     explicit Duck(SDL2pp::Renderer &renderer);
-    void render(DuckSnapshot &duck, int frame_ticks, 
-                                 CameraSnapshot &camera, 
-                                 float &scale_x, float &scale_y);
+    void render(DuckSnapshot &duck, int frame_ticks, CameraSnapshot &camera, 
+                float &scale_x, float &scale_y);
     ~Duck();
 };
 

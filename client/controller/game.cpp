@@ -141,14 +141,31 @@ void Game::set_renderer(int frame_ticks)
             for (Position &position : latest_snapshot.map.gun_spawns)
                 render_storage.get_map_drawer().render_spawn_in_map(position, latest_snapshot.camera, scale_x, scale_y);
 
+            unsigned ducks_alive = 0;
             for (DuckSnapshot &duck_snapshot : latest_snapshot.ducks)
-                render_storage.get_duck().render(duck_snapshot, frame_ticks, latest_snapshot.camera, scale_x, scale_y);
-
+            {   
+                if (duck_snapshot.status.is_alive)
+                    ducks_alive++;    
+                render_storage.get_duck().render(duck_snapshot, frame_ticks, latest_snapshot.camera, scale_x,
+                                                 scale_y);
+            }
             for (GunNoEquippedSnapshot &gun : latest_snapshot.guns)
                 render_storage.get_item().render(gun, latest_snapshot.camera, scale_x, scale_y);
 
             for (ArmorSnapshot &armor : latest_snapshot.armors)
                 render_storage.get_armor().render(armor, latest_snapshot.camera, scale_x, scale_y);
+            
+            if (ducks_alive <= 1) {
+                SDL2pp::Texture text(initializer.get_renderer(), font.RenderText_Blended("THE NEXT ROUND IS ABOUT TO START...", WHITE));
+                SDL_Rect text_src = {0, 0, text.GetWidth(), text.GetHeight()};
+                SDL_Rect text_dst = {
+                    (DEFAULT_WINDOW_WIDTH - text.GetWidth() / 2) / 2,
+                    (DEFAULT_WINDOW_HEIGHT - text.GetHeight() / 2) / 4,
+                    text.GetWidth() / 2,
+                    text.GetHeight() / 2};
+                initializer.get_renderer().Copy(text, text_src, text_dst);
+            }
+
             if (latest_snapshot.is_ended)
             {
                 winner = latest_snapshot.winning_color;

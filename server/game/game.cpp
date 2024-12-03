@@ -14,7 +14,8 @@
 
 namespace fs = std::filesystem;
 
-Game::Game() : check_won(Config::getInstance()["settings"]["check_won"].as<unsigned>()),
+Game::Game() : end_of_round_time(Config::getInstance()["settings"]["end_of_round_time"].as<unsigned>()),
+               check_won(Config::getInstance()["settings"]["check_won"].as<unsigned>()),
                min_round_to_win(Config::getInstance()["settings"]["min_round_to_win"].as<unsigned>()),
                rng(rd()), dist(0, N_DROPS - 1)
 {
@@ -273,7 +274,7 @@ void Game::check_for_winner(const std::map<uint8_t, Duck &> &ducks_alive)
     int n_ducks_alive = ducks_alive.size();
     if (n_ducks_alive <= 1)
     {
-        initialize = true;
+        has_to_initialize = true;
         if (n_ducks_alive == 1)
         {
             auto winner = ducks_alive.begin();
@@ -403,33 +404,42 @@ void Game::update_camera(std::map<uint8_t, Duck &> &ducks)
         camera.y = 576 - camera.height;
 }
 
+void Game::initialize()
+{
+    guns.clear();
+    boxes.clear();
+    projectiles.get_projectiles().clear();
+    explosions.get_explosions().clear();
+    gun_spawns.clear();
+    armor.clear();
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(0, maps.size() - 1); // Range [0, maps.size() - 1]
+    current_map = dis(gen);
+
+    for (const auto &position : maps[current_map].get_guns_spawns())
+        gun_spawns.emplace(position, GunSpawn());
+
+    for (const auto &position : maps[current_map].get_boxes_spawns())
+        boxes.emplace(position, Box::BOX_4_HP);
+
+    spawn_players();
+    has_to_initialize = false;
+}
+
 void Game::step()
 {
-    if (initialize)
-    {
-        guns.clear();
-        boxes.clear();
-        projectiles.get_projectiles().clear();
-        explosions.get_explosions().clear();
-        gun_spawns.clear();
-        armor.clear();
-
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<> dis(0, maps.size() - 1); // Range [0, maps.size() - 1]
-        current_map = dis(gen);
-
-        for (const auto &position : maps[current_map].get_guns_spawns())
-            gun_spawns.emplace(position, GunSpawn());
-
-        for (const auto &position : maps[current_map].get_boxes_spawns())
-            boxes.emplace(position, Box::BOX_4_HP);
-
-        spawn_players();
-        initialize = false;
+    if (has_to_initialize) {
+        if (end_of_round_timer == 0) {
+            end_of_round_timer = end_of_round_time;
+            initialize();
+        } else
+        {
+            end_of_round_timer--;
+        }
     }
 
-    spawn_guns();
     projectiles.remove([this](std::vector<std::shared_ptr<Projectile>>::iterator it)
                        { Explosion explosion(((ProjectileGrenade *)it->get())->get_position_to_explosion());
                         explosions.add_explosion(explosion); });
@@ -468,9 +478,13 @@ void Game::step()
             }
         }
     }
+
+    if (!has_to_initialize) {
+        check_for_winner(ducks_alive);
+        spawn_guns();
+    }
     update_camera(ducks_alive);
     move_guns();
-    check_for_winner(ducks_alive);
 }
 
 Snapshot Game::get_status()

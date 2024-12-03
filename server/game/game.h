@@ -27,10 +27,12 @@ enum class RandomSelection
 class Game
 {
 private:
+    unsigned end_of_round_time; // constant
+    unsigned end_of_round_timer = 0; // cron
     unsigned required_players = 2;
     unsigned current_map = 0;
     unsigned round = 0;
-    bool initialize = true;
+    bool has_to_initialize = true;
     unsigned check_won;
     unsigned min_round_to_win;
     std::vector<Map> maps;
@@ -69,6 +71,7 @@ private:
     void remove_gun(const uint16_t &id);
     void spawn_guns();
     void update_camera(std::map<uint8_t, Duck &> &ducks);
+    void initialize();
 
 public:
     Game();

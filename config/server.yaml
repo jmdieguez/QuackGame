@@ -31,3 +31,4 @@ settings:
   check_won: 5
   min_round_to_win: 6
   max_message_receiver: 10000
+  end_of_round_time: 120
