@@ -95,6 +95,8 @@ Y listo! Una vez que todos tus amigos estén unidos a la partida, podrá comenza
 
 ## Controles
 
+1 Jugador
+
 * Apuntar hacia arriba: W
 * Agacharse: S
 * Moverse a la izquierda: A
@@ -102,11 +104,31 @@ Y listo! Una vez que todos tus amigos estén unidos a la partida, podrá comenza
 * Saltar: Espacio
 * Agarrar un arma del suelo: E
 * Disparar: T
+* Soltar: G
+
+2 Jugador
+
+* Apuntar hacia arriba: UP
+* Agacharse: DOWN
+* Moverse a la izquierda: LEFT
+* Moverse hacia la derecha: RIGHT
+* Saltar: SHIFT
+* Agarrar un arma del suelo: I
+* Disparar: O
+* Soltar: L
 
 ## Cheats
 
-* Escribir 'ak' para spawnear una AK-47
-* Escribir 'sh' para spawnear una Shotgun
+* Escribir 'ak' para spawnear AK-47
+* Escribir 'sh' para spawnear Shotgun
+* Escribir 'gr' para spawnear Granada
+* Escribir 'ba' para spawnear Banana
+* Escribir 'co' para spawnear Cowboy Pistol
+* Escribir 'du' para spawnear Dueling Pistol
+* Escribir 'ma' para spawnear Magnum
+* Escribir 'pe' para spawnear Pew Pew Laser
+* Escribir 'sn' para spawnear Sniper
+* Escribir 'ri' para spawnear Laser Rifle
 
 ## Crear un mapa personalizado
 
