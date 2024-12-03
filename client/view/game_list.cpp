@@ -21,9 +21,17 @@ GameList::GameList(Lobby *lobby, QWidget *parent) : QWidget(parent),
         onItemClicked(item);
     });
 
-    connect(ui->back, &QPushButton::clicked, this, [this]() {
+    connect(ui->BackButton, &QPushButton::clicked, this, [this]() {
         SoundPlayer::instance()->playSound(CLICK_SOUND, false);
         onBackButtonClicked();
+    });
+
+    connect(ui->JoinMultiplayer, &QPushButton::clicked, this, [this]() {
+        onJoinMultiplayerClicked();
+    });
+
+    connect(ui->JoinSinglePlayer, &QPushButton::clicked, this, [this]() {
+        onJoinSinglePlayerClicked();
     });
 }
 
@@ -57,9 +65,30 @@ void GameList::setGameList(const std::map<uint16_t, std::string> &games)
 void GameList::onItemClicked(QListWidgetItem *item)
 {
     QString gameName = item->text();
-    if (nameToIdMap.count(gameName) > 0) {
-         const uint16_t gameId = nameToIdMap[gameName];
+    if (nameToIdMap.count(gameName) > 0)
+    {
+        this->selectedGame = gameName; // Guarda el juego seleccionado
+        ui->listWidget->setCurrentItem(item); // Asegura que quede seleccionado visualmente
+    }
+}
+
+void GameList::onJoinSinglePlayerClicked()
+{
+    if (nameToIdMap.count(selectedGame) > 0)
+    {
+        uint16_t gameId = nameToIdMap[selectedGame];
         lobby->prepare_single_player_game();
+        lobby->join_room(gameId);
+        QApplication::closeAllWindows();
+    }
+}
+
+void GameList::onJoinMultiplayerClicked()
+{
+    if (nameToIdMap.count(selectedGame) > 0)
+    {
+        uint16_t gameId = nameToIdMap[selectedGame];
+        lobby->prepare_multiplayer_game();
         lobby->join_room(gameId);
         QApplication::closeAllWindows();
     }

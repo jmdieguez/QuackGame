@@ -62,12 +62,80 @@
     </string>
    </property>
   </widget>
-  <widget class="QPushButton" name="back">
+  <widget class="QPushButton" name="JoinMultiplayer">
+   <property name="geometry">
+    <rect>
+     <x>270</x>
+     <y>400</y>
+     <width>251</width>
+     <height>43</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"> QPushButton {
+            background-color: #994d28;
+            color: white; 
+            font-size: 16px; 
+            border: 2px solid #2C6B43; 
+            border-radius: 15px; 
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+        QPushButton:pressed {
+            background-color: #3E7F58;
+        }
+
+        QPushButton:hover {
+            background-color: #3E7F58;
+            border: 2px solid #A1D0B1;
+
+        }</string>
+   </property>
+   <property name="text">
+    <string>Join as Multiplayer</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="JoinSinglePlayer">
+   <property name="geometry">
+    <rect>
+     <x>270</x>
+     <y>450</y>
+     <width>251</width>
+     <height>43</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"> QPushButton {
+            background-color: #994d28;
+            color: white; 
+            font-size: 16px; 
+            border: 2px solid #2C6B43; 
+            border-radius: 15px; 
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+        QPushButton:pressed {
+            background-color: #3E7F58;
+        }
+
+        QPushButton:hover {
+            background-color: #3E7F58;
+            border: 2px solid #A1D0B1;
+
+        }</string>
+   </property>
+   <property name="text">
+    <string>Join as Single Player</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="BackButton">
    <property name="geometry">
     <rect>
      <x>280</x>
-     <y>400</y>
-     <width>211</width>
+     <y>520</y>
+     <width>231</width>
      <height>43</height>
     </rect>
    </property>
