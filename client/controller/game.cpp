@@ -19,7 +19,11 @@ void Game::get_and_execute_events()
 {
     SDL_Event event;
     while (SDL_PollEvent(&event))
+    {
+        if (is_showing_table)
+            return;
         handle_event(event);
+    }
 }
 
 void Game::update_renderer(int frame_ticks)
@@ -154,7 +158,7 @@ void Game::set_renderer(int frame_ticks)
                 SDL_Quit();
             }
         }
-        if (latest_snapshot.round != 0 && latest_snapshot.round != lastest_round_show_table && latest_snapshot.round % 3 == 0)
+        if (latest_snapshot.round != 0 && latest_snapshot.round != lastest_round_show_table && latest_snapshot.round % 5 == 0)
         {
             if (is_showing_table || finish_showing_table)
             {
