@@ -494,6 +494,9 @@ Snapshot Game::get_status()
     for (auto &[id, duck] : ducks)
         duck_snapshots.push_back(duck.get_status());
 
+    for (const auto&[position, armor] : armor)
+        armor_snapshots.push_back(ArmorSnapshot(position, armor));
+
     for (const auto& victory : victories) {
         uint8_t playerId = victory.first;
         uint8_t victoryCount = victory.second;
