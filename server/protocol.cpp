@@ -117,7 +117,8 @@ void ServerProtocol::send_duck(const DuckSnapshot &duck)
     send_duck_color(duck.color);
 }
 
-void ServerProtocol::send_duck_color(Color color) {
+void ServerProtocol::send_duck_color(Color color)
+{
     send_data(static_cast<uint16_t>(color.get_red()));
     send_data(static_cast<uint16_t>(color.get_green()));
     send_data(static_cast<uint16_t>(color.get_blue()));
@@ -186,7 +187,8 @@ void ServerProtocol::send_box(const BoxSnapshot &box)
 void ServerProtocol::send_snapshot(const Snapshot &snapshot)
 {
     send_data(snapshot.is_ended);
-    if (snapshot.is_ended) {
+    if (snapshot.is_ended)
+    {
         send_data(static_cast<uint16_t>(snapshot.game_result));
     }
     send_data(static_cast<uint16_t>(snapshot.round));
@@ -247,7 +249,8 @@ void ServerProtocol::send_snapshot(const Snapshot &snapshot)
     for (const DuckScore &score : snapshot.scores)
     {
         send_data(score.victories);
-        send_duck_color(score.color);
+        send_data(score.color_name.length());
+        send_name(std::vector<unsigned char>(score.color_name.begin(), score.color_name.end()));
     }
 }
 

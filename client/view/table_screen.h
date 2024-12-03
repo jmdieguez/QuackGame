@@ -28,15 +28,15 @@ public:
     {
     }
 
-    void render_score(SDL2pp::Font &font, const UserTableSnapshot &users)
+    void render_score(SDL2pp::Font &font, const std::vector<DuckScore> &scores)
     {
         int base_y = title_dst.y + title_dst.h + 50;
         int text_spacing_y = 40;
 
-        for (size_t index = 0; index < users.users.size(); index++)
+        for (size_t index = 0; index < scores.size(); index++)
         {
-            std::string player_score = users.users[index].color_name + " " +
-                                       "- Wins: " + std::to_string(users.users[index].round_wins);
+            std::string player_score = scores[index].color_name +
+                                       "- Wins: " + std::to_string(scores[index].victories);
             SDL2pp::Texture text(renderer, font.RenderText_Blended(player_score, WHITE));
             SDL_Rect text_src = {0, 0, text.GetWidth(), text.GetHeight()};
             SDL_Rect text_dst = {
@@ -49,7 +49,7 @@ public:
         }
     }
 
-    void render(SDL2pp::Font &font, const UserTableSnapshot &users)
+    void render(SDL2pp::Font &font, const std::vector<DuckScore> &scores)
     {
         renderer.SetDrawBlendMode(SDL_BLENDMODE_BLEND);
         renderer.SetDrawColor(0, 0, 0, 128);
@@ -57,7 +57,7 @@ public:
         renderer.SetDrawColor(255, 255, 255, 255);
         renderer.SetDrawBlendMode(SDL_BLENDMODE_NONE);
         renderer.Copy(title, title_src, title_dst);
-        render_score(font, users);
+        render_score(font, scores);
     }
 };
 

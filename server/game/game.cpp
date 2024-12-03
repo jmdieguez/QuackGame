@@ -5,9 +5,9 @@
 #include <filesystem>
 
 #ifdef GLOBAL_INSTALL
-    #define MAPS_PATH "/etc/quackgame/maps"
+#define MAPS_PATH "/etc/quackgame/maps"
 #else // LOCAL_INSTALL
-    #define MAPS_PATH "server/game/maps"
+#define MAPS_PATH "server/game/maps"
 #endif
 
 #define N_DROPS 11
@@ -278,6 +278,7 @@ void Game::check_for_winner(const std::map<uint8_t, Duck &> &ducks_alive)
         {
             auto winner = ducks_alive.begin();
             ++victories[winner->first];
+            round++;
             if ((round >= check_won) && (round % check_won == 0))
             { // Check if somebody won every five rounds
                 std::vector<uint8_t> possible_winners;
@@ -494,13 +495,16 @@ Snapshot Game::get_status()
     for (auto &[id, duck] : ducks)
         duck_snapshots.push_back(duck.get_status());
 
-    for (const auto& victory : victories) {
+    for (const auto &victory : victories)
+    {
         uint8_t playerId = victory.first;
         uint8_t victoryCount = victory.second;
 
         auto colorIt = colors.find(playerId);
-        if (colorIt != colors.end()) {
-            scores.push_back(DuckScore(victoryCount, colorIt->second));
+        if (colorIt != colors.end())
+        {
+            std::string text = colorIt->second.get_text();
+            scores.push_back(DuckScore(victoryCount, text));
         }
     }
 

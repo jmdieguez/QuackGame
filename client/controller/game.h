@@ -30,11 +30,13 @@ private:
     ConstantRateLoop constant_rate_loop;
     SDL2pp::Font font;
     LoadingScreen loading_screen;
-    RoundController round_controller;
-    TableScreen table_screen;
     SessionController session;
     std::vector<UserLobbyInfo> users;
+    uint16_t lastest_round_show_table;
+    bool is_showing_table;
+    bool finish_showing_table;
     RenderStorage render_storage;
+    RoundController round_controller;
     SoundBoxStorage sound_storage;
     MusicBox music;
     bool mute_effect;

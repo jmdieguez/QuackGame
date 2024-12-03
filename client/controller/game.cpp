@@ -110,9 +110,9 @@ void Game::set_renderer(int frame_ticks)
         render_storage.get_scene().render();
         loading_screen.render(font, users);
     }
-
     if (received_snapshot)
     {
+
         if (latest_snapshot.camera.width > 0 && latest_snapshot.camera.height > 0)
         {
             initializer.get_renderer().Clear();
@@ -154,9 +154,17 @@ void Game::set_renderer(int frame_ticks)
                 SDL_Quit();
             }
         }
-        if (round != latest_snapshot.round) {
-            round = latest_snapshot.round;
-            round_controller.handle_round_change(round, latest_snapshot.scores);
+        if (latest_snapshot.round != 0 && latest_snapshot.round != lastest_round_show_table && latest_snapshot.round % 3 == 0)
+        {
+            if (is_showing_table || finish_showing_table)
+            {
+                round = latest_snapshot.round;
+                round_controller.handle_round_change(latest_snapshot.round, latest_snapshot.scores);
+                return;
+            }
+            lastest_round_show_table = latest_snapshot.round;
+            is_showing_table = false;
+            finish_showing_table = true;
         }
     }
     sound_storage.clear_sounds();
@@ -181,11 +189,13 @@ Game::Game(Socket skt, std::vector<UserLobbyInfo> users)
                          { this->step(step); }),
       font(FONT_PATH, 32),
       loading_screen(initializer.get_renderer()),
-      round_controller(initializer.get_renderer(), font),
-      table_screen(initializer.get_renderer(), font),
       session(users),
       users(users),
+      lastest_round_show_table(0),
+      is_showing_table(false),
+      finish_showing_table(true),
       render_storage(initializer.get_renderer()),
+      round_controller(render_storage, initializer.get_renderer(), font, is_showing_table, finish_showing_table),
       sound_storage(initializer.get_mixer()),
       music(initializer.get_mixer()),
       mute_effect(Config::getInstance()["effect"]["mute"].as<bool>()),
@@ -197,7 +207,6 @@ Game::Game(Socket skt, std::vector<UserLobbyInfo> users)
 
 bool Game::run()
 {
-
     Receiver receiver(socket, session.get_queue_receiver());
     Sender sender(socket, session.get_queue_sender());
     receiver.start();

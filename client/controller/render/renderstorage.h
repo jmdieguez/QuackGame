@@ -1,3 +1,6 @@
+#ifndef RENDER_STORAGE_H
+#define RENDER_STORAGE_H
+
 #include "scene.h"
 #include "duck.h"
 #include "item.h"
@@ -17,6 +20,7 @@ private:
     BoxItem box_item;
     ExplosionDrawer explosion;
     Armor armor;
+
 public:
     explicit RenderStorage(SDL2pp::Renderer &renderer);
     Duck &get_duck();
@@ -29,3 +33,5 @@ public:
     ExplosionDrawer &get_explosion();
     ~RenderStorage();
 };
+
+#endif // RENDER_STORAGE_H

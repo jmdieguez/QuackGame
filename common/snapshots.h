@@ -23,12 +23,13 @@ enum class GameResult : uint16_t
     DEFEAT
 };
 
-class DuckScore {
+class DuckScore
+{
 public:
     uint16_t victories;
-    Color color;
-    DuckScore(const uint16_t& v, const Color &c) : victories(v), color(c) {}
-    DuckScore() : victories(0), color(0,0,0) {}
+    std::string color_name;
+    DuckScore(const uint16_t &v, std::string &color_name) : victories(v), color_name(color_name) {}
+    DuckScore() : victories(0) {}
 };
 
 class ArmorSnapshot
