@@ -159,3 +159,13 @@ Realizado por
 * José Manuel Dieguez
 
 * Matias Rueda
+
+# Recursos
+
+[libSDL2pp](https://github.com/libSDL2pp/libSDL2pp)
+
+Tileset extraído del juego OpenSource [Tonde Iko](https://github.com/greggman/hft-tonde-iko) (BSD-3-Clause license)
+
+# Documentación
+
+Se podrá encontrar el manual de proyecto y la documentación técnica dentro de la carpeta [docs](https://github.com/jmdieguez/QuackGame/tree/main/docs)
